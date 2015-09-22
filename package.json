@@ -21,5 +21,9 @@
   "bugs": {
     "url": "https://github.com/jser-dev/mditor/issues"
   },
-  "homepage": "https://github.com/jser-dev/mditor#readme"
+  "homepage": "https://github.com/jser-dev/mditor#readme",
+  "dependencies": {
+    "github-markdown-css": "^2.0.10",
+    "marked": "^0.3.5"
+  }
 }

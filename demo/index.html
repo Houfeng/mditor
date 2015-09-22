@@ -3,16 +3,23 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=yes" />
 	<title>mditor</title>
+	<style>
+		#preview {
+			margin-top: 10px;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+		}
+	</style>
 </head>
 
 <body>
-	<textarea name="" id="" cols="30" rows="10">
-
+	<textarea name="editor" id="editor">
 	</textarea>
-	<script>
-
-	</script>
+	<div id="preview"></div>
+	<script src="../client/libs/ems.js" data-main="./index.js"></script>
 </body>
 
 </html>
