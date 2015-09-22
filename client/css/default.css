@@ -1,3 +1,6 @@
+/**
+ Mditor 公共样式
+ **/
 .mditor{
 	border-radius: 3px;
 	padding: 0px;
@@ -8,11 +11,17 @@
 	color: #333;
 	-webkit-font-smoothing: subpixel-antialiased;
 	position: relative;
+    transition: min-height .25s ease-out;
+    -webkit-transition: min-height .25s ease-out;
 }
 .mditor *{
 	box-sizing: border-box;
 }
-.mditor .toolbar{
+
+/**
+ 工具条样式
+ **/
+.mditor .head{
     -webkit-touch-callout: none;
 	-webkit-user-select: none;
 	cursor: default;
@@ -20,7 +29,7 @@
     position: relative;
     zoom: 1;
     margin: 0;
-    padding: 4px;
+    padding: 0px;
     height: 38px;
     border: 1px solid #CCC;
     border-bottom: 0;
@@ -36,6 +45,12 @@
     background-image: linear-gradient(top,#f5f5f5,#efefef);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#efefef', GradientType=0);
+}
+.mditor .toolbar{
+    margin: 0px;
+    padding: 4px;
+    height: 100%;
+    position: relative;
 }
 .mditor .toolbar .fa{
     height: 27px;
@@ -58,29 +73,52 @@
     background-color: #ebebeb;
     box-shadow: 0 0 3px rgba(0,0,0,.1) inset;
 }
-.mditor .editor{
+
+/**
+ 编辑器主体样式
+ **/
+.mditor .body{
     margin: 0px;
-    display: inline-block;
-	border: none;
-	outline: none;
-	width: 100%;
-	height: 100%;
-    min-height: 58px;
-	resize: none;
-	background-color: transparent;
-	font: 16px 'Helvetica Neue',Arial,'Liberation Sans',FreeSans,'Hiragino Sans GB',sans-serif!important;
+    padding: 0px;
 	position: relative;
-    padding: 8px 10px;
     border: 1px solid #ccc;
     border-radius: 0 0 3px 3px;
     box-shadow: 0 0 4px 0 rgba(0,0,0,.1) inset;
-    -webkit-transition: min-height .25s ease-out;
     background: #fff;
+}
+.mditor .body.active{
+	border: 1px solid #aaa;
+}
+.mditor .editor,
+.mditor .preview{
+    position: relative;
+    display: inline-block;
+	border: none !important;
+    border-radius: 0 0 3px 3px !important;
+	outline: none !important;
+	width: 100%;
+	height: 100%;
+    min-height: 60px;
+    resize: none !important;
+	background-color: transparent !important;
+    font: 16px/20px 'Helvetica Neue','Arial','Liberation Sans','FreeSans','Hiragino Sans GB','sans-serif' !important;
+	margin: 0px;
+    padding: 8px 10px;
     color: #333;
     word-break: break-all;
 	word-wrap: break-word;
 }
+
+.mditor .preview{
+    float: right;
+    display: none;
+}
+
+/**
+ 高度计算样式
+ **/
 .mditor .height-calc{
+    position: relative;
     height: 0px;
     font-size: 0px;
     padding: 0px;
@@ -90,12 +128,35 @@
 .mditor .height-calc .editor{
     height: auto;
 }
-.mditor .editor:active,
-.mditor .editor:focus{
-	border: 1px solid #aaa;
+
+/**
+ 打开预览时样式
+ **/
+.mditor.pv .preview,
+.mditor.pv .editor{
+    width: 50%;
+}
+.mditor.pv .editor{
+    border-right: 1px solid #ddd !important;
+    border-bottom-right-radius: 0px !important;
+}
+.mditor.pv .preview{
+    display: block;
+    overflow: visible;
 }
 
-/* fullscreen styles */
+/**
+ 全屏样式
+ **/
 .mditor.fullscreen{
-	background-color: #fbfcf7;
+	position: fixed;
+    left: 0px;
+    top:0px;
+    width: 100%;
+    height: 100%;
+}
+.mditor.fullscreen .head,
+.mditor.fullscreen .body{
+    margin: -1px;
+    border-radius: 0px !important;
 }

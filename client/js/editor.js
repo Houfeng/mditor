@@ -1,4 +1,8 @@
 define(function (require, exports, module) {
+	
+	/**
+	 * 定义编辑器类型 
+	 **/
 	var Editor = module.exports = function (mditor) {
 		var self = this;
 		self.mditor = mditor;
@@ -6,12 +10,27 @@ define(function (require, exports, module) {
 		self._bindEvents();
 	};
 
+	/**
+	 * 事件绑定方法
+	 **/
 	Editor.prototype.on = function (name, handler) {
 		var self = this;
 		self.ui.editor.on(name, handler.bind(self));
 		return self;
 	};
+	
+	/**
+	 * 事件解绑方法
+	 **/
+	Editor.prototype.off = function (name, handler) {
+		var self = this;
+		self.ui.editor.off(name, handler.bind(self));
+		return self;
+	};
 
+	/**
+	 * 绑定事件
+	 **/
 	Editor.prototype._bindEvents = function (name, handler) {
 		var self = this;
 		self.on('keydown', function (event) {
