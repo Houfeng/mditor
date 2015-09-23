@@ -8,17 +8,53 @@ define(function (require, exports, module) {
 	var Editor = require('./editor');
 	var Parser = require('./parser');
 
+
+	var FULL_SCREEN_CORRECT = 15;
+
 	/**
 	 * 定义 Mditor 类型
 	 **/
 	var Mditor = module.exports = function (editor, options) {
 		var self = this;
+		if (!editor) {
+			throw "must specify a textarea.";
+		}
 		self.ui = {};
-		self.options = options || options;
 		self.ui.editor = $(editor);
 		self._create();
+		self.setOptions(options);
+		self._initCommands();
 		self._initComponent();
 		self._bindEvents();
+		self._bindCommands();
+	};
+	
+	/**
+	 * 设定选项
+	 **/
+	Mditor.prototype.setOptions = function (options) {
+		var self = this;
+		options = options || {};
+		self.options = self.options || {};
+		//处理固定高度选项
+		if (options.fixedHeight !== null) {
+			self.options.fixedHeight = options.fixedHeight;
+			if (self.options.fixedHeight) {
+				self.ui.wraper.addClass('fixed');
+			} else {
+				self.ui.wraper.removeClass('fixed');
+			}
+		}
+		//处理高度选项
+		if (options.height !== null) {
+			self.options.height = options.height;
+			self.setHeight(self.options.height);
+		}
+		//处理宽度选项
+		if (options.width !== null) {
+			self.options.width = options.width;
+			self.setWidth(self.options.width);
+		}
 	};
 	
 	/**
@@ -34,11 +70,16 @@ define(function (require, exports, module) {
 		ui.wraper = ui.body.parent();
 		ui.head = $('<div class="head"></div>');
 		ui.body.before(ui.head);
-		ui.toolbar = $('<div class="toolbar"><i class="fa fa-arrows-alt"></i></div>');
+		ui.toolbar = $('<div class="toolbar"></div>');
 		ui.head.append(ui.toolbar);
-		ui.preview = $('<div class="preview"></div>');
-		ui.editor.before(ui.preview);
-		self._createHeightCalc();
+		ui.control = $('<div class="control"><i data-cmd="togglePreview" class="fa fa-columns"></i><i data-cmd="toggleFullScreen" class="fa fa-arrows-alt"></i></div>');
+		ui.head.append(ui.control);
+		ui.viewer = $('<div class="viewer"></div>');
+		ui.body.append(ui.viewer);
+		//创建计算自适应高度的 div
+		ui.heightCalc = $('<div class="editor"></br></div>');
+		ui.wraper.append(ui.heightCalc);
+		ui.heightCalc.wrap('<div class="calc"></div>');
 		return self;
 	};
 
@@ -58,7 +99,7 @@ define(function (require, exports, module) {
 	 **/
 	Mditor.prototype.isPreview = function () {
 		var self = this;
-		return self.ui.wraper.hasClass("pv");
+		return self.ui.wraper.hasClass("preview");
 		return self;
 	};
 
@@ -67,7 +108,7 @@ define(function (require, exports, module) {
 	 **/
 	Mditor.prototype.openPreview = function () {
 		var self = this;
-		self.ui.wraper.addClass("pv");
+		self.ui.wraper.addClass("preview");
 		self._calcAutoHeight();
 		return self;
 	};
@@ -77,15 +118,28 @@ define(function (require, exports, module) {
 	 **/
 	Mditor.prototype.closePreview = function () {
 		var self = this;
-		self.ui.wraper.removeClass("pv");
+		self.ui.wraper.removeClass("preview");
 		self._calcAutoHeight();
+		return self;
+	};
+
+	/**
+	 * 切换预览模式
+	 **/
+	Mditor.prototype.togglePreview = function () {
+		var self = this;
+		if (self.isPreview()) {
+			self.closePreview();
+		} else {
+			self.openPreview();
+		}
 		return self;
 	};
 	
 	/**
-	 * 是否启动了 fullscreen 视图
+	 * 是否启动了 FullScreen 视图
 	 **/
-	Mditor.prototype.isFullscreen = function () {
+	Mditor.prototype.isFullScreen = function () {
 		var self = this;
 		return self.ui.wraper.hasClass("fullscreen");
 	};
@@ -93,22 +147,66 @@ define(function (require, exports, module) {
 	/**
 	 * 打开预览
 	 **/
-	Mditor.prototype.openFullscreen = function () {
+	Mditor.prototype.openFullScreen = function () {
 		var self = this;
-		self.__editor_height = self.ui.editor.outerHeight();
 		self.ui.wraper.addClass("fullscreen");
-		var _height = self.ui.wraper.outerHeight() - self.ui.head.outerHeight();
+		//记录旧高度并设定适应全屏的高度
+		self._lastEditorHeight = self.getHeight();
+		var wraper = self.ui.wraper;
+		var head = self.ui.head;
+		var _height = wraper.outerHeight() - head.outerHeight() - FULL_SCREEN_CORRECT;
 		self.setHeight(_height);
+		self._calcAutoHeight();
 		return self;
 	};
 	
 	/**
 	 * 关闭预览
 	 **/
-	Mditor.prototype.closeFullscreen = function () {
+	Mditor.prototype.closeFullScreen = function () {
 		var self = this;
 		self.ui.wraper.removeClass("fullscreen");
-		self.setHeight(self.__editor_height);
+		self.setHeight(self._lastEditorHeight);
+		self._calcAutoHeight();
+		return self;
+	};
+	
+	/**
+	 * 切换全屏模式
+	 **/
+	Mditor.prototype.toggleFullScreen = function () {
+		var self = this;
+		if (self.isFullScreen()) {
+			self.closeFullScreen();
+		} else {
+			self.openFullScreen();
+		}
+		return self;
+	};
+	
+	/**
+	 * toolbar 是否隐藏
+	 **/
+	Mditor.prototype.toolBarIsHidden = function () {
+		var self = this;
+		return self.ui.wraper.hasClass('toolbar-hidden');
+	};
+	
+	/**
+	 * 隐藏 toolbar
+	 **/
+	Mditor.prototype.hideToolBar = function () {
+		var self = this;
+		self.ui.wraper.addClass('toolbar-hidden');
+		return self;
+	};
+	
+	/**
+	 * 显示 toolbar
+	 **/
+	Mditor.prototype.showToolBar = function () {
+		var self = this;
+		self.ui.wraper.removeClass('toolbar-hidden');
 		return self;
 	};
 	
@@ -117,14 +215,51 @@ define(function (require, exports, module) {
 	 **/
 	Mditor.prototype.setHeight = function (height) {
 		var self = this;
-		var css = {
-			"height": height,
-			"min-height": height,
-			"max-height": height
-		};
-		self.ui.editor.css(css);
-		self.ui.preview.css(css);
+		if (self.options.fixedHeight) {
+			self.ui.editor.outerHeight(height);
+			self.ui.heightCalc.outerHeight(height);
+		} else {
+			self.ui.editor.css('minHeight', height);
+			self.ui.heightCalc.css('minHeight', height);
+		}
+		self._calcAutoHeight();
 		return self;
+	};
+	
+	/**
+	 * 获取高度
+	 **/
+	Mditor.prototype.getHeight = function () {
+		var self = this;
+		return self.ui.editor.outerHeight();
+	};
+	
+	/**
+	 * 设定宽度
+	 **/
+	Mditor.prototype.setWidth = function (width) {
+		var self = this;
+		self.ui.wraper.outerWidth(width);
+		return self;
+	};
+	
+	/**
+	 * 获取宽度
+	 **/
+	Mditor.prototype.getWidth = function () {
+		var self = this;
+		return self.ui.wraper.outerWidth();
+	};
+	
+	
+	/**
+	 * 获取可以适应的最大高度
+	 **/
+	Mditor.prototype._getMaxHeight = function () {
+		var self = this;
+		var head = self.ui.head;
+		var _height = $(window).outerHeight() - head.outerHeight() * 2 - FULL_SCREEN_CORRECT;
+		return _height;
 	};
 
 	/**
@@ -133,31 +268,28 @@ define(function (require, exports, module) {
 	Mditor.prototype._calcAutoHeight = function () {
 		var self = this;
 		var ui = self.ui;
+		//如果是固定高度或全屏时则不必进行高度计算
+		if (self.options.fixedHeight || self.isFullScreen()) {
+			ui.viewer.outerHeight(self.getHeight());
+			return self;
+		}
+		//开始高度计算
+		var maxHeight = self._getMaxHeight();
 		ui.heightCalc.outerWidth(ui.editor.outerWidth());
 		ui.heightCalc.html(ui.editor.val().split('\n').join('</br>') + '<br/>');
 		if (self.isPreview()) {
+			ui.viewer.outerHeight('auto');
 			var _calcHeight = ui.heightCalc.outerHeight();
-			var _previewHeight = ui.preview.outerHeight();
+			var _previewHeight = ui.viewer.outerHeight();
 			var _height1 = _previewHeight > _calcHeight ? _previewHeight : _calcHeight;
+			if (_height1 > maxHeight) _height1 = maxHeight;
 			ui.editor.outerHeight(_height1);
 		} else {
 			var _height2 = ui.heightCalc.outerHeight();
+			if (_height2 > maxHeight) _height2 = maxHeight;
 			ui.editor.outerHeight(_height2);
-			ui.preview.outerHeight(_height2);
+			ui.viewer.outerHeight(_height2);
 		}
-		return self;
-	};
-
-	/**
-	 * 创建用于计算适应高度的 div
-	 **/
-	Mditor.prototype._createHeightCalc = function () {
-		var self = this;
-		var ui = self.ui;
-		ui.heightCalc = $('<div class="editor"></br></div>');
-		ui.wraper.append(ui.heightCalc);
-		ui.heightCalc.wrap('<div class="height-calc"></div>');
-		self._calcAutoHeight();
 		return self;
 	};
 
@@ -172,13 +304,44 @@ define(function (require, exports, module) {
 		self.on('blur', self._removeActiveClass.bind(self));
 		return self;
 	};
+
+	/**
+	 * 初始化命令
+	 **/
+	Mditor.prototype._initCommands = function () {
+		var self = this;
+		self.cmd = {
+			"toggleFullScreen": self.toggleFullScreen,
+			"togglePreview": self.togglePreview
+		};
+		return self;
+	};
+
+	/**
+	 * 绑定命令
+	 **/
+	Mditor.prototype._bindCommands = function () {
+		var self = this;
+		self.ui.head.on('click', 'i.fa', function (event) {
+			var btn = $(this);
+			var cmdName = btn.attr('data-cmd');
+			if (cmdName && self.cmd[cmdName]) {
+				event.mditor = self;
+				event.toolbar = self.toolbar;
+				event.editor = self.editor;
+				self.cmd[cmdName].call(self, event, self);
+				self.focus();
+			}
+		});
+		return self;
+	};
 	
 	/**
 	 * 在输入内容改变时
 	 **/
 	Mditor.prototype._input = function () {
 		var self = this;
-		self.ui.preview.html(self.getHTML());
+		self.ui.viewer.html(self.getHTML());
 		self._calcAutoHeight();
 	};
 
@@ -187,7 +350,7 @@ define(function (require, exports, module) {
 	 **/
 	Mditor.prototype.focus = function () {
 		var self = this;
-		self.ui.editor.focus().focus();
+		self.ui.editor.focus();
 	};
 	
 	/**
@@ -195,7 +358,7 @@ define(function (require, exports, module) {
 	 **/
 	Mditor.prototype.blur = function () {
 		var self = this;
-		self.ui.editor.blur().blur();
+		self.ui.editor.blur();
 	};
 
 	/**

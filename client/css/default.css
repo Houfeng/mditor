@@ -11,8 +11,6 @@
 	color: #333;
 	-webkit-font-smoothing: subpixel-antialiased;
 	position: relative;
-    transition: min-height .25s ease-out;
-    -webkit-transition: min-height .25s ease-out;
 }
 .mditor *{
 	box-sizing: border-box;
@@ -30,7 +28,6 @@
     zoom: 1;
     margin: 0;
     padding: 0px;
-    height: 38px;
     border: 1px solid #CCC;
     border-bottom: 0;
     border-radius: 3px 3px 0 0;
@@ -45,14 +42,24 @@
     background-image: linear-gradient(top,#f5f5f5,#efefef);
     background-repeat: repeat-x;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#efefef', GradientType=0);
+    padding-right: 70px;
 }
-.mditor .toolbar{
+.mditor .toolbar,
+.mditor .control{
     margin: 0px;
     padding: 4px;
     height: 100%;
     position: relative;
 }
-.mditor .toolbar .fa{
+.mditor .control{
+    position: absolute;
+    right: 0px;
+    top:0px;
+    width: 70px;
+    text-align: right;
+}
+.mditor .toolbar .fa,
+.mditor .control .fa{
     height: 27px;
     width: 27px;
     text-align: center;
@@ -60,16 +67,24 @@
     border: 1px solid transparent;
     border-radius: 3px;
     margin:1px;
-    -webkit-transition: opacity .2s ease-in-out;
-    transition: opacity .2s ease-in-out;
-    color: #666;
+    color: #888;
+    transition: .2s;
+    -webkit-transition: .2s;
+    position: relative;
 }
 .mditor .toolbar .fa:hover,
-.mditor .toolbar .fa:active{
-    color: #333;
+.mditor .toolbar .fa:active,
+.mditor .control .fa:hover,
+.mditor .control .fa:active,
+.mditor .toolbar .fa.on,
+.mditor .control .fa.on{
+    color: #444;
     border: 1px solid #ddd;
 }
-.mditor .toolbar .fa:active{
+.mditor .toolbar .fa:active,
+.mditor .control .fa:active,
+.mditor .toolbar .fa.on,
+.mditor .control .fa.on{
     background-color: #ebebeb;
     box-shadow: 0 0 3px rgba(0,0,0,.1) inset;
 }
@@ -84,13 +99,13 @@
     border: 1px solid #ccc;
     border-radius: 0 0 3px 3px;
     box-shadow: 0 0 4px 0 rgba(0,0,0,.1) inset;
-    background: #fff;
+    background-color: #fff;
 }
 .mditor .body.active{
 	border: 1px solid #aaa;
 }
 .mditor .editor,
-.mditor .preview{
+.mditor .viewer{
     position: relative;
     display: inline-block;
 	border: none !important;
@@ -109,38 +124,42 @@
 	word-wrap: break-word;
 }
 
-.mditor .preview{
-    float: right;
+.mditor .viewer{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 0px;
     display: none;
 }
 
 /**
  高度计算样式
  **/
-.mditor .height-calc{
+.mditor .calc{
     position: relative;
     height: 0px;
     font-size: 0px;
     padding: 0px;
     margin: 0px;
-    border: 0px
+    border: 0px;
+    visibility: hidden;
 }
-.mditor .height-calc .editor{
+.mditor .calc .editor{
     height: auto;
 }
 
 /**
  打开预览时样式
  **/
-.mditor.pv .preview,
-.mditor.pv .editor{
+.mditor.preview .viewer,
+.mditor.preview .editor{
     width: 50%;
 }
-.mditor.pv .editor{
+.mditor.preview .editor{
     border-right: 1px solid #ddd !important;
     border-bottom-right-radius: 0px !important;
 }
-.mditor.pv .preview{
+.mditor.preview .viewer{
     display: block;
     overflow: visible;
 }
@@ -152,11 +171,41 @@
 	position: fixed;
     left: 0px;
     top:0px;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 999999;
+    padding: 5px;
+    background-color: #f8f8f8;
+    border-radius: 0px;
 }
-.mditor.fullscreen .head,
-.mditor.fullscreen .body{
-    margin: -1px;
-    border-radius: 0px !important;
+
+/**
+ 全屏和预览时的 control 样式
+ **/
+.mditor.fullscreen i.fa[data-cmd="toggleFullScreen"],
+.mditor.preview i.fa[data-cmd="togglePreview"]{
+    color: #444;
+    border: 1px solid #ddd;
+    background-color: #ebebeb;
+    box-shadow: 0 0 3px rgba(0,0,0,.1) inset;
+}
+
+/**
+ 固定高度时的样式
+ **/
+.mditor.fixed .viewer,
+.mditor.fullscreen .viewer{
+     overflow: auto;
+ }
+ 
+/**
+ 无 head 部份样式
+ **/
+.mditor.toolbar-hidden .head{
+    display: none;
+}
+.mditor.toolbar-hidden .body,
+.mditor.toolbar-hidden .editor,
+.mditor.toolbar-hidden .viewer{
+     border-radius:3px;
 }

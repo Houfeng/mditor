@@ -5,8 +5,7 @@ define(function (require, exports, module) {
 	 **/
 	var Editor = module.exports = function (mditor) {
 		var self = this;
-		self.mditor = mditor;
-		self.ui = mditor.ui;
+		self.innerEditor = mditor.ui.editor;
 		self._bindEvents();
 	};
 
@@ -15,7 +14,7 @@ define(function (require, exports, module) {
 	 **/
 	Editor.prototype.on = function (name, handler) {
 		var self = this;
-		self.ui.editor.on(name, handler.bind(self));
+		self.innerEditor.on(name, handler.bind(self));
 		return self;
 	};
 	
@@ -24,7 +23,7 @@ define(function (require, exports, module) {
 	 **/
 	Editor.prototype.off = function (name, handler) {
 		var self = this;
-		self.ui.editor.off(name, handler.bind(self));
+		self.innerEditor.off(name, handler.bind(self));
 		return self;
 	};
 
