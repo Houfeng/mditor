@@ -72,7 +72,7 @@ define(function (require, exports, module) {
 		ui.body.before(ui.head);
 		ui.toolbar = $('<div class="toolbar"></div>');
 		ui.head.append(ui.toolbar);
-		ui.control = $('<div class="control"><i data-cmd="togglePreview" class="fa fa-columns"></i><i data-cmd="toggleFullScreen" class="fa fa-arrows-alt"></i></div>');
+		ui.control = $('<div class="control"><i data-cmd="togglePreview" title="预览" class="fa fa-columns"></i><i data-cmd="toggleFullScreen" title="全屏" class="fa fa-arrows-alt"></i></div>');
 		ui.head.append(ui.control);
 		ui.viewer = $('<div class="viewer"></div>');
 		ui.body.append(ui.viewer);
@@ -152,7 +152,7 @@ define(function (require, exports, module) {
 		var self = this;
 		self.ui.wraper.addClass("fullscreen");
 		//记录旧高度并设定适应全屏的高度
-		self._lastEditorHeight = self.getHeight();
+		self._lastStyle = self.ui.editor.attr('style');
 		self._calcAutoHeight();
 		if (useH5 || self.options.useH5FullScreen) {
 			document.body.webkitRequestFullscreen();
@@ -169,8 +169,12 @@ define(function (require, exports, module) {
 			document.webkitExitFullscreen();
 		}
 		self.ui.wraper.removeClass("fullscreen");
-		self.setHeight(self._lastEditorHeight);
-		self._calcAutoHeight();
+		if (self._lastStyle) {
+			self.ui.editor.attr('style', self._lastStyle);
+			self.ui.heightCalc.attr('style', '');
+			self._lastStyle = null;
+		}
+		//self._calcAutoHeight();
 		return self;
 	};
 	
@@ -355,6 +359,8 @@ define(function (require, exports, module) {
 				event.editor = self.editor;
 				self.cmd[cmdName].call(self, event, self);
 				self.focus();
+			} else {
+				throw 'command "' + cmdName + '" not found.';
 			}
 		});
 		return self;
@@ -425,7 +431,8 @@ define(function (require, exports, module) {
 	 **/
 	Mditor.prototype.getHTML = function () {
 		var self = this;
-		return '<div class="markdown-body">' + self.parser.parse(self.ui.editor.val()) + '</div>';
+		var value = self.parser.parse(self.ui.editor.val());
+		return '<div class="markdown-body">' + value + '</div>';
 	};
 
 	/**
