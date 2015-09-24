@@ -24,6 +24,7 @@
   "homepage": "https://github.com/jser-dev/mditor#readme",
   "dependencies": {
     "github-markdown-css": "^2.0.10",
+    "highlight.js": "^8.8.0",
     "marked": "^0.3.5"
   }
 }

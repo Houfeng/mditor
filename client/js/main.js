@@ -109,6 +109,7 @@ define(function (require, exports, module) {
 	Mditor.prototype.openPreview = function () {
 		var self = this;
 		self.ui.wraper.addClass("preview");
+		self._updateViewer();
 		self._calcAutoHeight();
 		return self;
 	};
@@ -147,24 +148,26 @@ define(function (require, exports, module) {
 	/**
 	 * 打开预览
 	 **/
-	Mditor.prototype.openFullScreen = function () {
+	Mditor.prototype.openFullScreen = function (useH5) {
 		var self = this;
 		self.ui.wraper.addClass("fullscreen");
 		//记录旧高度并设定适应全屏的高度
 		self._lastEditorHeight = self.getHeight();
-		var wraper = self.ui.wraper;
-		var head = self.ui.head;
-		var _height = wraper.outerHeight() - head.outerHeight() - FULL_SCREEN_CORRECT;
-		self.setHeight(_height);
 		self._calcAutoHeight();
+		if (useH5 || self.options.useH5FullScreen) {
+			document.body.webkitRequestFullscreen();
+		}
 		return self;
 	};
 	
 	/**
 	 * 关闭预览
 	 **/
-	Mditor.prototype.closeFullScreen = function () {
+	Mditor.prototype.closeFullScreen = function (useH5) {
 		var self = this;
+		if (useH5 || self.options.useH5FullScreen) {
+			document.webkitExitFullscreen();
+		}
 		self.ui.wraper.removeClass("fullscreen");
 		self.setHeight(self._lastEditorHeight);
 		self._calcAutoHeight();
@@ -213,7 +216,7 @@ define(function (require, exports, module) {
 	/**
 	 * 设定高度
 	 **/
-	Mditor.prototype.setHeight = function (height) {
+	Mditor.prototype.setHeight = function (height, disabledCalcAuthHeight) {
 		var self = this;
 		if (self.options.fixedHeight) {
 			self.ui.editor.outerHeight(height);
@@ -222,7 +225,9 @@ define(function (require, exports, module) {
 			self.ui.editor.css('minHeight', height);
 			self.ui.heightCalc.css('minHeight', height);
 		}
-		self._calcAutoHeight();
+		if (!disabledCalcAuthHeight) {
+			self._calcAutoHeight();
+		}
 		return self;
 	};
 	
@@ -268,7 +273,15 @@ define(function (require, exports, module) {
 	Mditor.prototype._calcAutoHeight = function () {
 		var self = this;
 		var ui = self.ui;
-		//如果是固定高度或全屏时则不必进行高度计算
+		var isFullScreen = self.isFullScreen();
+		//全屏时的计算
+		if (isFullScreen) {
+			var wraper = self.ui.wraper;
+			var head = self.ui.head;
+			var _height = wraper.outerHeight() - head.outerHeight() - FULL_SCREEN_CORRECT;
+			self.setHeight(_height, true);
+		}
+		//如果是固定高度或全屏时则只设定 viewr 高度
 		if (self.options.fixedHeight || self.isFullScreen()) {
 			ui.viewer.outerHeight(self.getHeight());
 			return self;
@@ -302,6 +315,17 @@ define(function (require, exports, module) {
 		$(window).on('resize', self._calcAutoHeight.bind(self));
 		self.on('focus', self._addActiveClass.bind(self));
 		self.on('blur', self._removeActiveClass.bind(self));
+		self.editor.on('scroll', self._calcScroll.bind(self));
+		return self;
+	};
+
+	Mditor.prototype._calcScroll = function () {
+		var self = this;
+		var offsetHeight = self.getHeight();
+		var p = self.ui.editor.prop('scrollTop') / (self.ui.editor.prop('scrollHeight') + offsetHeight);
+		console.log(p);
+		var viewerScrollTop = (self.ui.viewer.prop('scrollHeight') + offsetHeight) * p;
+		self.ui.viewer.prop('scrollTop', viewerScrollTop);
 		return self;
 	};
 
@@ -335,14 +359,23 @@ define(function (require, exports, module) {
 		});
 		return self;
 	};
+
+	Mditor.prototype._updateViewer = function () {
+		var self = this;
+		self.ui.viewer.html(self.getHTML());
+		return self;
+	};
 	
 	/**
 	 * 在输入内容改变时
 	 **/
 	Mditor.prototype._input = function () {
 		var self = this;
-		self.ui.viewer.html(self.getHTML());
+		if (self.isPreview()) {
+			self._updateViewer();
+		}
 		self._calcAutoHeight();
+		return self;
 	};
 
 	/**

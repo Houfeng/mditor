@@ -19,37 +19,37 @@ define(function (require, exports, module) {
 			{
 				"name": "bold",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("**", "**");
 				}
 			},
 			{
 				"name": "italic",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("*", "*");
 				}
 			},
 			{
 				"name": "underline",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("<u>", "</u>");
 				}
 			},
 			{
 				"name": "header",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("# ", "");
 				}
 			},
 			{
 				"name": "quote-left",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("> ", "");
 				}
 			},
 			{
 				"name": "code",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("\r\n```javascript\r\n ", "\r\n```\r\n");
 				}
 			},
 			{
@@ -67,7 +67,7 @@ define(function (require, exports, module) {
 			{
 				"name": "link",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("[text](", ")");
 				}
 			},
 			{
@@ -80,19 +80,19 @@ define(function (require, exports, module) {
 				"name": "line",
 				"icon": "minus",
 				"handler": function (event) {
-
+					this.editor.setSelectText("----");
 				}
 			},
 			{
 				"name": "image",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("![alt](", ")");
 				}
 			},
 			{
 				"name": "film",
 				"handler": function (event) {
-
+					this.editor.wrapSelectText("![alt](", ")");
 				}
 			}
 		];

@@ -3,10 +3,11 @@ define(function (require, exports, module) {
 
 	var editor = document.getElementById("editor");
 	var mditor = new Mditor(editor, {
-		width: 500,
-		height: 260,
+		width: 700,
+		height: 300,
 		fixedHeight: true
 	});
+	//mditor.openPreview();
 
 	window.mditor = mditor;
 });

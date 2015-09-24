@@ -7,6 +7,33 @@ define(function (require, exports, module) {
 		var self = this;
 		self.innerEditor = mditor.ui.editor;
 		self._bindEvents();
+		return self;
+	};
+
+	Editor.prototype.getSelection = function () {
+		var self = this;
+		self.innerEditor.focus();
+		return window.getSelection();
+	};
+
+	Editor.prototype.getSelectText = function () {
+		var self = this;
+		return self.getSelection().toString();
+	};
+
+	Editor.prototype.setSelectText = function (text) {
+		var self = this;
+		self.innerEditor.focus();
+		document.activeElement.setRangeText(text);
+		self.innerEditor.trigger('input');
+		return self;
+	};
+
+	Editor.prototype.wrapSelectText = function (before, after) {
+		var self = this;
+		var text = self.getSelectText();
+		self.setSelectText(before + text + after);
+		return self;
 	};
 
 	/**

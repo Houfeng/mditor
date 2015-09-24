@@ -4,7 +4,6 @@
 .mditor{
 	border-radius: 3px;
 	padding: 0px;
-    margin: 0px;
 	box-sizing: border-box;
 	overflow: hidden;
 	background-color: #fff;
@@ -64,6 +63,7 @@
     width: 27px;
     text-align: center;
     line-height: 25px;
+    font-size: 14px;
     border: 1px solid transparent;
     border-radius: 3px;
     margin:1px;
@@ -169,8 +169,9 @@
  **/
 .mditor.fullscreen{
 	position: fixed;
-    left: 0px;
-    top:0px;
+    margin: 0px !important;
+    left: 0px !important;
+    top:0px !important;
     width: 100% !important;
     height: 100% !important;
     z-index: 999999;
