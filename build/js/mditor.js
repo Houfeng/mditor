@@ -1,6 +1,6 @@
 /**
  * mditor - A light weight, easy to expand, can be embedded in the markdown editor.
- * @version v0.0.3
+ * @version v0.0.4
  * @link https://github.com/jser-dev/mditor#readme
  * @license MIT
  */
@@ -134,7 +134,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.0.3";
+Mditor.version = "0.0.4";
 
 Mditor.prototype._init = function () {
 	var self = this;

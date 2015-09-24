@@ -1,6 +1,6 @@
 {
   "name": "mditor",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A light weight, easy to expand, can be embedded in the markdown editor.",
   "main": "./lib/index.js",
   "scripts": {
