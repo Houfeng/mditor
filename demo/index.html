@@ -5,8 +5,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=yes" />
 	<title>mditor</title>
+	<link rel="stylesheet" href="../build/css/mditor.min.css" />
 	<style>
-		.mditor{
+		.mditor {
 			margin: 30px auto;
 		}
 	</style>
@@ -15,7 +16,13 @@
 <body>
 	<textarea name="editor" id="editor">
 	</textarea>
-	<script src="../client/libs/ems.js" data-main="./index.js"></script>
+	<script src="../build/js/mditor.min.js"></script>
+	<script>
+		var editor = document.getElementById('editor');
+		var mditor = new Mditor(editor,{
+			height:300
+		});
+	</script>
 </body>
 
 </html>
