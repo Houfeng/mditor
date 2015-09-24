@@ -2,7 +2,7 @@
   "name": "mditor",
   "version": "0.0.1",
   "description": "A light weight, easy to expand, can be embedded in the markdown editor.",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,10 +23,24 @@
   },
   "homepage": "https://github.com/jser-dev/mditor#readme",
   "dependencies": {
+    "font-awesome": "^4.4.0",
     "github-markdown-css": "^2.0.10",
     "highlight.js": "^8.8.0",
+    "jquery": "^2.1.4",
     "marked": "^0.3.5",
     "xss": "^0.2.7"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "browserify": "^11.2.0",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-header": "^1.7.1",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^1.4.1",
+    "gulp-util": "^3.0.6",
+    "vinyl-source-stream": "^1.1.0"
+  }
 }
