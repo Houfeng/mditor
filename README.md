@@ -1,6 +1,6 @@
 ## 只求极致
 
-[** M **]arkdown + E[** ditor **] = Mditor    
+[ **M** ] arkdown + E [ **ditor** ] = Mditor    
 
 
 ## 浏览器端
