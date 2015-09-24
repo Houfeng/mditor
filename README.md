@@ -39,7 +39,7 @@ var mditor = new Mditor(editor,{
 npm install mditor -save
 ```
 
-在代码中调用
+在服务端解析
 ```javascript
 var mditor = require("mditor");
 var parser = mditor.Parser();
