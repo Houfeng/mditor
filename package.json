@@ -1,6 +1,6 @@
 {
   "name": "mditor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A light weight, easy to expand, can be embedded in the markdown editor.",
   "main": "./lib/index.js",
   "scripts": {
@@ -35,6 +35,7 @@
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
+    "gulp-gzip": "^1.2.0",
     "gulp-header": "^1.7.1",
     "gulp-minify-css": "^1.2.1",
     "gulp-rename": "^1.2.2",

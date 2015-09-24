@@ -1,6 +1,6 @@
 /**
  * mditor - A light weight, easy to expand, can be embedded in the markdown editor.
- * @version v0.0.2
+ * @version v0.0.3
  * @link https://github.com/jser-dev/mditor#readme
  * @license MIT
  */
@@ -8,43 +8,71 @@
 /**
  * 定义编辑器类型
  **/
-var Editor = module.exports = function(mditor) {
+var Editor = module.exports = function (mditor) {
 	var self = this;
 	self.innerEditor = mditor.ui.editor;
 	self._bindEvents();
 	return self;
 };
 
-Editor.prototype.getSelection = function() {
+Editor.prototype.getActiveElement = function () {
 	var self = this;
 	self.innerEditor.focus();
-	return window.getSelection();
+	return document.activeElement;
 };
 
-Editor.prototype.getSelectText = function() {
+Editor.prototype.getSelectRange = function () {
 	var self = this;
-	return self.getSelection().toString();
+	var box = self.getActiveElement();
+	return {
+		"start": box.selectionStart,
+		"end": box.selectionEnd
+	};
 };
 
-Editor.prototype.setSelectText = function(text) {
+Editor.prototype.setSelectRange = function (start, end) {
 	var self = this;
-	self.innerEditor.focus();
-	document.activeElement.setRangeText(text);
+	var box = self.getActiveElement();
+	box.setSelectionRange(start, end);
+	return self;
+};
+
+Editor.prototype.getSelectText = function () {
+	var self = this;
+	var box = self.getActiveElement();
+	var range = self.getSelectRange();
+	return box.value.substring(range.start, range.end);
+};
+
+Editor.prototype.setSelectText = function (text) {
+	var self = this;
+	var box = self.getActiveElement();
+	var range = self.getSelectRange();
+	box.setRangeText(text);
+	if (range.end == range.start) {
+		self.setSelectRange(range.start, range.end + text.length);
+	}
 	self.innerEditor.trigger('input');
 	return self;
 };
 
-Editor.prototype.wrapSelectText = function(before, after) {
+Editor.prototype.wrapSelectText = function (before, after) {
 	var self = this;
+	before = (before !== null && before !== undefined) ? before : '';
+	after = (after !== null && after !== undefined) ? after : '';
+	var range = self.getSelectRange();
 	var text = self.getSelectText();
 	self.setSelectText(before + text + after);
+	var newStart = range.start + before.length;
+	var newEnd = range.end + before.length;
+	self.setSelectRange(newStart, newEnd);
 	return self;
 };
 
 /**
  * 事件绑定方法
  **/
-Editor.prototype.on = function(name, handler) {
+Editor.prototype.on = function (name, handler) {
 	var self = this;
 	self.innerEditor.on(name, handler.bind(self));
 	return self;
@@ -53,7 +81,7 @@ Editor.prototype.on = function(name, handler) {
 /**
  * 事件解绑方法
  **/
-Editor.prototype.off = function(name, handler) {
+Editor.prototype.off = function (name, handler) {
 	var self = this;
 	self.innerEditor.off(name, handler.bind(self));
 	return self;
@@ -62,9 +90,9 @@ Editor.prototype.off = function(name, handler) {
 /**
  * 绑定事件
  **/
-Editor.prototype._bindEvents = function(name, handler) {
+Editor.prototype._bindEvents = function (name, handler) {
 	var self = this;
-	self.on('keydown', function(event) {
+	self.on('keydown', function (event) {
 		if (event.keyCode == 9) {
 			event.preventDefault();
 			var textarea = event.target;
@@ -90,11 +118,12 @@ var FULL_SCREEN_CORRECT = 16;
 /**
  * 定义 Mditor 类型
  **/
-var Mditor = window.Mditor = module.exports = function(editor, options) {
+var Mditor = window.Mditor = module.exports = function (editor, options) {
 	var self = this;
 	if (!editor) {
 		throw "must specify a textarea.";
 	}
+	self._init();
 	self.ui = {};
 	self.ui.editor = $(editor);
 	self._create();
@@ -105,10 +134,19 @@ var Mditor = window.Mditor = module.exports = function(editor, options) {
 	self._bindCommands();
 };
 
+Mditor.version = "0.0.3";
+
+Mditor.prototype._init = function () {
+	var self = this;
+	self.platform = navigator.platform.toLowerCase();
+	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
+	return self;
+};
+
 /**
  * 设定选项
  **/
-Mditor.prototype.setOptions = function(options) {
+Mditor.prototype.setOptions = function (options) {
 	var self = this;
 	options = options || {};
 	self.options = self.options || {};
@@ -136,7 +174,7 @@ Mditor.prototype.setOptions = function(options) {
 /**
  * 创建 Mditor 相关 DOM
  **/
-Mditor.prototype._create = function() {
+Mditor.prototype._create = function () {
 	var self = this;
 	var ui = self.ui;
 	ui.editor.text('').val('');
@@ -162,7 +200,7 @@ Mditor.prototype._create = function() {
 /**
  * 初始化组件
  **/
-Mditor.prototype._initComponent = function() {
+Mditor.prototype._initComponent = function () {
 	var self = this;
 	self.editor = new Editor(self);
 	self.toolBar = new Toolbar(self);
@@ -173,7 +211,7 @@ Mditor.prototype._initComponent = function() {
 /**
  * 是否启动了 preview 视图
  **/
-Mditor.prototype.isPreview = function() {
+Mditor.prototype.isPreview = function () {
 	var self = this;
 	return self.ui.wraper.hasClass("preview");
 	return self;
@@ -182,18 +220,19 @@ Mditor.prototype.isPreview = function() {
 /**
  * 打开预览
  **/
-Mditor.prototype.openPreview = function() {
+Mditor.prototype.openPreview = function () {
 	var self = this;
 	self.ui.wraper.addClass("preview");
 	self._updateViewer();
 	self._calcAutoHeight();
+	self._calcScroll();
 	return self;
 };
 
 /**
  * 关闭预览
  **/
-Mditor.prototype.closePreview = function() {
+Mditor.prototype.closePreview = function () {
 	var self = this;
 	self.ui.wraper.removeClass("preview");
 	self._calcAutoHeight();
@@ -203,7 +242,7 @@ Mditor.prototype.closePreview = function() {
 /**
  * 切换预览模式
  **/
-Mditor.prototype.togglePreview = function() {
+Mditor.prototype.togglePreview = function () {
 	var self = this;
 	if (self.isPreview()) {
 		self.closePreview();
@@ -216,7 +255,7 @@ Mditor.prototype.togglePreview = function() {
 /**
  * 是否启动了 FullScreen 视图
  **/
-Mditor.prototype.isFullScreen = function() {
+Mditor.prototype.isFullScreen = function () {
 	var self = this;
 	return self.ui.wraper.hasClass("fullscreen");
 };
@@ -224,7 +263,7 @@ Mditor.prototype.isFullScreen = function() {
 /**
  * 打开预览
  **/
-Mditor.prototype.openFullScreen = function(useH5) {
+Mditor.prototype.openFullScreen = function (useH5) {
 	var self = this;
 	self.ui.wraper.addClass("fullscreen");
 	//记录旧高度并设定适应全屏的高度
@@ -239,7 +278,7 @@ Mditor.prototype.openFullScreen = function(useH5) {
 /**
  * 关闭预览
  **/
-Mditor.prototype.closeFullScreen = function(useH5) {
+Mditor.prototype.closeFullScreen = function (useH5) {
 	var self = this;
 	if (useH5 || self.options.useH5FullScreen) {
 		document.webkitExitFullscreen();
@@ -257,7 +296,7 @@ Mditor.prototype.closeFullScreen = function(useH5) {
 /**
  * 切换全屏模式
  **/
-Mditor.prototype.toggleFullScreen = function() {
+Mditor.prototype.toggleFullScreen = function () {
 	var self = this;
 	if (self.isFullScreen()) {
 		self.closeFullScreen();
@@ -270,7 +309,7 @@ Mditor.prototype.toggleFullScreen = function() {
 /**
  * toolbar 是否隐藏
  **/
-Mditor.prototype.toolBarIsHidden = function() {
+Mditor.prototype.toolBarIsHidden = function () {
 	var self = this;
 	return self.ui.wraper.hasClass('toolbar-hidden');
 };
@@ -278,7 +317,7 @@ Mditor.prototype.toolBarIsHidden = function() {
 /**
  * 隐藏 toolbar
  **/
-Mditor.prototype.hideToolBar = function() {
+Mditor.prototype.hideToolBar = function () {
 	var self = this;
 	self.ui.wraper.addClass('toolbar-hidden');
 	return self;
@@ -287,7 +326,7 @@ Mditor.prototype.hideToolBar = function() {
 /**
  * 显示 toolbar
  **/
-Mditor.prototype.showToolBar = function() {
+Mditor.prototype.showToolBar = function () {
 	var self = this;
 	self.ui.wraper.removeClass('toolbar-hidden');
 	return self;
@@ -296,7 +335,7 @@ Mditor.prototype.showToolBar = function() {
 /**
  * 设定高度
  **/
-Mditor.prototype.setHeight = function(height, disabledCalcAuthHeight) {
+Mditor.prototype.setHeight = function (height, disabledCalcAuthHeight) {
 	var self = this;
 	if (self.options.fixedHeight) {
 		self.ui.editor.outerHeight(height);
@@ -314,7 +353,7 @@ Mditor.prototype.setHeight = function(height, disabledCalcAuthHeight) {
 /**
  * 获取高度
  **/
-Mditor.prototype.getHeight = function() {
+Mditor.prototype.getHeight = function () {
 	var self = this;
 	return self.ui.editor.outerHeight();
 };
@@ -322,7 +361,7 @@ Mditor.prototype.getHeight = function() {
 /**
  * 设定宽度
  **/
-Mditor.prototype.setWidth = function(width) {
+Mditor.prototype.setWidth = function (width) {
 	var self = this;
 	self.ui.wraper.outerWidth(width);
 	return self;
@@ -331,7 +370,7 @@ Mditor.prototype.setWidth = function(width) {
 /**
  * 获取宽度
  **/
-Mditor.prototype.getWidth = function() {
+Mditor.prototype.getWidth = function () {
 	var self = this;
 	return self.ui.wraper.outerWidth();
 };
@@ -340,7 +379,7 @@ Mditor.prototype.getWidth = function() {
 /**
  * 获取可以适应的最大高度
  **/
-Mditor.prototype._getMaxHeight = function() {
+Mditor.prototype._getMaxHeight = function () {
 	var self = this;
 	var head = self.ui.head;
 	var _height = $(window).outerHeight() - head.outerHeight() * 2 - FULL_SCREEN_CORRECT;
@@ -350,7 +389,7 @@ Mditor.prototype._getMaxHeight = function() {
 /**
  * 计算编辑框的自适应高度
  **/
-Mditor.prototype._calcAutoHeight = function() {
+Mditor.prototype._calcAutoHeight = function () {
 	var self = this;
 	var ui = self.ui;
 	var isFullScreen = self.isFullScreen();
@@ -372,14 +411,21 @@ Mditor.prototype._calcAutoHeight = function() {
 	ui.heightCalc.html(ui.editor.val().split('\n').join('</br>') + '<br/>');
 	if (self.isPreview()) {
 		ui.viewer.outerHeight('auto');
+		ui.viewer.css('overflow', 'visible');
 		var _calcHeight = ui.heightCalc.outerHeight();
 		var _previewHeight = ui.viewer.outerHeight();
 		var _height1 = _previewHeight > _calcHeight ? _previewHeight : _calcHeight;
-		if (_height1 > maxHeight) _height1 = maxHeight;
+		if (_height1 > maxHeight) {
+			_height1 = maxHeight;
+			ui.viewer.outerHeight('').css('overflow', 'auto');
+		}
 		ui.editor.outerHeight(_height1);
+		ui.viewer.outerHeight(_height1);
 	} else {
 		var _height2 = ui.heightCalc.outerHeight();
-		if (_height2 > maxHeight) _height2 = maxHeight;
+		if (_height2 > maxHeight) {
+			_height2 = maxHeight;
+		}
 		ui.editor.outerHeight(_height2);
 		ui.viewer.outerHeight(_height2);
 	}
@@ -389,22 +435,33 @@ Mditor.prototype._calcAutoHeight = function() {
 /**
  * 绑定事件
  **/
-Mditor.prototype._bindEvents = function() {
+Mditor.prototype._bindEvents = function () {
 	var self = this;
 	self.on('input', self._input.bind(self));
 	$(window).on('resize', self._calcAutoHeight.bind(self));
 	self.on('focus', self._addActiveClass.bind(self));
 	self.on('blur', self._removeActiveClass.bind(self));
 	self.editor.on('scroll', self._calcScroll.bind(self));
+	self.ui.viewer.on('click', 'a', self._onLinkClick.bind(self));
 	return self;
 };
 
-Mditor.prototype._calcScroll = function() {
+Mditor.prototype._onLinkClick = function name(event) {
 	var self = this;
+	alert('预览时无法打开 "' + $(event.target).attr("href") + '".');
+	return false;
+};
+
+Mditor.prototype._calcScroll = function () {
+	var self = this;
+	if (!self.isPreview()) {
+		return self;
+	}
 	var offsetHeight = self.getHeight();
-	var p = self.ui.editor.prop('scrollTop') / (self.ui.editor.prop('scrollHeight') + offsetHeight);
-	console.log(p);
-	var viewerScrollTop = (self.ui.viewer.prop('scrollHeight') + offsetHeight) * p;
+	var editorScrollHeight = self.ui.editor.prop('scrollHeight');
+	var viewerScrollHeight = self.ui.viewer.prop('scrollHeight');
+	var editorScrollTop = self.ui.editor.prop('scrollTop');
+	var viewerScrollTop = editorScrollTop * (viewerScrollHeight - offsetHeight) / (editorScrollHeight - offsetHeight);
 	self.ui.viewer.prop('scrollTop', viewerScrollTop);
 	return self;
 };
@@ -412,7 +469,7 @@ Mditor.prototype._calcScroll = function() {
 /**
  * 初始化命令
  **/
-Mditor.prototype._initCommands = function() {
+Mditor.prototype._initCommands = function () {
 	var self = this;
 	self.cmd = {
 		"toggleFullScreen": self.toggleFullScreen,
@@ -424,9 +481,9 @@ Mditor.prototype._initCommands = function() {
 /**
  * 绑定命令
  **/
-Mditor.prototype._bindCommands = function() {
+Mditor.prototype._bindCommands = function () {
 	var self = this;
-	self.ui.head.on('click', 'i.fa', function(event) {
+	self.ui.head.on('click', 'i.fa', function (event) {
 		var btn = $(this);
 		var cmdName = btn.attr('data-cmd');
 		if (cmdName && self.cmd[cmdName]) {
@@ -442,7 +499,7 @@ Mditor.prototype._bindCommands = function() {
 	return self;
 };
 
-Mditor.prototype._updateViewer = function() {
+Mditor.prototype._updateViewer = function () {
 	var self = this;
 	self.ui.viewer.html(self.getHTML());
 	return self;
@@ -451,7 +508,7 @@ Mditor.prototype._updateViewer = function() {
 /**
  * 在输入内容改变时
  **/
-Mditor.prototype._input = function() {
+Mditor.prototype._input = function () {
 	var self = this;
 	if (self.isPreview()) {
 		self._updateViewer();
@@ -463,7 +520,7 @@ Mditor.prototype._input = function() {
 /**
  * 使编辑器获取焦点
  **/
-Mditor.prototype.focus = function() {
+Mditor.prototype.focus = function () {
 	var self = this;
 	self.ui.editor.focus();
 };
@@ -471,7 +528,7 @@ Mditor.prototype.focus = function() {
 /**
  * 使编辑器失去焦点
  **/
-Mditor.prototype.blur = function() {
+Mditor.prototype.blur = function () {
 	var self = this;
 	self.ui.editor.blur();
 };
@@ -479,7 +536,7 @@ Mditor.prototype.blur = function() {
 /**
  * 添加焦点样式
  **/
-Mditor.prototype._addActiveClass = function() {
+Mditor.prototype._addActiveClass = function () {
 	var self = this;
 	self.ui.body.addClass('active');
 	return self;
@@ -488,7 +545,7 @@ Mditor.prototype._addActiveClass = function() {
 /**
  * 移除焦点样式
  **/
-Mditor.prototype._removeActiveClass = function() {
+Mditor.prototype._removeActiveClass = function () {
 	var self = this;
 	self.ui.body.removeClass('active');
 	return self;
@@ -497,7 +554,7 @@ Mditor.prototype._removeActiveClass = function() {
 /**
  * 获取编辑器的值
  **/
-Mditor.prototype.getValue = function() {
+Mditor.prototype.getValue = function () {
 	var self = this;
 	return self.ui.editor.val();
 };
@@ -505,7 +562,7 @@ Mditor.prototype.getValue = function() {
 /**
  * 获取解析后的 HTML
  **/
-Mditor.prototype.getHTML = function() {
+Mditor.prototype.getHTML = function () {
 	var self = this;
 	var value = self.parser.parse(self.ui.editor.val());
 	return '<div class="markdown-body">' + value + '</div>';
@@ -514,7 +571,7 @@ Mditor.prototype.getHTML = function() {
 /**
  * 事件绑定方法
  **/
-Mditor.prototype.on = function(name, handler) {
+Mditor.prototype.on = function (name, handler) {
 	var self = this;
 	self.editor.on(name, handler.bind(self));
 	return self;
@@ -523,7 +580,7 @@ Mditor.prototype.on = function(name, handler) {
 /**
  * 事件解绑方法
  **/
-Mditor.prototype.off = function(name, handler) {
+Mditor.prototype.off = function (name, handler) {
 	var self = this;
 	self.editor.off(name, handler.bind(self));
 	return self;
@@ -532,7 +589,7 @@ Mditor.prototype.off = function(name, handler) {
 /**
  * 定义工具条类型
  **/
-var Toolbar = module.exports = function(mditor) {
+var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.holder = mditor.ui.toolbar;
 	self.cmd = mditor.cmd;
@@ -542,88 +599,130 @@ var Toolbar = module.exports = function(mditor) {
 /**
  * 初始化内置工具项
  **/
-Toolbar.prototype.initDefault = function() {
+Toolbar.prototype.initDefault = function () {
 	var self = this;
-	self._items = [{
-		"name": "bold",
-		"title": "粗体",
-		"handler": function(event) {
-			this.editor.wrapSelectText("**", "**");
+	self._items = [
+		{
+			"name": "bold",
+			"title": "粗体",
+			"handler": function (event) {
+				this.editor.wrapSelectText("**", "**");
+			}
+		}, {
+			"name": "italic",
+			"title": "斜体",
+			"handler": function (event) {
+				this.editor.wrapSelectText("*", "*");
+			}
+		}, {
+			"name": "underline",
+			"title": "下划线",
+			"handler": function (event) {
+				this.editor.wrapSelectText("<u>", "</u>");
+			}
+		}, {
+			"name": "strikethrough",
+			"title": "删除线",
+			"handler": function (event) {
+				this.editor.wrapSelectText("~~", "~~");
+			}
+		}, {
+			"name": "header",
+			"title": "标题",
+			"handler": function (event) {
+				this.editor.wrapSelectText("# ");
+			}
+		}, {
+			"name": "quote-left",
+			"title": "引用",
+			"handler": function (event) {
+				var selectText = this.editor.getSelectText();
+				if (selectText.length < 1) {
+					this.editor.wrapSelectText("> ");
+					return;
+				}
+				var textArray = selectText.split(this.EOL);
+				var buffer = [];
+				textArray.forEach(function (line) {
+					buffer.push("> " + line + "  ");
+				});
+				this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			}
+		}, {
+			"name": "code",
+			"title": "代码",
+			"handler": function (event) {
+				var before = "```javascript" + this.EOL;
+				var after = this.EOL + "```  " + this.EOL;
+				this.editor.wrapSelectText(before, after);
+			}
+		}, {
+			"name": "list-ol",
+			"title": "有序列表",
+			"handler": function (event) {
+				var selectText = this.editor.getSelectText();
+				if (selectText.length < 1) {
+					this.editor.wrapSelectText("1. ");
+					return;
+				}
+				var textArray = selectText.split(this.EOL);
+				var buffer = [];
+				for (var i = 0; i < textArray.length; i++) {
+					var line = textArray[i];
+					buffer.push((i + 1) + ". " + line);
+				};
+				this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			}
+		}, {
+			"name": "list-ul",
+			"title": "无序列表",
+			"handler": function (event) {
+				var selectText = this.editor.getSelectText();
+				if (selectText.length < 1) {
+					this.editor.wrapSelectText("*. ");
+					return;
+				}
+				var textArray = selectText.split(this.EOL);
+				var buffer = [];
+				textArray.forEach(function (line) {
+					buffer.push("* " + line);
+				});
+				this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			}
+		}, {
+			"name": "link",
+			"title": "链接",
+			"handler": function (event) {
+				this.editor.wrapSelectText("[text](", ")");
+			}
+		}, {
+			"name": "table",
+			"title": "表格",
+			"handler": function (event) {
+				var buffer = [
+					"column1 | column2 | column3  ",
+					"------- | ------- | -------  ",
+					"column1 | column2 | column3  ",
+					"column1 | column2 | column3  ",
+					"column1 | column2 | column3  "
+				];
+				this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
+			}
+		}, {
+			"name": "line",
+			"title": "分隔线",
+			"icon": "minus",
+			"handler": function (event) {
+				this.editor.wrapSelectText("----" + this.EOL);
+			}
+		}, {
+			"name": "image",
+			"title": "图片",
+			"handler": function (event) {
+				this.editor.wrapSelectText("![alt](", ")");
+			}
 		}
-	}, {
-		"name": "italic",
-		"title": "斜体",
-		"handler": function(event) {
-			this.editor.wrapSelectText("*", "*");
-		}
-	}, {
-		"name": "underline",
-		"title": "下划线",
-		"handler": function(event) {
-			this.editor.wrapSelectText("<u>", "</u>");
-		}
-	}, {
-		"name": "header",
-		"title": "标题",
-		"handler": function(event) {
-			this.editor.wrapSelectText("# ", "");
-		}
-	}, {
-		"name": "quote-left",
-		"title": "引用",
-		"handler": function(event) {
-			this.editor.wrapSelectText("> ", "");
-		}
-	}, {
-		"name": "code",
-		"title": "代码",
-		"handler": function(event) {
-			this.editor.wrapSelectText("\r\n```javascript\r\n ", "\r\n```\r\n");
-		}
-	}, {
-		"name": "list-ol",
-		"title": "有序列表",
-		"handler": function(event) {
-
-		}
-	}, {
-		"name": "list-ul",
-		"title": "无序列表",
-		"handler": function(event) {
-
-		}
-	}, {
-		"name": "link",
-		"title": "链接",
-		"handler": function(event) {
-			this.editor.wrapSelectText("[text](", ")");
-		}
-	}, {
-		"name": "table",
-		"title": "表格",
-		"handler": function(event) {
-
-		}
-	}, {
-		"name": "line",
-		"title": "分隔线",
-		"icon": "minus",
-		"handler": function(event) {
-			this.editor.setSelectText("----");
-		}
-	}, {
-		"name": "image",
-		"title": "图片",
-		"handler": function(event) {
-			this.editor.wrapSelectText("![alt](", ")");
-		}
-	}, {
-		"name": "film",
-		"title": "视频",
-		"handler": function(event) {
-			this.editor.wrapSelectText("![alt](", ")");
-		}
-	}];
+	];
 	self.render();
 	return self;
 };
@@ -631,7 +730,7 @@ Toolbar.prototype.initDefault = function() {
 /**
  * 插入工具按钮方法
  **/
-Toolbar.prototype.insert = function(index, item) {
+Toolbar.prototype.insert = function (index, item) {
 	var self = this;
 	self._items = [];
 	self.render();
@@ -641,7 +740,7 @@ Toolbar.prototype.insert = function(index, item) {
 /**
  * 移除工具按钮方法
  **/
-Toolbar.prototype.remove = function(index) {
+Toolbar.prototype.remove = function (index) {
 	var self = this;
 	self._items = [];
 	self.render();
@@ -651,7 +750,7 @@ Toolbar.prototype.remove = function(index) {
 /**
  * 清楚工具按钮方法
  **/
-Toolbar.prototype.clear = function() {
+Toolbar.prototype.clear = function () {
 	var self = this;
 	self._items = [];
 	self.render();
@@ -661,10 +760,10 @@ Toolbar.prototype.clear = function() {
 /**
  * 呈现工具条
  **/
-Toolbar.prototype.render = function() {
+Toolbar.prototype.render = function () {
 	var self = this;
 	var buffer = [];
-	self._items.forEach(function(item) {
+	self._items.forEach(function (item) {
 		if (!item || !item.name) return;
 		self.cmd[item.name] = item.handler;
 		buffer.push('<i data-cmd="' + item.name + '" class="fa fa-' + (item.icon || item.name) + '" title="' + (item.title || item.name) + '"></i>');
@@ -678,15 +777,23 @@ var highlight = require('highlight.js');
 var xss = require("xss");
 
 marked.setOptions({
-	highlight: function(code, lang, callback) {
+	highlight: function (code, lang, callback) {
 		return highlight.highlightAuto(code).value;
+	}
+});
+
+var xssFilter = new xss.FilterXSS({
+	escapeHtml: function (html) {
+		html = html.replace(/> /g, '&gtspace;');
+		html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return html.replace(/\&gtspace\;/g, '> ');
 	}
 });
 
 /**
  * 定义解析类型
  **/
-var Parser = module.exports = function(mditor) {
+var Parser = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.editor = mditor.editor;
@@ -695,8 +802,10 @@ var Parser = module.exports = function(mditor) {
 /**
  * 解析方法
  **/
-Parser.prototype.parse = function(mdText) {
-	return marked(xss(mdText));
+Parser.prototype.parse = function (mdText) {
+	mdText = xssFilter.process(mdText);
+	//console.log(mdText);
+	return marked(mdText);
 };
 },{"highlight.js":6,"marked":143,"xss":145}],5:[function(require,module,exports){
 /*

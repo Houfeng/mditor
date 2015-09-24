@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=yes" />
 	<title>mditor</title>
-	<link rel="stylesheet" href="../build/css/mditor.min.css" />
+	<link rel="stylesheet" href="../build/css/mditor.css" />
 	<style>
 		.mditor {
 			margin: 30px auto;
@@ -20,8 +20,10 @@
 	<script>
 		var editor = document.getElementById('editor');
 		var mditor = new Mditor(editor,{
-			height:300
+			height:200,
+			fixedHeight:false
 		});
+		mditor.openPreview();
 	</script>
 </body>
 

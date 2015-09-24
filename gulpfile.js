@@ -5,9 +5,11 @@ var buffer = require('vinyl-buffer');
 var del = require("del");
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
+var replace = require('gulp-replace');
 var header = require('gulp-header');
 var uglify = require("gulp-uglify");
 var minifycss = require('gulp-minify-css');
+var gzip = require('gulp-gzip');
 var pkg = require("./package.json");
 
 var banner = ['/**',
@@ -19,15 +21,16 @@ var banner = ['/**',
 	''
 ].join('\r\n');
 
-gulp.task('clear', function(cb) {
+gulp.task('clear', function (cb) {
 	del(['build'], cb);
 });
 
-gulp.task('browserify', function() {
+gulp.task('browserify', function () {
 	return browserify('./client/index.js')
 		.bundle()
 		.pipe(source(pkg.name + '.js'))
 		.pipe(buffer())
+		.pipe(replace("{version}", pkg.version))
 		.pipe(header(banner, pkg))
 		.pipe(gulp.dest('./build/js/'))
 		.pipe(uglify({
@@ -37,26 +40,32 @@ gulp.task('browserify', function() {
 		}))
 		.pipe(header(banner, pkg))
 		.pipe(rename(pkg.name + '.min.js'))
+		.pipe(gulp.dest("./build/js/"))
+		.pipe(gzip())
+		.pipe(rename(pkg.name + '.gz.js'))
 		.pipe(gulp.dest("./build/js/"));
 });
 
-gulp.task('css', function() {
+gulp.task('css', function () {
 	gulp.src([
-			"./node_modules/font-awesome/css/font-awesome.css",
-			"./node_modules/github-markdown-css/github-markdown.css",
-			"./node_modules/highlight.js/styles/default.css",
-			"./client/style.css"
-		])
+		"./node_modules/font-awesome/css/font-awesome.css",
+		"./node_modules/github-markdown-css/github-markdown.css",
+		"./node_modules/highlight.js/styles/default.css",
+		"./client/style.css"
+	])
 		.pipe(concat(pkg.name + '.css'))
 		.pipe(header(banner, pkg))
 		.pipe(gulp.dest("./build/css/"))
 		.pipe(minifycss())
 		.pipe(header(banner, pkg))
 		.pipe(rename(pkg.name + '.min.css'))
+		.pipe(gulp.dest("./build/css/"))
+		.pipe(gzip())
+		.pipe(rename(pkg.name + '.gz.css'))
 		.pipe(gulp.dest("./build/css/"));
 });
 
-gulp.task('font', function() {
+gulp.task('font', function () {
 	gulp.src(["./node_modules/font-awesome/fonts/*.*"])
 		.pipe(gulp.dest("./build/fonts/"));
 });

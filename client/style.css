@@ -148,6 +148,10 @@
 .mditor .calc .editor {
 	height: auto;
 }
+.mditor.fixed .calc .editor,
+.mditor.fixed .viewer {
+	height: 100% !important;
+}
 /**
  打开预览时样式
  **/
