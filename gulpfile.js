@@ -40,10 +40,10 @@ gulp.task('browserify', function () {
 		}))
 		.pipe(header(banner, pkg))
 		.pipe(rename(pkg.name + '.min.js'))
-		.pipe(gulp.dest("./build/js/"))
-		.pipe(gzip())
-		.pipe(rename(pkg.name + '.gz.js'))
 		.pipe(gulp.dest("./build/js/"));
+	//.pipe(gzip())
+	//.pipe(rename(pkg.name + '.gz.js'))
+	//.pipe(gulp.dest("./build/js/"));
 });
 
 gulp.task('css', function () {
@@ -59,10 +59,10 @@ gulp.task('css', function () {
 		.pipe(minifycss())
 		.pipe(header(banner, pkg))
 		.pipe(rename(pkg.name + '.min.css'))
-		.pipe(gulp.dest("./build/css/"))
-		.pipe(gzip())
-		.pipe(rename(pkg.name + '.gz.css'))
 		.pipe(gulp.dest("./build/css/"));
+	//.pipe(gzip())
+	//.pipe(rename(pkg.name + '.gz.css'))
+	//.pipe(gulp.dest("./build/css/"));
 });
 
 gulp.task('font', function () {

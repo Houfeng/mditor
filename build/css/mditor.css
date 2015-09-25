@@ -1,6 +1,6 @@
 /**
  * mditor - A light weight, easy to expand, can be embedded in the markdown editor.
- * @version v0.0.4
+ * @version v0.0.5
  * @link https://github.com/jser-dev/mditor#readme
  * @license MIT
  */
@@ -3021,6 +3021,10 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
 	top: 0px !important;
 	width: 100% !important;
 	height: 100% !important;
+	min-width: 100% !important;
+	min-height: 100% !important;
+	max-width: 100% !important;
+	max-height: 100% !important;
 	z-index: 999999;
 	padding: 5px;
 	background-color: #f8f8f8;

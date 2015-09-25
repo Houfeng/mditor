@@ -450,6 +450,17 @@ Mditor.prototype.getValue = function () {
 };
 
 /**
+ * 设置编辑器的值
+ **/
+Mditor.prototype.setValue = function (value) {
+	var self = this;
+	self.ui.editor.val(value);
+	self._updateViewer();
+	self._calcAutoHeight();
+	return this;
+};
+
+/**
  * 获取解析后的 HTML
  **/
 Mditor.prototype.getHTML = function () {

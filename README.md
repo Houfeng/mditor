@@ -2,7 +2,7 @@
 
 [ **M** ] arkdown + E [ **ditor** ] = **Mditor**    
 
-Mditor 就是一个简洁、易于集成，期望舒服的写 markdown 的编辑器而已...  
+Mditor 就是一个简洁、易于集成、方便扩展、期望舒服的写 markdown 的编辑器，仅此而已...  
 
 体验: [在线 demo](http://houfeng.net/mditor/demo.html)  
 
@@ -49,3 +49,9 @@ var mditor = require("mditor");
 var parser = mditor.Parser();
 var html = parser.parse("** Hello mditor! **");
 ```
+
+## 近时规划
+1. 公开扩展方法及相关 API
+2. 更新 README.md 增加完整 API 说明
+2. 国际化支持
+3. 兼容性测试
