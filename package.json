@@ -1,6 +1,6 @@
 {
   "name": "mditor",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A light weight, easy to expand, can be embedded in the markdown editor.",
   "main": "./lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jser-dev/mditor.git"
+    "url": "git+https://github.com/houfeng/mditor.git"
   },
   "keywords": [
     "mditor",
@@ -19,9 +19,9 @@
   "author": "Houfeng",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jser-dev/mditor/issues"
+    "url": "https://github.com/houfeng/mditor/issues"
   },
-  "homepage": "https://github.com/jser-dev/mditor#readme",
+  "homepage": "https://github.com/houfeng/mditor#readme",
   "dependencies": {
     "font-awesome": "^4.4.0",
     "github-markdown-css": "^2.0.10",
