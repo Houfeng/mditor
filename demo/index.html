@@ -18,9 +18,8 @@
 	</textarea>
 	<script src="../build/js/mditor.min.js"></script>
 	<script>
-		var editor = document.getElementById('editor');
-		var mditor = new Mditor(editor,{
-			height:200,
+		var mditor = new Mditor("#editor",{
+			height:300,
 			fixedHeight:false
 		});
 		mditor.openPreview();
