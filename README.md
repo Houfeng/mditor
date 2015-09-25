@@ -2,7 +2,7 @@
 
 [ **M** ] arkdown + E [ **ditor** ] = **Mditor**    
 
-Mditor 就是一个简洁、易于集成、方便扩展、期望舒服的写 markdown 的编辑器，仅此而已...  
+Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已...  
 
 体验: 
 [在线 demo](http://houfeng.net/mditor/demo/index.html)  

@@ -1,7 +1,7 @@
 {
   "name": "mditor",
-  "version": "0.0.6",
-  "description": "A light weight, easy to expand, can be embedded in the markdown editor.",
+  "version": "0.0.7",
+  "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
