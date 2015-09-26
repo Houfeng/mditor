@@ -32,9 +32,9 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 
 创建 Mditor 实例
 ```javascript
-var editor = document.getElementById('editor');
-var mditor = new Mditor(editor,{
-	height:300
+var mditor = new Mditor("#editor",{
+	height:300,
+	fixedHeight:true
 });
 ```
 

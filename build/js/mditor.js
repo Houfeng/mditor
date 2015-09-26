@@ -1,6 +1,6 @@
 /**
  * mditor - 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.0.8
+ * @version v0.0.9
  * @link https://github.com/houfeng/mditor#readme
  * @license MIT
  */
@@ -134,7 +134,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.0.8";
+Mditor.version = "0.0.9";
 
 Mditor.prototype._init = function () {
 	var self = this;
@@ -794,12 +794,10 @@ marked.setOptions({
 	}
 });
 
+xss.whiteList["span"] = ['class'];
+
 var xssFilter = new xss.FilterXSS({
-	escapeHtml: function (html) {
-		html = html.replace(/> /g, '&gtspace;');
-		html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-		return html.replace(/\&gtspace\;/g, '> ');
-	}
+	whiteList: xss.whiteList
 });
 
 /**
@@ -815,9 +813,8 @@ var Parser = module.exports = function (mditor) {
  * 解析方法
  **/
 Parser.prototype.parse = function (mdText) {
-	mdText = xssFilter.process(mdText);
-	//console.log(mdText);
-	return marked(mdText);
+	var html = marked(mdText);
+	return xssFilter.process(html);
 };
 },{"highlight.js":6,"marked":143,"xss":145}],5:[function(require,module,exports){
 /*
