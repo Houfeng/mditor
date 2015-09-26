@@ -67,7 +67,8 @@ Mditor.prototype.setOptions = function (options) {
 Mditor.prototype._create = function () {
 	var self = this;
 	var ui = self.ui;
-	ui.editor.text('').val('');
+	var _value = ui.editor.val() || '';
+	ui.editor.val(_value.trim());
 	ui.editor.addClass('editor');
 	ui.editor.wrap('<div class="mditor"><div class="body"></div></div>');
 	ui.body = ui.editor.parent();
