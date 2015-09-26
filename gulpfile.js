@@ -13,7 +13,7 @@ var gzip = require('gulp-gzip');
 var pkg = require("./package.json");
 
 var banner = ['/**',
-	' * <%= name %> - <%= description %>',
+	' * <%= name %> , <%= description %>',
 	' * @version v<%= version %>',
 	' * @link <%= homepage %>',
 	' * @license <%= license %>',
