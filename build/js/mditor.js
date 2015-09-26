@@ -1,6 +1,6 @@
 /**
- * mditor - A light weight, easy to expand, can be embedded in the markdown editor.
- * @version v0.0.6
+ * mditor - 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
+ * @version v0.0.8
  * @link https://github.com/houfeng/mditor#readme
  * @license MIT
  */
@@ -134,7 +134,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.0.6";
+Mditor.version = "0.0.8";
 
 Mditor.prototype._init = function () {
 	var self = this;
@@ -177,7 +177,8 @@ Mditor.prototype.setOptions = function (options) {
 Mditor.prototype._create = function () {
 	var self = this;
 	var ui = self.ui;
-	ui.editor.text('').val('');
+	var _value = ui.editor.val() || '';
+	ui.editor.val(_value.trim());
 	ui.editor.addClass('editor');
 	ui.editor.wrap('<div class="mditor"><div class="body"></div></div>');
 	ui.body = ui.editor.parent();

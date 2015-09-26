@@ -12,17 +12,19 @@
 			max-width: 960px;
 		}
 	</style>
-	<script id='md-text' type="text/markdown">
+</head>
+
+<body>
+	<textarea name="editor" id="editor">
 ## 只求极致
 
 [ **M** ] arkdown + E [ **ditor** ] = **Mditor**    
 
-Mditor 就是一个简洁、易于集成、方便扩展、期望舒服的写 markdown 的编辑器，仅此而已...  
+Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已...  
 
 体验: 
 [在线 demo](http://houfeng.net/mditor/demo/index.html)  
-
-
+  
 ## 浏览器端
 
 ##### 第一步:
@@ -34,7 +36,7 @@ Mditor 就是一个简洁、易于集成、方便扩展、期望舒服的写 mar
 
 引用 Mditor 脚本文件
 ```html
-<script src="../build/js/mditor.min.js">\</script\>
+<script src="../build/js/mditor.min.js"></script>
 ```
 
 ##### 第二步:
@@ -71,11 +73,6 @@ var html = parser.parse("** Hello mditor! **");
 2. 更新 README.md 增加完整 API 说明
 2. 国际化支持
 3. 兼容性测试
-	</script>
-</head>
-
-<body>
-	<textarea name="editor" id="editor">
 	</textarea>
 	<script src="../build/js/mditor.min.js"></script>
 	<script>
@@ -83,7 +80,6 @@ var html = parser.parse("** Hello mditor! **");
 			height:400,
 			fixedHeight:true
 		});
-		mditor.setValue(document.getElementById('md-text').innerText);
 		mditor.openPreview();
 	</script>
 </body>
