@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.0.9
+ * @version v0.1.0
  * @link https://github.com/houfeng/mditor#readme
  * @license MIT
  */
@@ -134,7 +134,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.0.9";
+Mditor.version = "0.1.0";
 
 Mditor.prototype._init = function () {
 	var self = this;
@@ -605,169 +605,151 @@ var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.holder = mditor.ui.toolbar;
 	self.cmd = mditor.cmd;
-	self.initDefault();
+	self.render();
 };
 
 /**
  * 初始化内置工具项
  **/
-Toolbar.prototype.initDefault = function () {
-	var self = this;
-	self._items = [
-		{
-			"name": "bold",
-			"title": "粗体",
-			"handler": function (event) {
-				this.editor.wrapSelectText("**", "**");
-			}
-		}, {
-			"name": "italic",
-			"title": "斜体",
-			"handler": function (event) {
-				this.editor.wrapSelectText("*", "*");
-			}
-		}, {
-			"name": "underline",
-			"title": "下划线",
-			"handler": function (event) {
-				this.editor.wrapSelectText("<u>", "</u>");
-			}
-		}, {
-			"name": "strikethrough",
-			"title": "删除线",
-			"handler": function (event) {
-				this.editor.wrapSelectText("~~", "~~");
-			}
-		}, {
-			"name": "header",
-			"title": "标题",
-			"handler": function (event) {
-				this.editor.wrapSelectText("# ");
-			}
-		}, {
-			"name": "quote-left",
-			"title": "引用",
-			"handler": function (event) {
-				var selectText = this.editor.getSelectText();
-				if (selectText.length < 1) {
-					this.editor.wrapSelectText("> ");
-					return;
-				}
-				var textArray = selectText.split(this.EOL);
-				var buffer = [];
-				textArray.forEach(function (line) {
-					buffer.push("> " + line + "  ");
-				});
-				this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
-			}
-		}, {
-			"name": "code",
-			"title": "代码",
-			"handler": function (event) {
-				var before = "```javascript" + this.EOL;
-				var after = this.EOL + "```  " + this.EOL;
-				this.editor.wrapSelectText(before, after);
-			}
-		}, {
-			"name": "list-ol",
-			"title": "有序列表",
-			"handler": function (event) {
-				var selectText = this.editor.getSelectText();
-				if (selectText.length < 1) {
-					this.editor.wrapSelectText("1. ");
-					return;
-				}
-				var textArray = selectText.split(this.EOL);
-				var buffer = [];
-				for (var i = 0; i < textArray.length; i++) {
-					var line = textArray[i];
-					buffer.push((i + 1) + ". " + line);
-				};
-				this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
-			}
-		}, {
-			"name": "list-ul",
-			"title": "无序列表",
-			"handler": function (event) {
-				var selectText = this.editor.getSelectText();
-				if (selectText.length < 1) {
-					this.editor.wrapSelectText("*. ");
-					return;
-				}
-				var textArray = selectText.split(this.EOL);
-				var buffer = [];
-				textArray.forEach(function (line) {
-					buffer.push("* " + line);
-				});
-				this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
-			}
-		}, {
-			"name": "link",
-			"title": "链接",
-			"handler": function (event) {
-				this.editor.wrapSelectText("[text](", ")");
-			}
-		}, {
-			"name": "table",
-			"title": "表格",
-			"handler": function (event) {
-				var buffer = [
-					"column1 | column2 | column3  ",
-					"------- | ------- | -------  ",
-					"column1 | column2 | column3  ",
-					"column1 | column2 | column3  ",
-					"column1 | column2 | column3  "
-				];
-				this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
-			}
-		}, {
-			"name": "line",
-			"title": "分隔线",
-			"icon": "minus",
-			"handler": function (event) {
-				this.editor.wrapSelectText("----" + this.EOL);
-			}
-		}, {
-			"name": "image",
-			"title": "图片",
-			"handler": function (event) {
-				this.editor.wrapSelectText("![alt](", ")");
-			}
+Toolbar.prototype.items = {
+	"bold": {
+		"title": "粗体",
+		"handler": function (event) {
+			this.editor.wrapSelectText("**", "**");
 		}
-	];
-	self.render();
-	return self;
+	},
+	"italic": {
+		"title": "斜体",
+		"handler": function (event) {
+			this.editor.wrapSelectText("*", "*");
+		}
+	},
+	"underline": {
+		"title": "下划线",
+		"handler": function (event) {
+			this.editor.wrapSelectText("<u>", "</u>");
+		}
+	},
+	"strikethrough": {
+		"title": "删除线",
+		"handler": function (event) {
+			this.editor.wrapSelectText("~~", "~~");
+		}
+	},
+	"header": {
+		"title": "标题",
+		"handler": function (event) {
+			this.editor.wrapSelectText("# ");
+		}
+	},
+	"quote": {
+		"icon": "quote-left",
+		"title": "引用",
+		"handler": function (event) {
+			var selectText = this.editor.getSelectText();
+			if (selectText.length < 1) {
+				this.editor.wrapSelectText("> ");
+				return;
+			}
+			var textArray = selectText.split(this.EOL);
+			var buffer = [];
+			textArray.forEach(function (line) {
+				buffer.push("> " + line + "  ");
+			});
+			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+		}
+	},
+	"code": {
+		"title": "代码",
+		"handler": function (event) {
+			var before = "```javascript" + this.EOL;
+			var after = this.EOL + "```  " + this.EOL;
+			this.editor.wrapSelectText(before, after);
+		}
+	},
+	"list-ol": {
+		"title": "有序列表",
+		"handler": function (event) {
+			var selectText = this.editor.getSelectText();
+			if (selectText.length < 1) {
+				this.editor.wrapSelectText("1. ");
+				return;
+			}
+			var textArray = selectText.split(this.EOL);
+			var buffer = [];
+			for (var i = 0; i < textArray.length; i++) {
+				var line = textArray[i];
+				buffer.push((i + 1) + ". " + line);
+			};
+			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+		}
+	},
+	"list-ul": {
+		"title": "无序列表",
+		"handler": function (event) {
+			var selectText = this.editor.getSelectText();
+			if (selectText.length < 1) {
+				this.editor.wrapSelectText("*. ");
+				return;
+			}
+			var textArray = selectText.split(this.EOL);
+			var buffer = [];
+			textArray.forEach(function (line) {
+				buffer.push("* " + line);
+			});
+			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+		}
+	},
+	"link": {
+		"title": "链接",
+		"handler": function (event) {
+			this.editor.wrapSelectText("[text](", ")");
+		}
+	},
+	"table": {
+		"title": "表格",
+		"handler": function (event) {
+			var buffer = [
+				"column1 | column2 | column3  ",
+				"------- | ------- | -------  ",
+				"column1 | column2 | column3  ",
+				"column1 | column2 | column3  ",
+				"column1 | column2 | column3  "
+			];
+			this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
+		}
+	},
+	"line": {
+		"title": "分隔线",
+		"icon": "minus",
+		"handler": function (event) {
+			this.editor.wrapSelectText("----" + this.EOL);
+		}
+	},
+	"image": {
+		"title": "图片",
+		"handler": function (event) {
+			this.editor.wrapSelectText("![alt](", ")");
+		}
+	}
 };
 
-/**
- * 插入工具按钮方法
- **/
-Toolbar.prototype.insert = function (index, item) {
-	var self = this;
-	self._items = [];
-	self.render();
-	return self;
-};
-
-/**
- * 移除工具按钮方法
- **/
-Toolbar.prototype.remove = function (index) {
-	var self = this;
-	self._items = [];
-	self.render();
-	return self;
-};
-
-/**
- * 清楚工具按钮方法
- **/
-Toolbar.prototype.clear = function () {
-	var self = this;
-	self._items = [];
-	self.render();
-	return self;
-};
+//显示的按钮列表
+Toolbar.prototype.showList = [
+	"bold",
+	"italic",
+	"underline",
+	"strikethrough",
+	"header",
+	"quote",
+	"code",
+	"list-ol",
+	"list-ul",
+	"link",
+	"table",
+	"line",
+	"image"
+];
 
 /**
  * 呈现工具条
@@ -775,8 +757,9 @@ Toolbar.prototype.clear = function () {
 Toolbar.prototype.render = function () {
 	var self = this;
 	var buffer = [];
-	self._items.forEach(function (item) {
-		if (!item || !item.name) return;
+	self.showList.forEach(function (name) {
+		var item = self.items[name];
+		item.name = name;
 		self.cmd[item.name] = item.handler;
 		buffer.push('<i data-cmd="' + item.name + '" class="fa fa-' + (item.icon || item.name) + '" title="' + (item.title || item.name) + '"></i>');
 	});
@@ -794,6 +777,7 @@ marked.setOptions({
 	}
 });
 
+//在白名单中添加 span[class] 
 xss.whiteList["span"] = ['class'];
 
 var xssFilter = new xss.FilterXSS({
@@ -803,10 +787,10 @@ var xssFilter = new xss.FilterXSS({
 /**
  * 定义解析类型
  **/
-var Parser = module.exports = function (mditor) {
+var Parser = module.exports = function (options) {
 	var self = this;
-	self.mditor = mditor;
-	self.editor = mditor.editor;
+	options = options || {};
+	self.options = options;
 };
 
 /**
