@@ -1,2 +1,3 @@
 *.log
 *.project
+node_modules
