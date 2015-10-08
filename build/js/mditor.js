@@ -1,8 +1,11 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.0
- * @link https://github.com/houfeng/mditor#readme
+ * @version v0.1.1
+ * @homepage http://houfeng.net/mditor
  * @license MIT
+ * @author Houfeng
+ * @email admin@xhou.net
+ * @blog http://houfeng.net
  */
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
@@ -134,7 +137,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.1.0";
+Mditor.version = "0.1.1";
 
 Mditor.prototype._init = function () {
 	var self = this;

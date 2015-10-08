@@ -1,6 +1,6 @@
 {
   "name": "mditor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./lib/index.js",
   "scripts": {
@@ -16,12 +16,16 @@
     "embedded",
     "editor"
   ],
-  "author": "Houfeng",
+  "author": {
+    "name": "Houfeng",
+    "email": "admin@xhou.net",
+    "url": "http://houfeng.net"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/houfeng/mditor/issues"
   },
-  "homepage": "https://github.com/houfeng/mditor#readme",
+  "homepage": "http://houfeng.net/mditor",
   "dependencies": {
     "font-awesome": "^4.4.0",
     "github-markdown-css": "^2.0.10",

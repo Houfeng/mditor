@@ -15,8 +15,11 @@ var pkg = require("./package.json");
 var banner = ['/**',
 	' * <%= name %> , <%= description %>',
 	' * @version v<%= version %>',
-	' * @link <%= homepage %>',
+	' * @homepage <%= homepage %>',
 	' * @license <%= license %>',
+	' * @author <%= author.name %>',
+	' * @email <%= author.email %>',
+	' * @blog <%= author.url %>',
 	' */',
 	''
 ].join('\r\n');
