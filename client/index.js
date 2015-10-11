@@ -42,6 +42,7 @@ Mditor.prototype._init = function () {
 	self.platform = navigator.platform.toLowerCase();
 	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
 	self.CMD = self.platform.indexOf('mac') > -1 ? 'command' : 'ctrl';
+	self.INDENT='\t';
 	return self;
 };
 
@@ -463,7 +464,7 @@ Mditor.prototype._removeActiveClass = function () {
  **/
 Mditor.prototype.getValue = function () {
 	var self = this;
-	return self.ui.editor.val();
+	return self.editor.getValue();
 };
 
 /**
@@ -471,7 +472,7 @@ Mditor.prototype.getValue = function () {
  **/
 Mditor.prototype.setValue = function (value) {
 	var self = this;
-	self.ui.editor.val(value);
+	self.editor.setValue(value);
 	self._updateViewer();
 	self._calcAutoHeight();
 	return this;

@@ -13,8 +13,20 @@
  **/
 var Editor = module.exports = function (mditor) {
 	var self = this;
+	self.mditor = mditor;
 	self.innerEditor = mditor.ui.editor;
 	self._bindEvents();
+	return self;
+};
+
+Editor.prototype.getValue = function () {
+	var self = this;
+	return self.innerEditor.val();
+};
+
+Editor.prototype.setValue = function (value) {
+	var self = this;
+	self.innerEditor.val(value);
 	return self;
 };
 
@@ -72,6 +84,47 @@ Editor.prototype.wrapSelectText = function (before, after) {
 	return self;
 };
 
+Editor.prototype.getBeforeText = function (length) {
+	var self = this;
+	var range = self.getSelectRange();
+	var end = range.start;
+	var start = end - length;
+	var value = self.getValue();
+	return value.substring(start, end);
+};
+
+Editor.prototype.getBeforeFirstCharIndex = function (char) {
+	var self = this;
+	var range = self.getSelectRange();
+	var end = range.start;
+	var start = 0;
+	var value = self.getValue();
+	return value.substring(start, end).lastIndexOf(char);
+};
+
+Editor.prototype.getBeforeWord = function () {
+	var self = this;
+	var chars = [" ", "\t", self.mditor.EOL];
+	var start = 0;
+	chars.forEach(function (char) {
+		var index = self.getBeforeFirstCharIndex(char);
+		if (index + char.length > start) {
+			start = index + char.length;
+		}
+	});
+	var range = self.getSelectRange();
+	var value = self.getValue();
+	return value.substring(start, range.end);
+};
+
+Editor.prototype.getBeforeTextInLine = function () {
+	var self = this;
+	var start = self.getBeforeFirstCharIndex(self.mditor.EOL) + self.mditor.EOL.length;
+	var range = self.getSelectRange();
+	var value = self.getValue();
+	return value.substring(start, range.end);
+};
+
 /**
  * 事件绑定方法
  **/
@@ -95,21 +148,45 @@ Editor.prototype.off = function (name, handler) {
  **/
 Editor.prototype._bindEvents = function (name, handler) {
 	var self = this;
-	self.on('keydown', function (event) {
-		if (event.keyCode == 9) {
-			event.preventDefault();
-			var textarea = event.target;
-			var indent = '\t';
-			var start = textarea.selectionStart;
-			var end = textarea.selectionEnd;
-			var selected = window.getSelection().toString();
-			selected = indent + selected.replace(/\n/g, '\n' + indent);
-			textarea.value = textarea.value.substring(0, start) + selected + textarea.value.substring(end);
-			textarea.setSelectionRange(start + indent.length, start + selected.length);
+	// self.on('keydown', function (event) {
+	// 	if (event.keyCode == 9) {
+	// 		event.preventDefault();
+	// 		var textarea = event.target;
+	// 		var indent = '\t';
+	// 		var start = textarea.selectionStart;
+	// 		var end = textarea.selectionEnd;
+	// 		var selected = window.getSelection().toString();
+	// 		selected = indent + selected.replace(/\n/g, '\n' + indent);
+	// 		textarea.value = textarea.value.substring(0, start) + selected + textarea.value.substring(end);
+	// 		textarea.setSelectionRange(start + indent.length, start + selected.length);
+	// 	}
+	// });
+	self.mditor.cmd.addIndent = function (event) {
+		var me = this;
+		var selectText = me.editor.getSelectText();
+		if (selectText.length < 1) {
+			me.editor.wrapSelectText(me.INDENT);
+			return;
 		}
-	});
+		var textArray = selectText.split(me.EOL);
+		var buffer = [];
+		var lineCount = textArray.length - 1;
+		textArray.forEach(function (line, index) {
+			line = line.trim() != '' ? me.INDENT + line : line;
+			if (index < lineCount || line.trim() != '') {
+				buffer.push(line);
+			}
+		});
+		me.editor.setSelectText(buffer.join(me.EOL) + me.EOL);
+	};
+	self.mditor.cmd.removeIndent = function (event) {
+
+	};
+	self.mditor.key('tab', 'addIndent');
+	self.mditor.key('shift+tab', 'removeIndent');
 	return self;
 };
+
 },{}],2:[function(require,module,exports){
 var $ = require('jquery');
 var Parser = require('../lib/parser');
@@ -155,6 +232,7 @@ Mditor.prototype._init = function () {
 	self.platform = navigator.platform.toLowerCase();
 	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
 	self.CMD = self.platform.indexOf('mac') > -1 ? 'command' : 'ctrl';
+	self.INDENT='\t';
 	return self;
 };
 
@@ -576,7 +654,7 @@ Mditor.prototype._removeActiveClass = function () {
  **/
 Mditor.prototype.getValue = function () {
 	var self = this;
-	return self.ui.editor.val();
+	return self.editor.getValue();
 };
 
 /**
@@ -584,7 +662,7 @@ Mditor.prototype.getValue = function () {
  **/
 Mditor.prototype.setValue = function (value) {
 	var self = this;
-	self.ui.editor.val(value);
+	self.editor.setValue(value);
 	self._updateViewer();
 	self._calcAutoHeight();
 	return this;
