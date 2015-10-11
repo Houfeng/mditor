@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.1
+ * @version v0.1.2
  * @homepage http://houfeng.net/mditor
  * @license MIT
  * @author Houfeng
@@ -148,7 +148,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.1.1";
+Mditor.version = "0.1.2";
 
 Mditor.prototype._init = function () {
 	var self = this;
@@ -489,7 +489,11 @@ Mditor.prototype._initCommands = function () {
 	var self = this;
 	self.cmd = {
 		"toggleFullScreen": self.toggleFullScreen,
-		"togglePreview": self.togglePreview
+		"openFullScreen": self.openFullScreen,
+		"closeFullScreen": self.closeFullScreen,
+		"togglePreview": self.togglePreview,
+		"openPreview": self.openPreview,
+		"closePreview": self.closePreview
 	};
 	return self;
 };
@@ -616,9 +620,9 @@ Mditor.prototype.off = function (name, handler) {
 /**
  * 绑定快捷键
  **/
-Mditor.prototype.key = function (keyName, cmdName) {
+Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 	var self = this;
-	if (!keyName || cmdName) {
+	if (!keyName || !cmdName) {
 		return;
 	}
 	if (!self._keyFilterInited) {
@@ -633,12 +637,18 @@ Mditor.prototype.key = function (keyName, cmdName) {
 	}
 	keyName = keyName.replace('{cmd}', self.CMD);
 	key(keyName, function (event, handler) {
+		//禁用浏览器默认快捷键
+		if (!allowDefault) {
+			event.preventDefault();
+			event.code = event.keyCode;//将原始 keyCode 赋值给 code
+			event.keyCode = 0;
+		}
+		//--
 		event.mditor = self;
 		event.toolbar = self.toolbar;
 		event.editor = self.editor;
 		self.cmd[cmdName].call(self, event, self);
 		self.focus();
-		event.preventDefault();
 	});
 	return self;
 };
@@ -663,35 +673,35 @@ Toolbar.prototype.items = {
 		"handler": function (event) {
 			this.editor.wrapSelectText("**", "**");
 		},
-		"key": "shift+ctrl+b"
+		"key": "shift+alt+b"
 	},
 	"italic": {
 		"title": "斜体",
 		"handler": function (event) {
 			this.editor.wrapSelectText("*", "*");
 		},
-		"key": "shift+ctrl+i"
+		"key": "shift+alt+i"
 	},
 	"underline": {
 		"title": "下划线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("<u>", "</u>");
 		},
-		"key": "shift+ctrl+e"
+		"key": "shift+alt+e"
 	},
 	"strikethrough": {
 		"title": "删除线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("~~", "~~");
 		},
-		"key": "shift+ctrl+d"
+		"key": "shift+alt+d"
 	},
 	"header": {
 		"title": "标题",
 		"handler": function (event) {
 			this.editor.wrapSelectText("# ");
 		},
-		"key": "shift+ctrl+h"
+		"key": "shift+alt+h"
 	},
 	"quote": {
 		"icon": "quote-left",
@@ -709,7 +719,7 @@ Toolbar.prototype.items = {
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+q"
+		"key": "shift+alt+q"
 	},
 	"code": {
 		"title": "代码",
@@ -718,7 +728,7 @@ Toolbar.prototype.items = {
 			var after = this.EOL + "```  " + this.EOL;
 			this.editor.wrapSelectText(before, after);
 		},
-		"key": "shift+ctrl+c"
+		"key": "shift+alt+c"
 	},
 	"list-ol": {
 		"title": "有序列表",
@@ -736,7 +746,7 @@ Toolbar.prototype.items = {
 			};
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+o"
+		"key": "shift+alt+o"
 	},
 	"list-ul": {
 		"title": "无序列表",
@@ -753,14 +763,14 @@ Toolbar.prototype.items = {
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+u"
+		"key": "shift+alt+u"
 	},
 	"link": {
 		"title": "链接",
 		"handler": function (event) {
 			this.editor.wrapSelectText("[text](", ")");
 		},
-		"key": "shift+ctrl+l"
+		"key": "shift+alt+l"
 	},
 	"table": {
 		"title": "表格",
@@ -774,7 +784,7 @@ Toolbar.prototype.items = {
 			];
 			this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+t"
+		"key": "shift+alt+t"
 	},
 	"line": {
 		"title": "分隔线",
@@ -782,22 +792,22 @@ Toolbar.prototype.items = {
 		"handler": function (event) {
 			this.editor.wrapSelectText("----" + this.EOL);
 		},
-		"key": "shift+ctrl+n"
+		"key": "shift+alt+n"
 	},
 	"image": {
 		"title": "图片",
 		"handler": function (event) {
 			this.editor.wrapSelectText("![alt](", ")");
 		},
-		"key": "shift+ctrl+p"
+		"key": "shift+alt+p"
 	},
 	"help": {
 		"title": "帮助",
-		"icon": "",
+		"icon": "question",
 		"handler": function (event) {
 			alert('help');
 		},
-		"key": "shift+ctrl+?"
+		"key": "shift+alt+?"
 	}
 };
 

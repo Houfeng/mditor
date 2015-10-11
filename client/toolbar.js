@@ -18,35 +18,35 @@ Toolbar.prototype.items = {
 		"handler": function (event) {
 			this.editor.wrapSelectText("**", "**");
 		},
-		"key": "shift+ctrl+b"
+		"key": "shift+alt+b"
 	},
 	"italic": {
 		"title": "斜体",
 		"handler": function (event) {
 			this.editor.wrapSelectText("*", "*");
 		},
-		"key": "shift+ctrl+i"
+		"key": "shift+alt+i"
 	},
 	"underline": {
 		"title": "下划线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("<u>", "</u>");
 		},
-		"key": "shift+ctrl+e"
+		"key": "shift+alt+e"
 	},
 	"strikethrough": {
 		"title": "删除线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("~~", "~~");
 		},
-		"key": "shift+ctrl+d"
+		"key": "shift+alt+d"
 	},
 	"header": {
 		"title": "标题",
 		"handler": function (event) {
 			this.editor.wrapSelectText("# ");
 		},
-		"key": "shift+ctrl+h"
+		"key": "shift+alt+h"
 	},
 	"quote": {
 		"icon": "quote-left",
@@ -64,7 +64,7 @@ Toolbar.prototype.items = {
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+q"
+		"key": "shift+alt+q"
 	},
 	"code": {
 		"title": "代码",
@@ -73,7 +73,7 @@ Toolbar.prototype.items = {
 			var after = this.EOL + "```  " + this.EOL;
 			this.editor.wrapSelectText(before, after);
 		},
-		"key": "shift+ctrl+c"
+		"key": "shift+alt+c"
 	},
 	"list-ol": {
 		"title": "有序列表",
@@ -91,7 +91,7 @@ Toolbar.prototype.items = {
 			};
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+o"
+		"key": "shift+alt+o"
 	},
 	"list-ul": {
 		"title": "无序列表",
@@ -108,14 +108,14 @@ Toolbar.prototype.items = {
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+u"
+		"key": "shift+alt+u"
 	},
 	"link": {
 		"title": "链接",
 		"handler": function (event) {
 			this.editor.wrapSelectText("[text](", ")");
 		},
-		"key": "shift+ctrl+l"
+		"key": "shift+alt+l"
 	},
 	"table": {
 		"title": "表格",
@@ -129,7 +129,7 @@ Toolbar.prototype.items = {
 			];
 			this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
 		},
-		"key": "shift+ctrl+t"
+		"key": "shift+alt+t"
 	},
 	"line": {
 		"title": "分隔线",
@@ -137,22 +137,22 @@ Toolbar.prototype.items = {
 		"handler": function (event) {
 			this.editor.wrapSelectText("----" + this.EOL);
 		},
-		"key": "shift+ctrl+n"
+		"key": "shift+alt+n"
 	},
 	"image": {
 		"title": "图片",
 		"handler": function (event) {
 			this.editor.wrapSelectText("![alt](", ")");
 		},
-		"key": "shift+ctrl+p"
+		"key": "shift+alt+p"
 	},
 	"help": {
 		"title": "帮助",
-		"icon": "",
+		"icon": "question",
 		"handler": function (event) {
 			alert('help');
 		},
-		"key": "shift+ctrl+?"
+		"key": "shift+alt+?"
 	}
 };
 

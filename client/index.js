@@ -376,7 +376,11 @@ Mditor.prototype._initCommands = function () {
 	var self = this;
 	self.cmd = {
 		"toggleFullScreen": self.toggleFullScreen,
-		"togglePreview": self.togglePreview
+		"openFullScreen": self.openFullScreen,
+		"closeFullScreen": self.closeFullScreen,
+		"togglePreview": self.togglePreview,
+		"openPreview": self.openPreview,
+		"closePreview": self.closePreview
 	};
 	return self;
 };
@@ -503,9 +507,9 @@ Mditor.prototype.off = function (name, handler) {
 /**
  * 绑定快捷键
  **/
-Mditor.prototype.key = function (keyName, cmdName) {
+Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 	var self = this;
-	if (!keyName || cmdName) {
+	if (!keyName || !cmdName) {
 		return;
 	}
 	if (!self._keyFilterInited) {
@@ -520,12 +524,18 @@ Mditor.prototype.key = function (keyName, cmdName) {
 	}
 	keyName = keyName.replace('{cmd}', self.CMD);
 	key(keyName, function (event, handler) {
+		//禁用浏览器默认快捷键
+		if (!allowDefault) {
+			event.preventDefault();
+			event.code = event.keyCode;//将原始 keyCode 赋值给 code
+			event.keyCode = 0;
+		}
+		//--
 		event.mditor = self;
 		event.toolbar = self.toolbar;
 		event.editor = self.editor;
 		self.cmd[cmdName].call(self, event, self);
 		self.focus();
-		event.preventDefault();
 	});
 	return self;
 };
