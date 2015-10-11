@@ -2,8 +2,19 @@ var $ = require('jquery');
 var Parser = require('../lib/parser');
 var Toolbar = require('./toolbar');
 var Editor = require('./editor');
+var key = require("keymaster");
 
+//常量
 var FULL_SCREEN_CORRECT = 16;
+
+//全局变量 -> 模块局部变量
+var win = window;
+var doc = document;
+var body = doc.body;
+
+//shim
+doc.exitFullscreen = doc.exitFullscreen || doc.webkitExitFullscreen;
+body.requestFullscreen = body.requestFullscreen || body.webkitRequestFullscreen;
 
 /**
  * 定义 Mditor 类型
@@ -30,6 +41,7 @@ Mditor.prototype._init = function () {
 	var self = this;
 	self.platform = navigator.platform.toLowerCase();
 	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
+	self.CMD = self.platform.indexOf('mac') > -1 ? 'command' : 'ctrl';
 	return self;
 };
 
@@ -160,8 +172,8 @@ Mditor.prototype.openFullScreen = function (useH5) {
 	//记录旧高度并设定适应全屏的高度
 	self._lastStyle = self.ui.editor.attr('style');
 	self._calcAutoHeight();
-	if (useH5 || self.options.useH5FullScreen) {
-		document.body.webkitRequestFullscreen();
+	if ((useH5 || self.options.useH5FullScreen) && body.requestFullscreen) {
+		body.requestFullscreen();
 	}
 	return self;
 };
@@ -171,8 +183,8 @@ Mditor.prototype.openFullScreen = function (useH5) {
  **/
 Mditor.prototype.closeFullScreen = function (useH5) {
 	var self = this;
-	if (useH5 || self.options.useH5FullScreen) {
-		document.webkitExitFullscreen();
+	if ((useH5 || self.options.useH5FullScreen) && doc.webkitExitFullscreen) {
+		doc.webkitExitFullscreen();
 	}
 	self.ui.wraper.removeClass("fullscreen");
 	if (self._lastStyle) {
@@ -485,5 +497,35 @@ Mditor.prototype.on = function (name, handler) {
 Mditor.prototype.off = function (name, handler) {
 	var self = this;
 	self.editor.off(name, handler.bind(self));
+	return self;
+};
+
+/**
+ * 绑定快捷键
+ **/
+Mditor.prototype.key = function (keyName, cmdName) {
+	var self = this;
+	if (!keyName || cmdName) {
+		return;
+	}
+	if (!self._keyFilterInited) {
+		key.filter = function (event) {
+			return event.target == self.ui.editor[0];
+		};
+		self._keyFilterInited = true;
+	}
+	if (!self.cmd[cmdName]) {
+		throw 'command "' + cmdName + '" not found.';
+		return;
+	}
+	keyName = keyName.replace('{cmd}', self.CMD);
+	key(keyName, function (event, handler) {
+		event.mditor = self;
+		event.toolbar = self.toolbar;
+		event.editor = self.editor;
+		self.cmd[cmdName].call(self, event, self);
+		self.focus();
+		event.preventDefault();
+	});
 	return self;
 };

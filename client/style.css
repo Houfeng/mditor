@@ -73,6 +73,7 @@
 	transition: .2s;
 	-webkit-transition: .2s;
 	position: relative;
+	vertical-align: middle;
 }
 .mditor .toolbar .fa:hover,
 .mditor .toolbar .fa:active,
