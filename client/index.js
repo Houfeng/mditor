@@ -91,7 +91,7 @@ Mditor.prototype._create = function () {
 	ui.body.before(ui.head);
 	ui.toolbar = $('<div class="toolbar"></div>');
 	ui.head.append(ui.toolbar);
-	ui.control = $('<div class="control"><i data-cmd="togglePreview" title="预览" class="fa fa-columns"></i><i data-cmd="toggleFullScreen" title="全屏" class="fa fa-arrows-alt"></i></div>');
+	ui.control = $('<div class="control"></div>');
 	ui.head.append(ui.control);
 	ui.viewer = $('<div class="viewer"></div>');
 	ui.body.append(ui.viewer);
@@ -119,7 +119,6 @@ Mditor.prototype._initComponent = function () {
 Mditor.prototype.isPreview = function () {
 	var self = this;
 	return self.ui.wraper.hasClass("preview");
-	return self;
 };
 
 /**
@@ -563,7 +562,6 @@ Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 	}
 	if (!self.cmd[cmdName]) {
 		throw 'command "' + cmdName + '" not found.';
-		return;
 	}
 	keyName = keyName.replace('{cmd}', self.CMD);
 	key(keyName, function (event, handler) {

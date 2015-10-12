@@ -5,7 +5,24 @@ var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.holder = mditor.ui.toolbar;
-	self.render();
+	self.controlHolder = mditor.ui.control;
+	self.update();
+};
+
+/**
+ * 右角控制按钮
+ **/
+Toolbar.prototype.controlItems = {
+	"togglePreview": {
+		"title": "预览",
+		"icon": "columns",
+		"key": "shift+alt+v"
+	},
+	"toggleFullScreen": {
+		"title": "全屏",
+		"icon": "arrows-alt",
+		"key": "shift+alt+f"
+	}
 };
 
 /**
@@ -95,7 +112,7 @@ Toolbar.prototype.items = {
 			for (var i = 0; i < textArray.length; i++) {
 				var line = textArray[i];
 				buffer.push((i + 1) + ". " + line);
-			};
+			}
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 			return this;
 		},
@@ -106,13 +123,13 @@ Toolbar.prototype.items = {
 		"handler": function (event) {
 			var selectText = this.editor.getSelectText();
 			if (selectText.length < 1) {
-				this.editor.wrapSelectText("*. ");
+				this.editor.wrapSelectText("- ");
 				return this;
 			}
 			var textArray = selectText.split(this.EOL);
 			var buffer = [];
 			textArray.forEach(function (line) {
-				buffer.push("* " + line);
+				buffer.push("- " + line);
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 			return this;
@@ -188,6 +205,11 @@ Toolbar.prototype.showList = [
 	"help"
 ];
 
+Toolbar.prototype.controlShowList = [
+	"togglePreview",
+	"toggleFullScreen"
+];
+
 //添加一个按钮
 Toolbar.prototype.add = function (item) {
 	var self = this;
@@ -212,14 +234,11 @@ Toolbar.prototype.remove = function (name) {
 	return self;
 };
 
-/**
- * 呈现工具条
- **/
-Toolbar.prototype.render = function () {
+Toolbar.prototype._render = function (items, showList, holder) {
 	var self = this;
 	var buffer = [];
-	self.showList.forEach(function (name) {
-		var item = self.items[name];
+	showList.forEach(function (name) {
+		var item = items[name];
 		if (!item) return;
 		item.name = name;
 		if (item.handler) {
@@ -232,7 +251,26 @@ Toolbar.prototype.render = function () {
 		}
 		buffer.push('<i data-cmd="' + item.name + '" class="fa fa-' + (item.icon || item.name) + '" title="' + (item.title || item.name) + '"></i>');
 	});
-	self.holder.html(buffer.join(''));
+	holder.html(buffer.join(''));
+	return self;
+};
+
+/**
+ * 呈现工具条
+ **/
+Toolbar.prototype.renderItems = function () {
+	var self = this;
+	self._render(self.items, self.showList, self.holder);
+	return self;
+};
+
+
+/**
+ * 呈现工具条控制按钮
+ **/
+Toolbar.prototype.renderControlItms = function () {
+	var self = this;
+	self._render(self.controlItems, self.controlShowList, self.controlHolder);
 	return self;
 };
 
@@ -241,6 +279,7 @@ Toolbar.prototype.render = function () {
  **/
 Toolbar.prototype.update = function () {
 	var self = this;
-	self.render();
+	self.renderItems();
+	self.renderControlItms();
 	return self;
 };

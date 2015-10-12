@@ -158,7 +158,7 @@ Editor.prototype.selectBeforeTextInLine = function () {
 	var start = self.getBeforeFirstCharIndex(self.mditor.EOL) + self.mditor.EOL.length;
 	var range = self.getSelectRange();
 	self.setSelectRange(start, range.end);
-	return self
+	return self;
 };
 
 /**
@@ -196,8 +196,8 @@ Editor.prototype._handleIndent = function (name, handler) {
 		var buffer = [];
 		var lineCount = textArray.length - 1;
 		textArray.forEach(function (line, index) {
-			line = line.trim() != '' ? me.INDENT + line : line;
-			if (index < lineCount || line.trim() != '') {
+			line = line.trim() !== '' ? me.INDENT + line : line;
+			if (index < lineCount || line.trim() !== '') {
 				buffer.push(line);
 			}
 		});
@@ -244,7 +244,7 @@ Editor.prototype._handleIndent = function (name, handler) {
 		event.keyCode = 0;
 		var count = 0;
 		var buffer = [me.EOL];
-		while (parts[count] == '' &&
+		while (parts[count] === '' &&
 			count < (parts.length - 1)) {
 			count++;
 			buffer.push(me.INDENT);
@@ -401,7 +401,7 @@ Mditor.prototype._create = function () {
 	ui.body.before(ui.head);
 	ui.toolbar = $('<div class="toolbar"></div>');
 	ui.head.append(ui.toolbar);
-	ui.control = $('<div class="control"><i data-cmd="togglePreview" title="预览" class="fa fa-columns"></i><i data-cmd="toggleFullScreen" title="全屏" class="fa fa-arrows-alt"></i></div>');
+	ui.control = $('<div class="control"></div>');
 	ui.head.append(ui.control);
 	ui.viewer = $('<div class="viewer"></div>');
 	ui.body.append(ui.viewer);
@@ -429,7 +429,6 @@ Mditor.prototype._initComponent = function () {
 Mditor.prototype.isPreview = function () {
 	var self = this;
 	return self.ui.wraper.hasClass("preview");
-	return self;
 };
 
 /**
@@ -873,7 +872,6 @@ Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 	}
 	if (!self.cmd[cmdName]) {
 		throw 'command "' + cmdName + '" not found.';
-		return;
 	}
 	keyName = keyName.replace('{cmd}', self.CMD);
 	key(keyName, function (event, handler) {
@@ -897,7 +895,24 @@ var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.holder = mditor.ui.toolbar;
-	self.render();
+	self.controlHolder = mditor.ui.control;
+	self.update();
+};
+
+/**
+ * 右角控制按钮
+ **/
+Toolbar.prototype.controlItems = {
+	"togglePreview": {
+		"title": "预览",
+		"icon": "columns",
+		"key": "shift+alt+v"
+	},
+	"toggleFullScreen": {
+		"title": "全屏",
+		"icon": "arrows-alt",
+		"key": "shift+alt+f"
+	}
 };
 
 /**
@@ -987,7 +1002,7 @@ Toolbar.prototype.items = {
 			for (var i = 0; i < textArray.length; i++) {
 				var line = textArray[i];
 				buffer.push((i + 1) + ". " + line);
-			};
+			}
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 			return this;
 		},
@@ -998,13 +1013,13 @@ Toolbar.prototype.items = {
 		"handler": function (event) {
 			var selectText = this.editor.getSelectText();
 			if (selectText.length < 1) {
-				this.editor.wrapSelectText("*. ");
+				this.editor.wrapSelectText("- ");
 				return this;
 			}
 			var textArray = selectText.split(this.EOL);
 			var buffer = [];
 			textArray.forEach(function (line) {
-				buffer.push("* " + line);
+				buffer.push("- " + line);
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
 			return this;
@@ -1080,6 +1095,11 @@ Toolbar.prototype.showList = [
 	"help"
 ];
 
+Toolbar.prototype.controlShowList = [
+	"togglePreview",
+	"toggleFullScreen"
+];
+
 //添加一个按钮
 Toolbar.prototype.add = function (item) {
 	var self = this;
@@ -1104,14 +1124,11 @@ Toolbar.prototype.remove = function (name) {
 	return self;
 };
 
-/**
- * 呈现工具条
- **/
-Toolbar.prototype.render = function () {
+Toolbar.prototype._render = function (items, showList, holder) {
 	var self = this;
 	var buffer = [];
-	self.showList.forEach(function (name) {
-		var item = self.items[name];
+	showList.forEach(function (name) {
+		var item = items[name];
 		if (!item) return;
 		item.name = name;
 		if (item.handler) {
@@ -1124,7 +1141,26 @@ Toolbar.prototype.render = function () {
 		}
 		buffer.push('<i data-cmd="' + item.name + '" class="fa fa-' + (item.icon || item.name) + '" title="' + (item.title || item.name) + '"></i>');
 	});
-	self.holder.html(buffer.join(''));
+	holder.html(buffer.join(''));
+	return self;
+};
+
+/**
+ * 呈现工具条
+ **/
+Toolbar.prototype.renderItems = function () {
+	var self = this;
+	self._render(self.items, self.showList, self.holder);
+	return self;
+};
+
+
+/**
+ * 呈现工具条控制按钮
+ **/
+Toolbar.prototype.renderControlItms = function () {
+	var self = this;
+	self._render(self.controlItems, self.controlShowList, self.controlHolder);
 	return self;
 };
 
@@ -1133,7 +1169,8 @@ Toolbar.prototype.render = function () {
  **/
 Toolbar.prototype.update = function () {
 	var self = this;
-	self.render();
+	self.renderItems();
+	self.renderControlItms();
 	return self;
 };
 },{}],4:[function(require,module,exports){
@@ -1148,7 +1185,7 @@ marked.setOptions({
 });
 
 //在白名单中添加 span[class] 
-xss.whiteList["span"] = ['class'];
+xss.whiteList.span = ['class'];
 
 var xssFilter = new xss.FilterXSS({
 	whiteList: xss.whiteList

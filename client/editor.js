@@ -148,7 +148,7 @@ Editor.prototype.selectBeforeTextInLine = function () {
 	var start = self.getBeforeFirstCharIndex(self.mditor.EOL) + self.mditor.EOL.length;
 	var range = self.getSelectRange();
 	self.setSelectRange(start, range.end);
-	return self
+	return self;
 };
 
 /**
@@ -186,8 +186,8 @@ Editor.prototype._handleIndent = function (name, handler) {
 		var buffer = [];
 		var lineCount = textArray.length - 1;
 		textArray.forEach(function (line, index) {
-			line = line.trim() != '' ? me.INDENT + line : line;
-			if (index < lineCount || line.trim() != '') {
+			line = line.trim() !== '' ? me.INDENT + line : line;
+			if (index < lineCount || line.trim() !== '') {
 				buffer.push(line);
 			}
 		});
@@ -234,7 +234,7 @@ Editor.prototype._handleIndent = function (name, handler) {
 		event.keyCode = 0;
 		var count = 0;
 		var buffer = [me.EOL];
-		while (parts[count] == '' &&
+		while (parts[count] === '' &&
 			count < (parts.length - 1)) {
 			count++;
 			buffer.push(me.INDENT);
