@@ -16,6 +16,8 @@ var Editor = module.exports = function (mditor) {
 	self.mditor = mditor;
 	self.innerEditor = mditor.ui.editor;
 	self._handleIndent();
+	self._handleUL();
+	self._handleOL();
 	return self;
 };
 
@@ -137,6 +139,20 @@ Editor.prototype.getBeforeTextInLine = function () {
 	return value.substring(start, range.end);
 };
 
+Editor.prototype.selectBeforeText = function (length) {
+	var self = this;
+	var range = self.getSelectRange();
+	self.setSelectRange(range.start - length, range.end);
+	return self;
+};
+
+Editor.prototype.selectAfterText = function (length) {
+	var self = this;
+	var range = self.getSelectRange();
+	self.setSelectRange(range.start, range.end + length);
+	return self;
+};
+
 Editor.prototype.selectBeforeTextInLine = function () {
 	var self = this;
 	var start = self.getBeforeFirstCharIndex(self.mditor.EOL) + self.mditor.EOL.length;
@@ -242,6 +258,55 @@ Editor.prototype._handleIndent = function (name, handler) {
 	return self;
 };
 
+Editor.prototype._handleUL = function () {
+	var self = this;
+	//在回车时根据情况保持缩进
+	self.mditor.addCommand("_ulAutoComplete", function (event) {
+		var me = this;
+		var text = self.getBeforeTextInLine();
+		var prefix = text.substr(0, 2);
+		if (prefix != '- ' && prefix != '* ') {
+			return self;
+		}
+		event.preventDefault();
+		event.keyCode = 0;
+		if (text.length > prefix.length) {
+			me.editor.insterBeforeText(me.EOL + prefix);
+		} else {
+			me.editor.selectBeforeText(prefix.length);
+			me.editor.setSelectText('');
+		}
+		return self;
+	});
+	self.mditor.key('enter', '_ulAutoComplete', true);
+	return self;
+};
+
+Editor.prototype._handleOL = function () {
+	var self = this;
+	//在回车时根据情况保持缩进
+	self.mditor.addCommand("_olAutoComplete", function (event) {
+		var me = this;
+		var prefixExp = /\d\.\s/;
+		var text = self.getBeforeTextInLine();
+		var prefix = text.substr(0, 3);
+		if (!prefixExp.test(prefix)) {
+			return self;
+		}
+		event.preventDefault();
+		event.keyCode = 0;
+		if (text.length > prefix.length) {
+			var num = parseInt(prefix[0]) + 1;
+			me.editor.insterBeforeText(me.EOL + num + '. ');
+		} else {
+			me.editor.selectBeforeText(prefix.length);
+			me.editor.setSelectText('');
+		}
+		return self;
+	});
+	self.mditor.key('enter', '_olAutoComplete', true);
+	return self;
+};
 },{}],2:[function(require,module,exports){
 var $ = require('jquery');
 var Parser = require('../lib/parser');
