@@ -42,6 +42,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-gzip": "^1.2.0",
     "gulp-header": "^1.7.1",
+    "gulp-jshint": "^1.11.2",
     "gulp-minify-css": "^1.2.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
