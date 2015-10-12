@@ -406,6 +406,16 @@ Mditor.prototype.removeCommand = function (name) {
 	return self;
 };
 
+Mditor.prototype.execCommand = function (name, event) {
+	var self = this;
+	event = event || {};
+	event.mditor = self;
+	event.toolbar = self.toolbar;
+	event.editor = self.editor;
+	self.cmd[name].call(self, event);
+	return self;
+};
+
 /**
  * 绑定命令
  **/
@@ -415,10 +425,7 @@ Mditor.prototype._bindCommands = function () {
 		var btn = $(this);
 		var cmdName = btn.attr('data-cmd');
 		if (cmdName && self.cmd[cmdName]) {
-			event.mditor = self;
-			event.toolbar = self.toolbar;
-			event.editor = self.editor;
-			self.cmd[cmdName].call(self, event);
+			self.execCommand(cmdName, event);
 			self.focus();
 		} else {
 			throw 'command "' + cmdName + '" not found.';
@@ -560,17 +567,14 @@ Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 	}
 	keyName = keyName.replace('{cmd}', self.CMD);
 	key(keyName, function (event, handler) {
+		event.code = event.keyCode;//将原始 keyCode 赋值给 code
 		//禁用浏览器默认快捷键
 		if (!allowDefault) {
 			event.preventDefault();
-			event.code = event.keyCode;//将原始 keyCode 赋值给 code
 			event.keyCode = 0;
 		}
 		//--
-		event.mditor = self;
-		event.toolbar = self.toolbar;
-		event.editor = self.editor;
-		self.cmd[cmdName].call(self, event);
+		self.execCommand(cmdName, event);
 		self.focus();
 	});
 	return self;

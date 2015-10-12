@@ -74,9 +74,10 @@ Toolbar.prototype.items = {
 	"code": {
 		"title": "代码",
 		"handler": function (event) {
-			var before = "```javascript" + this.EOL;
+			var before = "```";
 			var after = this.EOL + "```  " + this.EOL;
 			this.editor.wrapSelectText(before, after);
+			this.editor.setSelectText("javascript");
 			return this;
 		},
 		"key": "shift+alt+c"
@@ -165,7 +166,7 @@ Toolbar.prototype.items = {
 			alert('help');
 			return this;
 		},
-		"key": "shift+alt+?"
+		"key": "shift+alt+/"
 	}
 };
 
@@ -221,7 +222,9 @@ Toolbar.prototype.render = function () {
 		var item = self.items[name];
 		if (!item) return;
 		item.name = name;
-		self.mditor.addCommand(item.name, item.handler);
+		if (item.handler) {
+			self.mditor.addCommand(item.name, item.handler);
+		}
 		if (item.key) {
 			item.key = item.key.replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();

@@ -15,7 +15,7 @@ var Editor = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.innerEditor = mditor.ui.editor;
-	self._bindEvents();
+	self._handleIndent();
 	return self;
 };
 
@@ -81,6 +81,18 @@ Editor.prototype.wrapSelectText = function (before, after) {
 	var newStart = range.start + before.length;
 	var newEnd = range.end + before.length;
 	self.setSelectRange(newStart, newEnd);
+	return self;
+};
+
+Editor.prototype.insterBeforeText = function (text) {
+	var self = this;
+	self.wrapSelectText(text);
+	return self;
+};
+
+Editor.prototype.insterAfterText = function (text) {
+	var self = this;
+	self.wrapSelectText("", text);
 	return self;
 };
 
@@ -152,16 +164,16 @@ Editor.prototype.off = function (name, handler) {
 };
 
 /**
- * 绑定事件
+ * 处理 tab 缩进
  **/
-Editor.prototype._bindEvents = function (name, handler) {
+Editor.prototype._handleIndent = function (name, handler) {
 	var self = this;
 	//增加缩进（0.1.1 有一个不同的实现版本）
 	self.mditor.addCommand("addIndent", function (event) {
 		var me = this;
 		var selectText = me.editor.getSelectText();
 		if (selectText.length < 1) {
-			me.editor.wrapSelectText(me.INDENT);
+			me.editor.insterBeforeText(me.INDENT);
 			return;
 		}
 		var textArray = selectText.split(me.EOL);
@@ -174,16 +186,18 @@ Editor.prototype._bindEvents = function (name, handler) {
 			}
 		});
 		me.editor.setSelectText(buffer.join(me.EOL));
+		return self;
 	});
 	//减少缩进
-	self.mditor.addCommand("removeIndent", function (event, clearSelected) {
+	self.mditor.addCommand("removeIndent", function (event) {
 		var me = this;
 		var indentRegExp = new RegExp('^' + me.INDENT);
 		var selectText = me.editor.getSelectText();
 		if (selectText.length < 1) {
 			self.selectBeforeTextInLine();
 			if (me.editor.getSelectText().length > 0) {
-				me.cmd.removeIndent(event, true);
+				event.clearSelected = true;
+				me.execCommand('removeIndent', event);
 			}
 			return;
 		}
@@ -196,13 +210,35 @@ Editor.prototype._bindEvents = function (name, handler) {
 			buffer.push(line);
 		});
 		me.editor.setSelectText(buffer.join(me.EOL));
-		if (clearSelected) {
+		if (event.clearSelected) {
 			var range = me.editor.getSelectRange();
 			me.editor.setSelectRange(range.end, range.end);
 		}
+		return self;
+	});
+	//在回车时根据情况保持缩进
+	self.mditor.addCommand("_keepIndent", function (event) {
+		var me = this;
+		var text = self.getBeforeTextInLine();
+		var parts = text.split(me.INDENT);
+		if (parts.length < 2) {
+			return self;
+		}
+		event.preventDefault();
+		event.keyCode = 0;
+		var count = 0;
+		var buffer = [me.EOL];
+		while (parts[count] == '' &&
+			count < (parts.length - 1)) {
+			count++;
+			buffer.push(me.INDENT);
+		}
+		me.editor.insterBeforeText(buffer.join(''));
+		return self;
 	});
 	self.mditor.key('tab', 'addIndent');
 	self.mditor.key('shift+tab', 'removeIndent');
+	self.mditor.key('enter', '_keepIndent', true);
 	return self;
 };
 
@@ -615,6 +651,16 @@ Mditor.prototype.removeCommand = function (name) {
 	return self;
 };
 
+Mditor.prototype.execCommand = function (name, event) {
+	var self = this;
+	event = event || {};
+	event.mditor = self;
+	event.toolbar = self.toolbar;
+	event.editor = self.editor;
+	self.cmd[name].call(self, event);
+	return self;
+};
+
 /**
  * 绑定命令
  **/
@@ -624,10 +670,7 @@ Mditor.prototype._bindCommands = function () {
 		var btn = $(this);
 		var cmdName = btn.attr('data-cmd');
 		if (cmdName && self.cmd[cmdName]) {
-			event.mditor = self;
-			event.toolbar = self.toolbar;
-			event.editor = self.editor;
-			self.cmd[cmdName].call(self, event);
+			self.execCommand(cmdName, event);
 			self.focus();
 		} else {
 			throw 'command "' + cmdName + '" not found.';
@@ -769,17 +812,14 @@ Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 	}
 	keyName = keyName.replace('{cmd}', self.CMD);
 	key(keyName, function (event, handler) {
+		event.code = event.keyCode;//将原始 keyCode 赋值给 code
 		//禁用浏览器默认快捷键
 		if (!allowDefault) {
 			event.preventDefault();
-			event.code = event.keyCode;//将原始 keyCode 赋值给 code
 			event.keyCode = 0;
 		}
 		//--
-		event.mditor = self;
-		event.toolbar = self.toolbar;
-		event.editor = self.editor;
-		self.cmd[cmdName].call(self, event);
+		self.execCommand(cmdName, event);
 		self.focus();
 	});
 	return self;
@@ -803,6 +843,7 @@ Toolbar.prototype.items = {
 		"title": "粗体",
 		"handler": function (event) {
 			this.editor.wrapSelectText("**", "**");
+			return this;
 		},
 		"key": "shift+alt+b"
 	},
@@ -810,6 +851,7 @@ Toolbar.prototype.items = {
 		"title": "斜体",
 		"handler": function (event) {
 			this.editor.wrapSelectText("*", "*");
+			return this;
 		},
 		"key": "shift+alt+i"
 	},
@@ -817,6 +859,7 @@ Toolbar.prototype.items = {
 		"title": "下划线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("<u>", "</u>");
+			return this;
 		},
 		"key": "shift+alt+e"
 	},
@@ -824,6 +867,7 @@ Toolbar.prototype.items = {
 		"title": "删除线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("~~", "~~");
+			return this;
 		},
 		"key": "shift+alt+d"
 	},
@@ -831,6 +875,7 @@ Toolbar.prototype.items = {
 		"title": "标题",
 		"handler": function (event) {
 			this.editor.wrapSelectText("# ");
+			return this;
 		},
 		"key": "shift+alt+h"
 	},
@@ -849,15 +894,18 @@ Toolbar.prototype.items = {
 				buffer.push("> " + line + "  ");
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+q"
 	},
 	"code": {
 		"title": "代码",
 		"handler": function (event) {
-			var before = "```javascript" + this.EOL;
+			var before = "```";
 			var after = this.EOL + "```  " + this.EOL;
 			this.editor.wrapSelectText(before, after);
+			this.editor.setSelectText("javascript");
+			return this;
 		},
 		"key": "shift+alt+c"
 	},
@@ -867,7 +915,7 @@ Toolbar.prototype.items = {
 			var selectText = this.editor.getSelectText();
 			if (selectText.length < 1) {
 				this.editor.wrapSelectText("1. ");
-				return;
+				return this;
 			}
 			var textArray = selectText.split(this.EOL);
 			var buffer = [];
@@ -876,6 +924,7 @@ Toolbar.prototype.items = {
 				buffer.push((i + 1) + ". " + line);
 			};
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+o"
 	},
@@ -885,7 +934,7 @@ Toolbar.prototype.items = {
 			var selectText = this.editor.getSelectText();
 			if (selectText.length < 1) {
 				this.editor.wrapSelectText("*. ");
-				return;
+				return this;
 			}
 			var textArray = selectText.split(this.EOL);
 			var buffer = [];
@@ -893,6 +942,7 @@ Toolbar.prototype.items = {
 				buffer.push("* " + line);
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+u"
 	},
@@ -900,6 +950,7 @@ Toolbar.prototype.items = {
 		"title": "链接",
 		"handler": function (event) {
 			this.editor.wrapSelectText("[text](", ")");
+			return this;
 		},
 		"key": "shift+alt+l"
 	},
@@ -914,6 +965,7 @@ Toolbar.prototype.items = {
 				"column1 | column2 | column3  "
 			];
 			this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+t"
 	},
@@ -922,6 +974,7 @@ Toolbar.prototype.items = {
 		"icon": "minus",
 		"handler": function (event) {
 			this.editor.wrapSelectText("----" + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+n"
 	},
@@ -929,6 +982,7 @@ Toolbar.prototype.items = {
 		"title": "图片",
 		"handler": function (event) {
 			this.editor.wrapSelectText("![alt](", ")");
+			return this;
 		},
 		"key": "shift+alt+p"
 	},
@@ -937,8 +991,9 @@ Toolbar.prototype.items = {
 		"icon": "question",
 		"handler": function (event) {
 			alert('help');
+			return this;
 		},
-		"key": "shift+alt+?"
+		"key": "shift+alt+/"
 	}
 };
 
@@ -994,7 +1049,9 @@ Toolbar.prototype.render = function () {
 		var item = self.items[name];
 		if (!item) return;
 		item.name = name;
-		self.mditor.addCommand(item.name, item.handler);
+		if (item.handler) {
+			self.mditor.addCommand(item.name, item.handler);
+		}
 		if (item.key) {
 			item.key = item.key.replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();

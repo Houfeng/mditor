@@ -74,6 +74,18 @@ Editor.prototype.wrapSelectText = function (before, after) {
 	return self;
 };
 
+Editor.prototype.insterBeforeText = function (text) {
+	var self = this;
+	self.wrapSelectText(text);
+	return self;
+};
+
+Editor.prototype.insterAfterText = function (text) {
+	var self = this;
+	self.wrapSelectText("", text);
+	return self;
+};
+
 Editor.prototype.getBeforeText = function (length) {
 	var self = this;
 	var range = self.getSelectRange();
@@ -151,7 +163,7 @@ Editor.prototype._handleIndent = function (name, handler) {
 		var me = this;
 		var selectText = me.editor.getSelectText();
 		if (selectText.length < 1) {
-			me.editor.wrapSelectText(me.INDENT);
+			me.editor.insterBeforeText(me.INDENT);
 			return;
 		}
 		var textArray = selectText.split(me.EOL);
@@ -164,16 +176,18 @@ Editor.prototype._handleIndent = function (name, handler) {
 			}
 		});
 		me.editor.setSelectText(buffer.join(me.EOL));
+		return self;
 	});
 	//减少缩进
-	self.mditor.addCommand("removeIndent", function (event, clearSelected) {
+	self.mditor.addCommand("removeIndent", function (event) {
 		var me = this;
 		var indentRegExp = new RegExp('^' + me.INDENT);
 		var selectText = me.editor.getSelectText();
 		if (selectText.length < 1) {
 			self.selectBeforeTextInLine();
 			if (me.editor.getSelectText().length > 0) {
-				me.cmd.removeIndent(event, true);
+				event.clearSelected = true;
+				me.execCommand('removeIndent', event);
 			}
 			return;
 		}
@@ -186,12 +200,34 @@ Editor.prototype._handleIndent = function (name, handler) {
 			buffer.push(line);
 		});
 		me.editor.setSelectText(buffer.join(me.EOL));
-		if (clearSelected) {
+		if (event.clearSelected) {
 			var range = me.editor.getSelectRange();
 			me.editor.setSelectRange(range.end, range.end);
 		}
+		return self;
+	});
+	//在回车时根据情况保持缩进
+	self.mditor.addCommand("_keepIndent", function (event) {
+		var me = this;
+		var text = self.getBeforeTextInLine();
+		var parts = text.split(me.INDENT);
+		if (parts.length < 2) {
+			return self;
+		}
+		event.preventDefault();
+		event.keyCode = 0;
+		var count = 0;
+		var buffer = [me.EOL];
+		while (parts[count] == '' &&
+			count < (parts.length - 1)) {
+			count++;
+			buffer.push(me.INDENT);
+		}
+		me.editor.insterBeforeText(buffer.join(''));
+		return self;
 	});
 	self.mditor.key('tab', 'addIndent');
 	self.mditor.key('shift+tab', 'removeIndent');
+	self.mditor.key('enter', '_keepIndent', true);
 	return self;
 };
