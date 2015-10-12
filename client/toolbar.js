@@ -5,7 +5,6 @@ var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.holder = mditor.ui.toolbar;
-	self.cmd = mditor.cmd;
 	self.render();
 };
 
@@ -17,6 +16,7 @@ Toolbar.prototype.items = {
 		"title": "粗体",
 		"handler": function (event) {
 			this.editor.wrapSelectText("**", "**");
+			return this;
 		},
 		"key": "shift+alt+b"
 	},
@@ -24,6 +24,7 @@ Toolbar.prototype.items = {
 		"title": "斜体",
 		"handler": function (event) {
 			this.editor.wrapSelectText("*", "*");
+			return this;
 		},
 		"key": "shift+alt+i"
 	},
@@ -31,6 +32,7 @@ Toolbar.prototype.items = {
 		"title": "下划线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("<u>", "</u>");
+			return this;
 		},
 		"key": "shift+alt+e"
 	},
@@ -38,6 +40,7 @@ Toolbar.prototype.items = {
 		"title": "删除线",
 		"handler": function (event) {
 			this.editor.wrapSelectText("~~", "~~");
+			return this;
 		},
 		"key": "shift+alt+d"
 	},
@@ -45,6 +48,7 @@ Toolbar.prototype.items = {
 		"title": "标题",
 		"handler": function (event) {
 			this.editor.wrapSelectText("# ");
+			return this;
 		},
 		"key": "shift+alt+h"
 	},
@@ -63,6 +67,7 @@ Toolbar.prototype.items = {
 				buffer.push("> " + line + "  ");
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+q"
 	},
@@ -72,6 +77,7 @@ Toolbar.prototype.items = {
 			var before = "```javascript" + this.EOL;
 			var after = this.EOL + "```  " + this.EOL;
 			this.editor.wrapSelectText(before, after);
+			return this;
 		},
 		"key": "shift+alt+c"
 	},
@@ -81,7 +87,7 @@ Toolbar.prototype.items = {
 			var selectText = this.editor.getSelectText();
 			if (selectText.length < 1) {
 				this.editor.wrapSelectText("1. ");
-				return;
+				return this;
 			}
 			var textArray = selectText.split(this.EOL);
 			var buffer = [];
@@ -90,6 +96,7 @@ Toolbar.prototype.items = {
 				buffer.push((i + 1) + ". " + line);
 			};
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+o"
 	},
@@ -99,7 +106,7 @@ Toolbar.prototype.items = {
 			var selectText = this.editor.getSelectText();
 			if (selectText.length < 1) {
 				this.editor.wrapSelectText("*. ");
-				return;
+				return this;
 			}
 			var textArray = selectText.split(this.EOL);
 			var buffer = [];
@@ -107,6 +114,7 @@ Toolbar.prototype.items = {
 				buffer.push("* " + line);
 			});
 			this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+u"
 	},
@@ -114,6 +122,7 @@ Toolbar.prototype.items = {
 		"title": "链接",
 		"handler": function (event) {
 			this.editor.wrapSelectText("[text](", ")");
+			return this;
 		},
 		"key": "shift+alt+l"
 	},
@@ -128,6 +137,7 @@ Toolbar.prototype.items = {
 				"column1 | column2 | column3  "
 			];
 			this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+t"
 	},
@@ -136,6 +146,7 @@ Toolbar.prototype.items = {
 		"icon": "minus",
 		"handler": function (event) {
 			this.editor.wrapSelectText("----" + this.EOL);
+			return this;
 		},
 		"key": "shift+alt+n"
 	},
@@ -143,6 +154,7 @@ Toolbar.prototype.items = {
 		"title": "图片",
 		"handler": function (event) {
 			this.editor.wrapSelectText("![alt](", ")");
+			return this;
 		},
 		"key": "shift+alt+p"
 	},
@@ -151,6 +163,7 @@ Toolbar.prototype.items = {
 		"icon": "question",
 		"handler": function (event) {
 			alert('help');
+			return this;
 		},
 		"key": "shift+alt+?"
 	}
@@ -192,6 +205,7 @@ Toolbar.prototype.get = function (name) {
 //移除一个按钮
 Toolbar.prototype.remove = function (name) {
 	var self = this;
+	self.mditor.addCommand(name);
 	self.items[name] = null;
 	delete self.items[name];
 	return self;
@@ -207,7 +221,7 @@ Toolbar.prototype.render = function () {
 		var item = self.items[name];
 		if (!item) return;
 		item.name = name;
-		self.cmd[item.name] = item.handler;
+		self.mditor.addCommand(item.name, item.handler);
 		if (item.key) {
 			item.key = item.key.replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();

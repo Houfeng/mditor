@@ -125,6 +125,14 @@ Editor.prototype.getBeforeTextInLine = function () {
 	return value.substring(start, range.end);
 };
 
+Editor.prototype.selectBeforeTextInLine = function () {
+	var self = this;
+	var start = self.getBeforeFirstCharIndex(self.mditor.EOL) + self.mditor.EOL.length;
+	var range = self.getSelectRange();
+	self.setSelectRange(start, range.end);
+	return self
+};
+
 /**
  * 事件绑定方法
  **/
@@ -148,20 +156,8 @@ Editor.prototype.off = function (name, handler) {
  **/
 Editor.prototype._bindEvents = function (name, handler) {
 	var self = this;
-	// self.on('keydown', function (event) {
-	// 	if (event.keyCode == 9) {
-	// 		event.preventDefault();
-	// 		var textarea = event.target;
-	// 		var indent = '\t';
-	// 		var start = textarea.selectionStart;
-	// 		var end = textarea.selectionEnd;
-	// 		var selected = window.getSelection().toString();
-	// 		selected = indent + selected.replace(/\n/g, '\n' + indent);
-	// 		textarea.value = textarea.value.substring(0, start) + selected + textarea.value.substring(end);
-	// 		textarea.setSelectionRange(start + indent.length, start + selected.length);
-	// 	}
-	// });
-	self.mditor.cmd.addIndent = function (event) {
+	//增加缩进（0.1.1 有一个不同的实现版本）
+	self.mditor.addCommand("addIndent", function (event) {
 		var me = this;
 		var selectText = me.editor.getSelectText();
 		if (selectText.length < 1) {
@@ -177,11 +173,34 @@ Editor.prototype._bindEvents = function (name, handler) {
 				buffer.push(line);
 			}
 		});
-		me.editor.setSelectText(buffer.join(me.EOL) + me.EOL);
-	};
-	self.mditor.cmd.removeIndent = function (event) {
-
-	};
+		me.editor.setSelectText(buffer.join(me.EOL));
+	});
+	//减少缩进
+	self.mditor.addCommand("removeIndent", function (event, clearSelected) {
+		var me = this;
+		var indentRegExp = new RegExp('^' + me.INDENT);
+		var selectText = me.editor.getSelectText();
+		if (selectText.length < 1) {
+			self.selectBeforeTextInLine();
+			if (me.editor.getSelectText().length > 0) {
+				me.cmd.removeIndent(event, true);
+			}
+			return;
+		}
+		var textArray = selectText.split(me.EOL);
+		var buffer = [];
+		textArray.forEach(function (line, index) {
+			if (indentRegExp.test(line)) {
+				line = line.replace(me.INDENT, '');
+			}
+			buffer.push(line);
+		});
+		me.editor.setSelectText(buffer.join(me.EOL));
+		if (clearSelected) {
+			var range = me.editor.getSelectRange();
+			me.editor.setSelectRange(range.end, range.end);
+		}
+	});
 	self.mditor.key('tab', 'addIndent');
 	self.mditor.key('shift+tab', 'removeIndent');
 	return self;
@@ -196,6 +215,7 @@ var key = require("keymaster");
 
 //常量
 var FULL_SCREEN_CORRECT = 16;
+var UPDATE_VIEWER_DELAY = 20;
 
 //全局变量 -> 模块局部变量
 var win = window;
@@ -232,7 +252,7 @@ Mditor.prototype._init = function () {
 	self.platform = navigator.platform.toLowerCase();
 	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
 	self.CMD = self.platform.indexOf('mac') > -1 ? 'command' : 'ctrl';
-	self.INDENT='\t';
+	self.INDENT = '\t';
 	return self;
 };
 
@@ -565,14 +585,33 @@ Mditor.prototype._calcScroll = function () {
  **/
 Mditor.prototype._initCommands = function () {
 	var self = this;
-	self.cmd = {
-		"toggleFullScreen": self.toggleFullScreen,
-		"openFullScreen": self.openFullScreen,
-		"closeFullScreen": self.closeFullScreen,
-		"togglePreview": self.togglePreview,
-		"openPreview": self.openPreview,
-		"closePreview": self.closePreview
-	};
+	for (var name in self) {
+		if (typeof (self[name]) == 'function' && name[0] != '_') {
+			self.addCommand(name, self[name]);
+		}
+	}
+	return self;
+};
+
+/**
+ * 添加一个命令
+ **/
+Mditor.prototype.addCommand = function (name, handler) {
+	var self = this;
+	if (!name || !handler) return;
+	self.cmd = self.cmd || {};
+	self.cmd[name] = handler.bind(self);
+	return self;
+};
+
+/**
+ * 移除一个命令
+ **/
+Mditor.prototype.removeCommand = function (name) {
+	var self = this;
+	self.cmd = self.cmd || {};
+	self.cmd[name] = null;
+	delete self.cmd[name];
 	return self;
 };
 
@@ -588,7 +627,7 @@ Mditor.prototype._bindCommands = function () {
 			event.mditor = self;
 			event.toolbar = self.toolbar;
 			event.editor = self.editor;
-			self.cmd[cmdName].call(self, event, self);
+			self.cmd[cmdName].call(self, event);
 			self.focus();
 		} else {
 			throw 'command "' + cmdName + '" not found.';
@@ -597,9 +636,24 @@ Mditor.prototype._bindCommands = function () {
 	return self;
 };
 
+Mditor.prototype._clearUpdateViewerTimer = function () {
+	var self = this;
+	if (self._updateViewerTimer) {
+		clearTimeout(self._updateViewerTimer);
+	}
+	self._updateViewerTimer = null;
+};
+
 Mditor.prototype._updateViewer = function () {
 	var self = this;
-	self.ui.viewer.html(self.getHTML());
+	if (self._updateViewerTimer) {
+		self._clearUpdateViewerTimer();
+	}
+	self._updateViewerTimer = setTimeout(function () {
+		self.ui.viewer.html(self.getHTML());
+		self._clearUpdateViewerTimer();
+		//console.log('preview');
+	}, UPDATE_VIEWER_DELAY);
 	return self;
 };
 
@@ -725,7 +779,7 @@ Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 		event.mditor = self;
 		event.toolbar = self.toolbar;
 		event.editor = self.editor;
-		self.cmd[cmdName].call(self, event, self);
+		self.cmd[cmdName].call(self, event);
 		self.focus();
 	});
 	return self;
@@ -738,7 +792,6 @@ var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.holder = mditor.ui.toolbar;
-	self.cmd = mditor.cmd;
 	self.render();
 };
 
@@ -925,6 +978,7 @@ Toolbar.prototype.get = function (name) {
 //移除一个按钮
 Toolbar.prototype.remove = function (name) {
 	var self = this;
+	self.mditor.addCommand(name);
 	self.items[name] = null;
 	delete self.items[name];
 	return self;
@@ -940,7 +994,7 @@ Toolbar.prototype.render = function () {
 		var item = self.items[name];
 		if (!item) return;
 		item.name = name;
-		self.cmd[item.name] = item.handler;
+		self.mditor.addCommand(item.name, item.handler);
 		if (item.key) {
 			item.key = item.key.replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();

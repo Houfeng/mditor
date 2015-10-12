@@ -5,7 +5,7 @@ var Editor = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.innerEditor = mditor.ui.editor;
-	self._bindEvents();
+	self._handleIndent();
 	return self;
 };
 
@@ -115,6 +115,14 @@ Editor.prototype.getBeforeTextInLine = function () {
 	return value.substring(start, range.end);
 };
 
+Editor.prototype.selectBeforeTextInLine = function () {
+	var self = this;
+	var start = self.getBeforeFirstCharIndex(self.mditor.EOL) + self.mditor.EOL.length;
+	var range = self.getSelectRange();
+	self.setSelectRange(start, range.end);
+	return self
+};
+
 /**
  * 事件绑定方法
  **/
@@ -134,24 +142,12 @@ Editor.prototype.off = function (name, handler) {
 };
 
 /**
- * 绑定事件
+ * 处理 tab 缩进
  **/
-Editor.prototype._bindEvents = function (name, handler) {
+Editor.prototype._handleIndent = function (name, handler) {
 	var self = this;
-	// self.on('keydown', function (event) {
-	// 	if (event.keyCode == 9) {
-	// 		event.preventDefault();
-	// 		var textarea = event.target;
-	// 		var indent = '\t';
-	// 		var start = textarea.selectionStart;
-	// 		var end = textarea.selectionEnd;
-	// 		var selected = window.getSelection().toString();
-	// 		selected = indent + selected.replace(/\n/g, '\n' + indent);
-	// 		textarea.value = textarea.value.substring(0, start) + selected + textarea.value.substring(end);
-	// 		textarea.setSelectionRange(start + indent.length, start + selected.length);
-	// 	}
-	// });
-	self.mditor.cmd.addIndent = function (event) {
+	//增加缩进（0.1.1 有一个不同的实现版本）
+	self.mditor.addCommand("addIndent", function (event) {
 		var me = this;
 		var selectText = me.editor.getSelectText();
 		if (selectText.length < 1) {
@@ -167,11 +163,34 @@ Editor.prototype._bindEvents = function (name, handler) {
 				buffer.push(line);
 			}
 		});
-		me.editor.setSelectText(buffer.join(me.EOL) + me.EOL);
-	};
-	self.mditor.cmd.removeIndent = function (event) {
-
-	};
+		me.editor.setSelectText(buffer.join(me.EOL));
+	});
+	//减少缩进
+	self.mditor.addCommand("removeIndent", function (event, clearSelected) {
+		var me = this;
+		var indentRegExp = new RegExp('^' + me.INDENT);
+		var selectText = me.editor.getSelectText();
+		if (selectText.length < 1) {
+			self.selectBeforeTextInLine();
+			if (me.editor.getSelectText().length > 0) {
+				me.cmd.removeIndent(event, true);
+			}
+			return;
+		}
+		var textArray = selectText.split(me.EOL);
+		var buffer = [];
+		textArray.forEach(function (line, index) {
+			if (indentRegExp.test(line)) {
+				line = line.replace(me.INDENT, '');
+			}
+			buffer.push(line);
+		});
+		me.editor.setSelectText(buffer.join(me.EOL));
+		if (clearSelected) {
+			var range = me.editor.getSelectRange();
+			me.editor.setSelectRange(range.end, range.end);
+		}
+	});
 	self.mditor.key('tab', 'addIndent');
 	self.mditor.key('shift+tab', 'removeIndent');
 	return self;

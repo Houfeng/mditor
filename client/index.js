@@ -6,6 +6,7 @@ var key = require("keymaster");
 
 //常量
 var FULL_SCREEN_CORRECT = 16;
+var UPDATE_VIEWER_DELAY = 20;
 
 //全局变量 -> 模块局部变量
 var win = window;
@@ -42,7 +43,7 @@ Mditor.prototype._init = function () {
 	self.platform = navigator.platform.toLowerCase();
 	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
 	self.CMD = self.platform.indexOf('mac') > -1 ? 'command' : 'ctrl';
-	self.INDENT='\t';
+	self.INDENT = '\t';
 	return self;
 };
 
@@ -375,14 +376,33 @@ Mditor.prototype._calcScroll = function () {
  **/
 Mditor.prototype._initCommands = function () {
 	var self = this;
-	self.cmd = {
-		"toggleFullScreen": self.toggleFullScreen,
-		"openFullScreen": self.openFullScreen,
-		"closeFullScreen": self.closeFullScreen,
-		"togglePreview": self.togglePreview,
-		"openPreview": self.openPreview,
-		"closePreview": self.closePreview
-	};
+	for (var name in self) {
+		if (typeof (self[name]) == 'function' && name[0] != '_') {
+			self.addCommand(name, self[name]);
+		}
+	}
+	return self;
+};
+
+/**
+ * 添加一个命令
+ **/
+Mditor.prototype.addCommand = function (name, handler) {
+	var self = this;
+	if (!name || !handler) return;
+	self.cmd = self.cmd || {};
+	self.cmd[name] = handler.bind(self);
+	return self;
+};
+
+/**
+ * 移除一个命令
+ **/
+Mditor.prototype.removeCommand = function (name) {
+	var self = this;
+	self.cmd = self.cmd || {};
+	self.cmd[name] = null;
+	delete self.cmd[name];
 	return self;
 };
 
@@ -398,7 +418,7 @@ Mditor.prototype._bindCommands = function () {
 			event.mditor = self;
 			event.toolbar = self.toolbar;
 			event.editor = self.editor;
-			self.cmd[cmdName].call(self, event, self);
+			self.cmd[cmdName].call(self, event);
 			self.focus();
 		} else {
 			throw 'command "' + cmdName + '" not found.';
@@ -407,9 +427,24 @@ Mditor.prototype._bindCommands = function () {
 	return self;
 };
 
+Mditor.prototype._clearUpdateViewerTimer = function () {
+	var self = this;
+	if (self._updateViewerTimer) {
+		clearTimeout(self._updateViewerTimer);
+	}
+	self._updateViewerTimer = null;
+};
+
 Mditor.prototype._updateViewer = function () {
 	var self = this;
-	self.ui.viewer.html(self.getHTML());
+	if (self._updateViewerTimer) {
+		self._clearUpdateViewerTimer();
+	}
+	self._updateViewerTimer = setTimeout(function () {
+		self.ui.viewer.html(self.getHTML());
+		self._clearUpdateViewerTimer();
+		//console.log('preview');
+	}, UPDATE_VIEWER_DELAY);
 	return self;
 };
 
@@ -535,7 +570,7 @@ Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 		event.mditor = self;
 		event.toolbar = self.toolbar;
 		event.editor = self.editor;
-		self.cmd[cmdName].call(self, event, self);
+		self.cmd[cmdName].call(self, event);
 		self.focus();
 	});
 	return self;
