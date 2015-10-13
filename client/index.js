@@ -2,7 +2,7 @@ var $ = require('jquery');
 var Parser = require('../lib/parser');
 var Toolbar = require('./toolbar');
 var Editor = require('./editor');
-var key = require("keymaster");
+var Key = require('./key');
 
 //常量
 var FULL_SCREEN_CORRECT = 16;
@@ -107,6 +107,7 @@ Mditor.prototype._create = function () {
  **/
 Mditor.prototype._initComponent = function () {
 	var self = this;
+	self.key = new Key(self);
 	self.editor = new Editor(self);
 	self.toolBar = new Toolbar(self);
 	self.parser = new Parser(self);
@@ -543,37 +544,5 @@ Mditor.prototype.on = function (name, handler) {
 Mditor.prototype.off = function (name, handler) {
 	var self = this;
 	self.editor.off(name, handler.bind(self));
-	return self;
-};
-
-/**
- * 绑定快捷键
- **/
-Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
-	var self = this;
-	if (!keyName || !cmdName) {
-		return;
-	}
-	if (!self._keyFilterInited) {
-		key.filter = function (event) {
-			return event.target == self.ui.editor[0];
-		};
-		self._keyFilterInited = true;
-	}
-	if (!self.cmd[cmdName]) {
-		throw 'command "' + cmdName + '" not found.';
-	}
-	keyName = keyName.replace('{cmd}', self.CMD);
-	key(keyName, function (event, handler) {
-		event.code = event.keyCode;//将原始 keyCode 赋值给 code
-		//禁用浏览器默认快捷键
-		if (!allowDefault) {
-			event.preventDefault();
-			event.keyCode = 0;
-		}
-		//--
-		self.execCommand(cmdName, event);
-		self.focus();
-	});
 	return self;
 };

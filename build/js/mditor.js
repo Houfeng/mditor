@@ -252,9 +252,9 @@ Editor.prototype._handleIndent = function (name, handler) {
 		me.editor.insterBeforeText(buffer.join(''));
 		return self;
 	});
-	self.mditor.key('tab', 'addIndent');
-	self.mditor.key('shift+tab', 'removeIndent');
-	self.mditor.key('enter', '_keepIndent', true);
+	self.mditor.key.bind('tab', 'addIndent');
+	self.mditor.key.bind('shift+tab', 'removeIndent');
+	self.mditor.key.bind('enter', '_keepIndent', true);
 	return self;
 };
 
@@ -278,7 +278,7 @@ Editor.prototype._handleUL = function () {
 		}
 		return self;
 	});
-	self.mditor.key('enter', '_ulAutoComplete', true);
+	self.mditor.key.bind('enter', '_ulAutoComplete', true);
 	return self;
 };
 
@@ -304,7 +304,7 @@ Editor.prototype._handleOL = function () {
 		}
 		return self;
 	});
-	self.mditor.key('enter', '_olAutoComplete', true);
+	self.mditor.key.bind('enter', '_olAutoComplete', true);
 	return self;
 };
 },{}],2:[function(require,module,exports){
@@ -312,7 +312,7 @@ var $ = require('jquery');
 var Parser = require('../lib/parser');
 var Toolbar = require('./toolbar');
 var Editor = require('./editor');
-var key = require("keymaster");
+var Key = require('./key');
 
 //常量
 var FULL_SCREEN_CORRECT = 16;
@@ -417,6 +417,7 @@ Mditor.prototype._create = function () {
  **/
 Mditor.prototype._initComponent = function () {
 	var self = this;
+	self.key = new Key(self);
 	self.editor = new Editor(self);
 	self.toolBar = new Toolbar(self);
 	self.parser = new Parser(self);
@@ -855,26 +856,34 @@ Mditor.prototype.off = function (name, handler) {
 	self.editor.off(name, handler.bind(self));
 	return self;
 };
+},{"../lib/parser":5,"./editor":1,"./key":3,"./toolbar":4,"jquery":143}],3:[function(require,module,exports){
+var keymaster = require("keymaster");
 
-/**
- * 绑定快捷键
- **/
-Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
+var Key = module.exports = function (mditor) {
 	var self = this;
+	self.mditor = mditor;
+};
+
+Key.prototype.bind = function (keyName, cmdName, allowDefault) {
+	var self = this;
+	var mditor = self.mditor;
+	//检查参数
 	if (!keyName || !cmdName) {
 		return;
 	}
+	//检查 key filter 设定
 	if (!self._keyFilterInited) {
-		key.filter = function (event) {
-			return event.target == self.ui.editor[0];
+		keymaster.filter = function (event) {
+			return event.target == mditor.ui.editor[0];
 		};
 		self._keyFilterInited = true;
 	}
-	if (!self.cmd[cmdName]) {
+	//检查命令是否存在
+	if (!mditor.cmd[cmdName]) {
 		throw 'command "' + cmdName + '" not found.';
 	}
-	keyName = keyName.replace('{cmd}', self.CMD);
-	key(keyName, function (event, handler) {
+	keyName = keyName.replace('{cmd}', mditor.CMD);
+	keymaster(keyName, function (event, handler) {
 		event.code = event.keyCode;//将原始 keyCode 赋值给 code
 		//禁用浏览器默认快捷键
 		if (!allowDefault) {
@@ -882,12 +891,18 @@ Mditor.prototype.key = function (keyName, cmdName, allowDefault) {
 			event.keyCode = 0;
 		}
 		//--
-		self.execCommand(cmdName, event);
-		self.focus();
+		mditor.execCommand(cmdName, event);
+		mditor.focus();
 	});
 	return self;
 };
-},{"../lib/parser":4,"./editor":1,"./toolbar":3,"jquery":142,"keymaster":143}],3:[function(require,module,exports){
+
+Key.prototype.unbind = function (keyName) {
+	var self = this;
+	keymaster.unbind(keyName);
+	return self;
+};
+},{"keymaster":144}],4:[function(require,module,exports){
 /**
  * 定义工具条类型
  **/
@@ -1137,7 +1152,7 @@ Toolbar.prototype._render = function (items, showList, holder) {
 		if (item.key) {
 			item.key = item.key.replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();
-			self.mditor.key(item.key, item.name);
+			self.mditor.key.unbind(item.key).bind(item.key, item.name);
 		}
 		buffer.push('<i data-cmd="' + item.name + '" class="fa fa-' + (item.icon || item.name) + '" title="' + (item.title || item.name) + '"></i>');
 	});
@@ -1173,7 +1188,7 @@ Toolbar.prototype.update = function () {
 	self.renderControlItms();
 	return self;
 };
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var marked = require('marked');
 var highlight = require('highlight.js');
 var xss = require("xss");
@@ -1207,7 +1222,7 @@ Parser.prototype.parse = function (mdText) {
 	var html = marked(mdText);
 	return xssFilter.process(html);
 };
-},{"highlight.js":6,"marked":144,"xss":146}],5:[function(require,module,exports){
+},{"highlight.js":7,"marked":145,"xss":147}],6:[function(require,module,exports){
 /*
 Syntax highlighting with language autodetection.
 https://highlightjs.org/
@@ -1980,7 +1995,7 @@ https://highlightjs.org/
   return hljs;
 }));
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var hljs = require('./highlight');
 
 hljs.registerLanguage('1c', require('./languages/1c'));
@@ -2120,7 +2135,7 @@ hljs.registerLanguage('xquery', require('./languages/xquery'));
 hljs.registerLanguage('zephir', require('./languages/zephir'));
 
 module.exports = hljs;
-},{"./highlight":5,"./languages/1c":7,"./languages/accesslog":8,"./languages/actionscript":9,"./languages/apache":10,"./languages/applescript":11,"./languages/armasm":12,"./languages/asciidoc":13,"./languages/aspectj":14,"./languages/autohotkey":15,"./languages/autoit":16,"./languages/avrasm":17,"./languages/axapta":18,"./languages/bash":19,"./languages/brainfuck":20,"./languages/cal":21,"./languages/capnproto":22,"./languages/ceylon":23,"./languages/clojure":25,"./languages/clojure-repl":24,"./languages/cmake":26,"./languages/coffeescript":27,"./languages/cpp":28,"./languages/crystal":29,"./languages/cs":30,"./languages/css":31,"./languages/d":32,"./languages/dart":33,"./languages/delphi":34,"./languages/diff":35,"./languages/django":36,"./languages/dns":37,"./languages/dockerfile":38,"./languages/dos":39,"./languages/dust":40,"./languages/elixir":41,"./languages/elm":42,"./languages/erb":43,"./languages/erlang":45,"./languages/erlang-repl":44,"./languages/fix":46,"./languages/fortran":47,"./languages/fsharp":48,"./languages/gams":49,"./languages/gcode":50,"./languages/gherkin":51,"./languages/glsl":52,"./languages/go":53,"./languages/golo":54,"./languages/gradle":55,"./languages/groovy":56,"./languages/haml":57,"./languages/handlebars":58,"./languages/haskell":59,"./languages/haxe":60,"./languages/http":61,"./languages/inform7":62,"./languages/ini":63,"./languages/irpf90":64,"./languages/java":65,"./languages/javascript":66,"./languages/json":67,"./languages/julia":68,"./languages/kotlin":69,"./languages/lasso":70,"./languages/less":71,"./languages/lisp":72,"./languages/livecodeserver":73,"./languages/livescript":74,"./languages/lua":75,"./languages/makefile":76,"./languages/markdown":77,"./languages/mathematica":78,"./languages/matlab":79,"./languages/mel":80,"./languages/mercury":81,"./languages/mizar":82,"./languages/mojolicious":83,"./languages/monkey":84,"./languages/nginx":85,"./languages/nimrod":86,"./languages/nix":87,"./languages/nsis":88,"./languages/objectivec":89,"./languages/ocaml":90,"./languages/openscad":91,"./languages/oxygene":92,"./languages/parser3":93,"./languages/perl":94,"./languages/pf":95,"./languages/php":96,"./languages/powershell":97,"./languages/processing":98,"./languages/profile":99,"./languages/prolog":100,"./languages/protobuf":101,"./languages/puppet":102,"./languages/python":103,"./languages/q":104,"./languages/r":105,"./languages/rib":106,"./languages/roboconf":107,"./languages/rsl":108,"./languages/ruby":109,"./languages/ruleslanguage":110,"./languages/rust":111,"./languages/scala":112,"./languages/scheme":113,"./languages/scilab":114,"./languages/scss":115,"./languages/smali":116,"./languages/smalltalk":117,"./languages/sml":118,"./languages/sql":119,"./languages/stata":120,"./languages/step21":121,"./languages/stylus":122,"./languages/swift":123,"./languages/tcl":124,"./languages/tex":125,"./languages/thrift":126,"./languages/tp":127,"./languages/twig":128,"./languages/typescript":129,"./languages/vala":130,"./languages/vbnet":131,"./languages/vbscript":133,"./languages/vbscript-html":132,"./languages/verilog":134,"./languages/vhdl":135,"./languages/vim":136,"./languages/x86asm":137,"./languages/xl":138,"./languages/xml":139,"./languages/xquery":140,"./languages/zephir":141}],7:[function(require,module,exports){
+},{"./highlight":6,"./languages/1c":8,"./languages/accesslog":9,"./languages/actionscript":10,"./languages/apache":11,"./languages/applescript":12,"./languages/armasm":13,"./languages/asciidoc":14,"./languages/aspectj":15,"./languages/autohotkey":16,"./languages/autoit":17,"./languages/avrasm":18,"./languages/axapta":19,"./languages/bash":20,"./languages/brainfuck":21,"./languages/cal":22,"./languages/capnproto":23,"./languages/ceylon":24,"./languages/clojure":26,"./languages/clojure-repl":25,"./languages/cmake":27,"./languages/coffeescript":28,"./languages/cpp":29,"./languages/crystal":30,"./languages/cs":31,"./languages/css":32,"./languages/d":33,"./languages/dart":34,"./languages/delphi":35,"./languages/diff":36,"./languages/django":37,"./languages/dns":38,"./languages/dockerfile":39,"./languages/dos":40,"./languages/dust":41,"./languages/elixir":42,"./languages/elm":43,"./languages/erb":44,"./languages/erlang":46,"./languages/erlang-repl":45,"./languages/fix":47,"./languages/fortran":48,"./languages/fsharp":49,"./languages/gams":50,"./languages/gcode":51,"./languages/gherkin":52,"./languages/glsl":53,"./languages/go":54,"./languages/golo":55,"./languages/gradle":56,"./languages/groovy":57,"./languages/haml":58,"./languages/handlebars":59,"./languages/haskell":60,"./languages/haxe":61,"./languages/http":62,"./languages/inform7":63,"./languages/ini":64,"./languages/irpf90":65,"./languages/java":66,"./languages/javascript":67,"./languages/json":68,"./languages/julia":69,"./languages/kotlin":70,"./languages/lasso":71,"./languages/less":72,"./languages/lisp":73,"./languages/livecodeserver":74,"./languages/livescript":75,"./languages/lua":76,"./languages/makefile":77,"./languages/markdown":78,"./languages/mathematica":79,"./languages/matlab":80,"./languages/mel":81,"./languages/mercury":82,"./languages/mizar":83,"./languages/mojolicious":84,"./languages/monkey":85,"./languages/nginx":86,"./languages/nimrod":87,"./languages/nix":88,"./languages/nsis":89,"./languages/objectivec":90,"./languages/ocaml":91,"./languages/openscad":92,"./languages/oxygene":93,"./languages/parser3":94,"./languages/perl":95,"./languages/pf":96,"./languages/php":97,"./languages/powershell":98,"./languages/processing":99,"./languages/profile":100,"./languages/prolog":101,"./languages/protobuf":102,"./languages/puppet":103,"./languages/python":104,"./languages/q":105,"./languages/r":106,"./languages/rib":107,"./languages/roboconf":108,"./languages/rsl":109,"./languages/ruby":110,"./languages/ruleslanguage":111,"./languages/rust":112,"./languages/scala":113,"./languages/scheme":114,"./languages/scilab":115,"./languages/scss":116,"./languages/smali":117,"./languages/smalltalk":118,"./languages/sml":119,"./languages/sql":120,"./languages/stata":121,"./languages/step21":122,"./languages/stylus":123,"./languages/swift":124,"./languages/tcl":125,"./languages/tex":126,"./languages/thrift":127,"./languages/tp":128,"./languages/twig":129,"./languages/typescript":130,"./languages/vala":131,"./languages/vbnet":132,"./languages/vbscript":134,"./languages/vbscript-html":133,"./languages/verilog":135,"./languages/vhdl":136,"./languages/vim":137,"./languages/x86asm":138,"./languages/xl":139,"./languages/xml":140,"./languages/xquery":141,"./languages/zephir":142}],8:[function(require,module,exports){
 module.exports = function(hljs){
   var IDENT_RE_RU = '[a-zA-Zа-яА-Я][a-zA-Z0-9_а-яА-Я]*';
   var OneS_KEYWORDS = 'возврат дата для если и или иначе иначеесли исключение конецесли ' +
@@ -2206,7 +2221,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -2244,7 +2259,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -2319,7 +2334,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {className: 'number', begin: '[\\$%]\\d+'};
   return {
@@ -2365,7 +2380,7 @@ module.exports = function(hljs) {
     illegal: /\S/
   };
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
@@ -2462,7 +2477,7 @@ module.exports = function(hljs) {
     illegal: '//|->|=>|\\[\\['
   };
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -2554,7 +2569,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['adoc'],
@@ -2746,7 +2761,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
@@ -2884,7 +2899,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     className: 'escape',
@@ -2946,7 +2961,7 @@ module.exports = function(hljs) {
     ])
   }
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function(hljs) {
     var KEYWORDS = 'ByRef Case Const ContinueCase ContinueLoop ' +
         'Default Dim Do Else ElseIf EndFunc EndIf EndSelect ' +
@@ -4700,7 +4715,7 @@ module.exports = function(hljs) {
         ]
     }
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -4762,7 +4777,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
@@ -4793,7 +4808,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -4869,7 +4884,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = function(hljs){
   var LITERAL = {
     className: 'literal',
@@ -4906,7 +4921,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
@@ -4985,7 +5000,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['capnp'],
@@ -5034,7 +5049,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = function(hljs) {
   // 2.3. Identifiers and keywords
   var KEYWORDS =
@@ -5102,7 +5117,7 @@ module.exports = function(hljs) {
     ].concat(EXPRESSIONS)
   };
 };
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -5117,7 +5132,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     built_in:
@@ -5214,7 +5229,7 @@ module.exports = function(hljs) {
     contains: [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['cmake.in'],
@@ -5253,7 +5268,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -5394,7 +5409,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP_PRIMATIVE_TYPES = {
     className: 'keyword',
@@ -5535,7 +5550,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
   var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
@@ -5688,7 +5703,7 @@ module.exports = function(hljs) {
     contains: CRYSTAL_DEFAULT_CONTAINS
   };
 };
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     // Normal keywords.
@@ -5807,7 +5822,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var FUNCTION = {
@@ -5910,7 +5925,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = /**
  * Known issues:
  *
@@ -6168,7 +6183,7 @@ function(hljs) {
     ]
   };
 };
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = function (hljs) {
   var SUBST = {
     className: 'subst',
@@ -6269,7 +6284,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'exports register file shl array record property for mod while set ally label uses raise not ' +
@@ -6336,7 +6351,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['patch'],
@@ -6376,7 +6391,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = function(hljs) {
   var FILTER = {
     className: 'filter',
@@ -6426,7 +6441,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['bind', 'zone'],
@@ -6454,7 +6469,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['docker'],
@@ -6489,7 +6504,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = hljs.COMMENT(
     /@?rem\b/, /$/,
@@ -6537,7 +6552,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
@@ -6572,7 +6587,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = function(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
@@ -6674,7 +6689,7 @@ module.exports = function(hljs) {
     contains: ELIXIR_DEFAULT_CONTAINS
   };
 };
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODES = [
     hljs.COMMENT('--', '$'),
@@ -6760,7 +6775,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -6775,7 +6790,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -6823,7 +6838,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 module.exports = function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
@@ -6975,7 +6990,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -7004,7 +7019,7 @@ module.exports = function(hljs) {
     case_insensitive: true
   };
 };
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -7074,7 +7089,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 module.exports = function(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
@@ -7132,7 +7147,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'abort acronym acronyms alias all and assign binary card diag display else1 eps eq equation equations file files ' +
@@ -7169,7 +7184,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 module.exports = function(hljs) {
     var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
     var GCODE_CLOSE_RE = '\\%';
@@ -7242,7 +7257,7 @@ module.exports = function(hljs) {
         ].concat(GCODE_CODE)
     };
 };
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     aliases: ['feature'],
@@ -7275,7 +7290,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -7369,7 +7384,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports = function(hljs) {
   var GO_KEYWORDS = {
     keyword:
@@ -7408,7 +7423,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
       keywords: {
@@ -7432,7 +7447,7 @@ module.exports = function(hljs) {
       ]
     }
 };
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -7467,7 +7482,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
         keywords: {
@@ -7555,7 +7570,7 @@ module.exports = function(hljs) {
         illegal: /#/
     }
 };
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = // TODO support filter tags like :javascript, support inline HTML
 function(hljs) {
   return {
@@ -7663,7 +7678,7 @@ function(hljs) {
     ]
   };
 };
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield';
   return {
@@ -7696,7 +7711,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODES = [
     hljs.COMMENT('--', '$'),
@@ -7820,7 +7835,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],60:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -7881,7 +7896,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],61:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['https'],
@@ -7916,7 +7931,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = function(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
@@ -7974,7 +7989,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: "string",
@@ -8034,7 +8049,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -8109,7 +8124,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = function(hljs) {
   var GENERIC_IDENT_RE = hljs.UNDERSCORE_IDENT_RE + '(<' + hljs.UNDERSCORE_IDENT_RE + '>)?';
   var KEYWORDS =
@@ -8209,7 +8224,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['js'],
@@ -8321,7 +8336,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],67:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
@@ -8359,7 +8374,7 @@ module.exports = function(hljs) {
     illegal: '\\S'
   };
 };
-},{}],68:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = function(hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
@@ -8520,7 +8535,7 @@ module.exports = function(hljs) {
 
   return DEFAULT;
 };
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = 'val var get set class trait object public open private protected ' +
     'final enum if else do while for when break continue throw try catch finally ' +
@@ -8621,7 +8636,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = function(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
@@ -8807,7 +8822,7 @@ module.exports = function(hljs) {
     ].concat(LASSO_CODE)
   };
 };
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
@@ -8944,7 +8959,7 @@ module.exports = function(hljs) {
     contains: RULES
   };
 };
-},{}],72:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = function(hljs) {
   var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#!]*';
   var MEC_RE = '\\|[^]*?\\|';
@@ -9051,7 +9066,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],73:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable', begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
@@ -9209,7 +9224,7 @@ module.exports = function(hljs) {
     illegal: ';$|^\\[|^='
   };
 };
-},{}],74:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -9360,7 +9375,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],75:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
@@ -9416,7 +9431,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],76:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -9462,7 +9477,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],77:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
@@ -9564,7 +9579,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['mma'],
@@ -9623,7 +9638,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],79:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
@@ -9714,7 +9729,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -9944,7 +9959,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -10033,7 +10048,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],82:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -10052,7 +10067,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -10077,7 +10092,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],84:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -10155,7 +10170,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],85:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -10237,7 +10252,7 @@ module.exports = function(hljs) {
     illegal: '[^\\s\\}]'
   };
 };
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['nim'],
@@ -10289,7 +10304,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = function(hljs) {
   var NIX_KEYWORDS = {
     keyword: 'rec with let in inherit assert if else then',
@@ -10340,7 +10355,7 @@ module.exports = function(hljs) {
     contains: EXPRESSIONS
   };
 };
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = function(hljs) {
   var CONSTANTS = {
     className: 'symbol',
@@ -10428,7 +10443,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],89:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = function(hljs) {
   var API_CLASS = {
     className: 'built_in',
@@ -10507,7 +10522,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = function(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
@@ -10578,7 +10593,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = function(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
@@ -10636,7 +10651,7 @@ module.exports = function(hljs) {
 		]
 	}
 };
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 module.exports = function(hljs) {
   var OXYGENE_KEYWORDS = 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue '+
     'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false '+
@@ -10705,7 +10720,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],93:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 module.exports = function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
@@ -10753,7 +10768,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 module.exports = function(hljs) {
   var PERL_KEYWORDS = 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
     'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
@@ -10910,7 +10925,7 @@ module.exports = function(hljs) {
     contains: PERL_DEFAULT_CONTAINS
   };
 };
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 module.exports = function(hljs) {
   var MACRO = {
     className: 'variable',
@@ -10962,7 +10977,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable', begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
@@ -11087,7 +11102,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 module.exports = function(hljs) {
   var backtickEscape = {
     begin: '`[\\s\\S]',
@@ -11135,7 +11150,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -11183,7 +11198,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],99:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -11225,7 +11240,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],100:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ATOM = {
@@ -11314,7 +11329,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],101:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -11351,7 +11366,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var PUPPET_KEYWORDS = {
@@ -11459,7 +11474,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 module.exports = function(hljs) {
   var PROMPT = {
     className: 'prompt',  begin: /^(>>>|\.\.\.) /
@@ -11544,7 +11559,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = function(hljs) {
   var Q_KEYWORDS = {
   keyword:
@@ -11567,7 +11582,7 @@ module.exports = function(hljs) {
      ]
   };
 };
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
@@ -11637,7 +11652,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -11664,7 +11679,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\n{\r\n]+\\{';
 
@@ -11724,7 +11739,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -11761,7 +11776,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS =
@@ -11930,7 +11945,7 @@ module.exports = function(hljs) {
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -11991,7 +12006,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '([uif](8|16|32|64|size))\?';
   var BLOCK_COMMENT = hljs.inherit(hljs.C_BLOCK_COMMENT_MODE);
@@ -12077,7 +12092,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ANNOTATION = {
@@ -12140,7 +12155,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 module.exports = function(hljs) {
   var SCHEME_IDENT_RE = '[^\\(\\)\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
@@ -12262,7 +12277,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, NUMBER, STRING, QUOTED_IDENT, LIST].concat(COMMENT_MODES)
   };
 };
-},{}],114:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMON_CONTAINS = [
@@ -12317,7 +12332,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],115:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
@@ -12434,7 +12449,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 module.exports = function(hljs) {
   var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
   var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
@@ -12517,7 +12532,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
@@ -12570,7 +12585,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['ml'],
@@ -12635,7 +12650,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '$');
   return {
@@ -12795,7 +12810,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['do', 'ado'],
@@ -12833,7 +12848,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],121:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = function(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_CLOSE_RE = 'END-ISO-10303-21;';
@@ -12885,7 +12900,7 @@ module.exports = function(hljs) {
     ].concat(STEP21_CODE)
   };
 };
-},{}],122:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var VARIABLE = {
@@ -13328,7 +13343,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],123:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 module.exports = function(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: 'class deinit enum extension func init let protocol static ' +
@@ -13443,7 +13458,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],124:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['tk'],
@@ -13505,7 +13520,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMAND1 = {
     className: 'command',
@@ -13560,7 +13575,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],126:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
@@ -13595,7 +13610,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],127:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 module.exports = function(hljs) {
   var TPID = {
     className: 'number',
@@ -13679,7 +13694,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],128:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -13736,7 +13751,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],129:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -13834,7 +13849,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],130:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -13889,7 +13904,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],131:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vb'],
@@ -13945,7 +13960,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -13957,7 +13972,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],133:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vbs'],
@@ -13996,7 +14011,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],134:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['v'],
@@ -14046,7 +14061,7 @@ module.exports = function(hljs) {
     ]
   }; // return
 };
-},{}],135:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 module.exports = function(hljs) {
   // Regular expression for VHDL numeric literals.
 
@@ -14102,7 +14117,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],136:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     lexemes: /[!#@\w]+/,
@@ -14165,7 +14180,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],137:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -14301,7 +14316,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILTIN_MODULES =
     'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo ' +
@@ -14388,7 +14403,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],139:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 module.exports = function(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var PHP = {
@@ -14491,7 +14506,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],140:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'for let if while then else return where group by xquery encoding version' +
     'module namespace boundary-space preserve strip default collation base-uri ordering' +
@@ -14564,7 +14579,7 @@ module.exports = function(hljs) {
     contains: CONTAINS
   };
 };
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: 'string',
@@ -14671,7 +14686,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],142:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -23883,7 +23898,7 @@ return jQuery;
 
 }));
 
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 //     keymaster.js
 //     (c) 2011-2013 Thomas Fuchs
 //     keymaster.js may be freely distributed under the MIT license.
@@ -24181,7 +24196,7 @@ return jQuery;
 
 })(this);
 
-},{}],144:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -25470,7 +25485,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 /**
  * 默认配置
  *
@@ -25878,7 +25893,7 @@ exports.stripBlankChar = stripBlankChar;
 exports.cssFilter = defaultCSSFilter;
 
 
-},{"./util":148,"cssfilter":152}],146:[function(require,module,exports){
+},{"./util":149,"cssfilter":153}],147:[function(require,module,exports){
 /**
  * 模块入口
  *
@@ -25923,7 +25938,7 @@ if (typeof window !== 'undefined') {
   window.filterXSS = module.exports;
 }
 
-},{"./default":145,"./parser":147,"./xss":149}],147:[function(require,module,exports){
+},{"./default":146,"./parser":148,"./xss":150}],148:[function(require,module,exports){
 /**
  * 简单 HTML Parser
  *
@@ -26162,7 +26177,7 @@ function stripQuoteWrap (text) {
 exports.parseTag = parseTag;
 exports.parseAttr = parseAttr;
 
-},{"./util":148}],148:[function(require,module,exports){
+},{"./util":149}],149:[function(require,module,exports){
 module.exports = {
   indexOf: function (arr, item) {
     var i, j;
@@ -26193,7 +26208,7 @@ module.exports = {
   }
 };
 
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 /**
  * 过滤XSS
  *
@@ -26389,7 +26404,7 @@ FilterXSS.prototype.process = function (html) {
 
 module.exports = FilterXSS;
 
-},{"./default":145,"./parser":147,"./util":148,"cssfilter":152}],150:[function(require,module,exports){
+},{"./default":146,"./parser":148,"./util":149,"cssfilter":153}],151:[function(require,module,exports){
 /**
  * cssfilter
  *
@@ -26481,7 +26496,7 @@ FilterCSS.prototype.process = function (css) {
 
 module.exports = FilterCSS;
 
-},{"./default":151,"./parser":153,"./util":154}],151:[function(require,module,exports){
+},{"./default":152,"./parser":154,"./util":155}],152:[function(require,module,exports){
 /**
  * cssfilter
  *
@@ -26862,7 +26877,7 @@ exports.whiteList = whiteList;
 exports.onAttr = onAttr;
 exports.onIgnoreAttr = onIgnoreAttr;
 
-},{}],152:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 /**
  * cssfilter
  *
@@ -26905,7 +26920,7 @@ if (typeof window !== 'undefined') {
   window.filterCSS = module.exports;
 }
 
-},{"./css":150,"./default":151}],153:[function(require,module,exports){
+},{"./css":151,"./default":152}],154:[function(require,module,exports){
 /**
  * cssfilter
  *
@@ -26981,7 +26996,7 @@ function parseStyle (css, onAttr) {
 
 module.exports = parseStyle;
 
-},{"./util":154}],154:[function(require,module,exports){
+},{"./util":155}],155:[function(require,module,exports){
 module.exports = {
   indexOf: function (arr, item) {
     var i, j;

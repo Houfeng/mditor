@@ -242,9 +242,9 @@ Editor.prototype._handleIndent = function (name, handler) {
 		me.editor.insterBeforeText(buffer.join(''));
 		return self;
 	});
-	self.mditor.key('tab', 'addIndent');
-	self.mditor.key('shift+tab', 'removeIndent');
-	self.mditor.key('enter', '_keepIndent', true);
+	self.mditor.key.bind('tab', 'addIndent');
+	self.mditor.key.bind('shift+tab', 'removeIndent');
+	self.mditor.key.bind('enter', '_keepIndent', true);
 	return self;
 };
 
@@ -268,7 +268,7 @@ Editor.prototype._handleUL = function () {
 		}
 		return self;
 	});
-	self.mditor.key('enter', '_ulAutoComplete', true);
+	self.mditor.key.bind('enter', '_ulAutoComplete', true);
 	return self;
 };
 
@@ -294,6 +294,6 @@ Editor.prototype._handleOL = function () {
 		}
 		return self;
 	});
-	self.mditor.key('enter', '_olAutoComplete', true);
+	self.mditor.key.bind('enter', '_olAutoComplete', true);
 	return self;
 };

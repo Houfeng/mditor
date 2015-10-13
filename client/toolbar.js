@@ -247,7 +247,7 @@ Toolbar.prototype._render = function (items, showList, holder) {
 		if (item.key) {
 			item.key = item.key.replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();
-			self.mditor.key(item.key, item.name);
+			self.mditor.key.unbind(item.key).bind(item.key, item.name);
 		}
 		buffer.push('<i data-cmd="' + item.name + '" class="fa fa-' + (item.icon || item.name) + '" title="' + (item.title || item.name) + '"></i>');
 	});
