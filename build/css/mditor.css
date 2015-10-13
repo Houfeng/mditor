@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.1
+ * @version v0.1.2 beta
  * @homepage http://houfeng.net/mditor
  * @license MIT
  * @author Houfeng
@@ -2918,6 +2918,7 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
 	transition: .2s;
 	-webkit-transition: .2s;
 	position: relative;
+	vertical-align: middle;
 }
 .mditor .toolbar .fa:hover,
 .mditor .toolbar .fa:active,
