@@ -6,7 +6,7 @@ var Editor = module.exports = function (mditor) {
 	self.mditor = mditor;
 	self.innerEditor = mditor.ui.editor;
 	self._handleIndent();
-	self._handleUL();
+	self._handleULAndQuote();
 	self._handleOL();
 	return self;
 };
@@ -248,14 +248,14 @@ Editor.prototype._handleIndent = function (name, handler) {
 	return self;
 };
 
-Editor.prototype._handleUL = function () {
+Editor.prototype._handleULAndQuote = function () {
 	var self = this;
 	//在回车时根据情况保持缩进
-	self.mditor.addCommand("_ulAutoComplete", function (event) {
+	self.mditor.addCommand("_ulAndQuoteAutoComplete", function (event) {
 		var me = this;
 		var text = self.getBeforeTextInLine();
 		var prefix = text.substr(0, 2);
-		if (prefix != '- ' && prefix != '* ') {
+		if (prefix != '- ' && prefix != '* ' && prefix != '> ') {
 			return self;
 		}
 		event.preventDefault();
@@ -268,7 +268,7 @@ Editor.prototype._handleUL = function () {
 		}
 		return self;
 	});
-	self.mditor.key.bind('enter', '_ulAutoComplete', true);
+	self.mditor.key.bind('enter', '_ulAndQuoteAutoComplete', true);
 	return self;
 };
 
