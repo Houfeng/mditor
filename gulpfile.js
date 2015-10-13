@@ -35,6 +35,7 @@ gulp.task('browserify', function () {
 		.pipe(source(pkg.name + '.js'))
 		.pipe(buffer())
 		.pipe(replace("{version}", pkg.version))
+		.pipe(replace("{homepage}", pkg.homepage))
 		.pipe(header(banner, pkg))
 		.pipe(gulp.dest('./build/js/'))
 		.pipe(uglify({

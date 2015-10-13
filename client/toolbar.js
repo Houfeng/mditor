@@ -180,7 +180,7 @@ Toolbar.prototype.items = {
 		"title": "帮助",
 		"icon": "question",
 		"handler": function (event) {
-			alert('help');
+			window.open("{homepage}", 'mditor');
 			return this;
 		},
 		"key": "shift+alt+/"
