@@ -1,10 +1,16 @@
 var keymaster = require("keymaster");
 
+/**
+ * 定义快捷键管理 “类”
+ **/
 var Key = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 };
 
+/**
+ * 绑定一个快捷键
+ **/
 Key.prototype.bind = function (keyName, cmdName, allowDefault) {
 	var self = this;
 	var mditor = self.mditor;
@@ -38,6 +44,9 @@ Key.prototype.bind = function (keyName, cmdName, allowDefault) {
 	return self;
 };
 
+/**
+ * 解除绑定一个快捷键
+ **/
 Key.prototype.unbind = function (keyName) {
 	var self = this;
 	keymaster.unbind(keyName);
