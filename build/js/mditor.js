@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.2
+ * @version v0.1.2 beta
  * @homepage http://houfeng.net/mditor
  * @license MIT
  * @author Houfeng
@@ -346,7 +346,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.1.2";
+Mditor.version = "0.1.2 beta";
 
 Mditor.prototype._init = function () {
 	var self = this;
@@ -859,11 +859,17 @@ Mditor.prototype.off = function (name, handler) {
 },{"../lib/parser":5,"./editor":1,"./key":3,"./toolbar":4,"jquery":143}],3:[function(require,module,exports){
 var keymaster = require("keymaster");
 
+/**
+ * 定义快捷键管理 “类”
+ **/
 var Key = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 };
 
+/**
+ * 绑定一个快捷键
+ **/
 Key.prototype.bind = function (keyName, cmdName, allowDefault) {
 	var self = this;
 	var mditor = self.mditor;
@@ -897,6 +903,9 @@ Key.prototype.bind = function (keyName, cmdName, allowDefault) {
 	return self;
 };
 
+/**
+ * 解除绑定一个快捷键
+ **/
 Key.prototype.unbind = function (keyName) {
 	var self = this;
 	keymaster.unbind(keyName);
@@ -1085,7 +1094,7 @@ Toolbar.prototype.items = {
 		"title": "帮助",
 		"icon": "question",
 		"handler": function (event) {
-			alert('help');
+			window.open("http://houfeng.net/mditor", 'mditor');
 			return this;
 		},
 		"key": "shift+alt+/"
