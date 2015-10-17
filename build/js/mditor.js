@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.2 beta
+ * @version v0.1.2
  * @homepage http://houfeng.net/mditor
  * @license MIT
  * @author Houfeng
@@ -16,7 +16,7 @@ var Editor = module.exports = function (mditor) {
 	self.mditor = mditor;
 	self.innerEditor = mditor.ui.editor;
 	self._handleIndent();
-	self._handleUL();
+	self._handleULAndQuote();
 	self._handleOL();
 	return self;
 };
@@ -258,14 +258,14 @@ Editor.prototype._handleIndent = function (name, handler) {
 	return self;
 };
 
-Editor.prototype._handleUL = function () {
+Editor.prototype._handleULAndQuote = function () {
 	var self = this;
 	//在回车时根据情况保持缩进
-	self.mditor.addCommand("_ulAutoComplete", function (event) {
+	self.mditor.addCommand("_ulAndQuoteAutoComplete", function (event) {
 		var me = this;
 		var text = self.getBeforeTextInLine();
 		var prefix = text.substr(0, 2);
-		if (prefix != '- ' && prefix != '* ') {
+		if (prefix != '- ' && prefix != '* ' && prefix != '> ') {
 			return self;
 		}
 		event.preventDefault();
@@ -278,7 +278,7 @@ Editor.prototype._handleUL = function () {
 		}
 		return self;
 	});
-	self.mditor.key.bind('enter', '_ulAutoComplete', true);
+	self.mditor.key.bind('enter', '_ulAndQuoteAutoComplete', true);
 	return self;
 };
 
@@ -335,6 +335,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	if (!editor) {
 		throw "must specify a textarea.";
 	}
+	options = options || {};
 	self._init();
 	self.ui = {};
 	self.ui.editor = $(editor);
@@ -346,7 +347,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.1.2 beta";
+Mditor.version = "0.1.2";
 
 Mditor.prototype._init = function () {
 	var self = this;
@@ -919,6 +920,7 @@ var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.holder = mditor.ui.toolbar;
+	self.keymap = mditor.options.keymap || {};
 	self.controlHolder = mditor.ui.control;
 	self.update();
 };
@@ -1005,10 +1007,19 @@ Toolbar.prototype.items = {
 	"code": {
 		"title": "代码",
 		"handler": function (event) {
-			var before = "```";
-			var after = this.EOL + "```  " + this.EOL;
+			var lang = "javascript" + this.EOL;
+			var before = "```" + lang;
+			var after = "```  " + this.EOL;
+			var text = this.editor.getSelectText().trim();
+			if (text.length > 0) {
+				text += this.EOL;
+			}
+			this.editor.setSelectText(text);
 			this.editor.wrapSelectText(before, after);
-			this.editor.setSelectText("javascript");
+			var range = this.editor.getSelectRange();
+			var start = range.start - lang.length;
+			var end = range.start - this.EOL.length;
+			this.editor.setSelectRange(start, end);
 			return this;
 		},
 		"key": "shift+alt+c"
@@ -1150,6 +1161,7 @@ Toolbar.prototype.remove = function (name) {
 
 Toolbar.prototype._render = function (items, showList, holder) {
 	var self = this;
+	var keymap = self.keymap;
 	var buffer = [];
 	showList.forEach(function (name) {
 		var item = items[name];
@@ -1159,7 +1171,7 @@ Toolbar.prototype._render = function (items, showList, holder) {
 			self.mditor.addCommand(item.name, item.handler);
 		}
 		if (item.key) {
-			item.key = item.key.replace('{cmd}', self.mditor.CMD);
+			item.key = (keymap[item.name] || item.key).replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();
 			self.mditor.key.unbind(item.key).bind(item.key, item.name);
 		}
