@@ -92,10 +92,19 @@ Toolbar.prototype.items = {
 	"code": {
 		"title": "代码",
 		"handler": function (event) {
-			var before = "```";
-			var after = this.EOL + "```  " + this.EOL;
+			var lang = "javascript" + this.EOL;
+			var before = "```" + lang;
+			var after = "```  " + this.EOL;
+			var text = this.editor.getSelectText().trim();
+			if (text.length > 0) {
+				text += this.EOL;
+			}
+			this.editor.setSelectText(text);
 			this.editor.wrapSelectText(before, after);
-			this.editor.setSelectText("javascript");
+			var range = this.editor.getSelectRange();
+			var start = range.start - lang.length;
+			var end = range.start - this.EOL.length;
+			this.editor.setSelectRange(start, end);
 			return this;
 		},
 		"key": "shift+alt+c"

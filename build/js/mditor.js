@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.2-beta
+ * @version v0.1.2
  * @homepage http://houfeng.net/mditor
  * @license MIT
  * @author Houfeng
@@ -347,7 +347,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.1.2-beta";
+Mditor.version = "0.1.2";
 
 Mditor.prototype._init = function () {
 	var self = this;
@@ -1007,10 +1007,19 @@ Toolbar.prototype.items = {
 	"code": {
 		"title": "代码",
 		"handler": function (event) {
-			var before = "```";
-			var after = this.EOL + "```  " + this.EOL;
+			var lang = "javascript" + this.EOL;
+			var before = "```" + lang;
+			var after = "```  " + this.EOL;
+			var text = this.editor.getSelectText().trim();
+			if (text.length > 0) {
+				text += this.EOL;
+			}
+			this.editor.setSelectText(text);
 			this.editor.wrapSelectText(before, after);
-			this.editor.setSelectText("javascript");
+			var range = this.editor.getSelectRange();
+			var start = range.start - lang.length;
+			var end = range.start - this.EOL.length;
+			this.editor.setSelectRange(start, end);
 			return this;
 		},
 		"key": "shift+alt+c"
