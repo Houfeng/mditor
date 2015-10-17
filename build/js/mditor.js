@@ -335,6 +335,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	if (!editor) {
 		throw "must specify a textarea.";
 	}
+	options = options || {};
 	self._init();
 	self.ui = {};
 	self.ui.editor = $(editor);
@@ -919,6 +920,7 @@ var Toolbar = module.exports = function (mditor) {
 	var self = this;
 	self.mditor = mditor;
 	self.holder = mditor.ui.toolbar;
+	self.keymap = mditor.options.keymap || {};
 	self.controlHolder = mditor.ui.control;
 	self.update();
 };
@@ -1150,6 +1152,7 @@ Toolbar.prototype.remove = function (name) {
 
 Toolbar.prototype._render = function (items, showList, holder) {
 	var self = this;
+	var keymap = self.keymap;
 	var buffer = [];
 	showList.forEach(function (name) {
 		var item = items[name];
@@ -1159,7 +1162,7 @@ Toolbar.prototype._render = function (items, showList, holder) {
 			self.mditor.addCommand(item.name, item.handler);
 		}
 		if (item.key) {
-			item.key = item.key.replace('{cmd}', self.mditor.CMD);
+			item.key = (keymap[item.name] || item.key).replace('{cmd}', self.mditor.CMD);
 			item.title = ((item.title || '') + ' ' + item.key).trim();
 			self.mditor.key.unbind(item.key).bind(item.key, item.name);
 		}

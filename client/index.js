@@ -25,6 +25,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	if (!editor) {
 		throw "must specify a textarea.";
 	}
+	options = options || {};
 	self._init();
 	self.ui = {};
 	self.ui.editor = $(editor);
