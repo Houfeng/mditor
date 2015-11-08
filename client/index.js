@@ -44,7 +44,7 @@ Mditor.prototype._init = function () {
 	self.platform = navigator.platform.toLowerCase();
 	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
 	self.CMD = self.platform.indexOf('mac') > -1 ? 'command' : 'ctrl';
-	self.INDENT = '\t';
+	self.INDENT = '    ';
 	return self;
 };
 
