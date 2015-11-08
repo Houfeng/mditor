@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.3
+ * @version v0.1.4
  * @homepage http://houfeng.net/mditor
  * @license MIT
  * @author Houfeng
@@ -347,14 +347,14 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.1.3";
+Mditor.version = "0.1.4";
 
 Mditor.prototype._init = function () {
 	var self = this;
 	self.platform = navigator.platform.toLowerCase();
 	self.EOL = self.platform == 'win32' ? '\r\n' : '\n';
 	self.CMD = self.platform.indexOf('mac') > -1 ? 'command' : 'ctrl';
-	self.INDENT = '    ';
+	self.INDENT = '\t';
 	return self;
 };
 
