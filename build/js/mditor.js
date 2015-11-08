@@ -1,6 +1,6 @@
 /**
  * mditor , 一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器
- * @version v0.1.2
+ * @version v0.1.4
  * @homepage http://houfeng.net/mditor
  * @license MIT
  * @author Houfeng
@@ -86,13 +86,13 @@ Editor.prototype.wrapSelectText = function (before, after) {
 	return self;
 };
 
-Editor.prototype.insterBeforeText = function (text) {
+Editor.prototype.insertBeforeText = function (text) {
 	var self = this;
 	self.wrapSelectText(text);
 	return self;
 };
 
-Editor.prototype.insterAfterText = function (text) {
+Editor.prototype.insertAfterText = function (text) {
 	var self = this;
 	self.wrapSelectText("", text);
 	return self;
@@ -189,7 +189,7 @@ Editor.prototype._handleIndent = function (name, handler) {
 		var me = this;
 		var selectText = me.editor.getSelectText();
 		if (selectText.length < 1) {
-			me.editor.insterBeforeText(me.INDENT);
+			me.editor.insertBeforeText(me.INDENT);
 			return;
 		}
 		var textArray = selectText.split(me.EOL);
@@ -249,7 +249,7 @@ Editor.prototype._handleIndent = function (name, handler) {
 			count++;
 			buffer.push(me.INDENT);
 		}
-		me.editor.insterBeforeText(buffer.join(''));
+		me.editor.insertBeforeText(buffer.join(''));
 		return self;
 	});
 	self.mditor.key.bind('tab', 'addIndent');
@@ -271,7 +271,7 @@ Editor.prototype._handleULAndQuote = function () {
 		event.preventDefault();
 		event.keyCode = 0;
 		if (text.length > prefix.length) {
-			me.editor.insterBeforeText(me.EOL + prefix);
+			me.editor.insertBeforeText(me.EOL + prefix);
 		} else {
 			me.editor.selectBeforeText(prefix.length);
 			me.editor.setSelectText('');
@@ -297,7 +297,7 @@ Editor.prototype._handleOL = function () {
 		event.keyCode = 0;
 		if (text.length > prefix.length) {
 			var num = parseInt(prefix[0]) + 1;
-			me.editor.insterBeforeText(me.EOL + num + '. ');
+			me.editor.insertBeforeText(me.EOL + num + '. ');
 		} else {
 			me.editor.selectBeforeText(prefix.length);
 			me.editor.setSelectText('');
@@ -347,7 +347,7 @@ var Mditor = window.Mditor = module.exports = function (editor, options) {
 	self._bindCommands();
 };
 
-Mditor.version = "0.1.2";
+Mditor.version = "0.1.4";
 
 Mditor.prototype._init = function () {
 	var self = this;
