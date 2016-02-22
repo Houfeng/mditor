@@ -48,7 +48,7 @@ npm install mditor -save
 在服务端解析
 ```javascript
 var mditor = require("mditor");
-var parser = mditor.Parser();
+var parser = new mditor.Parser();
 var html = parser.parse("** Hello mditor! **");
 ```
 
