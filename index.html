@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -29,7 +29,7 @@
       </header>
       <section>
         <h2>
-<a id="只求极致" class="anchor" href="#%E5%8F%AA%E6%B1%82%E6%9E%81%E8%87%B4" aria-hidden="true"><span class="octicon octicon-link"></span></a>只求极致</h2>
+<a id="只求极致" class="anchor" href="#%E5%8F%AA%E6%B1%82%E6%9E%81%E8%87%B4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>只求极致</h2>
 
 <p>[ <strong>M</strong> ] arkdown + E [ <strong>ditor</strong> ] = <strong>Mditor</strong>    </p>
 
@@ -41,10 +41,10 @@
 <a href="http://houfeng.net/mditor/demo/index.html">在线 demo</a>  </p>
 
 <h2>
-<a id="浏览器端" class="anchor" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF" aria-hidden="true"><span class="octicon octicon-link"></span></a>浏览器端</h2>
+<a id="浏览器端" class="anchor" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>浏览器端</h2>
 
 <h5>
-<a id="第一步" class="anchor" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>第一步:</h5>
+<a id="第一步" class="anchor" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>第一步:</h5>
 
 <p>引入 Mditor 样式文件  </p>
 
@@ -55,7 +55,7 @@
 <div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>../build/js/mditor.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
 
 <h5>
-<a id="第二步" class="anchor" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>第二步:</h5>
+<a id="第二步" class="anchor" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>第二步:</h5>
 
 <p>添加 textarea 元素</p>
 
@@ -69,7 +69,7 @@
 });</pre></div>
 
 <h2>
-<a id="服务器端" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF" aria-hidden="true"><span class="octicon octicon-link"></span></a>服务器端</h2>
+<a id="服务器端" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>服务器端</h2>
 
 <p>通过 npm 安装</p>
 
@@ -78,11 +78,11 @@
 <p>在服务端解析</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> mditor <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>mditor<span class="pl-pds">"</span></span>);
-<span class="pl-k">var</span> parser <span class="pl-k">=</span> mditor.Parser();
-<span class="pl-k">var</span> html <span class="pl-k">=</span> parser.<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">"</span>** Hello mditor! **<span class="pl-pds">"</span></span>);</pre></div>
+<span class="pl-k">var</span> parser <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">mditor.Parser</span>();
+<span class="pl-k">var</span> html <span class="pl-k">=</span> <span class="pl-smi">parser</span>.<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">"</span>** Hello mditor! **<span class="pl-pds">"</span></span>);</pre></div>
 
 <h2>
-<a id="近时规划" class="anchor" href="#%E8%BF%91%E6%97%B6%E8%A7%84%E5%88%92" aria-hidden="true"><span class="octicon octicon-link"></span></a>近时规划</h2>
+<a id="近时规划" class="anchor" href="#%E8%BF%91%E6%97%B6%E8%A7%84%E5%88%92" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>近时规划</h2>
 
 <ol>
 <li>公开扩展方法及相关 API</li>
