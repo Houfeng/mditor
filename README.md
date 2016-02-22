@@ -51,7 +51,7 @@ var mditor = require("mditor");
 var parser = new mditor.Parser();
 var html = parser.parse("** Hello mditor! **");
 ```
-
+ 
 ## 近时规划
 1. 公开扩展方法及相关 API
 2. 更新 README.md 增加完整 API 说明
