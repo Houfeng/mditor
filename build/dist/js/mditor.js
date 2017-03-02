@@ -50,7 +50,7 @@
 	var Toolbar = __webpack_require__(40);
 	var Editor = __webpack_require__(45);
 	var Viewer = __webpack_require__(48);
-	var Key = __webpack_require__(200);
+	var Shortcut = __webpack_require__(213);
 	
 	__webpack_require__(202);
 	__webpack_require__(209);
@@ -65,7 +65,7 @@
 	    this.EOL = this.PLATFORM == 'win32' ? '\r\n' : '\n';
 	    this.CMD = this.PLATFORM.indexOf('mac') > -1 ? 'command' : 'ctrl';
 	    this.INDENT = '\t';
-	    this.key = new Key(this);
+	    this.shortcut = new Shortcut(this);
 	  },
 	
 	
@@ -88,42 +88,21 @@
 	      value: ''
 	    };
 	  },
-	  /*istanbul ignore next*/
-	
-	  /**
-	   * 使编辑器获取焦点
-	   **/
-	  focus: function focus() {
+	  /*istanbul ignore next*/focus: function focus() {
 	    this.editor.focus();
 	  },
-	  /*istanbul ignore next*/
-	
-	  /**
-	   * 使编辑器失去焦点
-	   **/
-	  blur: function blur() {
+	  /*istanbul ignore next*/blur: function blur() {
 	    this.editor.blur();
 	  },
-	  /*istanbul ignore next*/
-	
-	  /**
-	   * 添加一个命令
-	   **/
-	  addCommand: function addCommand(item) {
+	  /*istanbul ignore next*/addCommand: function addCommand(item) {
 	    if (!item.name || !item.handler) return;
 	    this.commands = this.commands || {};
 	    this.commands[item.name] = item;
 	    if (item.key) {
-	      var key = item.key.replace('{cmd}', self.mditor.CMD);
-	      this.key.unbind(key).bind(key, item.name);
+	      this.shortcut.bind(item.key, item.name);
 	    }
 	  },
-	  /*istanbul ignore next*/
-	
-	  /**
-	   * 移除一个命令
-	   **/
-	  removeCommand: function removeCommand(name) {
+	  /*istanbul ignore next*/removeCommand: function removeCommand(name) {
 	    this.commands = this.commands || {};
 	    this.commands[name] = null;
 	    delete this.commands[name];
@@ -20887,67 +20866,7 @@
 	module.exports = "<div class=\"viewer markdown-body\" m:html=\"html\">\n</div>"
 
 /***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*istanbul ignore next*/'use strict';
-	
-	var keymaster = __webpack_require__(201);
-	
-	/**
-	 * 定义快捷键管理 “类”
-	 **/
-	var Key = module.exports = function (mditor) {
-		var self = this;
-		self.mditor = mditor;
-	};
-	
-	/**
-	 * 绑定一个快捷键
-	 **/
-	Key.prototype.bind = function (keyName, cmdName, allowDefault) {
-		var self = this;
-		var mditor = self.mditor;
-		//检查参数
-		if (!keyName || !cmdName) {
-			return;
-		}
-		//检查 key filter 设定
-		if (!self._keyFilterInited) {
-			keymaster.filter = function (event) {
-				return event.target == mditor.$element;
-			};
-			self._keyFilterInited = true;
-		}
-		//检查命令是否存在
-		if (!mditor.commands[cmdName]) {
-			throw 'command "' + cmdName + '" not found.';
-		}
-		keyName = keyName.replace('{cmd}', mditor.commands);
-		keymaster(keyName, function (event, handler) {
-			event.code = event.keyCode; //将原始 keyCode 赋值给 code
-			//禁用浏览器默认快捷键
-			if (!allowDefault) {
-				event.preventDefault();
-				event.keyCode = 0;
-			}
-			//--
-			mditor.execCommand(cmdName, event);
-			mditor.focus();
-		});
-		return self;
-	};
-	
-	/**
-	 * 解除绑定一个快捷键
-	 **/
-	Key.prototype.unbind = function (keyName) {
-		var self = this;
-		keymaster.unbind(keyName);
-		return self;
-	};
-
-/***/ },
+/* 200 */,
 /* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21284,6 +21203,50 @@
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"mditor {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var keyMaster = __webpack_require__(201);
+	
+	var Shortcut = module.exports = function (mditor) {
+	  self.mditor = mditor;
+	};
+	
+	Shortcut.prototype.bind = function (key, cmd, allowDefault) {
+	  var mditor = self.mditor;
+	  //检查参数
+	  if (!key || !cmd) return;
+	  //检查 key filter 设定
+	  if (!self._keyFilterInited) {
+	    keyMaster.filter = function (event) {
+	      return event.target == mditor.$element;
+	    };
+	    self._keyFilterInited = true;
+	  }
+	  //检查命令是否存在
+	  if (!mditor.commands[cmd]) {
+	    throw new Error( /*istanbul ignore next*/'Command `' + cmd + '` not found.');
+	  }
+	  key = key.replace('{cmd}', mditor.CMD);
+	  keyMaster(key, function (event) {
+	    event.code = event.keyCode; //将原始 keyCode 赋值给 code
+	    //禁用浏览器默认快捷键
+	    if (!allowDefault) {
+	      event.preventDefault();
+	      event.keyCode = 0;
+	    }
+	    mditor.execCommand(cmd, event);
+	    mditor.focus();
+	  });
+	};
+	
+	Shortcut.prototype.unbind = function (key) {
+	  keyMaster.unbind(key);
+	};
 
 /***/ }
 /******/ ]);
