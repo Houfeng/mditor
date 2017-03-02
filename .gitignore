@@ -4,6 +4,5 @@
 *.css.map
 logs/
 node_modules/
-build/
 .vscode/
 server.local.yml
