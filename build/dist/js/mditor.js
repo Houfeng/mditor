@@ -50,15 +50,15 @@
 	var Toolbar = __webpack_require__(40);
 	var Editor = __webpack_require__(45);
 	var Viewer = __webpack_require__(48);
-	var Shortcut = __webpack_require__(213);
+	var Shortcut = __webpack_require__(200);
 	
+	__webpack_require__(206);
 	__webpack_require__(202);
-	__webpack_require__(209);
-	__webpack_require__(210);
-	__webpack_require__(211);
+	__webpack_require__(203);
+	__webpack_require__(204);
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(212),
+	  template: __webpack_require__(205),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -66,6 +66,17 @@
 	    this.CMD = this.PLATFORM.indexOf('mac') > -1 ? 'command' : 'ctrl';
 	    this.INDENT = '\t';
 	    this.shortcut = new Shortcut(this);
+	  },
+	  /*istanbul ignore next*/onReady: function onReady() {
+	    /*istanbul ignore next*/var _this = this;
+	
+	    this.shortcut.bind('tab', this.editor.addIndent.bind(this.editor));
+	    this.shortcut.bind('shift+tab', this.editor.removeIndent.bind(this.editor));
+	    this.shortcut.bind('enter', function () {
+	      /*istanbul ignore next*/_this._ulAndQuoteAutoComplete();
+	      /*istanbul ignore next*/_this._olAutoComplete();
+	      /*istanbul ignore next*/_this._keepIndent();
+	    }, true);
 	  },
 	
 	
@@ -87,6 +98,45 @@
 	      self: this,
 	      value: ''
 	    };
+	  },
+	  /*istanbul ignore next*/_keepIndent: function _keepIndent() {
+	    var text = this.editor.getBeforeTextInLine();
+	    var parts = text.split(this.INDENT);
+	    if (parts.length < 2) return;
+	    var count = 0;
+	    var buffer = [this.EOL];
+	    while (parts[count] === '' && count < parts.length - 1) {
+	      count++;
+	      buffer.push(this.INDENT);
+	    }
+	    this.editor.insertBeforeText(buffer.join(''));
+	    event.preventDefault();
+	  },
+	  /*istanbul ignore next*/_ulAndQuoteAutoComplete: function _ulAndQuoteAutoComplete() {
+	    var text = this.editor.getBeforeTextInLine();
+	    var prefix = text.substr(0, 2);
+	    if (prefix != '- ' && prefix != '* ' && prefix != '> ') return;
+	    if (text.length > prefix.length) {
+	      this.editor.insertBeforeText(this.EOL + prefix);
+	    } else {
+	      this.editor.selectBeforeText(prefix.length);
+	      this.editor.setSelectText('');
+	    }
+	    event.preventDefault();
+	  },
+	  /*istanbul ignore next*/_olAutoComplete: function _olAutoComplete() {
+	    var exp = /^\d+\./;
+	    var text = this.editor.getBeforeTextInLine();
+	    var trimedText = text.trim();
+	    if (!exp.test(trimedText)) return;
+	    var num = trimedText.split('.')[0];
+	    if (trimedText.length > num.length + 1) {
+	      this.editor.insertBeforeText(this.EOL + (parseInt(num) + 1) + '. ');
+	    } else {
+	      this.editor.selectBeforeText(text.length);
+	      this.editor.setSelectText('');
+	    }
+	    event.preventDefault();
 	  },
 	  /*istanbul ignore next*/focus: function focus() {
 	    this.editor.focus();
@@ -3533,6 +3583,9 @@
 	      /*istanbul ignore next*/_this.mditor.addCommand(item);
 	    });
 	  },
+	  /*istanbul ignore next*/isActive: function isActive(item) {
+	    return this.mditor && item.state && this.mditor[item.state];
+	  },
 	  /*istanbul ignore next*/exec: function exec(name, event) {
 	    this.mditor.execCommand(name, event);
 	  }
@@ -3550,7 +3603,7 @@
 	  name: 'bold',
 	  title: '粗体',
 	  key: 'shift+alt+b',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('**', '**');
 	    return this;
 	  }
@@ -3558,7 +3611,7 @@
 	  name: 'italic',
 	  title: '斜体',
 	  key: 'shift+alt+i',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('*', '*');
 	    return this;
 	  }
@@ -3566,7 +3619,7 @@
 	  name: 'underline',
 	  title: '下划线',
 	  key: 'shift+alt+e',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('<u>', '</u>');
 	    return this;
 	  }
@@ -3574,7 +3627,7 @@
 	  name: 'strikethrough',
 	  title: '删除线',
 	  key: 'shift+alt+d',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('~~', '~~');
 	    return this;
 	  }
@@ -3582,7 +3635,7 @@
 	  name: 'header',
 	  title: '标题',
 	  key: 'shift+alt+h',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('# ');
 	    return this;
 	  }
@@ -3591,7 +3644,7 @@
 	  icon: 'quote-left',
 	  title: '引用',
 	  key: 'shift+alt+q',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    var selectText = this.editor.getSelectText();
 	    if (selectText.length < 1) {
 	      this.editor.wrapSelectText('> ');
@@ -3609,7 +3662,7 @@
 	  name: 'code',
 	  title: '代码',
 	  key: 'shift+alt+c',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    var lang = 'javascript' + this.EOL;
 	    var before = '```' + lang;
 	    var after = '```  ' + this.EOL;
@@ -3629,7 +3682,7 @@
 	  name: 'list-ol',
 	  title: '有序列表',
 	  key: 'shift+alt+o',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    var selectText = this.editor.getSelectText();
 	    if (selectText.length < 1) {
 	      this.editor.wrapSelectText('1. ');
@@ -3648,7 +3701,7 @@
 	  name: 'list-ul',
 	  title: '无序列表',
 	  key: 'shift+alt+u',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    var selectText = this.editor.getSelectText();
 	    if (selectText.length < 1) {
 	      this.editor.wrapSelectText('- ');
@@ -3666,7 +3719,7 @@
 	  name: 'link',
 	  title: '链接',
 	  key: 'shift+alt+l',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('[text](', ')');
 	    return this;
 	  }
@@ -3674,7 +3727,7 @@
 	  name: 'table',
 	  title: '表格',
 	  key: 'shift+alt+t',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    var buffer = ['column1 | column2 | column3  ', '------- | ------- | -------  ', 'column1 | column2 | column3  ', 'column1 | column2 | column3  ', 'column1 | column2 | column3  '];
 	    this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
 	    return this;
@@ -3684,7 +3737,7 @@
 	  title: '分隔线',
 	  icon: 'minus',
 	  key: 'shift+alt+n',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('----' + this.EOL);
 	    return this;
 	  }
@@ -3692,7 +3745,7 @@
 	  name: 'image',
 	  title: '图片',
 	  key: 'shift+alt+p',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('![alt](', ')');
 	    return this;
 	  }
@@ -3701,7 +3754,7 @@
 	  title: '帮助',
 	  icon: 'question',
 	  key: 'shift+alt+/',
-	  handler: function /*istanbul ignore next*/handler(event) {
+	  /*istanbul ignore next*/handler: function handler() {
 	    window.open('{homepage}', 'mditor');
 	    return this;
 	  }
@@ -3710,13 +3763,21 @@
 	  title: '全屏',
 	  icon: 'arrows-alt',
 	  key: 'shift+alt+f',
-	  align: 'right'
+	  align: 'right',
+	  state: 'fullscreen',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.fullscreen = !this.fullscreen;
+	  }
 	}, {
 	  name: 'togglePreview',
 	  title: '预览',
 	  icon: 'columns',
 	  key: 'shift+alt+v',
-	  align: 'right'
+	  align: 'right',
+	  state: 'preview',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.preview = !this.preview;
+	  }
 	}];
 
 /***/ },
@@ -3730,7 +3791,7 @@
 /* 44 */
 /***/ function(module, exports) {
 
-	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}}\" align=\"{{item.align}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
+	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}}\" align=\"{{item.align}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
 
 /***/ },
 /* 45 */
@@ -3754,20 +3815,10 @@
 	  /*istanbul ignore next*/onReady: function onReady() {
 	    this.$elementEmitter = new EventEmitter(this.$element);
 	  },
-	  /*istanbul ignore next*/
-	
-	  /**
-	   * 使编辑器获取焦点
-	   **/
-	  focus: function focus() {
+	  /*istanbul ignore next*/focus: function focus() {
 	    this.$element.focus();
 	  },
-	  /*istanbul ignore next*/
-	
-	  /**
-	   * 使编辑器失去焦点
-	   **/
-	  blur: function blur() {
+	  /*istanbul ignore next*/blur: function blur() {
 	    this.$element.blur();
 	  },
 	  /*istanbul ignore next*/getValue: function getValue() {
@@ -3868,6 +3919,52 @@
 	    var start = this.getBeforeFirstCharIndex(this.mditor.EOL) + this.mditor.EOL.length;
 	    var range = this.getSelectRange();
 	    this.setSelectRange(start, range.end);
+	  },
+	  /*istanbul ignore next*/addIndent: function addIndent() {
+	    /*istanbul ignore next*/var _this2 = this;
+	
+	    var selectText = this.getSelectText();
+	    if (selectText.length < 1) {
+	      this.insertBeforeText(this.mditor.INDENT);
+	      return;
+	    }
+	    var textArray = selectText.split(this.mditor.EOL);
+	    var buffer = [];
+	    var lineCount = textArray.length - 1;
+	    textArray.forEach(function (line, index) {
+	      line = line.trim() !== '' ? /*istanbul ignore next*/_this2.mditor.INDENT + line : line;
+	      if (index < lineCount || line.trim() !== '') {
+	        buffer.push(line);
+	      }
+	    });
+	    this.setSelectText(buffer.join(this.mditor.EOL));
+	  },
+	  /*istanbul ignore next*/removeIndent: function removeIndent() {
+	    /*istanbul ignore next*/var _this3 = this;
+	
+	    var indentRegExp = new RegExp('^' + this.mditor.INDENT);
+	    var selectText = this.getSelectText();
+	    if (selectText.length < 1) {
+	      this.selectBeforeTextInLine();
+	      if (this.getSelectText().length > 0) {
+	        event.clearSelected = true;
+	        this.removeIndent();
+	      }
+	      return;
+	    }
+	    var textArray = selectText.split(this.mditor.EOL);
+	    var buffer = [];
+	    textArray.forEach(function (line) {
+	      if (indentRegExp.test(line)) {
+	        line = line.replace( /*istanbul ignore next*/_this3.mditor.INDENT, '');
+	      }
+	      buffer.push(line);
+	    });
+	    this.setSelectText(buffer.join(this.mditor.EOL));
+	    if (event.clearSelected) {
+	      var range = this.getSelectRange();
+	      this.setSelectRange(range.end, range.end);
+	    }
 	  }
 	});
 
@@ -20866,7 +20963,46 @@
 	module.exports = "<div class=\"viewer markdown-body\" m:html=\"html\">\n</div>"
 
 /***/ },
-/* 200 */,
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var keyMaster = __webpack_require__(201);
+	
+	keyMaster.filter = function (event) {
+	  return !!event.target;
+	};
+	
+	var Shortcut = module.exports = function (mditor) {
+	  self.mditor = mditor;
+	};
+	
+	Shortcut.prototype.bind = function (key, cmd, allowDefault) {
+	  var mditor = self.mditor;
+	  //检查参数
+	  if (!key || !cmd) return;
+	  key = key.replace('{cmd}', mditor.CMD);
+	  keyMaster(key, function (event) {
+	    if (event.target != mditor.editor.$element) return;
+	    //禁用浏览器默认快捷键
+	    if (!allowDefault) {
+	      event.preventDefault();
+	    }
+	    if (cmd instanceof Function) {
+	      cmd.call(mditor, event);
+	    } else {
+	      mditor.execCommand(cmd, event);
+	    }
+	    mditor.focus();
+	  });
+	};
+	
+	Shortcut.prototype.unbind = function (key) {
+	  keyMaster.unbind(key);
+	};
+
+/***/ },
 /* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21175,78 +21311,28 @@
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */
+/* 203 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 210 */
+/* 204 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 211 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 212 */
+/* 205 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"mditor {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
 
 /***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
+/* 206 */
+/***/ function(module, exports) {
 
-	/*istanbul ignore next*/'use strict';
-	
-	var keyMaster = __webpack_require__(201);
-	
-	var Shortcut = module.exports = function (mditor) {
-	  self.mditor = mditor;
-	};
-	
-	Shortcut.prototype.bind = function (key, cmd, allowDefault) {
-	  var mditor = self.mditor;
-	  //检查参数
-	  if (!key || !cmd) return;
-	  //检查 key filter 设定
-	  if (!self._keyFilterInited) {
-	    keyMaster.filter = function (event) {
-	      return event.target == mditor.$element;
-	    };
-	    self._keyFilterInited = true;
-	  }
-	  //检查命令是否存在
-	  if (!mditor.commands[cmd]) {
-	    throw new Error( /*istanbul ignore next*/'Command `' + cmd + '` not found.');
-	  }
-	  key = key.replace('{cmd}', mditor.CMD);
-	  keyMaster(key, function (event) {
-	    event.code = event.keyCode; //将原始 keyCode 赋值给 code
-	    //禁用浏览器默认快捷键
-	    if (!allowDefault) {
-	      event.preventDefault();
-	      event.keyCode = 0;
-	    }
-	    mditor.execCommand(cmd, event);
-	    mditor.focus();
-	  });
-	};
-	
-	Shortcut.prototype.unbind = function (key) {
-	  keyMaster.unbind(key);
-	};
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

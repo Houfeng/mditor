@@ -21,6 +21,10 @@ const Toolbar = new mokit.Component({
     });
   },
 
+  isActive(item) {
+    return this.mditor && item.state && this.mditor[item.state];
+  },
+
   exec(name, event) {
     this.mditor.execCommand(name, event);
   }

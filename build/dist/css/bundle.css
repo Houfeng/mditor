@@ -23,7 +23,8 @@
   color: #444;
   border: 1px solid #ddd;
 }
-.mditor .toolbar .item:active {
+.mditor .toolbar .item:active,
+.mditor .toolbar .item.active {
   border: 1px solid #ddd;
   background-color: #ebebeb;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1) inset;

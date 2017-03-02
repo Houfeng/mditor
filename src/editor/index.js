@@ -15,16 +15,10 @@ module.exports = new mokit.Component({
     this.$elementEmitter = new EventEmitter(this.$element);
   },
 
-  /**
-   * 使编辑器获取焦点
-   **/
   focus() {
     this.$element.focus();
   },
 
-  /**
-   * 使编辑器失去焦点
-   **/
   blur() {
     this.$element.blur();
   },
@@ -43,7 +37,7 @@ module.exports = new mokit.Component({
   },
 
   getSelectRange() {
-    var box = this.getActiveElement();
+    let box = this.getActiveElement();
     return {
       'start': box.selectionStart,
       'end': box.selectionEnd
@@ -51,19 +45,19 @@ module.exports = new mokit.Component({
   },
 
   setSelectRange(start, end) {
-    var box = this.getActiveElement();
+    let box = this.getActiveElement();
     box.setSelectionRange(start, end);
   },
 
   getSelectText() {
-    var box = this.getActiveElement();
-    var range = this.getSelectRange();
+    let box = this.getActiveElement();
+    let range = this.getSelectRange();
     return box.value.substring(range.start, range.end);
   },
 
   setSelectText(text) {
-    var box = this.getActiveElement();
-    var range = this.getSelectRange();
+    let box = this.getActiveElement();
+    let range = this.getSelectRange();
     box.setRangeText(text);
     if (range.end == range.start) {
       this.setSelectRange(range.start, range.end + text.length);
@@ -74,11 +68,11 @@ module.exports = new mokit.Component({
   wrapSelectText(before, after) {
     before = (before !== null && before !== undefined) ? before : '';
     after = (after !== null && after !== undefined) ? after : '';
-    var range = this.getSelectRange();
-    var text = this.getSelectText();
+    let range = this.getSelectRange();
+    let text = this.getSelectText();
     this.setSelectText(before + text + after);
-    var newStart = range.start + before.length;
-    var newEnd = range.end + before.length;
+    let newStart = range.start + before.length;
+    let newEnd = range.end + before.length;
     this.setSelectRange(newStart, newEnd);
   },
 
@@ -91,56 +85,100 @@ module.exports = new mokit.Component({
   },
 
   getBeforeText(length) {
-    var range = this.getSelectRange();
-    var end = range.start;
-    var start = end - length;
-    var value = this.getValue();
+    let range = this.getSelectRange();
+    let end = range.start;
+    let start = end - length;
+    let value = this.getValue();
     return value.substring(start, end);
   },
 
   getBeforeFirstCharIndex(char) {
-    var range = this.getSelectRange();
-    var end = range.start;
-    var start = 0;
-    var value = this.getValue();
+    let range = this.getSelectRange();
+    let end = range.start;
+    let start = 0;
+    let value = this.getValue();
     return value.substring(start, end).lastIndexOf(char);
   },
 
   getBeforeWord() {
-    var chars = [' ', '\t', this.mditor.EOL];
-    var start = 0;
+    let chars = [' ', '\t', this.mditor.EOL];
+    let start = 0;
     chars.forEach(char => {
-      var index = this.getBeforeFirstCharIndex(char);
+      let index = this.getBeforeFirstCharIndex(char);
       if (index + char.length > start) {
         start = index + char.length;
       }
     });
-    var range = this.getSelectRange();
-    var value = this.getValue();
+    let range = this.getSelectRange();
+    let value = this.getValue();
     return value.substring(start, range.end);
   },
 
   getBeforeTextInLine() {
-    var start = this.getBeforeFirstCharIndex(this.mditor.EOL) + this.mditor.EOL.length;
-    var range = this.getSelectRange();
-    var value = this.getValue();
+    let start = this.getBeforeFirstCharIndex(this.mditor.EOL) + this.mditor.EOL.length;
+    let range = this.getSelectRange();
+    let value = this.getValue();
     return value.substring(start, range.end);
   },
 
   selectBeforeText(length) {
-    var range = this.getSelectRange();
+    let range = this.getSelectRange();
     this.setSelectRange(range.start - length, range.end);
   },
 
   selectAfterText(length) {
-    var range = this.getSelectRange();
+    let range = this.getSelectRange();
     this.setSelectRange(range.start, range.end + length);
   },
 
   selectBeforeTextInLine() {
-    var start = this.getBeforeFirstCharIndex(this.mditor.EOL) + this.mditor.EOL.length;
-    var range = this.getSelectRange();
+    let start = this.getBeforeFirstCharIndex(this.mditor.EOL) + this.mditor.EOL.length;
+    let range = this.getSelectRange();
     this.setSelectRange(start, range.end);
   },
+
+  addIndent() {
+    let selectText = this.getSelectText();
+    if (selectText.length < 1) {
+      this.insertBeforeText(this.mditor.INDENT);
+      return;
+    }
+    let textArray = selectText.split(this.mditor.EOL);
+    let buffer = [];
+    let lineCount = textArray.length - 1;
+    textArray.forEach((line, index) => {
+      line = line.trim() !== '' ? this.mditor.INDENT + line : line;
+      if (index < lineCount || line.trim() !== '') {
+        buffer.push(line);
+      }
+    });
+    this.setSelectText(buffer.join(this.mditor.EOL));
+  },
+
+  removeIndent() {
+    let indentRegExp = new RegExp('^' + this.mditor.INDENT);
+    let selectText = this.getSelectText();
+    if (selectText.length < 1) {
+      this.selectBeforeTextInLine();
+      if (this.getSelectText().length > 0) {
+        event.clearSelected = true;
+        this.removeIndent();
+      }
+      return;
+    }
+    let textArray = selectText.split(this.mditor.EOL);
+    let buffer = [];
+    textArray.forEach(line => {
+      if (indentRegExp.test(line)) {
+        line = line.replace(this.mditor.INDENT, '');
+      }
+      buffer.push(line);
+    });
+    this.setSelectText(buffer.join(this.mditor.EOL));
+    if (event.clearSelected) {
+      let range = this.getSelectRange();
+      this.setSelectRange(range.end, range.end);
+    }
+  }
 
 });

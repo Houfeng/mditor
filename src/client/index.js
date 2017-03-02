@@ -20,6 +20,16 @@ const Mditor = new mokit.Component({
     this.shortcut = new Shortcut(this);
   },
 
+  onReady() {
+    this.shortcut.bind('tab', this.editor.addIndent.bind(this.editor));
+    this.shortcut.bind('shift+tab', this.editor.removeIndent.bind(this.editor));
+    this.shortcut.bind('enter', () => {
+      this._ulAndQuoteAutoComplete();
+      this._olAutoComplete();
+      this._keepIndent();
+    }, true);
+  },
+
   components: {
     Toolbar,
     Editor,
@@ -38,6 +48,49 @@ const Mditor = new mokit.Component({
       self: this,
       value: ''
     };
+  },
+
+  _keepIndent() {
+    let text = this.editor.getBeforeTextInLine();
+    let parts = text.split(this.INDENT);
+    if (parts.length < 2) return;
+    let count = 0;
+    let buffer = [this.EOL];
+    while (parts[count] === '' &&
+      count < (parts.length - 1)) {
+      count++;
+      buffer.push(this.INDENT);
+    }
+    this.editor.insertBeforeText(buffer.join(''));
+    event.preventDefault();
+  },
+
+  _ulAndQuoteAutoComplete() {
+    let text = this.editor.getBeforeTextInLine();
+    let prefix = text.substr(0, 2);
+    if (prefix != '- ' && prefix != '* ' && prefix != '> ') return;
+    if (text.length > prefix.length) {
+      this.editor.insertBeforeText(this.EOL + prefix);
+    } else {
+      this.editor.selectBeforeText(prefix.length);
+      this.editor.setSelectText('');
+    }
+    event.preventDefault();
+  },
+
+  _olAutoComplete() {
+    let exp = /^\d+\./;
+    let text = this.editor.getBeforeTextInLine();
+    let trimedText = text.trim();
+    if (!exp.test(trimedText)) return;
+    let num = trimedText.split('.')[0];
+    if (trimedText.length > num.length + 1) {
+      this.editor.insertBeforeText(this.EOL + (parseInt(num) + 1) + '. ');
+    } else {
+      this.editor.selectBeforeText(text.length);
+      this.editor.setSelectText('');
+    }
+    event.preventDefault();
   },
 
   focus() {
