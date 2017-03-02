@@ -1,4 +1,9 @@
+*.DS_Store
 *.log
-*.project
-.DS_Store
-node_modules
+*.js.map
+*.css.map
+logs/
+node_modules/
+build/
+.vscode/
+server.local.yml
