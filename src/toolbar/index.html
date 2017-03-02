@@ -1,0 +1,3 @@
+<ul class="toolbar">
+  <i m:each="item of items" m:on:click="exec(item.name,$event)" class="item fa fa-{{item.icon || item.name}}" align="{{item.align}}" title="{{item.title || item.name}} {{item.key}}"></i>
+</ul>

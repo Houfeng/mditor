@@ -1,6 +1,6 @@
-var marked = require('marked');
-var highlight = require('highlight.js');
-var xss = require("xss");
+const marked = require('marked');
+const highlight = require('highlight.js');
+const xss = require("xss");
 
 marked.setOptions({
 	highlight: function (code, lang, callback) {
@@ -11,23 +11,24 @@ marked.setOptions({
 //在白名单中添加 span[class] 
 xss.whiteList.span = ['class'];
 
-var xssFilter = new xss.FilterXSS({
+const xssFilter = new xss.FilterXSS({
 	whiteList: xss.whiteList
 });
 
 /**
  * 定义解析类型
  **/
-var Parser = module.exports = function (options) {
-	var self = this;
+const Parser = function (options) {
 	options = options || {};
-	self.options = options;
+	this.options = options;
 };
 
 /**
  * 解析方法
  **/
 Parser.prototype.parse = function (mdText) {
-	var html = marked(mdText);
+	let html = marked(mdText);
 	return xssFilter.process(html);
 };
+
+module.exports = Parser;

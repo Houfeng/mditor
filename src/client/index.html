@@ -1,0 +1,9 @@
+<div class="mditor {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}" style="width:{{width}};height:{{height}}">
+  <div class="head">
+    <m:toolbar m:id="toolbar" m:prop:mditor="self"></m:toolbar>
+  </div>
+  <div class="body">
+    <m:editor m:id="editor" m:prop:mditor="self" m:model:value="value"></m:editor>
+    <m:viewer m:id="viewer" m:prop:mditor="self" m:model:value="value"></m:viewer>
+  </div>
+</div>

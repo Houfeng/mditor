@@ -1,0 +1,35 @@
+.mditor {
+  .toolbar {
+    margin: 0px;
+    padding: 4px;
+    height: 100%;
+    position: relative;
+    .item {
+      height: 27px;
+      width: 27px;
+      text-align: center;
+      line-height: 25px;
+      font-size: 14px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      margin: 1px;
+      color: #888;
+      transition: .2s;
+      -webkit-transition: .2s;
+      position: relative;
+      vertical-align: middle;
+      &:hover {
+        color: #444;
+        border: 1px solid #ddd;
+      }
+      &:active {
+        border: 1px solid #ddd;
+        background-color: #ebebeb;
+        box-shadow: 0 0 3px rgba(0, 0, 0, .1) inset;
+      }
+      &[align='right'] {
+        float: right;
+      }
+    }
+  }
+}

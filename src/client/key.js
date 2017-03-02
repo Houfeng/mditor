@@ -21,15 +21,15 @@ Key.prototype.bind = function (keyName, cmdName, allowDefault) {
 	//检查 key filter 设定
 	if (!self._keyFilterInited) {
 		keymaster.filter = function (event) {
-			return event.target == mditor.ui.editor[0];
+			return event.target == mditor.$element;
 		};
 		self._keyFilterInited = true;
 	}
 	//检查命令是否存在
-	if (!mditor.cmd[cmdName]) {
+	if (!mditor.commands[cmdName]) {
 		throw 'command "' + cmdName + '" not found.';
 	}
-	keyName = keyName.replace('{cmd}', mditor.CMD);
+	keyName = keyName.replace('{cmd}', mditor.commands);
 	keymaster(keyName, function (event, handler) {
 		event.code = event.keyCode; //将原始 keyCode 赋值给 code
 		//禁用浏览器默认快捷键
