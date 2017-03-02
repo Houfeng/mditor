@@ -71,7 +71,7 @@ const loaders = [{
 // webpack configs
 module.exports = {
   entry: {
-    mditor: `./src/index.js`
+    mditor: `./src/client`
   },
   output: {
     path: './build/dist/',

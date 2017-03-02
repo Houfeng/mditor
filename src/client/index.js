@@ -1,8 +1,11 @@
 var $ = require('jquery');
-var Parser = require('../lib/parser');
-var Toolbar = require('./toolbar');
-var Editor = require('./editor');
+var Parser = require('../common/parser');
+var Toolbar = require('../toolbar');
+var Editor = require('../editor');
 var Key = require('./key');
+
+require('font-awesome/css/font-awesome.css');
+require('../assets/common.less');
 
 //常量
 var FULL_SCREEN_CORRECT = 16;

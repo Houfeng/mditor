@@ -31,7 +31,7 @@ Key.prototype.bind = function (keyName, cmdName, allowDefault) {
 	}
 	keyName = keyName.replace('{cmd}', mditor.CMD);
 	keymaster(keyName, function (event, handler) {
-		event.code = event.keyCode;//将原始 keyCode 赋值给 code
+		event.code = event.keyCode; //将原始 keyCode 赋值给 code
 		//禁用浏览器默认快捷键
 		if (!allowDefault) {
 			event.preventDefault();

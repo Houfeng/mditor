@@ -2,10 +2,7 @@
   "name": "mditor",
   "version": "0.1.4",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
-  "main": "./lib/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "./src/server",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/houfeng/mditor.git"
@@ -16,6 +13,19 @@
     "embedded",
     "editor"
   ],
+  "scripts": {
+    "start": "./bin/start.sh",
+    "stop": "./bin/stop.sh",
+    "restart": "./bin/restart.sh",
+    "clear": "./bin/clear.sh",
+    "lint": "eslint ./lib",
+    "build": "./bin/build.sh",
+    "watch": "./bin/watch.sh",
+    "dev": "./bin/watch.sh",
+    "unit": "./bin/unit.sh",
+    "e2e": "./bin/e2e.sh",
+    "test": "./bin/test.sh"
+  },
   "author": {
     "name": "Houfeng",
     "email": "admin@xhou.net",
