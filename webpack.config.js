@@ -1,13 +1,13 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const os = require('os');
 
 const ENV = process.env.NODE_ENV || 'prod';
 console.log(`${os.EOL}NODE_ENV:`, ENV);
 
-const cssBundlePlugin = new ExtractTextPlugin(`css/bundle${ENV=='prod'?'.min':''}.css`);
+const cssBundlePlugin = new ExtractTextPlugin(`css/mokit${ENV == 'prod' ? '.min' : ''}.css`);
 
 const htmlPlugin = new HtmlWebpackPlugin({
   title: 'template',
@@ -36,14 +36,14 @@ if (ENV === 'prod') plugins.push(compressPlugin);
 // webpack loaders
 const loaders = [{
   test: /\.js$/,
-  loader: "babel",
+  loader: 'babel',
   exclude: [/node_modules/, /\.test\.js$/]
 }, {
   test: /.*mokit.*\.js$/,
-  loader: "babel"
+  loader: 'babel'
 }, {
   test: /\.json$/,
-  loader: "json",
+  loader: 'json',
 }, {
   test: /\?raw$/,
   loader: 'raw'
@@ -58,12 +58,12 @@ const loaders = [{
   loader: 'url?limit=8192&name=font/[hash].[ext]'
 }, {
   test: /\.less$/,
-  loader: cssBundlePlugin.extract("css!less", {
+  loader: cssBundlePlugin.extract('css!less', {
     publicPath: '../'
   })
 }, {
   test: /\.css$/,
-  loader: cssBundlePlugin.extract("css", {
+  loader: cssBundlePlugin.extract('css', {
     publicPath: '../'
   })
 }];
@@ -75,7 +75,7 @@ module.exports = {
   },
   output: {
     path: './build/dist/',
-    filename: `js/[name]${ENV=='prod'?'.min':''}.js`
+    filename: `js/[name]${ENV == 'prod' ? '.min' : ''}.js`
   },
   devtool: 'source-map',
   module: {

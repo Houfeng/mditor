@@ -52,13 +52,13 @@
 	var Viewer = __webpack_require__(48);
 	var Shortcut = __webpack_require__(200);
 	
-	__webpack_require__(206);
 	__webpack_require__(202);
-	__webpack_require__(203);
-	__webpack_require__(204);
+	__webpack_require__(209);
+	__webpack_require__(210);
+	__webpack_require__(211);
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(205),
+	  template: __webpack_require__(212),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -214,7 +214,7 @@
 
 	module.exports = {
 		"name": "mokit",
-		"version": "3.0.6"
+		"version": "3.0.10"
 	};
 
 /***/ },
@@ -1044,9 +1044,9 @@
 	    var observer = target[OBSERVER_PROP_NAME];
 	    if (observer) {
 	      utils.copy(options, observer.options);
-	      if (observer.options.root) {
-	        observer.parents.length = 0;
-	      }
+	      // if (observer.options.root) {
+	      //   observer.parents.length = 0;
+	      // }
 	      observer.apply();
 	      return observer;
 	    }
@@ -2136,6 +2136,12 @@
 	    var target = this.node.$target || this.node;
 	    target[this.decorates[0]] = value;
 	  }
+	  // execute: function (scope) {
+	  //   this.scope = scope;
+	  //   let newValue = this.expression.execute(scope);
+	  //   let target = this.node.$target || this.node;
+	  //   target[this.decorates[0]] = newValue;
+	  // }
 	});
 
 /***/ },
@@ -2886,7 +2892,7 @@
 	      this._importComponents_(classOpts.components);
 	      utils.defineFreezeProp(this, '$children', []);
 	      if (instanceOpts.parent) this.$setParent(instanceOpts.parent);
-	      this.$callHook('onInit');
+	      this.$callHook('onInit', [instanceOpts]);
 	      Observer.observe(this);
 	      if (classOpts.element) {
 	        this.$mount();
@@ -21311,28 +21317,34 @@
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 203 */
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 204 */
+/* 210 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 205 */
+/* 211 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 212 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"mditor {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
-
-/***/ },
-/* 206 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);
