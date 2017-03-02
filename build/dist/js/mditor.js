@@ -50,7 +50,7 @@
 	var Toolbar = __webpack_require__(40);
 	var Editor = __webpack_require__(45);
 	var Viewer = __webpack_require__(48);
-	var Key = __webpack_require__(213);
+	var Key = __webpack_require__(200);
 	
 	__webpack_require__(202);
 	__webpack_require__(209);
@@ -3913,10 +3913,10 @@
 	var mokit = __webpack_require__(1);
 	var Parser = __webpack_require__(49);
 	
-	__webpack_require__(200);
+	__webpack_require__(198);
 	
 	var Viewer = new mokit.Component({
-	  template: __webpack_require__(201),
+	  template: __webpack_require__(199),
 	  /*istanbul ignore next*/data: function data() {
 	    return {
 	      html: ''
@@ -3949,7 +3949,7 @@
 	
 	var marked = __webpack_require__(50);
 	var _highlight = __webpack_require__(51);
-	var xss = __webpack_require__(190);
+	var xss = __webpack_require__(188);
 	
 	marked.setOptions({
 		highlight: function /*istanbul ignore next*/highlight(code, lang, callback) {
@@ -5082,8 +5082,7 @@
 	}
 	
 	function unescape(html) {
-		// explicitly match decimal, hex, and named HTML entities 
-	  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
+	  return html.replace(/&([#\w]+);/g, function(_, n) {
 	    n = n.toLowerCase();
 	    if (n === 'colon') return ':';
 	    if (n.charAt(0) === '#') {
@@ -5304,120 +5303,118 @@
 	hljs.registerLanguage('cmake', __webpack_require__(73));
 	hljs.registerLanguage('coffeescript', __webpack_require__(74));
 	hljs.registerLanguage('cpp', __webpack_require__(75));
-	hljs.registerLanguage('crmsh', __webpack_require__(76));
-	hljs.registerLanguage('crystal', __webpack_require__(77));
-	hljs.registerLanguage('cs', __webpack_require__(78));
-	hljs.registerLanguage('css', __webpack_require__(79));
-	hljs.registerLanguage('d', __webpack_require__(80));
-	hljs.registerLanguage('markdown', __webpack_require__(81));
-	hljs.registerLanguage('dart', __webpack_require__(82));
-	hljs.registerLanguage('delphi', __webpack_require__(83));
-	hljs.registerLanguage('diff', __webpack_require__(84));
-	hljs.registerLanguage('django', __webpack_require__(85));
-	hljs.registerLanguage('dns', __webpack_require__(86));
-	hljs.registerLanguage('dockerfile', __webpack_require__(87));
-	hljs.registerLanguage('dos', __webpack_require__(88));
-	hljs.registerLanguage('dust', __webpack_require__(89));
-	hljs.registerLanguage('elixir', __webpack_require__(90));
-	hljs.registerLanguage('elm', __webpack_require__(91));
-	hljs.registerLanguage('ruby', __webpack_require__(92));
-	hljs.registerLanguage('erb', __webpack_require__(93));
-	hljs.registerLanguage('erlang-repl', __webpack_require__(94));
-	hljs.registerLanguage('erlang', __webpack_require__(95));
-	hljs.registerLanguage('fix', __webpack_require__(96));
-	hljs.registerLanguage('fortran', __webpack_require__(97));
-	hljs.registerLanguage('fsharp', __webpack_require__(98));
-	hljs.registerLanguage('gams', __webpack_require__(99));
-	hljs.registerLanguage('gcode', __webpack_require__(100));
-	hljs.registerLanguage('gherkin', __webpack_require__(101));
-	hljs.registerLanguage('glsl', __webpack_require__(102));
-	hljs.registerLanguage('go', __webpack_require__(103));
-	hljs.registerLanguage('golo', __webpack_require__(104));
-	hljs.registerLanguage('gradle', __webpack_require__(105));
-	hljs.registerLanguage('groovy', __webpack_require__(106));
-	hljs.registerLanguage('haml', __webpack_require__(107));
-	hljs.registerLanguage('handlebars', __webpack_require__(108));
-	hljs.registerLanguage('haskell', __webpack_require__(109));
-	hljs.registerLanguage('haxe', __webpack_require__(110));
-	hljs.registerLanguage('http', __webpack_require__(111));
-	hljs.registerLanguage('inform7', __webpack_require__(112));
-	hljs.registerLanguage('ini', __webpack_require__(113));
-	hljs.registerLanguage('irpf90', __webpack_require__(114));
-	hljs.registerLanguage('java', __webpack_require__(115));
-	hljs.registerLanguage('javascript', __webpack_require__(116));
-	hljs.registerLanguage('json', __webpack_require__(117));
-	hljs.registerLanguage('julia', __webpack_require__(118));
-	hljs.registerLanguage('kotlin', __webpack_require__(119));
-	hljs.registerLanguage('lasso', __webpack_require__(120));
-	hljs.registerLanguage('less', __webpack_require__(121));
-	hljs.registerLanguage('lisp', __webpack_require__(122));
-	hljs.registerLanguage('livecodeserver', __webpack_require__(123));
-	hljs.registerLanguage('livescript', __webpack_require__(124));
-	hljs.registerLanguage('lua', __webpack_require__(125));
-	hljs.registerLanguage('makefile', __webpack_require__(126));
-	hljs.registerLanguage('mathematica', __webpack_require__(127));
-	hljs.registerLanguage('matlab', __webpack_require__(128));
-	hljs.registerLanguage('mel', __webpack_require__(129));
-	hljs.registerLanguage('mercury', __webpack_require__(130));
-	hljs.registerLanguage('mizar', __webpack_require__(131));
-	hljs.registerLanguage('perl', __webpack_require__(132));
-	hljs.registerLanguage('mojolicious', __webpack_require__(133));
-	hljs.registerLanguage('monkey', __webpack_require__(134));
-	hljs.registerLanguage('nginx', __webpack_require__(135));
-	hljs.registerLanguage('nimrod', __webpack_require__(136));
-	hljs.registerLanguage('nix', __webpack_require__(137));
-	hljs.registerLanguage('nsis', __webpack_require__(138));
-	hljs.registerLanguage('objectivec', __webpack_require__(139));
-	hljs.registerLanguage('ocaml', __webpack_require__(140));
-	hljs.registerLanguage('openscad', __webpack_require__(141));
-	hljs.registerLanguage('oxygene', __webpack_require__(142));
-	hljs.registerLanguage('parser3', __webpack_require__(143));
-	hljs.registerLanguage('pf', __webpack_require__(144));
-	hljs.registerLanguage('php', __webpack_require__(145));
-	hljs.registerLanguage('powershell', __webpack_require__(146));
-	hljs.registerLanguage('processing', __webpack_require__(147));
-	hljs.registerLanguage('profile', __webpack_require__(148));
-	hljs.registerLanguage('prolog', __webpack_require__(149));
-	hljs.registerLanguage('protobuf', __webpack_require__(150));
-	hljs.registerLanguage('puppet', __webpack_require__(151));
-	hljs.registerLanguage('python', __webpack_require__(152));
-	hljs.registerLanguage('q', __webpack_require__(153));
-	hljs.registerLanguage('r', __webpack_require__(154));
-	hljs.registerLanguage('rib', __webpack_require__(155));
-	hljs.registerLanguage('roboconf', __webpack_require__(156));
-	hljs.registerLanguage('rsl', __webpack_require__(157));
-	hljs.registerLanguage('ruleslanguage', __webpack_require__(158));
-	hljs.registerLanguage('rust', __webpack_require__(159));
-	hljs.registerLanguage('scala', __webpack_require__(160));
-	hljs.registerLanguage('scheme', __webpack_require__(161));
-	hljs.registerLanguage('scilab', __webpack_require__(162));
-	hljs.registerLanguage('scss', __webpack_require__(163));
-	hljs.registerLanguage('smali', __webpack_require__(164));
-	hljs.registerLanguage('smalltalk', __webpack_require__(165));
-	hljs.registerLanguage('sml', __webpack_require__(166));
-	hljs.registerLanguage('sqf', __webpack_require__(167));
-	hljs.registerLanguage('sql', __webpack_require__(168));
-	hljs.registerLanguage('stata', __webpack_require__(169));
-	hljs.registerLanguage('step21', __webpack_require__(170));
-	hljs.registerLanguage('stylus', __webpack_require__(171));
-	hljs.registerLanguage('swift', __webpack_require__(172));
-	hljs.registerLanguage('tcl', __webpack_require__(173));
-	hljs.registerLanguage('tex', __webpack_require__(174));
-	hljs.registerLanguage('thrift', __webpack_require__(175));
-	hljs.registerLanguage('tp', __webpack_require__(176));
-	hljs.registerLanguage('twig', __webpack_require__(177));
-	hljs.registerLanguage('typescript', __webpack_require__(178));
-	hljs.registerLanguage('vala', __webpack_require__(179));
-	hljs.registerLanguage('vbnet', __webpack_require__(180));
-	hljs.registerLanguage('vbscript', __webpack_require__(181));
-	hljs.registerLanguage('vbscript-html', __webpack_require__(182));
-	hljs.registerLanguage('verilog', __webpack_require__(183));
-	hljs.registerLanguage('vhdl', __webpack_require__(184));
-	hljs.registerLanguage('vim', __webpack_require__(185));
-	hljs.registerLanguage('x86asm', __webpack_require__(186));
-	hljs.registerLanguage('xl', __webpack_require__(187));
-	hljs.registerLanguage('xquery', __webpack_require__(188));
-	hljs.registerLanguage('zephir', __webpack_require__(189));
+	hljs.registerLanguage('crystal', __webpack_require__(76));
+	hljs.registerLanguage('cs', __webpack_require__(77));
+	hljs.registerLanguage('css', __webpack_require__(78));
+	hljs.registerLanguage('d', __webpack_require__(79));
+	hljs.registerLanguage('markdown', __webpack_require__(80));
+	hljs.registerLanguage('dart', __webpack_require__(81));
+	hljs.registerLanguage('delphi', __webpack_require__(82));
+	hljs.registerLanguage('diff', __webpack_require__(83));
+	hljs.registerLanguage('django', __webpack_require__(84));
+	hljs.registerLanguage('dns', __webpack_require__(85));
+	hljs.registerLanguage('dockerfile', __webpack_require__(86));
+	hljs.registerLanguage('dos', __webpack_require__(87));
+	hljs.registerLanguage('dust', __webpack_require__(88));
+	hljs.registerLanguage('elixir', __webpack_require__(89));
+	hljs.registerLanguage('elm', __webpack_require__(90));
+	hljs.registerLanguage('ruby', __webpack_require__(91));
+	hljs.registerLanguage('erb', __webpack_require__(92));
+	hljs.registerLanguage('erlang-repl', __webpack_require__(93));
+	hljs.registerLanguage('erlang', __webpack_require__(94));
+	hljs.registerLanguage('fix', __webpack_require__(95));
+	hljs.registerLanguage('fortran', __webpack_require__(96));
+	hljs.registerLanguage('fsharp', __webpack_require__(97));
+	hljs.registerLanguage('gams', __webpack_require__(98));
+	hljs.registerLanguage('gcode', __webpack_require__(99));
+	hljs.registerLanguage('gherkin', __webpack_require__(100));
+	hljs.registerLanguage('glsl', __webpack_require__(101));
+	hljs.registerLanguage('go', __webpack_require__(102));
+	hljs.registerLanguage('golo', __webpack_require__(103));
+	hljs.registerLanguage('gradle', __webpack_require__(104));
+	hljs.registerLanguage('groovy', __webpack_require__(105));
+	hljs.registerLanguage('haml', __webpack_require__(106));
+	hljs.registerLanguage('handlebars', __webpack_require__(107));
+	hljs.registerLanguage('haskell', __webpack_require__(108));
+	hljs.registerLanguage('haxe', __webpack_require__(109));
+	hljs.registerLanguage('http', __webpack_require__(110));
+	hljs.registerLanguage('inform7', __webpack_require__(111));
+	hljs.registerLanguage('ini', __webpack_require__(112));
+	hljs.registerLanguage('irpf90', __webpack_require__(113));
+	hljs.registerLanguage('java', __webpack_require__(114));
+	hljs.registerLanguage('javascript', __webpack_require__(115));
+	hljs.registerLanguage('json', __webpack_require__(116));
+	hljs.registerLanguage('julia', __webpack_require__(117));
+	hljs.registerLanguage('kotlin', __webpack_require__(118));
+	hljs.registerLanguage('lasso', __webpack_require__(119));
+	hljs.registerLanguage('less', __webpack_require__(120));
+	hljs.registerLanguage('lisp', __webpack_require__(121));
+	hljs.registerLanguage('livecodeserver', __webpack_require__(122));
+	hljs.registerLanguage('livescript', __webpack_require__(123));
+	hljs.registerLanguage('lua', __webpack_require__(124));
+	hljs.registerLanguage('makefile', __webpack_require__(125));
+	hljs.registerLanguage('mathematica', __webpack_require__(126));
+	hljs.registerLanguage('matlab', __webpack_require__(127));
+	hljs.registerLanguage('mel', __webpack_require__(128));
+	hljs.registerLanguage('mercury', __webpack_require__(129));
+	hljs.registerLanguage('mizar', __webpack_require__(130));
+	hljs.registerLanguage('perl', __webpack_require__(131));
+	hljs.registerLanguage('mojolicious', __webpack_require__(132));
+	hljs.registerLanguage('monkey', __webpack_require__(133));
+	hljs.registerLanguage('nginx', __webpack_require__(134));
+	hljs.registerLanguage('nimrod', __webpack_require__(135));
+	hljs.registerLanguage('nix', __webpack_require__(136));
+	hljs.registerLanguage('nsis', __webpack_require__(137));
+	hljs.registerLanguage('objectivec', __webpack_require__(138));
+	hljs.registerLanguage('ocaml', __webpack_require__(139));
+	hljs.registerLanguage('openscad', __webpack_require__(140));
+	hljs.registerLanguage('oxygene', __webpack_require__(141));
+	hljs.registerLanguage('parser3', __webpack_require__(142));
+	hljs.registerLanguage('pf', __webpack_require__(143));
+	hljs.registerLanguage('php', __webpack_require__(144));
+	hljs.registerLanguage('powershell', __webpack_require__(145));
+	hljs.registerLanguage('processing', __webpack_require__(146));
+	hljs.registerLanguage('profile', __webpack_require__(147));
+	hljs.registerLanguage('prolog', __webpack_require__(148));
+	hljs.registerLanguage('protobuf', __webpack_require__(149));
+	hljs.registerLanguage('puppet', __webpack_require__(150));
+	hljs.registerLanguage('python', __webpack_require__(151));
+	hljs.registerLanguage('q', __webpack_require__(152));
+	hljs.registerLanguage('r', __webpack_require__(153));
+	hljs.registerLanguage('rib', __webpack_require__(154));
+	hljs.registerLanguage('roboconf', __webpack_require__(155));
+	hljs.registerLanguage('rsl', __webpack_require__(156));
+	hljs.registerLanguage('ruleslanguage', __webpack_require__(157));
+	hljs.registerLanguage('rust', __webpack_require__(158));
+	hljs.registerLanguage('scala', __webpack_require__(159));
+	hljs.registerLanguage('scheme', __webpack_require__(160));
+	hljs.registerLanguage('scilab', __webpack_require__(161));
+	hljs.registerLanguage('scss', __webpack_require__(162));
+	hljs.registerLanguage('smali', __webpack_require__(163));
+	hljs.registerLanguage('smalltalk', __webpack_require__(164));
+	hljs.registerLanguage('sml', __webpack_require__(165));
+	hljs.registerLanguage('sql', __webpack_require__(166));
+	hljs.registerLanguage('stata', __webpack_require__(167));
+	hljs.registerLanguage('step21', __webpack_require__(168));
+	hljs.registerLanguage('stylus', __webpack_require__(169));
+	hljs.registerLanguage('swift', __webpack_require__(170));
+	hljs.registerLanguage('tcl', __webpack_require__(171));
+	hljs.registerLanguage('tex', __webpack_require__(172));
+	hljs.registerLanguage('thrift', __webpack_require__(173));
+	hljs.registerLanguage('tp', __webpack_require__(174));
+	hljs.registerLanguage('twig', __webpack_require__(175));
+	hljs.registerLanguage('typescript', __webpack_require__(176));
+	hljs.registerLanguage('vala', __webpack_require__(177));
+	hljs.registerLanguage('vbnet', __webpack_require__(178));
+	hljs.registerLanguage('vbscript', __webpack_require__(179));
+	hljs.registerLanguage('vbscript-html', __webpack_require__(180));
+	hljs.registerLanguage('verilog', __webpack_require__(181));
+	hljs.registerLanguage('vhdl', __webpack_require__(182));
+	hljs.registerLanguage('vim', __webpack_require__(183));
+	hljs.registerLanguage('x86asm', __webpack_require__(184));
+	hljs.registerLanguage('xl', __webpack_require__(185));
+	hljs.registerLanguage('xquery', __webpack_require__(186));
+	hljs.registerLanguage('zephir', __webpack_require__(187));
 	
 	module.exports = hljs;
 
@@ -6077,7 +6074,7 @@
 	  }
 	
 	  function getLanguage(name) {
-	    name = (name || '').toLowerCase();
+	    name = name.toLowerCase();
 	    return languages[name] || languages[aliases[name]];
 	  }
 	
@@ -6120,7 +6117,7 @@
 	    contains: [hljs.BACKSLASH_ESCAPE]
 	  };
 	  hljs.PHRASAL_WORDS_MODE = {
-	    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|like)\b/
+	    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/
 	  };
 	  hljs.COMMENT = function (begin, end, inherits) {
 	    var mode = hljs.inherit(
@@ -8908,7 +8905,6 @@
 	
 	    return {
 	        case_insensitive: true,
-	        illegal: /\/\*/,
 	        keywords: {
 	            keyword: KEYWORDS,
 	            built_in: BUILT_IN,
@@ -9221,7 +9217,6 @@
 	  return {
 	    case_insensitive: true,
 	    keywords: { keyword: KEYWORDS, literal: LITERALS },
-	    illegal: /\/\*/,
 	    contains: [
 	      STRING, CHAR_STRING,
 	      DATE, DBL_QUOTED_VARIABLE,
@@ -9815,124 +9810,20 @@
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-	  var RESOURCES = 'primitive rsc_template';
-	
-	  var COMMANDS = 'group clone ms master location colocation order fencing_topology ' +
-	      'rsc_ticket acl_target acl_group user role ' +
-	      'tag xml';
-	
-	  var PROPERTY_SETS = 'property rsc_defaults op_defaults';
-	
-	  var KEYWORDS = 'params meta operations op rule attributes utilization';
-	
-	  var OPERATORS = 'read write deny defined not_defined in_range date spec in ' +
-	      'ref reference attribute type xpath version and or lt gt tag ' +
-	      'lte gte eq ne \\';
-	
-	  var TYPES = 'number string';
-	
-	  var LITERALS = 'Master Started Slave Stopped start promote demote stop monitor true false';
-	
-	  return {
-	    aliases: ['crm', 'pcmk'],
-	    case_insensitive: true,
-	    keywords: {
-	      keyword: KEYWORDS,
-	      operator: OPERATORS,
-	      type: TYPES,
-	      literal: LITERALS
-	    },
-	    contains: [
-	      hljs.HASH_COMMENT_MODE,
-	      {
-	        beginKeywords: 'node',
-	        starts: {
-	          className: 'identifier',
-	          end: '\\s*([\\w_-]+:)?',
-	          starts: {
-	            className: 'title',
-	            end: '\\s*[\\$\\w_][\\w_-]*'
-	          }
-	        }
-	      },
-	      {
-	        beginKeywords: RESOURCES,
-	        starts: {
-	          className: 'title',
-	          end: '\\s*[\\$\\w_][\\w_-]*',
-	          starts: {
-	            className: 'pragma',
-	            end: '\\s*@?[\\w_][\\w_\\.:-]*',
-	          }
-	        }
-	      },
-	      {
-	        begin: '\\b(' + COMMANDS.split(' ').join('|') + ')\\s+',
-	        keywords: COMMANDS,
-	        starts: {
-	          className: 'title',
-	          end: '[\\$\\w_][\\w_-]*',
-	        }
-	      },
-	      {
-	        beginKeywords: PROPERTY_SETS,
-	        starts: {
-	          className: 'title',
-	          end: '\\s*([\\w_-]+:)?'
-	        }
-	      },
-	      hljs.QUOTE_STRING_MODE,
-	      {
-	        className: 'pragma',
-	        begin: '(ocf|systemd|service|lsb):[\\w_:-]+',
-	        relevance: 0
-	      },
-	      {
-	        className: 'number',
-	        begin: '\\b\\d+(\\.\\d+)?(ms|s|h|m)?',
-	        relevance: 0
-	      },
-	      {
-	        className: 'number',
-	        begin: '[-]?(infinity|inf)',
-	        relevance: 0
-	      },
-	      {
-	        className: 'variable',
-	        begin: /([A-Za-z\$_\#][\w_-]+)=/,
-	        relevance: 0
-	      },
-	      {
-	        className: 'tag',
-	        begin: '</?',
-	        end: '/?>',
-	        relevance: 0
-	      }
-	    ]
-	  };
-	};
-
-/***/ },
-/* 77 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
 	  var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
 	  var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
-	  var RE_STARTER = '!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|' +
-	    '>>|>|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~';
 	  var CRYSTAL_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\][=?]?';
 	  var CRYSTAL_KEYWORDS = {
 	    keyword:
-	      'abstract alias as asm begin break case class def do else elsif end ensure enum extend for fun if ifdef ' +
+	      'abstract alias asm begin break case class def do else elsif end ensure enum extend for fun if ifdef ' +
 	      'include instance_sizeof is_a? lib macro module next of out pointerof private protected rescue responds_to? ' +
-	      'return require self sizeof struct super then type typeof union unless until when while with yield ' +
+	      'return require self sizeof struct super then type undef union unless until when while with yield ' +
 	      '__DIR__ __FILE__ __LINE__',
 	    literal: 'false nil true'
 	  };
 	  var SUBST = {
 	    className: 'subst',
-	    begin: '#{', end: '}',
+	    begin: '#\\{', end: '}',
 	    keywords: CRYSTAL_KEYWORDS
 	  };
 	  var EXPANSION = {
@@ -9944,24 +9835,18 @@
 	    keywords: CRYSTAL_KEYWORDS,
 	    relevance: 10
 	  };
-	
-	  function recursiveParen(begin, end) {
-	    var
-	    contains = [{begin: begin, end: end}];
-	    contains[0].contains = contains;
-	    return contains;
-	  }
-	  var STRING = {
+	  var
+	  STRING = {
 	    className: 'string',
 	    contains: [hljs.BACKSLASH_ESCAPE, SUBST],
 	    variants: [
 	      {begin: /'/, end: /'/},
 	      {begin: /"/, end: /"/},
 	      {begin: /`/, end: /`/},
-	      {begin: '%w?\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
-	      {begin: '%w?\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
-	      {begin: '%w?{', end: '}', contains: recursiveParen('{', '}')},
-	      {begin: '%w?<', end: '>', contains: recursiveParen('<', '>')},
+	      {begin: '%w?\\(', end: '\\)'},
+	      {begin: '%w?\\[', end: '\\]'},
+	      {begin: '%w?{', end: '}'},
+	      {begin: '%w?<', end: '>'},
 	      {begin: '%w?/', end: '/'},
 	      {begin: '%w?%', end: '%'},
 	      {begin: '%w?-', end: '-'},
@@ -9969,53 +9854,9 @@
 	    ],
 	    relevance: 0,
 	  };
-	  var REGEXP = {
-	    begin: '(' + RE_STARTER + ')\\s*',
-	    contains: [
-	      {
-	        className: 'regexp',
-	        contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-	        variants: [
-	          {begin: '/', end: '/[a-z]*'},
-	          {begin: '%r\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
-	          {begin: '%r\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
-	          {begin: '%r{', end: '}', contains: recursiveParen('{', '}')},
-	          {begin: '%r<', end: '>', contains: recursiveParen('<', '>')},
-	          {begin: '%r/', end: '/'},
-	          {begin: '%r%', end: '%'},
-	          {begin: '%r-', end: '-'},
-	          {begin: '%r\\|', end: '\\|'},
-	        ]
-	      }
-	    ],
-	    relevance: 0
-	  };
-	  var REGEXP2 = {
-	    className: 'regexp',
-	    contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-	    variants: [
-	      {begin: '%r\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
-	      {begin: '%r\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
-	      {begin: '%r{', end: '}', contains: recursiveParen('{', '}')},
-	      {begin: '%r<', end: '>', contains: recursiveParen('<', '>')},
-	      {begin: '%r/', end: '/'},
-	      {begin: '%r%', end: '%'},
-	      {begin: '%r-', end: '-'},
-	      {begin: '%r\\|', end: '\\|'},
-	    ],
-	    relevance: 0
-	  };
-	  var ATTRIBUTE = {
-	    className: 'annotation',
-	    begin: '@\\[', end: '\\]',
-	    relevance: 5
-	  };
 	  var CRYSTAL_DEFAULT_CONTAINS = [
 	    EXPANSION,
 	    STRING,
-	    REGEXP,
-	    REGEXP2,
-	    ATTRIBUTE,
 	    hljs.HASH_COMMENT_MODE,
 	    {
 	      className: 'class',
@@ -10084,20 +9925,33 @@
 	    {
 	      className: 'number',
 	      variants: [
-	        { begin: '\\b0b([01_]*[01])' + NUM_SUFFIX },
-	        { begin: '\\b0o([0-7_]*[0-7])' + NUM_SUFFIX },
-	        { begin: '\\b0x([A-Fa-f0-9_]*[A-Fa-f0-9])' + NUM_SUFFIX },
-	        { begin: '\\b(([0-9][0-9_]*[0-9]|[0-9])(\\.[0-9_]*[0-9])?([eE][+-]?[0-9_]*[0-9])?)' + NUM_SUFFIX}
+	        { begin: '\\b0b([01_]+)' + NUM_SUFFIX },
+	        { begin: '\\b0o([0-7_]+)' + NUM_SUFFIX },
+	        { begin: '\\b0x([A-Fa-f0-9_]+)' + NUM_SUFFIX },
+	        { begin: '\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)' + NUM_SUFFIX}
 	      ],
 	      relevance: 0
 	    },
 	    {
 	      className: 'variable',
 	      begin: '(\\$\\W)|((\\$|\\@\\@?|%)(\\w+))'
+	    },
+	    { // regexp container
+	      begin: '(' + hljs.RE_STARTERS_RE + ')\\s*',
+	      contains: [
+	        hljs.HASH_COMMENT_MODE,
+	        {
+	          className: 'regexp',
+	          contains: [hljs.BACKSLASH_ESCAPE, SUBST],
+	          variants: [
+	            {begin: '/', end: '/[a-z]*'},
+	          ]
+	        }
+	      ],
+	      relevance: 0
 	    }
 	  ];
 	  SUBST.contains = CRYSTAL_DEFAULT_CONTAINS;
-	  ATTRIBUTE.contains = CRYSTAL_DEFAULT_CONTAINS;
 	  EXPANSION.contains = CRYSTAL_DEFAULT_CONTAINS.slice(1); // without EXPANSION
 	
 	  return {
@@ -10109,7 +9963,7 @@
 	};
 
 /***/ },
-/* 78 */
+/* 77 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10232,7 +10086,7 @@
 	};
 
 /***/ },
-/* 79 */
+/* 78 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10277,6 +10131,7 @@
 	    illegal: /[=\/|'\$]/,
 	    contains: [
 	      hljs.C_BLOCK_COMMENT_MODE,
+	      RULE,
 	      {
 	        className: 'id', begin: /\#[A-Za-z0-9_-]+/
 	      },
@@ -10338,7 +10193,7 @@
 	};
 
 /***/ },
-/* 80 */
+/* 79 */
 /***/ function(module, exports) {
 
 	module.exports = /**
@@ -10600,7 +10455,7 @@
 	};
 
 /***/ },
-/* 81 */
+/* 80 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10706,7 +10561,7 @@
 	};
 
 /***/ },
-/* 82 */
+/* 81 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -10811,7 +10666,7 @@
 	};
 
 /***/ },
-/* 83 */
+/* 82 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10882,7 +10737,7 @@
 	};
 
 /***/ },
-/* 84 */
+/* 83 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10926,7 +10781,7 @@
 	};
 
 /***/ },
-/* 85 */
+/* 84 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10980,7 +10835,7 @@
 	};
 
 /***/ },
-/* 86 */
+/* 85 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11012,7 +10867,7 @@
 	};
 
 /***/ },
-/* 87 */
+/* 86 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11020,15 +10875,15 @@
 	    aliases: ['docker'],
 	    case_insensitive: true,
 	    keywords: {
-	      built_ins: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env label'
+	      built_ins: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env'
 	    },
 	    contains: [
 	      hljs.HASH_COMMENT_MODE,
 	      {
 	        keywords : {
-	          built_in: 'run cmd entrypoint volume add copy workdir onbuild label'
+	          built_in: 'run cmd entrypoint volume add copy workdir onbuild'
 	        },
-	        begin: /^ *(onbuild +)?(run|cmd|entrypoint|volume|add|copy|workdir|label) +/,
+	        begin: /^ *(onbuild +)?(run|cmd|entrypoint|volume|add|copy|workdir) +/,
 	        starts: {
 	          end: /[^\\]\n/,
 	          subLanguage: 'bash'
@@ -11051,7 +10906,7 @@
 	};
 
 /***/ },
-/* 88 */
+/* 87 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11069,7 +10924,6 @@
 	  return {
 	    aliases: ['bat', 'cmd'],
 	    case_insensitive: true,
-	    illegal: /\/\*/,
 	    keywords: {
 	      flow: 'if else goto for in do call exit not exist errorlevel defined',
 	      operator: 'equ neq lss leq gtr geq',
@@ -11104,7 +10958,7 @@
 	};
 
 /***/ },
-/* 89 */
+/* 88 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11143,7 +10997,7 @@
 	};
 
 /***/ },
-/* 90 */
+/* 89 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11249,7 +11103,7 @@
 	};
 
 /***/ },
-/* 91 */
+/* 90 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11339,7 +11193,7 @@
 	};
 
 /***/ },
-/* 92 */
+/* 91 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11507,13 +11361,12 @@
 	  return {
 	    aliases: ['rb', 'gemspec', 'podspec', 'thor', 'irb'],
 	    keywords: RUBY_KEYWORDS,
-	    illegal: /\/\*/,
 	    contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
 	  };
 	};
 
 /***/ },
-/* 93 */
+/* 92 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11532,7 +11385,7 @@
 	};
 
 /***/ },
-/* 94 */
+/* 93 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11584,7 +11437,7 @@
 	};
 
 /***/ },
-/* 95 */
+/* 94 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11740,7 +11593,7 @@
 	};
 
 /***/ },
-/* 96 */
+/* 95 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11773,7 +11626,7 @@
 	};
 
 /***/ },
-/* 97 */
+/* 96 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11827,7 +11680,6 @@
 	    case_insensitive: true,
 	    aliases: ['f90', 'f95'],
 	    keywords: F_KEYWORDS,
-	    illegal: /\/\*/,
 	    contains: [
 	      hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
 	      hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'string', relevance: 0}),
@@ -11848,7 +11700,7 @@
 	};
 
 /***/ },
-/* 98 */
+/* 97 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11868,7 +11720,6 @@
 	      'match member module mutable namespace new null of open or ' +
 	      'override private public rec return sig static struct then to ' +
 	      'true try type upcast use val void when while with yield',
-	    illegal: /\/\*/,
 	    contains: [
 	      {
 	        // monad builder keywords (matches before non-bang kws)
@@ -11911,7 +11762,7 @@
 	};
 
 /***/ },
-/* 99 */
+/* 98 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -11952,7 +11803,7 @@
 	};
 
 /***/ },
-/* 100 */
+/* 99 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12029,7 +11880,7 @@
 	};
 
 /***/ },
-/* 101 */
+/* 100 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -12066,7 +11917,7 @@
 	};
 
 /***/ },
-/* 102 */
+/* 101 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12164,7 +12015,7 @@
 	};
 
 /***/ },
-/* 103 */
+/* 102 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12207,7 +12058,7 @@
 	};
 
 /***/ },
-/* 104 */
+/* 103 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12235,7 +12086,7 @@
 	};
 
 /***/ },
-/* 105 */
+/* 104 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12274,7 +12125,7 @@
 	};
 
 /***/ },
-/* 106 */
+/* 105 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12366,7 +12217,7 @@
 	};
 
 /***/ },
-/* 107 */
+/* 106 */
 /***/ function(module, exports) {
 
 	module.exports = // TODO support filter tags like :javascript, support inline HTML
@@ -12478,7 +12329,7 @@
 	};
 
 /***/ },
-/* 108 */
+/* 107 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12515,7 +12366,7 @@
 	};
 
 /***/ },
-/* 109 */
+/* 108 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12643,7 +12494,7 @@
 	};
 
 /***/ },
-/* 110 */
+/* 109 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12708,7 +12559,7 @@
 	};
 
 /***/ },
-/* 111 */
+/* 110 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12747,7 +12598,7 @@
 	};
 
 /***/ },
-/* 112 */
+/* 111 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12809,7 +12660,7 @@
 	};
 
 /***/ },
-/* 113 */
+/* 112 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12873,7 +12724,7 @@
 	};
 
 /***/ },
-/* 114 */
+/* 113 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12930,8 +12781,7 @@
 	  };
 	  return {
 	    case_insensitive: true,
-	    keywords: F_KEYWORDS,
-	    illegal: /\/\*/,
+	    keywords: F_KEYWORDS, 
 	    contains: [
 	      hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
 	      hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'string', relevance: 0}),
@@ -12953,7 +12803,7 @@
 	};
 
 /***/ },
-/* 115 */
+/* 114 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13057,7 +12907,7 @@
 	};
 
 /***/ },
-/* 116 */
+/* 115 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13173,7 +13023,7 @@
 	};
 
 /***/ },
-/* 117 */
+/* 116 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13215,7 +13065,7 @@
 	};
 
 /***/ },
-/* 118 */
+/* 117 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13380,7 +13230,7 @@
 	};
 
 /***/ },
-/* 119 */
+/* 118 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -13485,7 +13335,7 @@
 	};
 
 /***/ },
-/* 120 */
+/* 119 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13675,7 +13525,7 @@
 	};
 
 /***/ },
-/* 121 */
+/* 120 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13816,7 +13666,7 @@
 	};
 
 /***/ },
-/* 122 */
+/* 121 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13927,7 +13777,7 @@
 	};
 
 /***/ },
-/* 123 */
+/* 122 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14089,7 +13939,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 123 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14244,7 +14094,7 @@
 	};
 
 /***/ },
-/* 125 */
+/* 124 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14304,7 +14154,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 125 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14354,7 +14204,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 126 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14417,7 +14267,7 @@
 	};
 
 /***/ },
-/* 128 */
+/* 127 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14512,7 +14362,7 @@
 	};
 
 /***/ },
-/* 129 */
+/* 128 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14746,7 +14596,7 @@
 	};
 
 /***/ },
-/* 130 */
+/* 129 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14839,7 +14689,7 @@
 	};
 
 /***/ },
-/* 131 */
+/* 130 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14862,7 +14712,7 @@
 	};
 
 /***/ },
-/* 132 */
+/* 131 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15023,7 +14873,7 @@
 	};
 
 /***/ },
-/* 133 */
+/* 132 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15052,7 +14902,7 @@
 	};
 
 /***/ },
-/* 134 */
+/* 133 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15078,7 +14928,6 @@
 	
 	      literal: 'true false null and or shl shr mod'
 	    },
-	    illegal: /\/\*/,
 	    contains: [
 	      hljs.COMMENT('#rem', '#end'),
 	      hljs.COMMENT(
@@ -15135,7 +14984,7 @@
 	};
 
 /***/ },
-/* 135 */
+/* 134 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15221,7 +15070,7 @@
 	};
 
 /***/ },
-/* 136 */
+/* 135 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15277,7 +15126,7 @@
 	};
 
 /***/ },
-/* 137 */
+/* 136 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15332,7 +15181,7 @@
 	};
 
 /***/ },
-/* 138 */
+/* 137 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15424,7 +15273,7 @@
 	};
 
 /***/ },
-/* 139 */
+/* 138 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15507,7 +15356,7 @@
 	};
 
 /***/ },
-/* 140 */
+/* 139 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15582,7 +15431,7 @@
 	};
 
 /***/ },
-/* 141 */
+/* 140 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15644,7 +15493,7 @@
 	};
 
 /***/ },
-/* 142 */
+/* 141 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15717,7 +15566,7 @@
 	};
 
 /***/ },
-/* 143 */
+/* 142 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15769,7 +15618,7 @@
 	};
 
 /***/ },
-/* 144 */
+/* 143 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15825,7 +15674,7 @@
 	};
 
 /***/ },
-/* 145 */
+/* 144 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15954,7 +15803,7 @@
 	};
 
 /***/ },
-/* 146 */
+/* 145 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16006,7 +15855,7 @@
 	};
 
 /***/ },
-/* 147 */
+/* 146 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16058,7 +15907,7 @@
 	};
 
 /***/ },
-/* 148 */
+/* 147 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16104,7 +15953,7 @@
 	};
 
 /***/ },
-/* 149 */
+/* 148 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16197,7 +16046,7 @@
 	};
 
 /***/ },
-/* 150 */
+/* 149 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16238,7 +16087,7 @@
 	};
 
 /***/ },
-/* 151 */
+/* 150 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16350,7 +16199,7 @@
 	};
 
 /***/ },
-/* 152 */
+/* 151 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16439,7 +16288,7 @@
 	};
 
 /***/ },
-/* 153 */
+/* 152 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16466,7 +16315,7 @@
 	};
 
 /***/ },
-/* 154 */
+/* 153 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16540,7 +16389,7 @@
 	};
 
 /***/ },
-/* 155 */
+/* 154 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16571,7 +16420,7 @@
 	};
 
 /***/ },
-/* 156 */
+/* 155 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16635,7 +16484,7 @@
 	};
 
 /***/ },
-/* 157 */
+/* 156 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16676,7 +16525,7 @@
 	};
 
 /***/ },
-/* 158 */
+/* 157 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16741,7 +16590,7 @@
 	};
 
 /***/ },
-/* 159 */
+/* 158 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16831,7 +16680,7 @@
 	};
 
 /***/ },
-/* 160 */
+/* 159 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16872,7 +16721,7 @@
 	
 	  var METHOD = {
 	    className: 'function',
-	    beginKeywords: 'def',
+	    beginKeywords: 'def val',
 	    end: /[:={\[(\n;]/,
 	    contains: [NAME]
 	  };
@@ -16898,7 +16747,7 @@
 	};
 
 /***/ },
-/* 161 */
+/* 160 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17024,7 +16873,7 @@
 	};
 
 /***/ },
-/* 162 */
+/* 161 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17083,7 +16932,7 @@
 	};
 
 /***/ },
-/* 163 */
+/* 162 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17204,7 +17053,7 @@
 	};
 
 /***/ },
-/* 164 */
+/* 163 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17291,7 +17140,7 @@
 	};
 
 /***/ },
-/* 165 */
+/* 164 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17348,7 +17197,7 @@
 	};
 
 /***/ },
-/* 166 */
+/* 165 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17417,107 +17266,7 @@
 	};
 
 /***/ },
-/* 167 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var allCommands = ['!', '-', '+', '!=', '%', '&&', '*', '/', '=', '==', '>', '>=', '<', '<=', 'or', 'plus', '^', ':', '>>', 'abs', 'accTime', 'acos', 'action', 'actionKeys', 'actionKeysImages', 'actionKeysNames', 'actionKeysNamesArray', 'actionName', 'activateAddons', 'activatedAddons', 'activateKey', 'addAction', 'addBackpack', 'addBackpackCargo', 'addBackpackCargoGlobal', 'addBackpackGlobal', 'addCamShake', 'addCuratorAddons', 'addCuratorCameraArea', 'addCuratorEditableObjects', 'addCuratorEditingArea', 'addCuratorPoints', 'addEditorObject', 'addEventHandler', 'addGoggles', 'addGroupIcon', 'addHandgunItem', 'addHeadgear', 'addItem', 'addItemCargo', 'addItemCargoGlobal', 'addItemPool', 'addItemToBackpack', 'addItemToUniform', 'addItemToVest', 'addLiveStats', 'addMagazine', 'addMagazine array', 'addMagazineAmmoCargo', 'addMagazineCargo', 'addMagazineCargoGlobal', 'addMagazineGlobal', 'addMagazinePool', 'addMagazines', 'addMagazineTurret', 'addMenu', 'addMenuItem', 'addMissionEventHandler', 'addMPEventHandler', 'addMusicEventHandler', 'addPrimaryWeaponItem', 'addPublicVariableEventHandler', 'addRating', 'addResources', 'addScore', 'addScoreSide', 'addSecondaryWeaponItem', 'addSwitchableUnit', 'addTeamMember', 'addToRemainsCollector', 'addUniform', 'addVehicle', 'addVest', 'addWaypoint', 'addWeapon', 'addWeaponCargo', 'addWeaponCargoGlobal', 'addWeaponGlobal', 'addWeaponPool', 'addWeaponTurret', 'agent', 'agents', 'AGLToASL', 'aimedAtTarget', 'aimPos', 'airDensityRTD', 'airportSide', 'AISFinishHeal', 'alive', 'allControls', 'allCurators', 'allDead', 'allDeadMen', 'allDisplays', 'allGroups', 'allMapMarkers', 'allMines', 'allMissionObjects', 'allow3DMode', 'allowCrewInImmobile', 'allowCuratorLogicIgnoreAreas', 'allowDamage', 'allowDammage', 'allowFileOperations', 'allowFleeing', 'allowGetIn', 'allPlayers', 'allSites', 'allTurrets', 'allUnits', 'allUnitsUAV', 'allVariables', 'ammo', 'and', 'animate', 'animateDoor', 'animationPhase', 'animationState', 'append', 'armoryPoints', 'arrayIntersect', 'asin', 'ASLToAGL', 'ASLToATL', 'assert', 'assignAsCargo', 'assignAsCargoIndex', 'assignAsCommander', 'assignAsDriver', 'assignAsGunner', 'assignAsTurret', 'assignCurator', 'assignedCargo', 'assignedCommander', 'assignedDriver', 'assignedGunner', 'assignedItems', 'assignedTarget', 'assignedTeam', 'assignedVehicle', 'assignedVehicleRole', 'assignItem', 'assignTeam', 'assignToAirport', 'atan', 'atan2', 'atg', 'ATLToASL', 'attachedObject', 'attachedObjects', 'attachedTo', 'attachObject', 'attachTo', 'attackEnabled', 'backpack', 'backpackCargo', 'backpackContainer', 'backpackItems', 'backpackMagazines', 'backpackSpaceFor', 'behaviour', 'benchmark', 'binocular', 'blufor', 'boundingBox', 'boundingBoxReal', 'boundingCenter', 'breakOut', 'breakTo', 'briefingName', 'buildingExit', 'buildingPos', 'buttonAction', 'buttonSetAction', 'cadetMode', 'call', 'callExtension', 'camCommand', 'camCommit', 'camCommitPrepared', 'camCommitted', 'camConstuctionSetParams', 'camCreate', 'camDestroy', 'cameraEffect', 'cameraEffectEnableHUD', 'cameraInterest', 'cameraOn', 'cameraView', 'campaignConfigFile', 'camPreload', 'camPreloaded', 'camPrepareBank', 'camPrepareDir', 'camPrepareDive', 'camPrepareFocus', 'camPrepareFov', 'camPrepareFovRange', 'camPreparePos', 'camPrepareRelPos', 'camPrepareTarget', 'camSetBank', 'camSetDir', 'camSetDive', 'camSetFocus', 'camSetFov', 'camSetFovRange', 'camSetPos', 'camSetRelPos', 'camSetTarget', 'camTarget', 'camUseNVG', 'canAdd', 'canAddItemToBackpack', 'canAddItemToUniform', 'canAddItemToVest', 'cancelSimpleTaskDestination', 'canFire', 'canMove', 'canSlingLoad', 'canStand', 'canUnloadInCombat', 'captive', 'captiveNum', 'case', 'catch', 'cbChecked', 'cbSetChecked', 'ceil', 'cheatsEnabled', 'checkAIFeature', 'civilian', 'className', 'clearAllItemsFromBackpack', 'clearBackpackCargo', 'clearBackpackCargoGlobal', 'clearGroupIcons', 'clearItemCargo', 'clearItemCargoGlobal', 'clearItemPool', 'clearMagazineCargo', 'clearMagazineCargoGlobal', 'clearMagazinePool', 'clearOverlay', 'clearRadio', 'clearWeaponCargo', 'clearWeaponCargoGlobal', 'clearWeaponPool', 'closeDialog', 'closeDisplay', 'closeOverlay', 'collapseObjectTree', 'combatMode', 'commandArtilleryFire', 'commandChat', 'commander', 'commandFire', 'commandFollow', 'commandFSM', 'commandGetOut', 'commandingMenu', 'commandMove', 'commandRadio', 'commandStop', 'commandTarget', 'commandWatch', 'comment', 'commitOverlay', 'compile', 'compileFinal', 'completedFSM', 'composeText', 'configClasses', 'configFile', 'configHierarchy', 'configName', 'configProperties', 'configSourceMod', 'configSourceModList', 'connectTerminalToUAV', 'controlNull', 'controlsGroupCtrl', 'copyFromClipboard', 'copyToClipboard', 'copyWaypoints', 'cos', 'count', 'countEnemy', 'countFriendly', 'countSide', 'countType', 'countUnknown', 'createAgent', 'createCenter', 'createDialog', 'createDiaryLink', 'createDiaryRecord', 'createDiarySubject', 'createDisplay', 'createGearDialog', 'createGroup', 'createGuardedPoint', 'createLocation', 'createMarker', 'createMarkerLocal', 'createMenu', 'createMine', 'createMissionDisplay', 'createSimpleTask', 'createSite', 'createSoundSource', 'createTask', 'createTeam', 'createTrigger', 'createUnit', 'createUnit array', 'createVehicle', 'createVehicle array', 'createVehicleCrew', 'createVehicleLocal', 'crew', 'ctrlActivate', 'ctrlAddEventHandler', 'ctrlAutoScrollDelay', 'ctrlAutoScrollRewind', 'ctrlAutoScrollSpeed', 'ctrlChecked', 'ctrlClassName', 'ctrlCommit', 'ctrlCommitted', 'ctrlCreate', 'ctrlDelete', 'ctrlEnable', 'ctrlEnabled', 'ctrlFade', 'ctrlHTMLLoaded', 'ctrlIDC', 'ctrlIDD', 'ctrlMapAnimAdd', 'ctrlMapAnimClear', 'ctrlMapAnimCommit', 'ctrlMapAnimDone', 'ctrlMapCursor', 'ctrlMapMouseOver', 'ctrlMapScale', 'ctrlMapScreenToWorld', 'ctrlMapWorldToScreen', 'ctrlModel', 'ctrlModelDirAndUp', 'ctrlModelScale', 'ctrlParent', 'ctrlPosition', 'ctrlRemoveAllEventHandlers', 'ctrlRemoveEventHandler', 'ctrlScale', 'ctrlSetActiveColor', 'ctrlSetAutoScrollDelay', 'ctrlSetAutoScrollRewind', 'ctrlSetAutoScrollSpeed', 'ctrlSetBackgroundColor', 'ctrlSetChecked', 'ctrlSetEventHandler', 'ctrlSetFade', 'ctrlSetFocus', 'ctrlSetFont', 'ctrlSetFontH1', 'ctrlSetFontH1B', 'ctrlSetFontH2', 'ctrlSetFontH2B', 'ctrlSetFontH3', 'ctrlSetFontH3B', 'ctrlSetFontH4', 'ctrlSetFontH4B', 'ctrlSetFontH5', 'ctrlSetFontH5B', 'ctrlSetFontH6', 'ctrlSetFontH6B', 'ctrlSetFontHeight', 'ctrlSetFontHeightH1', 'ctrlSetFontHeightH2', 'ctrlSetFontHeightH3', 'ctrlSetFontHeightH4', 'ctrlSetFontHeightH5', 'ctrlSetFontHeightH6', 'ctrlSetFontP', 'ctrlSetFontPB', 'ctrlSetForegroundColor', 'ctrlSetModel', 'ctrlSetModelDirAndUp', 'ctrlSetModelScale', 'ctrlSetPosition', 'ctrlSetScale', 'ctrlSetStructuredText', 'ctrlSetText', 'ctrlSetTextColor', 'ctrlSetTooltip', 'ctrlSetTooltipColorBox', 'ctrlSetTooltipColorShade', 'ctrlSetTooltipColorText', 'ctrlShow', 'ctrlShown', 'ctrlText', 'ctrlTextHeight', 'ctrlType', 'ctrlVisible', 'curatorAddons', 'curatorCamera', 'curatorCameraArea', 'curatorCameraAreaCeiling', 'curatorCoef', 'curatorEditableObjects', 'curatorEditingArea', 'curatorEditingAreaType', 'curatorMouseOver', 'curatorPoints', 'curatorRegisteredObjects', 'curatorSelected', 'curatorWaypointCost', 'currentChannel', 'currentCommand', 'currentMagazine', 'currentMagazineDetail', 'currentMagazineDetailTurret', 'currentMagazineTurret', 'currentMuzzle', 'currentNamespace', 'currentTask', 'currentTasks', 'currentThrowable', 'currentVisionMode', 'currentWaypoint', 'currentWeapon', 'currentWeaponMode', 'currentWeaponTurret', 'currentZeroing', 'cursorTarget', 'customChat', 'customRadio', 'cutFadeOut', 'cutObj', 'cutRsc', 'cutText', 'damage', 'date', 'dateToNumber', 'daytime', 'deActivateKey', 'debriefingText', 'debugFSM', 'debugLog', 'default', 'deg', 'deleteAt', 'deleteCenter', 'deleteCollection', 'deleteEditorObject', 'deleteGroup', 'deleteIdentity', 'deleteLocation', 'deleteMarker', 'deleteMarkerLocal', 'deleteRange', 'deleteResources', 'deleteSite', 'deleteStatus', 'deleteTeam', 'deleteVehicle', 'deleteVehicleCrew', 'deleteWaypoint', 'detach', 'detectedMines', 'diag activeMissionFSMs', 'diag activeSQFScripts', 'diag activeSQSScripts', 'diag captureFrame', 'diag captureSlowFrame', 'diag fps', 'diag fpsMin', 'diag frameNo', 'diag log', 'diag logSlowFrame', 'diag tickTime', 'dialog', 'diarySubjectExists', 'didJIP', 'didJIPOwner', 'difficulty', 'difficultyEnabled', 'difficultyEnabledRTD', 'direction', 'directSay', 'disableAI', 'disableCollisionWith', 'disableConversation', 'disableDebriefingStats', 'disableSerialization', 'disableTIEquipment', 'disableUAVConnectability', 'disableUserInput', 'displayAddEventHandler', 'displayCtrl', 'displayNull', 'displayRemoveAllEventHandlers', 'displayRemoveEventHandler', 'displaySetEventHandler', 'dissolveTeam', 'distance', 'distance2D', 'distanceSqr', 'distributionRegion', 'do', 'doArtilleryFire', 'doFire', 'doFollow', 'doFSM', 'doGetOut', 'doMove', 'doorPhase', 'doStop', 'doTarget', 'doWatch', 'drawArrow', 'drawEllipse', 'drawIcon', 'drawIcon3D', 'drawLine', 'drawLine3D', 'drawLink', 'drawLocation', 'drawRectangle', 'driver', 'drop', 'east', 'echo', 'editObject', 'editorSetEventHandler', 'effectiveCommander', 'else', 'emptyPositions', 'enableAI', 'enableAIFeature', 'enableAttack', 'enableCamShake', 'enableCaustics', 'enableCollisionWith', 'enableCopilot', 'enableDebriefingStats', 'enableDiagLegend', 'enableEndDialog', 'enableEngineArtillery', 'enableEnvironment', 'enableFatigue', 'enableGunLights', 'enableIRLasers', 'enableMimics', 'enablePersonTurret', 'enableRadio', 'enableReload', 'enableRopeAttach', 'enableSatNormalOnDetail', 'enableSaving', 'enableSentences', 'enableSimulation', 'enableSimulationGlobal', 'enableTeamSwitch', 'enableUAVConnectability', 'enableUAVWaypoints', 'endLoadingScreen', 'endMission', 'engineOn', 'enginesIsOnRTD', 'enginesRpmRTD', 'enginesTorqueRTD', 'entities', 'estimatedEndServerTime', 'estimatedTimeLeft', 'evalObjectArgument', 'everyBackpack', 'everyContainer', 'exec', 'execEditorScript', 'execFSM', 'execVM', 'exit', 'exitWith', 'exp', 'expectedDestination', 'eyeDirection', 'eyePos', 'face', 'faction', 'fadeMusic', 'fadeRadio', 'fadeSound', 'fadeSpeech', 'failMission', 'false', 'fillWeaponsFromPool', 'find', 'findCover', 'findDisplay', 'findEditorObject', 'findEmptyPosition', 'findEmptyPositionReady', 'findNearestEnemy', 'finishMissionInit', 'finite', 'fire', 'fireAtTarget', 'firstBackpack', 'flag', 'flagOwner', 'fleeing', 'floor', 'flyInHeight', 'fog', 'fogForecast', 'fogParams', 'for', 'forceAddUniform', 'forceEnd', 'forceMap', 'forceRespawn', 'forceSpeed', 'forceWalk', 'forceWeaponFire', 'forceWeatherChange', 'forEach', 'forEachMember', 'forEachMemberAgent', 'forEachMemberTeam', 'format', 'formation', 'formationDirection', 'formationLeader', 'formationMembers', 'formationPosition', 'formationTask', 'formatText', 'formLeader', 'freeLook', 'from', 'fromEditor', 'fuel', 'fullCrew', 'gearSlotAmmoCount', 'gearSlotData', 'getAllHitPointsDamage', 'getAmmoCargo', 'getArray', 'getArtilleryAmmo', 'getArtilleryComputerSettings', 'getArtilleryETA', 'getAssignedCuratorLogic', 'getAssignedCuratorUnit', 'getBackpackCargo', 'getBleedingRemaining', 'getBurningValue', 'getCargoIndex', 'getCenterOfMass', 'getClientState', 'getConnectedUAV', 'getDammage', 'getDescription', 'getDir', 'getDirVisual', 'getDLCs', 'getEditorCamera', 'getEditorMode', 'getEditorObjectScope', 'getElevationOffset', 'getFatigue', 'getFriend', 'getFSMVariable', 'getFuelCargo', 'getGroupIcon', 'getGroupIconParams', 'getGroupIcons', 'getHideFrom', 'getHit', 'getHitIndex', 'getHitPointDamage', 'getItemCargo', 'getMagazineCargo', 'getMarkerColor', 'getMarkerPos', 'getMarkerSize', 'getMarkerType', 'getMass', 'getModelInfo', 'getNumber', 'getObjectArgument', 'getObjectChildren', 'getObjectDLC', 'getObjectMaterials', 'getObjectProxy', 'getObjectTextures', 'getObjectType', 'getObjectViewDistance', 'getOxygenRemaining', 'getPersonUsedDLCs', 'getPlayerChannel', 'getPlayerUID', 'getPos', 'getPosASL', 'getPosASLVisual', 'getPosASLW', 'getPosATL', 'getPosATLVisual', 'getPosVisual', 'getPosWorld', 'getRepairCargo', 'getResolution', 'getShadowDistance', 'getSlingLoad', 'getSpeed', 'getSuppression', 'getTerrainHeightASL', 'getText', 'getVariable', 'getWeaponCargo', 'getWPPos', 'glanceAt', 'globalChat', 'globalRadio', 'goggles', 'goto', 'group', 'groupChat', 'groupFromNetId', 'groupIconSelectable', 'groupIconsVisible', 'groupId', 'groupOwner', 'groupRadio', 'groupSelectedUnits', 'groupSelectUnit', 'grpNull', 'gunner', 'gusts', 'halt', 'handgunItems', 'handgunMagazine', 'handgunWeapon', 'handsHit', 'hasInterface', 'hasWeapon', 'hcAllGroups', 'hcGroupParams', 'hcLeader', 'hcRemoveAllGroups', 'hcRemoveGroup', 'hcSelected', 'hcSelectGroup', 'hcSetGroup', 'hcShowBar', 'hcShownBar', 'headgear', 'hideBody', 'hideObject', 'hideObjectGlobal', 'hint', 'hintC', 'hintCadet', 'hintSilent', 'hmd', 'hostMission', 'htmlLoad', 'HUDMovementLevels', 'humidity', 'if', 'image', 'importAllGroups', 'importance', 'in', 'incapacitatedState', 'independent', 'inflame', 'inflamed', 'inGameUISetEventHandler', 'inheritsFrom', 'initAmbientLife', 'inputAction', 'inRangeOfArtillery', 'insertEditorObject', 'intersect', 'isAbleToBreathe', 'isAgent', 'isArray', 'isAutoHoverOn', 'isAutonomous', 'isAutotest', 'isBleeding', 'isBurning', 'isClass', 'isCollisionLightOn', 'isCopilotEnabled', 'isDedicated', 'isDLCAvailable', 'isEngineOn', 'isEqualTo', 'isFlashlightOn', 'isFlatEmpty', 'isForcedWalk', 'isFormationLeader', 'isHidden', 'isInRemainsCollector', 'isInstructorFigureEnabled', 'isIRLaserOn', 'isKeyActive', 'isKindOf', 'isLightOn', 'isLocalized', 'isManualFire', 'isMarkedForCollection', 'isMultiplayer', 'isNil', 'isNull', 'isNumber', 'isObjectHidden', 'isObjectRTD', 'isOnRoad', 'isPipEnabled', 'isPlayer', 'isRealTime', 'isServer', 'isShowing3DIcons', 'isSteamMission', 'isStreamFriendlyUIEnabled', 'isText', 'isTouchingGround', 'isTurnedOut', 'isTutHintsEnabled', 'isUAVConnectable', 'isUAVConnected', 'isUniformAllowed', 'isWalking', 'isWeaponDeployed', 'isWeaponRested', 'itemCargo', 'items', 'itemsWithMagazines', 'join', 'joinAs', 'joinAsSilent', 'joinSilent', 'joinString', 'kbAddDatabase', 'kbAddDatabaseTargets', 'kbAddTopic', 'kbHasTopic', 'kbReact', 'kbRemoveTopic', 'kbTell', 'kbWasSaid', 'keyImage', 'keyName', 'knowsAbout', 'land', 'landAt', 'landResult', 'language', 'laserTarget', 'lbAdd', 'lbClear', 'lbColor', 'lbCurSel', 'lbData', 'lbDelete', 'lbIsSelected', 'lbPicture', 'lbSelection', 'lbSetColor', 'lbSetCurSel', 'lbSetData', 'lbSetPicture', 'lbSetPictureColor', 'lbSetPictureColorDisabled', 'lbSetPictureColorSelected', 'lbSetSelectColor', 'lbSetSelectColorRight', 'lbSetSelected', 'lbSetTooltip', 'lbSetValue', 'lbSize', 'lbSort', 'lbSortByValue', 'lbText', 'lbValue', 'leader', 'leaderboardDeInit', 'leaderboardGetRows', 'leaderboardInit', 'leaveVehicle', 'libraryCredits', 'libraryDisclaimers', 'lifeState', 'lightAttachObject', 'lightDetachObject', 'lightIsOn', 'lightnings', 'limitSpeed', 'linearConversion', 'lineBreak', 'lineIntersects', 'lineIntersectsObjs', 'lineIntersectsSurfaces', 'lineIntersectsWith', 'linkItem', 'list', 'listObjects', 'ln', 'lnbAddArray', 'lnbAddColumn', 'lnbAddRow', 'lnbClear', 'lnbColor', 'lnbCurSelRow', 'lnbData', 'lnbDeleteColumn', 'lnbDeleteRow', 'lnbGetColumnsPosition', 'lnbPicture', 'lnbSetColor', 'lnbSetColumnsPos', 'lnbSetCurSelRow', 'lnbSetData', 'lnbSetPicture', 'lnbSetText', 'lnbSetValue', 'lnbSize', 'lnbText', 'lnbValue', 'load', 'loadAbs', 'loadBackpack', 'loadFile', 'loadGame', 'loadIdentity', 'loadMagazine', 'loadOverlay', 'loadStatus', 'loadUniform', 'loadVest', 'local', 'localize', 'locationNull', 'locationPosition', 'lock', 'lockCameraTo', 'lockCargo', 'lockDriver', 'locked', 'lockedCargo', 'lockedDriver', 'lockedTurret', 'lockTurret', 'lockWP', 'log', 'logEntities', 'lookAt', 'lookAtPos', 'magazineCargo', 'magazines', 'magazinesAllTurrets', 'magazinesAmmo', 'magazinesAmmoCargo', 'magazinesAmmoFull', 'magazinesDetail', 'magazinesDetailBackpack', 'magazinesDetailUniform', 'magazinesDetailVest', 'magazinesTurret', 'magazineTurretAmmo', 'mapAnimAdd', 'mapAnimClear', 'mapAnimCommit', 'mapAnimDone', 'mapCenterOnCamera', 'mapGridPosition', 'markAsFinishedOnSteam', 'markerAlpha', 'markerBrush', 'markerColor', 'markerDir', 'markerPos', 'markerShape', 'markerSize', 'markerText', 'markerType', 'max', 'members', 'min', 'mineActive', 'mineDetectedBy', 'missionConfigFile', 'missionName', 'missionNamespace', 'missionStart', 'mod', 'modelToWorld', 'modelToWorldVisual', 'moonIntensity', 'morale', 'move', 'moveInAny', 'moveInCargo', 'moveInCommander', 'moveInDriver', 'moveInGunner', 'moveInTurret', 'moveObjectToEnd', 'moveOut', 'moveTime', 'moveTo', 'moveToCompleted', 'moveToFailed', 'musicVolume', 'name', 'name location', 'nameSound', 'nearEntities', 'nearestBuilding', 'nearestLocation', 'nearestLocations', 'nearestLocationWithDubbing', 'nearestObject', 'nearestObjects', 'nearObjects', 'nearObjectsReady', 'nearRoads', 'nearSupplies', 'nearTargets', 'needReload', 'netId', 'netObjNull', 'newOverlay', 'nextMenuItemIndex', 'nextWeatherChange', 'nil', 'nMenuItems', 'not', 'numberToDate', 'objectCurators', 'objectFromNetId', 'objectParent', 'objNull', 'objStatus', 'onBriefingGroup', 'onBriefingNotes', 'onBriefingPlan', 'onBriefingTeamSwitch', 'onCommandModeChanged', 'onDoubleClick', 'onEachFrame', 'onGroupIconClick', 'onGroupIconOverEnter', 'onGroupIconOverLeave', 'onHCGroupSelectionChanged', 'onMapSingleClick', 'onPlayerConnected', 'onPlayerDisconnected', 'onPreloadFinished', 'onPreloadStarted', 'onShowNewObject', 'onTeamSwitch', 'openCuratorInterface', 'openMap', 'openYoutubeVideo', 'opfor', 'or', 'orderGetIn', 'overcast', 'overcastForecast', 'owner', 'param', 'params', 'parseNumber', 'parseText', 'parsingNamespace', 'particlesQuality', 'pi', 'pickWeaponPool', 'pitch', 'playableSlotsNumber', 'playableUnits', 'playAction', 'playActionNow', 'player', 'playerRespawnTime', 'playerSide', 'playersNumber', 'playGesture', 'playMission', 'playMove', 'playMoveNow', 'playMusic', 'playScriptedMission', 'playSound', 'playSound3D', 'position', 'positionCameraToWorld', 'posScreenToWorld', 'posWorldToScreen', 'ppEffectAdjust', 'ppEffectCommit', 'ppEffectCommitted', 'ppEffectCreate', 'ppEffectDestroy', 'ppEffectEnable', 'ppEffectForceInNVG', 'precision', 'preloadCamera', 'preloadObject', 'preloadSound', 'preloadTitleObj', 'preloadTitleRsc', 'preprocessFile', 'preprocessFileLineNumbers', 'primaryWeapon', 'primaryWeaponItems', 'primaryWeaponMagazine', 'priority', 'private', 'processDiaryLink', 'productVersion', 'profileName', 'profileNamespace', 'profileNameSteam', 'progressLoadingScreen', 'progressPosition', 'progressSetPosition', 'publicVariable', 'publicVariableClient', 'publicVariableServer', 'pushBack', 'putWeaponPool', 'queryItemsPool', 'queryMagazinePool', 'queryWeaponPool', 'rad', 'radioChannelAdd', 'radioChannelCreate', 'radioChannelRemove', 'radioChannelSetCallSign', 'radioChannelSetLabel', 'radioVolume', 'rain', 'rainbow', 'random', 'rank', 'rankId', 'rating', 'rectangular', 'registeredTasks', 'registerTask', 'reload', 'reloadEnabled', 'remoteControl', 'remoteExec', 'remoteExecCall', 'removeAction', 'removeAllActions', 'removeAllAssignedItems', 'removeAllContainers', 'removeAllCuratorAddons', 'removeAllCuratorCameraAreas', 'removeAllCuratorEditingAreas', 'removeAllEventHandlers', 'removeAllHandgunItems', 'removeAllItems', 'removeAllItemsWithMagazines', 'removeAllMissionEventHandlers', 'removeAllMPEventHandlers', 'removeAllMusicEventHandlers', 'removeAllPrimaryWeaponItems', 'removeAllWeapons', 'removeBackpack', 'removeBackpackGlobal', 'removeCuratorAddons', 'removeCuratorCameraArea', 'removeCuratorEditableObjects', 'removeCuratorEditingArea', 'removeDrawIcon', 'removeDrawLinks', 'removeEventHandler', 'removeFromRemainsCollector', 'removeGoggles', 'removeGroupIcon', 'removeHandgunItem', 'removeHeadgear', 'removeItem', 'removeItemFromBackpack', 'removeItemFromUniform', 'removeItemFromVest', 'removeItems', 'removeMagazine', 'removeMagazineGlobal', 'removeMagazines', 'removeMagazinesTurret', 'removeMagazineTurret', 'removeMenuItem', 'removeMissionEventHandler', 'removeMPEventHandler', 'removeMusicEventHandler', 'removePrimaryWeaponItem', 'removeSecondaryWeaponItem', 'removeSimpleTask', 'removeSwitchableUnit', 'removeTeamMember', 'removeUniform', 'removeVest', 'removeWeapon', 'removeWeaponGlobal', 'removeWeaponTurret', 'requiredVersion', 'resetCamShake', 'resetSubgroupDirection', 'resistance', 'resize', 'resources', 'respawnVehicle', 'restartEditorCamera', 'reveal', 'revealMine', 'reverse', 'reversedMouseY', 'roadsConnectedTo', 'roleDescription', 'ropeAttachedObjects', 'ropeAttachedTo', 'ropeAttachEnabled', 'ropeAttachTo', 'ropeCreate', 'ropeCut', 'ropeEndPosition', 'ropeLength', 'ropes', 'ropeUnwind', 'ropeUnwound', 'rotorsForcesRTD', 'rotorsRpmRTD', 'round', 'runInitScript', 'safeZoneH', 'safeZoneW', 'safeZoneWAbs', 'safeZoneX', 'safeZoneXAbs', 'safeZoneY', 'saveGame', 'saveIdentity', 'saveJoysticks', 'saveOverlay', 'saveProfileNamespace', 'saveStatus', 'saveVar', 'savingEnabled', 'say', 'say2D', 'say3D', 'scopeName', 'score', 'scoreSide', 'screenToWorld', 'scriptDone', 'scriptName', 'scriptNull', 'scudState', 'secondaryWeapon', 'secondaryWeaponItems', 'secondaryWeaponMagazine', 'select', 'selectBestPlaces', 'selectDiarySubject', 'selectedEditorObjects', 'selectEditorObject', 'selectionPosition', 'selectLeader', 'selectNoPlayer', 'selectPlayer', 'selectWeapon', 'selectWeaponTurret', 'sendAUMessage', 'sendSimpleCommand', 'sendTask', 'sendTaskResult', 'sendUDPMessage', 'serverCommand', 'serverCommandAvailable', 'serverCommandExecutable', 'serverName', 'serverTime', 'set', 'setAccTime', 'setAirportSide', 'setAmmo', 'setAmmoCargo', 'setAperture', 'setApertureNew', 'setArmoryPoints', 'setAttributes', 'setAutonomous', 'setBehaviour', 'setBleedingRemaining', 'setCameraInterest', 'setCamShakeDefParams', 'setCamShakeParams', 'setCamUseTi', 'setCaptive', 'setCenterOfMass', 'setCollisionLight', 'setCombatMode', 'setCompassOscillation', 'setCuratorCameraAreaCeiling', 'setCuratorCoef', 'setCuratorEditingAreaType', 'setCuratorWaypointCost', 'setCurrentChannel', 'setCurrentTask', 'setCurrentWaypoint', 'setDamage', 'setDammage', 'setDate', 'setDebriefingText', 'setDefaultCamera', 'setDestination', 'setDetailMapBlendPars', 'setDir', 'setDirection', 'setDrawIcon', 'setDropInterval', 'setEditorMode', 'setEditorObjectScope', 'setEffectCondition', 'setFace', 'setFaceAnimation', 'setFatigue', 'setFlagOwner', 'setFlagSide', 'setFlagTexture', 'setFog', 'setFog array', 'setFormation', 'setFormationTask', 'setFormDir', 'setFriend', 'setFromEditor', 'setFSMVariable', 'setFuel', 'setFuelCargo', 'setGroupIcon', 'setGroupIconParams', 'setGroupIconsSelectable', 'setGroupIconsVisible', 'setGroupId', 'setGroupIdGlobal', 'setGroupOwner', 'setGusts', 'setHideBehind', 'setHit', 'setHitIndex', 'setHitPointDamage', 'setHorizonParallaxCoef', 'setHUDMovementLevels', 'setIdentity', 'setImportance', 'setLeader', 'setLightAmbient', 'setLightAttenuation', 'setLightBrightness', 'setLightColor', 'setLightDayLight', 'setLightFlareMaxDistance', 'setLightFlareSize', 'setLightIntensity', 'setLightnings', 'setLightUseFlare', 'setLocalWindParams', 'setMagazineTurretAmmo', 'setMarkerAlpha', 'setMarkerAlphaLocal', 'setMarkerBrush', 'setMarkerBrushLocal', 'setMarkerColor', 'setMarkerColorLocal', 'setMarkerDir', 'setMarkerDirLocal', 'setMarkerPos', 'setMarkerPosLocal', 'setMarkerShape', 'setMarkerShapeLocal', 'setMarkerSize', 'setMarkerSizeLocal', 'setMarkerText', 'setMarkerTextLocal', 'setMarkerType', 'setMarkerTypeLocal', 'setMass', 'setMimic', 'setMousePosition', 'setMusicEffect', 'setMusicEventHandler', 'setName', 'setNameSound', 'setObjectArguments', 'setObjectMaterial', 'setObjectProxy', 'setObjectTexture', 'setObjectTextureGlobal', 'setObjectViewDistance', 'setOvercast', 'setOwner', 'setOxygenRemaining', 'setParticleCircle', 'setParticleClass', 'setParticleFire', 'setParticleParams', 'setParticleRandom', 'setPilotLight', 'setPiPEffect', 'setPitch', 'setPlayable', 'setPlayerRespawnTime', 'setPos', 'setPosASL', 'setPosASL2', 'setPosASLW', 'setPosATL', 'setPosition', 'setPosWorld', 'setRadioMsg', 'setRain', 'setRainbow', 'setRandomLip', 'setRank', 'setRectangular', 'setRepairCargo', 'setShadowDistance', 'setSide', 'setSimpleTaskDescription', 'setSimpleTaskDestination', 'setSimpleTaskTarget', 'setSimulWeatherLayers', 'setSize', 'setSkill', 'setSkill array', 'setSlingLoad', 'setSoundEffect', 'setSpeaker', 'setSpeech', 'setSpeedMode', 'setStatValue', 'setSuppression', 'setSystemOfUnits', 'setTargetAge', 'setTaskResult', 'setTaskState', 'setTerrainGrid', 'setText', 'setTimeMultiplier', 'setTitleEffect', 'setTriggerActivation', 'setTriggerArea', 'setTriggerStatements', 'setTriggerText', 'setTriggerTimeout', 'setTriggerType', 'setType', 'setUnconscious', 'setUnitAbility', 'setUnitPos', 'setUnitPosWeak', 'setUnitRank', 'setUnitRecoilCoefficient', 'setUnloadInCombat', 'setUserActionText', 'setVariable', 'setVectorDir', 'setVectorDirAndUp', 'setVectorUp', 'setVehicleAmmo', 'setVehicleAmmoDef', 'setVehicleArmor', 'setVehicleId', 'setVehicleLock', 'setVehiclePosition', 'setVehicleTiPars', 'setVehicleVarName', 'setVelocity', 'setVelocityTransformation', 'setViewDistance', 'setVisibleIfTreeCollapsed', 'setWaves', 'setWaypointBehaviour', 'setWaypointCombatMode', 'setWaypointCompletionRadius', 'setWaypointDescription', 'setWaypointFormation', 'setWaypointHousePosition', 'setWaypointLoiterRadius', 'setWaypointLoiterType', 'setWaypointName', 'setWaypointPosition', 'setWaypointScript', 'setWaypointSpeed', 'setWaypointStatements', 'setWaypointTimeout', 'setWaypointType', 'setWaypointVisible', 'setWeaponReloadingTime', 'setWind', 'setWindDir', 'setWindForce', 'setWindStr', 'setWPPos', 'show3DIcons', 'showChat', 'showCinemaBorder', 'showCommandingMenu', 'showCompass', 'showCuratorCompass', 'showGPS', 'showHUD', 'showLegend', 'showMap', 'shownArtilleryComputer', 'shownChat', 'shownCompass', 'shownCuratorCompass', 'showNewEditorObject', 'shownGPS', 'shownHUD', 'shownMap', 'shownPad', 'shownRadio', 'shownUAVFeed', 'shownWarrant', 'shownWatch', 'showPad', 'showRadio', 'showSubtitles', 'showUAVFeed', 'showWarrant', 'showWatch', 'showWaypoint', 'side', 'sideChat', 'sideEnemy', 'sideFriendly', 'sideLogic', 'sideRadio', 'sideUnknown', 'simpleTasks', 'simulationEnabled', 'simulCloudDensity', 'simulCloudOcclusion', 'simulInClouds', 'simulWeatherSync', 'sin', 'size', 'sizeOf', 'skill', 'skillFinal', 'skipTime', 'sleep', 'sliderPosition', 'sliderRange', 'sliderSetPosition', 'sliderSetRange', 'sliderSetSpeed', 'sliderSpeed', 'slingLoadAssistantShown', 'soldierMagazines', 'someAmmo', 'sort', 'soundVolume', 'spawn', 'speaker', 'speed', 'speedMode', 'splitString', 'sqrt', 'squadParams', 'stance', 'startLoadingScreen', 'step', 'stop', 'stopped', 'str', 'sunOrMoon', 'supportInfo', 'suppressFor', 'surfaceIsWater', 'surfaceNormal', 'surfaceType', 'swimInDepth', 'switch', 'switchableUnits', 'switchAction', 'switchCamera', 'switchGesture', 'switchLight', 'switchMove', 'synchronizedObjects', 'synchronizedTriggers', 'synchronizedWaypoints', 'synchronizeObjectsAdd', 'synchronizeObjectsRemove', 'synchronizeTrigger', 'synchronizeWaypoint', 'synchronizeWaypoint trigger', 'systemChat', 'systemOfUnits', 'tan', 'targetKnowledge', 'targetsAggregate', 'targetsQuery', 'taskChildren', 'taskCompleted', 'taskDescription', 'taskDestination', 'taskHint', 'taskNull', 'taskParent', 'taskResult', 'taskState', 'teamMember', 'teamMemberNull', 'teamName', 'teams', 'teamSwitch', 'teamSwitchEnabled', 'teamType', 'terminate', 'terrainIntersect', 'terrainIntersectASL', 'text', 'text location', 'textLog', 'textLogFormat', 'tg', 'then', 'throw', 'time', 'timeMultiplier', 'titleCut', 'titleFadeOut', 'titleObj', 'titleRsc', 'titleText', 'to', 'toArray', 'toLower', 'toString', 'toUpper', 'triggerActivated', 'triggerActivation', 'triggerArea', 'triggerAttachedVehicle', 'triggerAttachObject', 'triggerAttachVehicle', 'triggerStatements', 'triggerText', 'triggerTimeout', 'triggerTimeoutCurrent', 'triggerType', 'true', 'try', 'turretLocal', 'turretOwner', 'turretUnit', 'tvAdd', 'tvClear', 'tvCollapse', 'tvCount', 'tvCurSel', 'tvData', 'tvDelete', 'tvExpand', 'tvPicture', 'tvSetCurSel', 'tvSetData', 'tvSetPicture', 'tvSetPictureColor', 'tvSetTooltip', 'tvSetValue', 'tvSort', 'tvSortByValue', 'tvText', 'tvValue', 'type', 'typeName', 'typeOf', 'UAVControl', 'uiNamespace', 'uiSleep', 'unassignCurator', 'unassignItem', 'unassignTeam', 'unassignVehicle', 'underwater', 'uniform', 'uniformContainer', 'uniformItems', 'uniformMagazines', 'unitAddons', 'unitBackpack', 'unitPos', 'unitReady', 'unitRecoilCoefficient', 'units', 'unitsBelowHeight', 'unlinkItem', 'unlockAchievement', 'unregisterTask', 'updateDrawIcon', 'updateMenuItem', 'updateObjectTree', 'useAudioTimeForMoves', 'vectorAdd', 'vectorCos', 'vectorCrossProduct', 'vectorDiff', 'vectorDir', 'vectorDirVisual', 'vectorDistance', 'vectorDistanceSqr', 'vectorDotProduct', 'vectorFromTo', 'vectorMagnitude', 'vectorMagnitudeSqr', 'vectorMultiply', 'vectorNormalized', 'vectorUp', 'vectorUpVisual', 'vehicle', 'vehicleChat', 'vehicleRadio', 'vehicles', 'vehicleVarName', 'velocity', 'velocityModelSpace', 'verifySignature', 'vest', 'vestContainer', 'vestItems', 'vestMagazines', 'viewDistance', 'visibleCompass', 'visibleGPS', 'visibleMap', 'visiblePosition', 'visiblePositionASL', 'visibleWatch', 'waitUntil', 'waves', 'waypointAttachedObject', 'waypointAttachedVehicle', 'waypointAttachObject', 'waypointAttachVehicle', 'waypointBehaviour', 'waypointCombatMode', 'waypointCompletionRadius', 'waypointDescription', 'waypointFormation', 'waypointHousePosition', 'waypointLoiterRadius', 'waypointLoiterType', 'waypointName', 'waypointPosition', 'waypoints', 'waypointScript', 'waypointsEnabledUAV', 'waypointShow', 'waypointSpeed', 'waypointStatements', 'waypointTimeout', 'waypointTimeoutCurrent', 'waypointType', 'waypointVisible', 'weaponAccessories', 'weaponCargo', 'weaponDirection', 'weaponLowered', 'weapons', 'weaponsItems', 'weaponsItemsCargo', 'weaponState', 'weaponsTurret', 'weightRTD', 'west', 'WFSideText', 'while', 'wind', 'windDir', 'windStr', 'wingsForcesRTD', 'with', 'worldName', 'worldSize', 'worldToModel', 'worldToModelVisual', 'worldToScreen'];
-	  var control = ['case', 'catch', 'default', 'do', 'else', 'exit', 'exitWith|5', 'for', 'forEach', 'from', 'if', 'switch', 'then', 'throw', 'to', 'try', 'while', 'with'];
-	  var operators = ['!', '-', '+', '!=', '%', '&&', '*', '/', '=', '==', '>', '>=', '<', '<=', '^', ':', '>>'];
-	  var specials = ['_forEachIndex|10', '_this|10', '_x|10'];
-	  var literals = ['true', 'false', 'nil'];
-	  var builtins = allCommands.filter(function (command) {
-	    return control.indexOf(command) == -1 &&
-	        literals.indexOf(command) == -1 &&
-	        operators.indexOf(command) == -1;
-	  });
-	  //Note: operators will not be treated as builtins due to the lexeme rules
-	  builtins = builtins.concat(specials);
-	
-	  // In SQF strings, quotes matching the start are escaped by adding a consecutive.
-	  // Example of single escaped quotes: " "" " and  ' '' '.
-	  var STRINGS = {
-	    className: 'string',
-	    relevance: 0,
-	    variants: [
-	      {
-	        begin: '"',
-	        end: '"',
-	        contains: [{begin: '""'}]
-	      },
-	      {
-	        begin: '\'',
-	        end: '\'',
-	        contains: [{begin: '\'\''}]
-	      }
-	    ]
-	  };
-	
-	  var NUMBERS = {
-	    className: 'number',
-	    begin: hljs.NUMBER_RE,
-	    relevance: 0
-	  };
-	
-	  // Preprocessor definitions borrowed from C++
-	  var PREPROCESSOR_STRINGS = {
-	    className: 'string',
-	    variants: [
-	      hljs.QUOTE_STRING_MODE,
-	      {
-	        begin: '\'\\\\?.', end: '\'',
-	        illegal: '.'
-	      }
-	    ]
-	  };
-	
-	  var PREPROCESSOR =       {
-	    className: 'preprocessor',
-	    begin: '#', end: '$',
-	    keywords: 'if else elif endif define undef warning error line ' +
-	              'pragma ifdef ifndef',
-	    contains: [
-	      {
-	        begin: /\\\n/, relevance: 0
-	      },
-	      {
-	        beginKeywords: 'include', end: '$',
-	        contains: [
-	          PREPROCESSOR_STRINGS,
-	          {
-	            className: 'string',
-	            begin: '<', end: '>',
-	            illegal: '\\n',
-	          }
-	        ]
-	      },
-	      PREPROCESSOR_STRINGS,
-	      NUMBERS,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE
-	    ]
-	  };
-	
-	  return {
-	    aliases: ['sqf'],
-	    case_insensitive: true,
-	    keywords: {
-	      keyword: control.join(' '),
-	      built_in: builtins.join(' '),
-	      literal: literals.join(' ')
-	    },
-	    contains: [
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE,
-	      NUMBERS,
-	      STRINGS,
-	      PREPROCESSOR
-	    ]
-	  };
-	};
-
-/***/ },
-/* 168 */
+/* 166 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17681,7 +17430,7 @@
 	};
 
 /***/ },
-/* 169 */
+/* 167 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17723,7 +17472,7 @@
 	};
 
 /***/ },
-/* 170 */
+/* 168 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17779,7 +17528,7 @@
 	};
 
 /***/ },
-/* 171 */
+/* 169 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18226,35 +17975,32 @@
 	};
 
 /***/ },
-/* 172 */
+/* 170 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  var SWIFT_KEYWORDS = {
-	      keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' +
-	        'break case catch class continue convenience default defer deinit didSet do ' +
-	        'dynamic dynamicType else enum extension fallthrough false final for func ' +
-	        'get guard if import in indirect infix init inout internal is lazy left let ' +
-	        'mutating nil none nonmutating operator optional override postfix precedence ' +
-	        'prefix private protocol Protocol public repeat required rethrows return ' +
-	        'right self Self set static struct subscript super switch throw throws true ' +
-	        'try try! try? Type typealias unowned var weak where while willSet',
+	      keyword: 'class deinit enum extension func init let protocol static ' +
+	        'struct subscript typealias var break case continue default do ' +
+	        'else fallthrough if in for return switch where while as dynamicType ' +
+	        'is new super self Self Type __COLUMN__ __FILE__ __FUNCTION__ ' +
+	        '__LINE__ associativity didSet get infix inout left mutating none ' +
+	        'nonmutating operator override postfix precedence prefix right set '+
+	        'unowned unowned safe unsafe weak willSet',
 	      literal: 'true false nil',
-	      built_in: 'abs advance alignof alignofValue anyGenerator assert assertionFailure ' +
-	        'bridgeFromObjectiveC bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' +
-	        'bridgeToObjectiveCUnconditional c contains count countElements countLeadingZeros ' +
-	        'debugPrint debugPrintln distance dropFirst dropLast dump encodeBitsAsWords ' +
-	        'enumerate equal fatalError filter find getBridgedObjectiveCType getVaList ' +
-	        'indices insertionSort isBridgedToObjectiveC isBridgedVerbatimToObjectiveC ' +
-	        'isUniquelyReferenced isUniquelyReferencedNonObjC join lazy lexicographicalCompare ' +
-	        'map max maxElement min minElement numericCast overlaps partition posix ' +
-	        'precondition preconditionFailure print println quickSort readLine reduce reflect ' +
-	        'reinterpretCast reverse roundUpToAlignment sizeof sizeofValue sort split ' +
-	        'startsWith stride strideof strideofValue swap toString transcode ' +
-	        'underestimateCount unsafeAddressOf unsafeBitCast unsafeDowncast unsafeUnwrap ' +
+	      built_in: 'abs advance alignof alignofValue assert bridgeFromObjectiveC ' +
+	        'bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' +
+	        'bridgeToObjectiveCUnconditional c contains count countElements ' +
+	        'countLeadingZeros debugPrint debugPrintln distance dropFirst dropLast dump ' +
+	        'encodeBitsAsWords enumerate equal filter find getBridgedObjectiveCType ' +
+	        'getVaList indices insertionSort isBridgedToObjectiveC ' +
+	        'isBridgedVerbatimToObjectiveC isUniquelyReferenced join ' +
+	        'lexicographicalCompare map max maxElement min minElement numericCast ' +
+	        'partition posix print println quickSort reduce reflect reinterpretCast ' +
+	        'reverse roundUpToAlignment sizeof sizeofValue sort split startsWith strideof ' +
+	        'strideofValue swap swift toString transcode underestimateCount ' +
 	        'unsafeReflect withExtendedLifetime withObjectAtPlusZero withUnsafePointer ' +
-	        'withUnsafePointerToObject withUnsafeMutablePointer withUnsafeMutablePointers ' +
-	        'withUnsafePointer withUnsafePointers withVaList zip'
+	        'withUnsafePointerToObject withUnsafePointers withVaList'
 	    };
 	
 	  var TYPE = {
@@ -18334,12 +18080,10 @@
 	      },
 	      {
 	        className: 'preprocessor', // @attributes
-	        begin: '(@warn_unused_result|@exported|@lazy|@noescape|' +
-	                  '@NSCopying|@NSManaged|@objc|@convention|@required|' +
+	        begin: '(@assignment|@class_protocol|@exported|@final|@lazy|@noreturn|' +
+	                  '@NSCopying|@NSManaged|@objc|@optional|@required|@auto_closure|' +
 	                  '@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|' +
-	                  '@infix|@prefix|@postfix|@autoclosure|@testable|@available|' +
-	                  '@nonobjc|@NSApplicationMain|@UIApplicationMain)'
-	
+	                  '@infix|@prefix|@postfix)'
 	      },
 	      {
 	        beginKeywords: 'import', end: /$/,
@@ -18350,7 +18094,7 @@
 	};
 
 /***/ },
-/* 173 */
+/* 171 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18416,7 +18160,7 @@
 	};
 
 /***/ },
-/* 174 */
+/* 172 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18475,7 +18219,7 @@
 	};
 
 /***/ },
-/* 175 */
+/* 173 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18514,7 +18258,7 @@
 	};
 
 /***/ },
-/* 176 */
+/* 174 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18602,7 +18346,7 @@
 	};
 
 /***/ },
-/* 177 */
+/* 175 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18663,7 +18407,7 @@
 	};
 
 /***/ },
-/* 178 */
+/* 176 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18671,8 +18415,8 @@
 	    keyword:
 	      'in if for while finally var new function|0 do return void else break catch ' +
 	      'instanceof with throw case default try this switch continue typeof delete ' +
-	      'let yield const class public private protected get set super ' +
-	      'static implements enum export import declare type namespace abstract',
+	      'let yield const class public private get set super ' +
+	      'static implements enum export import declare type protected',
 	    literal:
 	      'true false null undefined NaN Infinity',
 	    built_in:
@@ -18765,7 +18509,7 @@
 	};
 
 /***/ },
-/* 179 */
+/* 177 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18824,7 +18568,7 @@
 	};
 
 /***/ },
-/* 180 */
+/* 178 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18884,7 +18628,7 @@
 	};
 
 /***/ },
-/* 181 */
+/* 179 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18927,7 +18671,7 @@
 	};
 
 /***/ },
-/* 182 */
+/* 180 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18943,7 +18687,7 @@
 	};
 
 /***/ },
-/* 183 */
+/* 181 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18997,7 +18741,7 @@
 	};
 
 /***/ },
-/* 184 */
+/* 182 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19057,7 +18801,7 @@
 	};
 
 /***/ },
-/* 185 */
+/* 183 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19124,7 +18868,7 @@
 	};
 
 /***/ },
-/* 186 */
+/* 184 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19264,7 +19008,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 185 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19355,7 +19099,7 @@
 	};
 
 /***/ },
-/* 188 */
+/* 186 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19432,7 +19176,7 @@
 	};
 
 /***/ },
-/* 189 */
+/* 187 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19543,18 +19287,18 @@
 	};
 
 /***/ },
-/* 190 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
+	var __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * 模块入口
 	 *
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	var DEFAULT = __webpack_require__(191);
-	var parser = __webpack_require__(198);
-	var FilterXSS = __webpack_require__(199);
+	var DEFAULT = __webpack_require__(189);
+	var parser = __webpack_require__(196);
+	var FilterXSS = __webpack_require__(197);
 	
 	
 	/**
@@ -19577,6 +19321,14 @@
 	for (var i in parser) exports[i] = parser[i];
 	
 	
+	
+	// 在AMD下使用
+	if (true) {
+	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	    return module.exports;
+	  }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	
 	// 在浏览器端使用
 	if (typeof window !== 'undefined') {
 	  window.filterXSS = module.exports;
@@ -19584,7 +19336,7 @@
 
 
 /***/ },
-/* 191 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19593,78 +19345,75 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	var FilterCSS = __webpack_require__(192).FilterCSS;
-	var getDefaultCSSWhiteList = __webpack_require__(192).getDefaultWhiteList;
-	var _ = __webpack_require__(197);
+	var FilterCSS = __webpack_require__(190).FilterCSS;
+	var _ = __webpack_require__(195);
 	
 	// 默认白名单
-	function getDefaultWhiteList () {
-	  return {
-	    a:      ['target', 'href', 'title'],
-	    abbr:   ['title'],
-	    address: [],
-	    area:   ['shape', 'coords', 'href', 'alt'],
-	    article: [],
-	    aside:  [],
-	    audio:  ['autoplay', 'controls', 'loop', 'preload', 'src'],
-	    b:      [],
-	    bdi:    ['dir'],
-	    bdo:    ['dir'],
-	    big:    [],
-	    blockquote: ['cite'],
-	    br:     [],
-	    caption: [],
-	    center: [],
-	    cite:   [],
-	    code:   [],
-	    col:    ['align', 'valign', 'span', 'width'],
-	    colgroup: ['align', 'valign', 'span', 'width'],
-	    dd:     [],
-	    del:    ['datetime'],
-	    details: ['open'],
-	    div:    [],
-	    dl:     [],
-	    dt:     [],
-	    em:     [],
-	    font:   ['color', 'size', 'face'],
-	    footer: [],
-	    h1:     [],
-	    h2:     [],
-	    h3:     [],
-	    h4:     [],
-	    h5:     [],
-	    h6:     [],
-	    header: [],
-	    hr:     [],
-	    i:      [],
-	    img:    ['src', 'alt', 'title', 'width', 'height'],
-	    ins:    ['datetime'],
-	    li:     [],
-	    mark:   [],
-	    nav:    [],
-	    ol:     [],
-	    p:      [],
-	    pre:    [],
-	    s:      [],
-	    section:[],
-	    small:  [],
-	    span:   [],
-	    sub:    [],
-	    sup:    [],
-	    strong: [],
-	    table:  ['width', 'border', 'align', 'valign'],
-	    tbody:  ['align', 'valign'],
-	    td:     ['width', 'rowspan', 'colspan', 'align', 'valign'],
-	    tfoot:  ['align', 'valign'],
-	    th:     ['width', 'rowspan', 'colspan', 'align', 'valign'],
-	    thead:  ['align', 'valign'],
-	    tr:     ['rowspan', 'align', 'valign'],
-	    tt:     [],
-	    u:      [],
-	    ul:     [],
-	    video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width']
-	  };
-	}
+	var whiteList = {
+	  a:      ['target', 'href', 'title'],
+	  abbr:   ['title'],
+	  address: [],
+	  area:   ['shape', 'coords', 'href', 'alt'],
+	  article: [],
+	  aside:  [],
+	  audio:  ['autoplay', 'controls', 'loop', 'preload', 'src'],
+	  b:      [],
+	  bdi:    ['dir'],
+	  bdo:    ['dir'],
+	  big:    [],
+	  blockquote: ['cite'],
+	  br:     [],
+	  caption: [],
+	  center: [],
+	  cite:   [],
+	  code:   [],
+	  col:    ['align', 'valign', 'span', 'width'],
+	  colgroup: ['align', 'valign', 'span', 'width'],
+	  dd:     [],
+	  del:    ['datetime'],
+	  details: ['open'],
+	  div:    [],
+	  dl:     [],
+	  dt:     [],
+	  em:     [],
+	  font:   ['color', 'size', 'face'],
+	  footer: [],
+	  h1:     [],
+	  h2:     [],
+	  h3:     [],
+	  h4:     [],
+	  h5:     [],
+	  h6:     [],
+	  header: [],
+	  hr:     [],
+	  i:      [],
+	  img:    ['src', 'alt', 'title', 'width', 'height'],
+	  ins:    ['datetime'],
+	  li:     [],
+	  mark:   [],
+	  nav:    [],
+	  ol:     [],
+	  p:      [],
+	  pre:    [],
+	  s:      [],
+	  section:[],
+	  small:  [],
+	  span:   [],
+	  sub:    [],
+	  sup:    [],
+	  strong: [],
+	  table:  ['width', 'border', 'align', 'valign'],
+	  tbody:  ['align', 'valign'],
+	  td:     ['width', 'colspan', 'align', 'valign'],
+	  tfoot:  ['align', 'valign'],
+	  th:     ['width', 'colspan', 'align', 'valign'],
+	  thead:  ['align', 'valign'],
+	  tr:     ['rowspan', 'align', 'valign'],
+	  tt:     [],
+	  u:      [],
+	  ul:     [],
+	  video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width']
+	};
 	
 	// 默认CSS Filter
 	var defaultCSSFilter = new FilterCSS();
@@ -19736,18 +19485,18 @@
 	 * @return {String}
 	 */
 	function safeAttrValue (tag, name, value, cssFilter) {
+	  cssFilter = cssFilter || defaultCSSFilter;
 	  // 转换为友好的属性值，再做判断
 	  value = friendlyAttrValue(value);
 	
 	  if (name === 'href' || name === 'src') {
 	    // 过滤 href 和 src 属性
-	    // 仅允许 http:// | https:// | mailto: | / | # 开头的地址
+	    // 仅允许 http:// | https:// | mailto: | / 开头的地址
 	    value = _.trim(value);
 	    if (value === '#') return '#';
 	    if (!(value.substr(0, 7) === 'http://' ||
 	         value.substr(0, 8) === 'https://' ||
 	         value.substr(0, 7) === 'mailto:' ||
-	         value[0] === '#' ||
 	         value[0] === '/')) {
 	      return '';
 	    }
@@ -19777,10 +19526,7 @@
 	        return '';
 	      }
 	    }
-	    if (cssFilter !== false) {
-	      cssFilter = cssFilter || defaultCSSFilter;
-	      value = cssFilter.process(value);
-	    }
+	    value = cssFilter.process(value);
 	  }
 	
 	  // 输出时需要转义<>"
@@ -19979,8 +19725,7 @@
 	}
 	
 	
-	exports.whiteList = getDefaultWhiteList();
-	exports.getDefaultWhiteList = getDefaultWhiteList;
+	exports.whiteList = whiteList;
 	exports.onTag = onTag;
 	exports.onIgnoreTag = onIgnoreTag;
 	exports.onTagAttr = onTagAttr;
@@ -19999,21 +19744,21 @@
 	exports.stripCommentTag = stripCommentTag;
 	exports.stripBlankChar = stripBlankChar;
 	exports.cssFilter = defaultCSSFilter;
-	exports.getDefaultCSSWhiteList = getDefaultCSSWhiteList;
+	
 
 
 /***/ },
-/* 192 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
+	var __WEBPACK_AMD_DEFINE_RESULT__;/**
 	 * cssfilter
 	 *
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	var DEFAULT = __webpack_require__(193);
-	var FilterCSS = __webpack_require__(194);
+	var DEFAULT = __webpack_require__(191);
+	var FilterCSS = __webpack_require__(192);
 	
 	
 	/**
@@ -20034,6 +19779,15 @@
 	exports.FilterCSS = FilterCSS;
 	for (var i in DEFAULT) exports[i] = DEFAULT[i];
 	
+	
+	
+	// 在AMD下使用
+	if (true) {
+	  !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	    return module.exports;
+	  }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	
 	// 在浏览器端使用
 	if (typeof window !== 'undefined') {
 	  window.filterCSS = module.exports;
@@ -20041,7 +19795,7 @@
 
 
 /***/ },
-/* 193 */
+/* 191 */
 /***/ function(module, exports) {
 
 	/**
@@ -20050,352 +19804,349 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	function getDefaultWhiteList () {
-	  // 白名单值说明：
-	  // true: 允许该属性
-	  // Function: function (val) { } 返回true表示允许该属性，其他值均表示不允许
-	  // RegExp: regexp.test(val) 返回true表示允许该属性，其他值均表示不允许
-	  // 除上面列出的值外均表示不允许
-	  var whiteList = {};
 	
-	  whiteList['align-content'] = false; // default: auto
-	  whiteList['align-items'] = false; // default: auto
-	  whiteList['align-self'] = false; // default: auto
-	  whiteList['alignment-adjust'] = false; // default: auto
-	  whiteList['alignment-baseline'] = false; // default: baseline
-	  whiteList['all'] = false; // default: depending on individual properties
-	  whiteList['anchor-point'] = false; // default: none
-	  whiteList['animation'] = false; // default: depending on individual properties
-	  whiteList['animation-delay'] = false; // default: 0
-	  whiteList['animation-direction'] = false; // default: normal
-	  whiteList['animation-duration'] = false; // default: 0
-	  whiteList['animation-fill-mode'] = false; // default: none
-	  whiteList['animation-iteration-count'] = false; // default: 1
-	  whiteList['animation-name'] = false; // default: none
-	  whiteList['animation-play-state'] = false; // default: running
-	  whiteList['animation-timing-function'] = false; // default: ease
-	  whiteList['azimuth'] = false; // default: center
-	  whiteList['backface-visibility'] = false; // default: visible
-	  whiteList['background'] = true; // default: depending on individual properties
-	  whiteList['background-attachment'] = true; // default: scroll
-	  whiteList['background-clip'] = true; // default: border-box
-	  whiteList['background-color'] = true; // default: transparent
-	  whiteList['background-image'] = true; // default: none
-	  whiteList['background-origin'] = true; // default: padding-box
-	  whiteList['background-position'] = true; // default: 0% 0%
-	  whiteList['background-repeat'] = true; // default: repeat
-	  whiteList['background-size'] = true; // default: auto
-	  whiteList['baseline-shift'] = false; // default: baseline
-	  whiteList['binding'] = false; // default: none
-	  whiteList['bleed'] = false; // default: 6pt
-	  whiteList['bookmark-label'] = false; // default: content()
-	  whiteList['bookmark-level'] = false; // default: none
-	  whiteList['bookmark-state'] = false; // default: open
-	  whiteList['border'] = true; // default: depending on individual properties
-	  whiteList['border-bottom'] = true; // default: depending on individual properties
-	  whiteList['border-bottom-color'] = true; // default: current color
-	  whiteList['border-bottom-left-radius'] = true; // default: 0
-	  whiteList['border-bottom-right-radius'] = true; // default: 0
-	  whiteList['border-bottom-style'] = true; // default: none
-	  whiteList['border-bottom-width'] = true; // default: medium
-	  whiteList['border-collapse'] = true; // default: separate
-	  whiteList['border-color'] = true; // default: depending on individual properties
-	  whiteList['border-image'] = true; // default: none
-	  whiteList['border-image-outset'] = true; // default: 0
-	  whiteList['border-image-repeat'] = true; // default: stretch
-	  whiteList['border-image-slice'] = true; // default: 100%
-	  whiteList['border-image-source'] = true; // default: none
-	  whiteList['border-image-width'] = true; // default: 1
-	  whiteList['border-left'] = true; // default: depending on individual properties
-	  whiteList['border-left-color'] = true; // default: current color
-	  whiteList['border-left-style'] = true; // default: none
-	  whiteList['border-left-width'] = true; // default: medium
-	  whiteList['border-radius'] = true; // default: 0
-	  whiteList['border-right'] = true; // default: depending on individual properties
-	  whiteList['border-right-color'] = true; // default: current color
-	  whiteList['border-right-style'] = true; // default: none
-	  whiteList['border-right-width'] = true; // default: medium
-	  whiteList['border-spacing'] = true; // default: 0
-	  whiteList['border-style'] = true; // default: depending on individual properties
-	  whiteList['border-top'] = true; // default: depending on individual properties
-	  whiteList['border-top-color'] = true; // default: current color
-	  whiteList['border-top-left-radius'] = true; // default: 0
-	  whiteList['border-top-right-radius'] = true; // default: 0
-	  whiteList['border-top-style'] = true; // default: none
-	  whiteList['border-top-width'] = true; // default: medium
-	  whiteList['border-width'] = true; // default: depending on individual properties
-	  whiteList['bottom'] = false; // default: auto
-	  whiteList['box-decoration-break'] = true; // default: slice
-	  whiteList['box-shadow'] = true; // default: none
-	  whiteList['box-sizing'] = true; // default: content-box
-	  whiteList['box-snap'] = true; // default: none
-	  whiteList['box-suppress'] = true; // default: show
-	  whiteList['break-after'] = true; // default: auto
-	  whiteList['break-before'] = true; // default: auto
-	  whiteList['break-inside'] = true; // default: auto
-	  whiteList['caption-side'] = false; // default: top
-	  whiteList['chains'] = false; // default: none
-	  whiteList['clear'] = true; // default: none
-	  whiteList['clip'] = false; // default: auto
-	  whiteList['clip-path'] = false; // default: none
-	  whiteList['clip-rule'] = false; // default: nonzero
-	  whiteList['color'] = true; // default: implementation dependent
-	  whiteList['color-interpolation-filters'] = true; // default: auto
-	  whiteList['column-count'] = false; // default: auto
-	  whiteList['column-fill'] = false; // default: balance
-	  whiteList['column-gap'] = false; // default: normal
-	  whiteList['column-rule'] = false; // default: depending on individual properties
-	  whiteList['column-rule-color'] = false; // default: current color
-	  whiteList['column-rule-style'] = false; // default: medium
-	  whiteList['column-rule-width'] = false; // default: medium
-	  whiteList['column-span'] = false; // default: none
-	  whiteList['column-width'] = false; // default: auto
-	  whiteList['columns'] = false; // default: depending on individual properties
-	  whiteList['contain'] = false; // default: none
-	  whiteList['content'] = false; // default: normal
-	  whiteList['counter-increment'] = false; // default: none
-	  whiteList['counter-reset'] = false; // default: none
-	  whiteList['counter-set'] = false; // default: none
-	  whiteList['crop'] = false; // default: auto
-	  whiteList['cue'] = false; // default: depending on individual properties
-	  whiteList['cue-after'] = false; // default: none
-	  whiteList['cue-before'] = false; // default: none
-	  whiteList['cursor'] = false; // default: auto
-	  whiteList['direction'] = false; // default: ltr
-	  whiteList['display'] = true; // default: depending on individual properties
-	  whiteList['display-inside'] = true; // default: auto
-	  whiteList['display-list'] = true; // default: none
-	  whiteList['display-outside'] = true; // default: inline-level
-	  whiteList['dominant-baseline'] = false; // default: auto
-	  whiteList['elevation'] = false; // default: level
-	  whiteList['empty-cells'] = false; // default: show
-	  whiteList['filter'] = false; // default: none
-	  whiteList['flex'] = false; // default: depending on individual properties
-	  whiteList['flex-basis'] = false; // default: auto
-	  whiteList['flex-direction'] = false; // default: row
-	  whiteList['flex-flow'] = false; // default: depending on individual properties
-	  whiteList['flex-grow'] = false; // default: 0
-	  whiteList['flex-shrink'] = false; // default: 1
-	  whiteList['flex-wrap'] = false; // default: nowrap
-	  whiteList['float'] = false; // default: none
-	  whiteList['float-offset'] = false; // default: 0 0
-	  whiteList['flood-color'] = false; // default: black
-	  whiteList['flood-opacity'] = false; // default: 1
-	  whiteList['flow-from'] = false; // default: none
-	  whiteList['flow-into'] = false; // default: none
-	  whiteList['font'] = true; // default: depending on individual properties
-	  whiteList['font-family'] = true; // default: implementation dependent
-	  whiteList['font-feature-settings'] = true; // default: normal
-	  whiteList['font-kerning'] = true; // default: auto
-	  whiteList['font-language-override'] = true; // default: normal
-	  whiteList['font-size'] = true; // default: medium
-	  whiteList['font-size-adjust'] = true; // default: none
-	  whiteList['font-stretch'] = true; // default: normal
-	  whiteList['font-style'] = true; // default: normal
-	  whiteList['font-synthesis'] = true; // default: weight style
-	  whiteList['font-variant'] = true; // default: normal
-	  whiteList['font-variant-alternates'] = true; // default: normal
-	  whiteList['font-variant-caps'] = true; // default: normal
-	  whiteList['font-variant-east-asian'] = true; // default: normal
-	  whiteList['font-variant-ligatures'] = true; // default: normal
-	  whiteList['font-variant-numeric'] = true; // default: normal
-	  whiteList['font-variant-position'] = true; // default: normal
-	  whiteList['font-weight'] = true; // default: normal
-	  whiteList['grid'] = false; // default: depending on individual properties
-	  whiteList['grid-area'] = false; // default: depending on individual properties
-	  whiteList['grid-auto-columns'] = false; // default: auto
-	  whiteList['grid-auto-flow'] = false; // default: none
-	  whiteList['grid-auto-rows'] = false; // default: auto
-	  whiteList['grid-column'] = false; // default: depending on individual properties
-	  whiteList['grid-column-end'] = false; // default: auto
-	  whiteList['grid-column-start'] = false; // default: auto
-	  whiteList['grid-row'] = false; // default: depending on individual properties
-	  whiteList['grid-row-end'] = false; // default: auto
-	  whiteList['grid-row-start'] = false; // default: auto
-	  whiteList['grid-template'] = false; // default: depending on individual properties
-	  whiteList['grid-template-areas'] = false; // default: none
-	  whiteList['grid-template-columns'] = false; // default: none
-	  whiteList['grid-template-rows'] = false; // default: none
-	  whiteList['hanging-punctuation'] = false; // default: none
-	  whiteList['height'] = true; // default: auto
-	  whiteList['hyphens'] = false; // default: manual
-	  whiteList['icon'] = false; // default: auto
-	  whiteList['image-orientation'] = false; // default: auto
-	  whiteList['image-resolution'] = false; // default: normal
-	  whiteList['ime-mode'] = false; // default: auto
-	  whiteList['initial-letters'] = false; // default: normal
-	  whiteList['inline-box-align'] = false; // default: last
-	  whiteList['justify-content'] = false; // default: auto
-	  whiteList['justify-items'] = false; // default: auto
-	  whiteList['justify-self'] = false; // default: auto
-	  whiteList['left'] = false; // default: auto
-	  whiteList['letter-spacing'] = true; // default: normal
-	  whiteList['lighting-color'] = true; // default: white
-	  whiteList['line-box-contain'] = false; // default: block inline replaced
-	  whiteList['line-break'] = false; // default: auto
-	  whiteList['line-grid'] = false; // default: match-parent
-	  whiteList['line-height'] = false; // default: normal
-	  whiteList['line-snap'] = false; // default: none
-	  whiteList['line-stacking'] = false; // default: depending on individual properties
-	  whiteList['line-stacking-ruby'] = false; // default: exclude-ruby
-	  whiteList['line-stacking-shift'] = false; // default: consider-shifts
-	  whiteList['line-stacking-strategy'] = false; // default: inline-line-height
-	  whiteList['list-style'] = true; // default: depending on individual properties
-	  whiteList['list-style-image'] = true; // default: none
-	  whiteList['list-style-position'] = true; // default: outside
-	  whiteList['list-style-type'] = true; // default: disc
-	  whiteList['margin'] = true; // default: depending on individual properties
-	  whiteList['margin-bottom'] = true; // default: 0
-	  whiteList['margin-left'] = true; // default: 0
-	  whiteList['margin-right'] = true; // default: 0
-	  whiteList['margin-top'] = true; // default: 0
-	  whiteList['marker-offset'] = false; // default: auto
-	  whiteList['marker-side'] = false; // default: list-item
-	  whiteList['marks'] = false; // default: none
-	  whiteList['mask'] = false; // default: border-box
-	  whiteList['mask-box'] = false; // default: see individual properties
-	  whiteList['mask-box-outset'] = false; // default: 0
-	  whiteList['mask-box-repeat'] = false; // default: stretch
-	  whiteList['mask-box-slice'] = false; // default: 0 fill
-	  whiteList['mask-box-source'] = false; // default: none
-	  whiteList['mask-box-width'] = false; // default: auto
-	  whiteList['mask-clip'] = false; // default: border-box
-	  whiteList['mask-image'] = false; // default: none
-	  whiteList['mask-origin'] = false; // default: border-box
-	  whiteList['mask-position'] = false; // default: center
-	  whiteList['mask-repeat'] = false; // default: no-repeat
-	  whiteList['mask-size'] = false; // default: border-box
-	  whiteList['mask-source-type'] = false; // default: auto
-	  whiteList['mask-type'] = false; // default: luminance
-	  whiteList['max-height'] = true; // default: none
-	  whiteList['max-lines'] = false; // default: none
-	  whiteList['max-width'] = true; // default: none
-	  whiteList['min-height'] = true; // default: 0
-	  whiteList['min-width'] = true; // default: 0
-	  whiteList['move-to'] = false; // default: normal
-	  whiteList['nav-down'] = false; // default: auto
-	  whiteList['nav-index'] = false; // default: auto
-	  whiteList['nav-left'] = false; // default: auto
-	  whiteList['nav-right'] = false; // default: auto
-	  whiteList['nav-up'] = false; // default: auto
-	  whiteList['object-fit'] = false; // default: fill
-	  whiteList['object-position'] = false; // default: 50% 50%
-	  whiteList['opacity'] = false; // default: 1
-	  whiteList['order'] = false; // default: 0
-	  whiteList['orphans'] = false; // default: 2
-	  whiteList['outline'] = false; // default: depending on individual properties
-	  whiteList['outline-color'] = false; // default: invert
-	  whiteList['outline-offset'] = false; // default: 0
-	  whiteList['outline-style'] = false; // default: none
-	  whiteList['outline-width'] = false; // default: medium
-	  whiteList['overflow'] = false; // default: depending on individual properties
-	  whiteList['overflow-wrap'] = false; // default: normal
-	  whiteList['overflow-x'] = false; // default: visible
-	  whiteList['overflow-y'] = false; // default: visible
-	  whiteList['padding'] = true; // default: depending on individual properties
-	  whiteList['padding-bottom'] = true; // default: 0
-	  whiteList['padding-left'] = true; // default: 0
-	  whiteList['padding-right'] = true; // default: 0
-	  whiteList['padding-top'] = true; // default: 0
-	  whiteList['page'] = false; // default: auto
-	  whiteList['page-break-after'] = false; // default: auto
-	  whiteList['page-break-before'] = false; // default: auto
-	  whiteList['page-break-inside'] = false; // default: auto
-	  whiteList['page-policy'] = false; // default: start
-	  whiteList['pause'] = false; // default: implementation dependent
-	  whiteList['pause-after'] = false; // default: implementation dependent
-	  whiteList['pause-before'] = false; // default: implementation dependent
-	  whiteList['perspective'] = false; // default: none
-	  whiteList['perspective-origin'] = false; // default: 50% 50%
-	  whiteList['pitch'] = false; // default: medium
-	  whiteList['pitch-range'] = false; // default: 50
-	  whiteList['play-during'] = false; // default: auto
-	  whiteList['position'] = false; // default: static
-	  whiteList['presentation-level'] = false; // default: 0
-	  whiteList['quotes'] = false; // default: text
-	  whiteList['region-fragment'] = false; // default: auto
-	  whiteList['resize'] = false; // default: none
-	  whiteList['rest'] = false; // default: depending on individual properties
-	  whiteList['rest-after'] = false; // default: none
-	  whiteList['rest-before'] = false; // default: none
-	  whiteList['richness'] = false; // default: 50
-	  whiteList['right'] = false; // default: auto
-	  whiteList['rotation'] = false; // default: 0
-	  whiteList['rotation-point'] = false; // default: 50% 50%
-	  whiteList['ruby-align'] = false; // default: auto
-	  whiteList['ruby-merge'] = false; // default: separate
-	  whiteList['ruby-position'] = false; // default: before
-	  whiteList['shape-image-threshold'] = false; // default: 0.0
-	  whiteList['shape-outside'] = false; // default: none
-	  whiteList['shape-margin'] = false; // default: 0
-	  whiteList['size'] = false; // default: auto
-	  whiteList['speak'] = false; // default: auto
-	  whiteList['speak-as'] = false; // default: normal
-	  whiteList['speak-header'] = false; // default: once
-	  whiteList['speak-numeral'] = false; // default: continuous
-	  whiteList['speak-punctuation'] = false; // default: none
-	  whiteList['speech-rate'] = false; // default: medium
-	  whiteList['stress'] = false; // default: 50
-	  whiteList['string-set'] = false; // default: none
-	  whiteList['tab-size'] = false; // default: 8
-	  whiteList['table-layout'] = false; // default: auto
-	  whiteList['text-align'] = true; // default: start
-	  whiteList['text-align-last'] = true; // default: auto
-	  whiteList['text-combine-upright'] = true; // default: none
-	  whiteList['text-decoration'] = true; // default: none
-	  whiteList['text-decoration-color'] = true; // default: currentColor
-	  whiteList['text-decoration-line'] = true; // default: none
-	  whiteList['text-decoration-skip'] = true; // default: objects
-	  whiteList['text-decoration-style'] = true; // default: solid
-	  whiteList['text-emphasis'] = true; // default: depending on individual properties
-	  whiteList['text-emphasis-color'] = true; // default: currentColor
-	  whiteList['text-emphasis-position'] = true; // default: over right
-	  whiteList['text-emphasis-style'] = true; // default: none
-	  whiteList['text-height'] = true; // default: auto
-	  whiteList['text-indent'] = true; // default: 0
-	  whiteList['text-justify'] = true; // default: auto
-	  whiteList['text-orientation'] = true; // default: mixed
-	  whiteList['text-overflow'] = true; // default: clip
-	  whiteList['text-shadow'] = true; // default: none
-	  whiteList['text-space-collapse'] = true; // default: collapse
-	  whiteList['text-transform'] = true; // default: none
-	  whiteList['text-underline-position'] = true; // default: auto
-	  whiteList['text-wrap'] = true; // default: normal
-	  whiteList['top'] = false; // default: auto
-	  whiteList['transform'] = false; // default: none
-	  whiteList['transform-origin'] = false; // default: 50% 50% 0
-	  whiteList['transform-style'] = false; // default: flat
-	  whiteList['transition'] = false; // default: depending on individual properties
-	  whiteList['transition-delay'] = false; // default: 0s
-	  whiteList['transition-duration'] = false; // default: 0s
-	  whiteList['transition-property'] = false; // default: all
-	  whiteList['transition-timing-function'] = false; // default: ease
-	  whiteList['unicode-bidi'] = false; // default: normal
-	  whiteList['vertical-align'] = false; // default: baseline
-	  whiteList['visibility'] = false; // default: visible
-	  whiteList['voice-balance'] = false; // default: center
-	  whiteList['voice-duration'] = false; // default: auto
-	  whiteList['voice-family'] = false; // default: implementation dependent
-	  whiteList['voice-pitch'] = false; // default: medium
-	  whiteList['voice-range'] = false; // default: medium
-	  whiteList['voice-rate'] = false; // default: normal
-	  whiteList['voice-stress'] = false; // default: normal
-	  whiteList['voice-volume'] = false; // default: medium
-	  whiteList['volume'] = false; // default: medium
-	  whiteList['white-space'] = false; // default: normal
-	  whiteList['widows'] = false; // default: 2
-	  whiteList['width'] = true; // default: auto
-	  whiteList['will-change'] = false; // default: auto
-	  whiteList['word-break'] = true; // default: normal
-	  whiteList['word-spacing'] = true; // default: normal
-	  whiteList['word-wrap'] = true; // default: normal
-	  whiteList['wrap-flow'] = false; // default: auto
-	  whiteList['wrap-through'] = false; // default: wrap
-	  whiteList['writing-mode'] = false; // default: horizontal-tb
-	  whiteList['z-index'] = false; // default: auto
+	// 白名单值说明：
+	// true: 允许该属性
+	// Function: function (val) { } 返回true表示允许该属性，其他值均表示不允许
+	// RegExp: regexp.test(val) 返回true表示允许该属性，其他值均表示不允许
+	// 除上面列出的值外均表示不允许
+	var whiteList = {};
+	whiteList['align-content'] = false; // default: auto
+	whiteList['align-items'] = false; // default: auto
+	whiteList['align-self'] = false; // default: auto
+	whiteList['alignment-adjust'] = false; // default: auto
+	whiteList['alignment-baseline'] = false; // default: baseline
+	whiteList['all'] = false; // default: depending on individual properties
+	whiteList['anchor-point'] = false; // default: none
+	whiteList['animation'] = false; // default: depending on individual properties
+	whiteList['animation-delay'] = false; // default: 0
+	whiteList['animation-direction'] = false; // default: normal
+	whiteList['animation-duration'] = false; // default: 0
+	whiteList['animation-fill-mode'] = false; // default: none
+	whiteList['animation-iteration-count'] = false; // default: 1
+	whiteList['animation-name'] = false; // default: none
+	whiteList['animation-play-state'] = false; // default: running
+	whiteList['animation-timing-function'] = false; // default: ease
+	whiteList['azimuth'] = false; // default: center
+	whiteList['backface-visibility'] = false; // default: visible
+	whiteList['background'] = true; // default: depending on individual properties
+	whiteList['background-attachment'] = true; // default: scroll
+	whiteList['background-clip'] = true; // default: border-box
+	whiteList['background-color'] = true; // default: transparent
+	whiteList['background-image'] = true; // default: none
+	whiteList['background-origin'] = true; // default: padding-box
+	whiteList['background-position'] = true; // default: 0% 0%
+	whiteList['background-repeat'] = true; // default: repeat
+	whiteList['background-size'] = true; // default: auto
+	whiteList['baseline-shift'] = false; // default: baseline
+	whiteList['binding'] = false; // default: none
+	whiteList['bleed'] = false; // default: 6pt
+	whiteList['bookmark-label'] = false; // default: content()
+	whiteList['bookmark-level'] = false; // default: none
+	whiteList['bookmark-state'] = false; // default: open
+	whiteList['border'] = true; // default: depending on individual properties
+	whiteList['border-bottom'] = true; // default: depending on individual properties
+	whiteList['border-bottom-color'] = true; // default: current color
+	whiteList['border-bottom-left-radius'] = true; // default: 0
+	whiteList['border-bottom-right-radius'] = true; // default: 0
+	whiteList['border-bottom-style'] = true; // default: none
+	whiteList['border-bottom-width'] = true; // default: medium
+	whiteList['border-collapse'] = true; // default: separate
+	whiteList['border-color'] = true; // default: depending on individual properties
+	whiteList['border-image'] = true; // default: none
+	whiteList['border-image-outset'] = true; // default: 0
+	whiteList['border-image-repeat'] = true; // default: stretch
+	whiteList['border-image-slice'] = true; // default: 100%
+	whiteList['border-image-source'] = true; // default: none
+	whiteList['border-image-width'] = true; // default: 1
+	whiteList['border-left'] = true; // default: depending on individual properties
+	whiteList['border-left-color'] = true; // default: current color
+	whiteList['border-left-style'] = true; // default: none
+	whiteList['border-left-width'] = true; // default: medium
+	whiteList['border-radius'] = true; // default: 0
+	whiteList['border-right'] = true; // default: depending on individual properties
+	whiteList['border-right-color'] = true; // default: current color
+	whiteList['border-right-style'] = true; // default: none
+	whiteList['border-right-width'] = true; // default: medium
+	whiteList['border-spacing'] = true; // default: 0
+	whiteList['border-style'] = true; // default: depending on individual properties
+	whiteList['border-top'] = true; // default: depending on individual properties
+	whiteList['border-top-color'] = true; // default: current color
+	whiteList['border-top-left-radius'] = true; // default: 0
+	whiteList['border-top-right-radius'] = true; // default: 0
+	whiteList['border-top-style'] = true; // default: none
+	whiteList['border-top-width'] = true; // default: medium
+	whiteList['border-width'] = true; // default: depending on individual properties
+	whiteList['bottom'] = false; // default: auto
+	whiteList['box-decoration-break'] = true; // default: slice
+	whiteList['box-shadow'] = true; // default: none
+	whiteList['box-sizing'] = true; // default: content-box
+	whiteList['box-snap'] = true; // default: none
+	whiteList['box-suppress'] = true; // default: show
+	whiteList['break-after'] = true; // default: auto
+	whiteList['break-before'] = true; // default: auto
+	whiteList['break-inside'] = true; // default: auto
+	whiteList['caption-side'] = false; // default: top
+	whiteList['chains'] = false; // default: none
+	whiteList['clear'] = true; // default: none
+	whiteList['clip'] = false; // default: auto
+	whiteList['clip-path'] = false; // default: none
+	whiteList['clip-rule'] = false; // default: nonzero
+	whiteList['color'] = true; // default: implementation dependent
+	whiteList['color-interpolation-filters'] = true; // default: auto
+	whiteList['column-count'] = false; // default: auto
+	whiteList['column-fill'] = false; // default: balance
+	whiteList['column-gap'] = false; // default: normal
+	whiteList['column-rule'] = false; // default: depending on individual properties
+	whiteList['column-rule-color'] = false; // default: current color
+	whiteList['column-rule-style'] = false; // default: medium
+	whiteList['column-rule-width'] = false; // default: medium
+	whiteList['column-span'] = false; // default: none
+	whiteList['column-width'] = false; // default: auto
+	whiteList['columns'] = false; // default: depending on individual properties
+	whiteList['contain'] = false; // default: none
+	whiteList['content'] = false; // default: normal
+	whiteList['counter-increment'] = false; // default: none
+	whiteList['counter-reset'] = false; // default: none
+	whiteList['counter-set'] = false; // default: none
+	whiteList['crop'] = false; // default: auto
+	whiteList['cue'] = false; // default: depending on individual properties
+	whiteList['cue-after'] = false; // default: none
+	whiteList['cue-before'] = false; // default: none
+	whiteList['cursor'] = false; // default: auto
+	whiteList['direction'] = false; // default: ltr
+	whiteList['display'] = true; // default: depending on individual properties
+	whiteList['display-inside'] = true; // default: auto
+	whiteList['display-list'] = true; // default: none
+	whiteList['display-outside'] = true; // default: inline-level
+	whiteList['dominant-baseline'] = false; // default: auto
+	whiteList['elevation'] = false; // default: level
+	whiteList['empty-cells'] = false; // default: show
+	whiteList['filter'] = false; // default: none
+	whiteList['flex'] = false; // default: depending on individual properties
+	whiteList['flex-basis'] = false; // default: auto
+	whiteList['flex-direction'] = false; // default: row
+	whiteList['flex-flow'] = false; // default: depending on individual properties
+	whiteList['flex-grow'] = false; // default: 0
+	whiteList['flex-shrink'] = false; // default: 1
+	whiteList['flex-wrap'] = false; // default: nowrap
+	whiteList['float'] = false; // default: none
+	whiteList['float-offset'] = false; // default: 0 0
+	whiteList['flood-color'] = false; // default: black
+	whiteList['flood-opacity'] = false; // default: 1
+	whiteList['flow-from'] = false; // default: none
+	whiteList['flow-into'] = false; // default: none
+	whiteList['font'] = true; // default: depending on individual properties
+	whiteList['font-family'] = true; // default: implementation dependent
+	whiteList['font-feature-settings'] = true; // default: normal
+	whiteList['font-kerning'] = true; // default: auto
+	whiteList['font-language-override'] = true; // default: normal
+	whiteList['font-size'] = true; // default: medium
+	whiteList['font-size-adjust'] = true; // default: none
+	whiteList['font-stretch'] = true; // default: normal
+	whiteList['font-style'] = true; // default: normal
+	whiteList['font-synthesis'] = true; // default: weight style
+	whiteList['font-variant'] = true; // default: normal
+	whiteList['font-variant-alternates'] = true; // default: normal
+	whiteList['font-variant-caps'] = true; // default: normal
+	whiteList['font-variant-east-asian'] = true; // default: normal
+	whiteList['font-variant-ligatures'] = true; // default: normal
+	whiteList['font-variant-numeric'] = true; // default: normal
+	whiteList['font-variant-position'] = true; // default: normal
+	whiteList['font-weight'] = true; // default: normal
+	whiteList['grid'] = false; // default: depending on individual properties
+	whiteList['grid-area'] = false; // default: depending on individual properties
+	whiteList['grid-auto-columns'] = false; // default: auto
+	whiteList['grid-auto-flow'] = false; // default: none
+	whiteList['grid-auto-rows'] = false; // default: auto
+	whiteList['grid-column'] = false; // default: depending on individual properties
+	whiteList['grid-column-end'] = false; // default: auto
+	whiteList['grid-column-start'] = false; // default: auto
+	whiteList['grid-row'] = false; // default: depending on individual properties
+	whiteList['grid-row-end'] = false; // default: auto
+	whiteList['grid-row-start'] = false; // default: auto
+	whiteList['grid-template'] = false; // default: depending on individual properties
+	whiteList['grid-template-areas'] = false; // default: none
+	whiteList['grid-template-columns'] = false; // default: none
+	whiteList['grid-template-rows'] = false; // default: none
+	whiteList['hanging-punctuation'] = false; // default: none
+	whiteList['height'] = true; // default: auto
+	whiteList['hyphens'] = false; // default: manual
+	whiteList['icon'] = false; // default: auto
+	whiteList['image-orientation'] = false; // default: auto
+	whiteList['image-resolution'] = false; // default: normal
+	whiteList['ime-mode'] = false; // default: auto
+	whiteList['initial-letters'] = false; // default: normal
+	whiteList['inline-box-align'] = false; // default: last
+	whiteList['justify-content'] = false; // default: auto
+	whiteList['justify-items'] = false; // default: auto
+	whiteList['justify-self'] = false; // default: auto
+	whiteList['left'] = false; // default: auto
+	whiteList['letter-spacing'] = true; // default: normal
+	whiteList['lighting-color'] = true; // default: white
+	whiteList['line-box-contain'] = false; // default: block inline replaced
+	whiteList['line-break'] = false; // default: auto
+	whiteList['line-grid'] = false; // default: match-parent
+	whiteList['line-height'] = false; // default: normal
+	whiteList['line-snap'] = false; // default: none
+	whiteList['line-stacking'] = false; // default: depending on individual properties
+	whiteList['line-stacking-ruby'] = false; // default: exclude-ruby
+	whiteList['line-stacking-shift'] = false; // default: consider-shifts
+	whiteList['line-stacking-strategy'] = false; // default: inline-line-height
+	whiteList['list-style'] = true; // default: depending on individual properties
+	whiteList['list-style-image'] = true; // default: none
+	whiteList['list-style-position'] = true; // default: outside
+	whiteList['list-style-type'] = true; // default: disc
+	whiteList['margin'] = true; // default: depending on individual properties
+	whiteList['margin-bottom'] = true; // default: 0
+	whiteList['margin-left'] = true; // default: 0
+	whiteList['margin-right'] = true; // default: 0
+	whiteList['margin-top'] = true; // default: 0
+	whiteList['marker-offset'] = false; // default: auto
+	whiteList['marker-side'] = false; // default: list-item
+	whiteList['marks'] = false; // default: none
+	whiteList['mask'] = false; // default: border-box
+	whiteList['mask-box'] = false; // default: see individual properties
+	whiteList['mask-box-outset'] = false; // default: 0
+	whiteList['mask-box-repeat'] = false; // default: stretch
+	whiteList['mask-box-slice'] = false; // default: 0 fill
+	whiteList['mask-box-source'] = false; // default: none
+	whiteList['mask-box-width'] = false; // default: auto
+	whiteList['mask-clip'] = false; // default: border-box
+	whiteList['mask-image'] = false; // default: none
+	whiteList['mask-origin'] = false; // default: border-box
+	whiteList['mask-position'] = false; // default: center
+	whiteList['mask-repeat'] = false; // default: no-repeat
+	whiteList['mask-size'] = false; // default: border-box
+	whiteList['mask-source-type'] = false; // default: auto
+	whiteList['mask-type'] = false; // default: luminance
+	whiteList['max-height'] = true; // default: none
+	whiteList['max-lines'] = false; // default: none
+	whiteList['max-width'] = true; // default: none
+	whiteList['min-height'] = true; // default: 0
+	whiteList['min-width'] = true; // default: 0
+	whiteList['move-to'] = false; // default: normal
+	whiteList['nav-down'] = false; // default: auto
+	whiteList['nav-index'] = false; // default: auto
+	whiteList['nav-left'] = false; // default: auto
+	whiteList['nav-right'] = false; // default: auto
+	whiteList['nav-up'] = false; // default: auto
+	whiteList['object-fit'] = false; // default: fill
+	whiteList['object-position'] = false; // default: 50% 50%
+	whiteList['opacity'] = false; // default: 1
+	whiteList['order'] = false; // default: 0
+	whiteList['orphans'] = false; // default: 2
+	whiteList['outline'] = false; // default: depending on individual properties
+	whiteList['outline-color'] = false; // default: invert
+	whiteList['outline-offset'] = false; // default: 0
+	whiteList['outline-style'] = false; // default: none
+	whiteList['outline-width'] = false; // default: medium
+	whiteList['overflow'] = false; // default: depending on individual properties
+	whiteList['overflow-wrap'] = false; // default: normal
+	whiteList['overflow-x'] = false; // default: visible
+	whiteList['overflow-y'] = false; // default: visible
+	whiteList['padding'] = true; // default: depending on individual properties
+	whiteList['padding-bottom'] = true; // default: 0
+	whiteList['padding-left'] = true; // default: 0
+	whiteList['padding-right'] = true; // default: 0
+	whiteList['padding-top'] = true; // default: 0
+	whiteList['page'] = false; // default: auto
+	whiteList['page-break-after'] = false; // default: auto
+	whiteList['page-break-before'] = false; // default: auto
+	whiteList['page-break-inside'] = false; // default: auto
+	whiteList['page-policy'] = false; // default: start
+	whiteList['pause'] = false; // default: implementation dependent
+	whiteList['pause-after'] = false; // default: implementation dependent
+	whiteList['pause-before'] = false; // default: implementation dependent
+	whiteList['perspective'] = false; // default: none
+	whiteList['perspective-origin'] = false; // default: 50% 50%
+	whiteList['pitch'] = false; // default: medium
+	whiteList['pitch-range'] = false; // default: 50
+	whiteList['play-during'] = false; // default: auto
+	whiteList['position'] = false; // default: static
+	whiteList['presentation-level'] = false; // default: 0
+	whiteList['quotes'] = false; // default: text
+	whiteList['region-fragment'] = false; // default: auto
+	whiteList['resize'] = false; // default: none
+	whiteList['rest'] = false; // default: depending on individual properties
+	whiteList['rest-after'] = false; // default: none
+	whiteList['rest-before'] = false; // default: none
+	whiteList['richness'] = false; // default: 50
+	whiteList['right'] = false; // default: auto
+	whiteList['rotation'] = false; // default: 0
+	whiteList['rotation-point'] = false; // default: 50% 50%
+	whiteList['ruby-align'] = false; // default: auto
+	whiteList['ruby-merge'] = false; // default: separate
+	whiteList['ruby-position'] = false; // default: before
+	whiteList['shape-image-threshold'] = false; // default: 0.0
+	whiteList['shape-outside'] = false; // default: none
+	whiteList['shape-margin'] = false; // default: 0
+	whiteList['size'] = false; // default: auto
+	whiteList['speak'] = false; // default: auto
+	whiteList['speak-as'] = false; // default: normal
+	whiteList['speak-header'] = false; // default: once
+	whiteList['speak-numeral'] = false; // default: continuous
+	whiteList['speak-punctuation'] = false; // default: none
+	whiteList['speech-rate'] = false; // default: medium
+	whiteList['stress'] = false; // default: 50
+	whiteList['string-set'] = false; // default: none
+	whiteList['tab-size'] = false; // default: 8
+	whiteList['table-layout'] = false; // default: auto
+	whiteList['text-align'] = true; // default: start
+	whiteList['text-align-last'] = true; // default: auto
+	whiteList['text-combine-upright'] = true; // default: none
+	whiteList['text-decoration'] = true; // default: none
+	whiteList['text-decoration-color'] = true; // default: currentColor
+	whiteList['text-decoration-line'] = true; // default: none
+	whiteList['text-decoration-skip'] = true; // default: objects
+	whiteList['text-decoration-style'] = true; // default: solid
+	whiteList['text-emphasis'] = true; // default: depending on individual properties
+	whiteList['text-emphasis-color'] = true; // default: currentColor
+	whiteList['text-emphasis-position'] = true; // default: over right
+	whiteList['text-emphasis-style'] = true; // default: none
+	whiteList['text-height'] = true; // default: auto
+	whiteList['text-indent'] = true; // default: 0
+	whiteList['text-justify'] = true; // default: auto
+	whiteList['text-orientation'] = true; // default: mixed
+	whiteList['text-overflow'] = true; // default: clip
+	whiteList['text-shadow'] = true; // default: none
+	whiteList['text-space-collapse'] = true; // default: collapse
+	whiteList['text-transform'] = true; // default: none
+	whiteList['text-underline-position'] = true; // default: auto
+	whiteList['text-wrap'] = true; // default: normal
+	whiteList['top'] = false; // default: auto
+	whiteList['transform'] = false; // default: none
+	whiteList['transform-origin'] = false; // default: 50% 50% 0
+	whiteList['transform-style'] = false; // default: flat
+	whiteList['transition'] = false; // default: depending on individual properties
+	whiteList['transition-delay'] = false; // default: 0s
+	whiteList['transition-duration'] = false; // default: 0s
+	whiteList['transition-property'] = false; // default: all
+	whiteList['transition-timing-function'] = false; // default: ease
+	whiteList['unicode-bidi'] = false; // default: normal
+	whiteList['vertical-align'] = false; // default: baseline
+	whiteList['visibility'] = false; // default: visible
+	whiteList['voice-balance'] = false; // default: center
+	whiteList['voice-duration'] = false; // default: auto
+	whiteList['voice-family'] = false; // default: implementation dependent
+	whiteList['voice-pitch'] = false; // default: medium
+	whiteList['voice-range'] = false; // default: medium
+	whiteList['voice-rate'] = false; // default: normal
+	whiteList['voice-stress'] = false; // default: normal
+	whiteList['voice-volume'] = false; // default: medium
+	whiteList['volume'] = false; // default: medium
+	whiteList['white-space'] = false; // default: normal
+	whiteList['widows'] = false; // default: 2
+	whiteList['width'] = true; // default: auto
+	whiteList['will-change'] = false; // default: auto
+	whiteList['word-break'] = true; // default: normal
+	whiteList['word-spacing'] = true; // default: normal
+	whiteList['word-wrap'] = true; // default: normal
+	whiteList['wrap-flow'] = false; // default: auto
+	whiteList['wrap-through'] = false; // default: wrap
+	whiteList['writing-mode'] = false; // default: horizontal-tb
+	whiteList['z-index'] = false; // default: auto
 	
-	  return whiteList;
-	}
 	
 	
 	/**
@@ -20423,14 +20174,13 @@
 	}
 	
 	
-	exports.whiteList = getDefaultWhiteList();
-	exports.getDefaultWhiteList = getDefaultWhiteList;
+	exports.whiteList = whiteList;
 	exports.onAttr = onAttr;
 	exports.onIgnoreAttr = onIgnoreAttr;
 
 
 /***/ },
-/* 194 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20439,9 +20189,9 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	var DEFAULT = __webpack_require__(193);
-	var parseStyle = __webpack_require__(195);
-	var _ = __webpack_require__(196);
+	var DEFAULT = __webpack_require__(191);
+	var parseStyle = __webpack_require__(193);
+	var _ = __webpack_require__(194);
 	
 	
 	/**
@@ -20526,7 +20276,7 @@
 
 
 /***/ },
-/* 195 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20535,7 +20285,7 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	var _ = __webpack_require__(196);
+	var _ = __webpack_require__(194);
 	
 	
 	/**
@@ -20606,7 +20356,7 @@
 
 
 /***/ },
-/* 196 */
+/* 194 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -20647,7 +20397,7 @@
 
 
 /***/ },
-/* 197 */
+/* 195 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -20682,7 +20432,7 @@
 
 
 /***/ },
-/* 198 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20691,7 +20441,7 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	var _ = __webpack_require__(197);
+	var _ = __webpack_require__(195);
 	
 	/**
 	 * 获取标签的名称
@@ -20925,7 +20675,7 @@
 
 
 /***/ },
-/* 199 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20934,12 +20684,12 @@
 	 * @author 老雷<leizongmin@gmail.com>
 	 */
 	
-	var FilterCSS = __webpack_require__(192).FilterCSS;
-	var DEFAULT = __webpack_require__(191);
-	var parser = __webpack_require__(198);
+	var FilterCSS = __webpack_require__(190).FilterCSS;
+	var DEFAULT = __webpack_require__(189);
+	var parser = __webpack_require__(196);
 	var parseTag = parser.parseTag;
 	var parseAttr = parser.parseAttr;
-	var _ = __webpack_require__(197);
+	var _ = __webpack_require__(195);
 	
 	
 	/**
@@ -20984,7 +20734,7 @@
 	 *   选项：whiteList, onTag, onTagAttr, onIgnoreTag,
 	 *        onIgnoreTagAttr, safeAttrValue, escapeHtml
 	 *        stripIgnoreTagBody, allowCommentTag, stripBlankChar
-	 *        css{whiteList, onAttr, onIgnoreAttr} css=false表示禁用cssfilter
+	 *        css{whiteList, onAttr, onIgnoreAttr}
 	 */
 	function FilterXSS (options) {
 	  options = options || {};
@@ -21003,14 +20753,10 @@
 	  options.onIgnoreTagAttr = options.onIgnoreTagAttr || DEFAULT.onIgnoreTagAttr;
 	  options.safeAttrValue = options.safeAttrValue || DEFAULT.safeAttrValue;
 	  options.escapeHtml = options.escapeHtml || DEFAULT.escapeHtml;
+	  options.css = options.css || {};
 	  this.options = options;
 	
-	  if (options.css === false) {
-	    this.cssFilter = false;
-	  } else {
-	    options.css = options.css || {};
-	    this.cssFilter = new FilterCSS(options.css);
-	  }
+	  this.cssFilter = new FilterCSS(options.css);
 	}
 	
 	/**
@@ -21047,10 +20793,11 @@
 	  }
 	
 	  // 如果开启了stripIgnoreTagBody
-	  var stripIgnoreTagBody = false;
 	  if (options.stripIgnoreTagBody) {
 	    var stripIgnoreTagBody = DEFAULT.StripTagBody(options.stripIgnoreTagBody, onIgnoreTag);
 	    onIgnoreTag = stripIgnoreTagBody.onIgnoreTag;
+	  } else {
+	    stripIgnoreTagBody = false;
 	  }
 	
 	  var retHtml = parseTag(html, function (sourcePosition, position, tag, html, isClosing) {
@@ -21128,60 +20875,24 @@
 
 
 /***/ },
-/* 200 */
+/* 198 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 201 */
+/* 199 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"viewer markdown-body\" m:html=\"html\">\n</div>"
 
 /***/ },
-/* 202 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 210 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 211 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 212 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"mditor {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
-
-/***/ },
-/* 213 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var keymaster = __webpack_require__(214);
+	var keymaster = __webpack_require__(201);
 	
 	/**
 	 * 定义快捷键管理 “类”
@@ -21237,7 +20948,7 @@
 	};
 
 /***/ },
-/* 214 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//     keymaster.js
@@ -21537,6 +21248,42 @@
 	
 	})(this);
 
+
+/***/ },
+/* 202 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 210 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 211 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 212 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"mditor {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);
