@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mditor by Houfeng</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Mditor</h1>
+        <p>[ M ] arkdown + E [ ditor ] = Mditor</p>
+
+        <p class="view"><a href="https://github.com/Houfeng/mditor">View the Project on GitHub <small>Houfeng/mditor</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/Houfeng/mditor/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Houfeng/mditor/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Houfeng/mditor">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a id="只求极致" class="anchor" href="#%E5%8F%AA%E6%B1%82%E6%9E%81%E8%87%B4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>只求极致</h2>
+
+<p>[ <strong>M</strong> ] arkdown + E [ <strong>ditor</strong> ] = <strong>Mditor</strong>    </p>
+
+<p><a href="http://badge.fury.io/js/mditor"><img src="https://badge.fury.io/js/mditor.svg" alt="version"></a>  </p>
+
+<p>Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已...  </p>
+
+<p>体验: 
+<a href="http://houfeng.net/mditor/demo/index.html">在线 demo</a>  </p>
+
+<h2>
+<a id="浏览器端" class="anchor" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%AB%AF" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>浏览器端</h2>
+
+<h5>
+<a id="第一步" class="anchor" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>第一步:</h5>
+
+<p>引入 Mditor 样式文件  </p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>../build/css/mditor.min.css<span class="pl-pds">"</span></span> /&gt;</pre></div>
+
+<p>引用 Mditor 脚本文件</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>../build/js/mditor.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h5>
+<a id="第二步" class="anchor" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>第二步:</h5>
+
+<p>添加 textarea 元素</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">textarea</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>editor<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>editor<span class="pl-pds">"</span></span>&gt;</pre></div>
+
+<p>创建 Mditor 实例</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> mditor <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Mditor</span>(<span class="pl-s"><span class="pl-pds">"</span>#editor<span class="pl-pds">"</span></span>,{
+    height<span class="pl-k">:</span><span class="pl-c1">300</span>,
+    fixedHeight<span class="pl-k">:</span><span class="pl-c1">true</span>
+});</pre></div>
+
+<h2>
+<a id="服务器端" class="anchor" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>服务器端</h2>
+
+<p>通过 npm 安装</p>
+
+<div class="highlight highlight-source-shell"><pre>npm install mditor -save</pre></div>
+
+<p>在服务端解析</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> mditor <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>mditor<span class="pl-pds">"</span></span>);
+<span class="pl-k">var</span> parser <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">mditor.Parser</span>();
+<span class="pl-k">var</span> html <span class="pl-k">=</span> <span class="pl-smi">parser</span>.<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">"</span>** Hello mditor! **<span class="pl-pds">"</span></span>);</pre></div>
+
+<h2>
+<a id="近时规划" class="anchor" href="#%E8%BF%91%E6%97%B6%E8%A7%84%E5%88%92" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>近时规划</h2>
+
+<ol>
+<li>公开扩展方法及相关 API</li>
+<li>更新 README.md 增加完整 API 说明</li>
+<li>国际化支持</li>
+<li>兼容性测试</li>
+</ol>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Houfeng">Houfeng</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
