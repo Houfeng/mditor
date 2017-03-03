@@ -147,7 +147,7 @@ module.exports = [{
   icon: 'question',
   key: 'shift+alt+/',
   handler() {
-    window.open('http://mditor.com', 'mditor');
+    window.open('http://mditor.com', '_blank');
   }
 }, {
   name: 'toggleFullScreen',

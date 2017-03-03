@@ -87,7 +87,7 @@
 	  },
 	
 	  props: {
-	    height: '400px',
+	    height: '450px',
 	    width: 'auto',
 	    preview: true,
 	    fullscreen: false
@@ -163,6 +163,9 @@
 	  },
 	  /*istanbul ignore next*/removeCommand: function removeCommand(name) {
 	    this.commands = this.commands || {};
+	    var item = this.commands[name];
+	    if (!item) return;
+	    this.shortcut.unbind(item.key);
 	    this.commands[name] = null;
 	    delete this.commands[name];
 	  },
@@ -3781,7 +3784,7 @@
 	  icon: 'question',
 	  key: 'shift+alt+/',
 	  /*istanbul ignore next*/handler: function handler() {
-	    window.open('http://mditor.com', 'mditor');
+	    window.open('http://mditor.com', '_blank');
 	  }
 	}, {
 	  name: 'toggleFullScreen',

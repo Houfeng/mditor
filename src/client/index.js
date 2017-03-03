@@ -37,7 +37,7 @@ const Mditor = new mokit.Component({
   },
 
   props: {
-    height: '400px',
+    height: '450px',
     width: 'auto',
     preview: true,
     fullscreen: false
@@ -122,6 +122,9 @@ const Mditor = new mokit.Component({
 
   removeCommand(name) {
     this.commands = this.commands || {};
+    let item = this.commands[name];
+    if (!item) return;
+    this.shortcut.unbind(item.key);
     this.commands[name] = null;
     delete this.commands[name];
   },
