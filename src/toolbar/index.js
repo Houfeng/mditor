@@ -16,7 +16,19 @@ const Toolbar = new mokit.Component({
   },
 
   onReady() {
+    this.bindCommands();
+  },
+
+  watch: {
+    items() {
+      this.bindCommands();
+    }
+  },
+
+  bindCommands() {
+    if (!this.mditor) return;
     this.items.forEach(item => {
+      this.mditor.removeCommand(item.name);
       this.mditor.addCommand(item);
     });
   },

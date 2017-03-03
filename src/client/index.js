@@ -37,7 +37,7 @@ const Mditor = new mokit.Component({
   },
 
   props: {
-    height: '300px',
+    height: '400px',
     width: 'auto',
     preview: true,
     fullscreen: false
@@ -48,6 +48,16 @@ const Mditor = new mokit.Component({
       self: this,
       value: ''
     };
+  },
+
+  scroll() {
+    if (!this.preview) return;
+    let offsetHeight = this.editor.$element.offsetHeight;
+    let editorScrollHeight = this.editor.$element.scrollHeight;
+    let viewerScrollHeight = this.viewer.$element.scrollHeight;
+    let editorScrollTop = this.editor.$element.scrollTop;
+    let viewerScrollTop = editorScrollTop * (viewerScrollHeight - offsetHeight) / (editorScrollHeight - offsetHeight);
+    this.viewer.$element.scrollTop = viewerScrollTop;
   },
 
   _keepIndent() {
@@ -125,5 +135,16 @@ const Mditor = new mokit.Component({
   }
 
 });
+
+Mditor.fromTextarea = function (textarea) {
+  textarea.style.display = 'none';
+  let mditor = new Mditor();
+  mditor.value = textarea.value;
+  mditor.$watch('value', () => {
+    textarea.value = mditor.value;
+  });
+  mditor.$mount(textarea);
+  return mditor;
+};
 
 module.exports = window.Mditor = Mditor;

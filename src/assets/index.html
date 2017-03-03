@@ -14,14 +14,12 @@
 </head>
 
 <body>
+	<div>
+		<textarea id="editor"></textarea>
+	</div>
 	<script>
 		setTimeout(function () {
-			var mditor = window.mditor = new Mditor({
-				height: 400,
-				fixedHeight: true
-			});
-			mditor.$appendTo(document.body);
-			//mditor.openPreview();
+			var mditor = window.mditor = Mditor.fromTextarea(document.getElementById('editor'));
 		}, 100);
 	</script>
 </body>

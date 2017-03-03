@@ -4,7 +4,6 @@ module.exports = [{
   key: 'shift+alt+b',
   handler() {
     this.editor.wrapSelectText('**', '**');
-    return this;
   }
 }, {
   name: 'italic',
@@ -12,7 +11,6 @@ module.exports = [{
   key: 'shift+alt+i',
   handler() {
     this.editor.wrapSelectText('*', '*');
-    return this;
   }
 }, {
   name: 'underline',
@@ -20,7 +18,6 @@ module.exports = [{
   key: 'shift+alt+e',
   handler() {
     this.editor.wrapSelectText('<u>', '</u>');
-    return this;
   }
 }, {
   name: 'strikethrough',
@@ -28,7 +25,6 @@ module.exports = [{
   key: 'shift+alt+d',
   handler() {
     this.editor.wrapSelectText('~~', '~~');
-    return this;
   }
 }, {
   name: 'header',
@@ -36,7 +32,6 @@ module.exports = [{
   key: 'shift+alt+h',
   handler() {
     this.editor.wrapSelectText('# ');
-    return this;
   }
 }, {
   name: 'quote',
@@ -55,7 +50,6 @@ module.exports = [{
       buffer.push('> ' + line + '  ');
     });
     this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
-    return this;
   }
 }, {
   name: 'code',
@@ -75,7 +69,6 @@ module.exports = [{
     let start = range.start - lang.length;
     let end = range.start - this.EOL.length;
     this.editor.setSelectRange(start, end);
-    return this;
   }
 }, {
   name: 'list-ol',
@@ -85,7 +78,7 @@ module.exports = [{
     let selectText = this.editor.getSelectText();
     if (selectText.length < 1) {
       this.editor.wrapSelectText('1. ');
-      return this;
+      return;
     }
     let textArray = selectText.split(this.EOL);
     let buffer = [];
@@ -94,7 +87,6 @@ module.exports = [{
       buffer.push((i + 1) + '. ' + line);
     }
     this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
-    return this;
   }
 }, {
   name: 'list-ul',
@@ -104,7 +96,7 @@ module.exports = [{
     let selectText = this.editor.getSelectText();
     if (selectText.length < 1) {
       this.editor.wrapSelectText('- ');
-      return this;
+      return;
     }
     let textArray = selectText.split(this.EOL);
     let buffer = [];
@@ -112,7 +104,6 @@ module.exports = [{
       buffer.push('- ' + line);
     });
     this.editor.setSelectText(buffer.join(this.EOL) + this.EOL);
-    return this;
   }
 }, {
   name: 'link',
@@ -120,7 +111,6 @@ module.exports = [{
   key: 'shift+alt+l',
   handler() {
     this.editor.wrapSelectText('[text](', ')');
-    return this;
   }
 }, {
   name: 'table',
@@ -135,7 +125,6 @@ module.exports = [{
       'column1 | column2 | column3  '
     ];
     this.editor.wrapSelectText(buffer.join(this.EOL) + this.EOL);
-    return this;
   }
 }, {
   name: 'line',
@@ -144,7 +133,6 @@ module.exports = [{
   key: 'shift+alt+n',
   handler() {
     this.editor.wrapSelectText('----' + this.EOL);
-    return this;
   }
 }, {
   name: 'image',
@@ -152,7 +140,6 @@ module.exports = [{
   key: 'shift+alt+p',
   handler() {
     this.editor.wrapSelectText('![alt](', ')');
-    return this;
   }
 }, {
   name: 'help',
@@ -160,8 +147,7 @@ module.exports = [{
   icon: 'question',
   key: 'shift+alt+/',
   handler() {
-    window.open('{homepage}', 'mditor');
-    return this;
+    window.open('http://mditor.com', 'mditor');
   }
 }, {
   name: 'toggleFullScreen',

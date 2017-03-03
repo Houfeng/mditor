@@ -23,6 +23,10 @@ module.exports = new mokit.Component({
     this.$element.blur();
   },
 
+  scroll(event) {
+    this.$emit('scroll', event);
+  },
+
   getValue() {
     return this.$element.value;
   },

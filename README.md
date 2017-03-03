@@ -32,10 +32,34 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 
 创建 Mditor 实例
 ```javascript
-var mditor = new Mditor("#editor",{
-	height:300,
-	fixedHeight:true
-});
+var mditor =  Mditor.fromTextarea(document.getElementById('editor'));
+
+//获取或设置编辑器的值
+console.log(mditor.value);
+mditor.value = '** hello **';	
+
+//是否打开预览			
+mditor.preivew = true;	//打开
+mditor.preivew = false;	//关闭
+
+//是否全屏			
+mditor.fullscreen = true;		//打开	
+mditor.fullscreen = false;	//关闭			
+
+//配置工具条按钮
+//mditor.toolbar.items 是一个数组，包括所有按钮的信息
+//可以直接操作 items 以控制工具条
+
+//只保留第一个按钮
+mditor.toolbar.items = mditor.toolbar.items.slice(0,1);
+
+//更改按钮配置
+let btn = mditor.toolbar.items[0];
+btn.icon = '...'; //设置按钮图标
+btn.title = '...'; //投置按钮标题
+btn.align = 'rigth|left'; //设置按钮对齐方式
+btn.key = 'ctrl+d'; //设置按钮快捷建
+btn.handler = function(){}; //替换按钮动作
 ```
 
 ## 服务器端
@@ -51,9 +75,3 @@ var mditor = require("mditor");
 var parser = new mditor.Parser();
 var html = parser.parse("** Hello mditor! **");
 ```
- 
-## 近时规划
-1. 公开扩展方法及相关 API
-2. 更新 README.md 增加完整 API 说明
-2. 国际化支持
-3. 兼容性测试
