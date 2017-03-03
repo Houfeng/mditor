@@ -15,67 +15,80 @@
 
 <body>
   <div class="wrapper">
-    <div class="viewer markdown-body">
-      <h2>只求极致</h2>
-      <p>[ <strong>M</strong> ] arkdown + E [ <strong>ditor</strong> ] = <strong>Mditor</strong> </p>
-      <p>
-        <a href="http://badge.fury.io/js/mditor"><img src="https://badge.fury.io/js/mditor.svg" alt="version"></a>
-      </p>
-      <p>Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已... </p>
-      <p>体验:
-        <a href="http://houfeng.net/mditor/demo/index.html">在线 demo</a> </p>
-      <h2>浏览器端</h2>
-      <h5>第一步:</h5>
-      <p>引入 Mditor 样式文件 </p>
-      <pre><code><span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"../build/css/mditor.min.css"</span> /&gt;</span>
-</code></pre>
-      <p>引用 Mditor 脚本文件</p>
-      <pre><code><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"../build/js/mditor.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
-</code></pre>
-      <h5>第二步:</h5>
-      <p>添加 textarea 元素</p>
-      <pre><code>&lt;textarea <span class="hljs-property">name</span>=<span class="hljs-string">"editor"</span> <span class="hljs-property">id</span>=<span class="hljs-string">"editor"</span>&gt;
-</code></pre>
-      <p>创建 Mditor 实例</p>
-      <pre><code><span class="hljs-keyword">var</span> mditor =  Mditor.fromTextarea(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'editor'</span>));
+   <article class="markdown-body entry-content" itemprop="text"><h2><a id="user-content-只求极致" class="anchor" href="#只求极致" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>只求极致</h2>
 
-<span class="hljs-comment">//获取或设置编辑器的值</span>
-<span class="hljs-built_in">console</span>.log(mditor.value);
-mditor.value = <span class="hljs-string">'** hello **'</span>;    
+<p>[ <strong>M</strong> ] arkdown + E [ <strong>ditor</strong> ] = <strong>Mditor</strong>    </p>
 
-<span class="hljs-comment">//是否打开预览            </span>
-mditor.preivew = <span class="hljs-literal">true</span>;    <span class="hljs-comment">//打开</span>
-mditor.preivew = <span class="hljs-literal">false</span>;    <span class="hljs-comment">//关闭</span>
+<p><a href="http://badge.fury.io/js/mditor"><img src="https://camo.githubusercontent.com/a50f0444b26d0abbb38bc0c372a5187ce32940b8/68747470733a2f2f62616467652e667572792e696f2f6a732f6d6469746f722e737667" alt="version" data-canonical-src="https://badge.fury.io/js/mditor.svg" style="max-width:100%;"></a>  </p>
 
-<span class="hljs-comment">//是否全屏            </span>
-mditor.fullscreen = <span class="hljs-literal">true</span>;        <span class="hljs-comment">//打开    </span>
-mditor.fullscreen = <span class="hljs-literal">false</span>;    <span class="hljs-comment">//关闭            </span>
+<p>Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已...  </p>
 
-<span class="hljs-comment">//配置工具条按钮</span>
-<span class="hljs-comment">//mditor.toolbar.items 是一个数组，包括所有按钮的信息</span>
-<span class="hljs-comment">//可以直接操作 items 以控制工具条</span>
+<p>体验: 
+<a href="http://houfeng.net/mditor/demo/index.html">在线 demo</a>  </p>
 
-<span class="hljs-comment">//只保留第一个按钮</span>
-mditor.toolbar.items = mditor.toolbar.items.slice(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>);
+<p><a href="https://camo.githubusercontent.com/f13a9a3c4901554a40d189054482eb7a5edbf261/687474703a2f2f6d6469746f722e636f6d2f696d616765732f6d6469746f722e706e67" target="_blank"><img src="https://camo.githubusercontent.com/f13a9a3c4901554a40d189054482eb7a5edbf261/687474703a2f2f6d6469746f722e636f6d2f696d616765732f6d6469746f722e706e67" alt="image" data-canonical-src="http://mditor.com/images/mditor.png" style="max-width:100%;"></a></p>
 
-<span class="hljs-comment">//更改按钮配置</span>
-<span class="hljs-keyword">let</span> btn = mditor.toolbar.items[<span class="hljs-number">0</span>];
-btn.icon = <span class="hljs-string">'...'</span>; <span class="hljs-comment">//设置按钮图标</span>
-btn.title = <span class="hljs-string">'...'</span>; <span class="hljs-comment">//投置按钮标题</span>
-btn.align = <span class="hljs-string">'rigth|left'</span>; <span class="hljs-comment">//设置按钮对齐方式</span>
-btn.key = <span class="hljs-string">'ctrl+d'</span>; <span class="hljs-comment">//设置按钮快捷建</span>
-btn.handler = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{}; <span class="hljs-comment">//替换按钮动作</span>
-</code></pre>
-      <h2>服务器端</h2>
-      <p>通过 npm 安装</p>
-      <pre><code>npm <span class="hljs-operator"><span class="hljs-keyword">install</span> mditor -<span class="hljs-keyword">save</span></span>
-</code></pre>
-      <p>在服务端解析</p>
-      <pre><code><span class="hljs-variable"><span class="hljs-keyword">var</span> mditor</span> = require(<span class="hljs-string">"mditor"</span>);
-<span class="hljs-variable"><span class="hljs-keyword">var</span> parser</span> = new mditor.Parser();
-<span class="hljs-variable"><span class="hljs-keyword">var</span> html</span> = parser.parse(<span class="hljs-string">"** Hello mditor! **"</span>);
-</code></pre>
-    </div>
+<h2><a id="user-content-浏览器端" class="anchor" href="#浏览器端" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>浏览器端</h2>
+
+<h5><a id="user-content-第一步" class="anchor" href="#第一步" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>第一步:</h5>
+
+<p>引入 Mditor 样式文件  </p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>../build/css/mditor.min.css<span class="pl-pds">"</span></span> /&gt;</pre></div>
+
+<p>引用 Mditor 脚本文件</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>../build/js/mditor.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h5><a id="user-content-第二步" class="anchor" href="#第二步" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>第二步:</h5>
+
+<p>添加 textarea 元素</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">textarea</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>editor<span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>editor<span class="pl-pds">"</span></span>&gt;</pre></div>
+
+<p>创建 Mditor 实例</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> mditor <span class="pl-k">=</span>  <span class="pl-smi">Mditor</span>.<span class="pl-en">fromTextarea</span>(<span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(<span class="pl-s"><span class="pl-pds">'</span>editor<span class="pl-pds">'</span></span>));
+
+<span class="pl-c"><span class="pl-c">//</span>获取或设置编辑器的值</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">mditor</span>.<span class="pl-c1">value</span>);
+<span class="pl-smi">mditor</span>.<span class="pl-c1">value</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>** hello **<span class="pl-pds">'</span></span>;   
+
+<span class="pl-c"><span class="pl-c">//</span>是否打开预览            </span>
+<span class="pl-smi">mditor</span>.<span class="pl-smi">preivew</span> <span class="pl-k">=</span> <span class="pl-c1">true</span>;  <span class="pl-c"><span class="pl-c">//</span>打开</span>
+<span class="pl-smi">mditor</span>.<span class="pl-smi">preivew</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>; <span class="pl-c"><span class="pl-c">//</span>关闭</span>
+
+<span class="pl-c"><span class="pl-c">//</span>是否全屏          </span>
+<span class="pl-smi">mditor</span>.<span class="pl-smi">fullscreen</span> <span class="pl-k">=</span> <span class="pl-c1">true</span>;       <span class="pl-c"><span class="pl-c">//</span>打开    </span>
+<span class="pl-smi">mditor</span>.<span class="pl-smi">fullscreen</span> <span class="pl-k">=</span> <span class="pl-c1">false</span>;  <span class="pl-c"><span class="pl-c">//</span>关闭            </span>
+
+<span class="pl-c"><span class="pl-c">//</span>配置工具条按钮</span>
+<span class="pl-c"><span class="pl-c">//</span>mditor.toolbar.items 是一个数组，包括所有按钮的信息</span>
+<span class="pl-c"><span class="pl-c">//</span>可以直接操作 items 以控制工具条</span>
+
+<span class="pl-c"><span class="pl-c">//</span>只保留第一个按钮</span>
+<span class="pl-smi">mditor</span>.<span class="pl-c1">toolbar</span>.<span class="pl-smi">items</span> <span class="pl-k">=</span> <span class="pl-smi">mditor</span>.<span class="pl-c1">toolbar</span>.<span class="pl-smi">items</span>.<span class="pl-c1">slice</span>(<span class="pl-c1">0</span>,<span class="pl-c1">1</span>);
+
+<span class="pl-c"><span class="pl-c">//</span>更改按钮配置</span>
+<span class="pl-k">let</span> btn <span class="pl-k">=</span> <span class="pl-smi">mditor</span>.<span class="pl-c1">toolbar</span>.<span class="pl-smi">items</span>[<span class="pl-c1">0</span>];
+<span class="pl-smi">btn</span>.<span class="pl-smi">icon</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>...<span class="pl-pds">'</span></span>; <span class="pl-c"><span class="pl-c">//</span>设置按钮图标</span>
+<span class="pl-smi">btn</span>.<span class="pl-c1">title</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>...<span class="pl-pds">'</span></span>; <span class="pl-c"><span class="pl-c">//</span>投置按钮标题</span>
+<span class="pl-smi">btn</span>.<span class="pl-c1">align</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>rigth|left<span class="pl-pds">'</span></span>; <span class="pl-c"><span class="pl-c">//</span>设置按钮对齐方式</span>
+<span class="pl-smi">btn</span>.<span class="pl-smi">key</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>ctrl+d<span class="pl-pds">'</span></span>; <span class="pl-c"><span class="pl-c">//</span>设置按钮快捷建</span>
+<span class="pl-smi">btn</span>.<span class="pl-en">handler</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(){}; <span class="pl-c"><span class="pl-c">//</span>替换按钮动作</span></pre></div>
+
+<h2><a id="user-content-服务器端" class="anchor" href="#服务器端" aria-hidden="true"><svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>服务器端</h2>
+
+<p>通过 npm 安装</p>
+
+<div class="highlight highlight-source-shell"><pre>npm install mditor -save</pre></div>
+
+<p>在服务端解析</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> mditor <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>mditor<span class="pl-pds">"</span></span>);
+<span class="pl-k">var</span> parser <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">mditor.Parser</span>();
+<span class="pl-k">var</span> html <span class="pl-k">=</span> <span class="pl-smi">parser</span>.<span class="pl-c1">parse</span>(<span class="pl-s"><span class="pl-pds">"</span>** Hello mditor! **<span class="pl-pds">"</span></span>);</pre></div>
+</article>
   </div>
   <script src="javascripts/scale.fix.js"></script>
 </body>
