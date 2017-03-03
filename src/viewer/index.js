@@ -1,5 +1,4 @@
 const mokit = require('mokit');
-const Parser = require('../common/parser');
 
 require('./index.less');
 
@@ -20,8 +19,7 @@ const Viewer = new mokit.Component({
       },
       set(value) {
         this._value = value;
-        this.parser = this.parser || new Parser(this.mditor);
-        this.html = this.parser.parse(this._value);
+        this.html = this.mditor.parser.parse(this._value);
       }
     }
   },

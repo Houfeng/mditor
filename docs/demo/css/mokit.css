@@ -5,6 +5,7 @@
   position: relative;
 }
 .mditor .toolbar .item {
+  transition: .3s;
   height: 27px;
   width: 27px;
   text-align: center;
@@ -29,7 +30,7 @@
   background-color: #ebebeb;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1) inset;
 }
-.mditor .toolbar .item[align='right'] {
+.mditor .toolbar .item.control {
   float: right;
 }
 .mditor .editor {
@@ -41,7 +42,7 @@
   height: 100%;
   resize: none;
   background-color: transparent;
-  font: 16px/160% 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
+  font: 15px/1.5 "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "\\5FAE\8F6F\96C5\9ED1", STHeitiSC-Light, simsun, "\\5B8B\4F53", "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
   margin: 0px;
   padding: 8px;
   color: #444;
@@ -57,8 +58,9 @@
   width: 100%;
   height: 100%;
   resize: none;
+  -webkit-font-smoothing: antialiased;
   background-color: transparent;
-  font: 16px/160% 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
+  font: 16px/1.5 "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "\\5FAE\8F6F\96C5\9ED1", STHeitiSC-Light, simsun, "\\5B8B\4F53", "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
   margin: 0px;
   padding: 8px;
   color: #444;
@@ -3242,13 +3244,13 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
  Mditor 公共样式
  **/
 .mditor {
+  transition: .05s;
   border-radius: 3px;
   padding: 38px 0 0 0;
   overflow: hidden;
   background-color: #fff;
   color: #333;
   border: 1px solid #ccc;
-  -webkit-font-smoothing: subpixel-antialiased;
   position: relative;
 }
 .mditor,
@@ -3296,12 +3298,22 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
 .mditor .body.active {
   border: 1px solid #aaa;
 }
-.mditor.preview .viewer,
-.mditor.preview .editor {
+.mditor.split .viewer,
+.mditor.split .editor {
   width: 50%;
 }
-.mditor.preview .editor {
+.mditor.split .editor {
   border-right: 1px solid #ddd;
+}
+.mditor.preview .viewer {
+  width: 100%;
+}
+.mditor.preview .editor,
+.mditor.preview .toolbar .item {
+  display: none;
+}
+.mditor.preview .toolbar .item.control {
+  display: inline-block;
 }
 .mditor.fullscreen {
   position: fixed;

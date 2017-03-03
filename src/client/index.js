@@ -3,6 +3,7 @@ const Toolbar = require('../toolbar');
 const Editor = require('../editor');
 const Viewer = require('../viewer');
 const Shortcut = require('./shortcut');
+const Parser = require('../common/parser');
 
 require('font-awesome/css/font-awesome.css');
 require('github-markdown-css/github-markdown.css');
@@ -18,6 +19,7 @@ const Mditor = new mokit.Component({
     this.CMD = this.PLATFORM.indexOf('mac') > -1 ? 'command' : 'ctrl';
     this.INDENT = '\t';
     this.shortcut = new Shortcut(this);
+    this.parser = new Parser(this);
   },
 
   onReady() {
@@ -39,7 +41,8 @@ const Mditor = new mokit.Component({
   props: {
     height: '450px',
     width: 'auto',
-    preview: true,
+    preview: false,
+    split: true,
     fullscreen: false
   },
 
@@ -51,7 +54,7 @@ const Mditor = new mokit.Component({
   },
 
   scroll() {
-    if (!this.preview) return;
+    if (!this.split || this.preview) return;
     let offsetHeight = this.editor.$element.offsetHeight;
     let editorScrollHeight = this.editor.$element.scrollHeight;
     let viewerScrollHeight = this.viewer.$element.scrollHeight;

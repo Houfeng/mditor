@@ -1,6 +1,6 @@
 {
   "name": "mditor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./src/server/index.js",
   "repository": {
@@ -41,8 +41,7 @@
     "github-markdown-css": "^2.0.10",
     "highlight.js": "^8.8.0",
     "keymaster": "^1.6.2",
-    "marked": "^0.3.5",
-    "xss": "^0.2.7"
+    "marked": "^0.3.5"
   },
   "dev": {
     "host": "localhost",

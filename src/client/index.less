@@ -3,13 +3,13 @@
  **/
 
 .mditor {
+	transition: .05s;
 	border-radius: 3px;
 	padding: 38px 0 0 0;
 	overflow: hidden;
 	background-color: #fff;
 	color: #333;
 	border: 1px solid #ccc;
-	-webkit-font-smoothing: subpixel-antialiased;
 	position: relative;
 	&, * {
 		box-sizing: border-box;
@@ -55,12 +55,23 @@
 			border: 1px solid #aaa;
 		}
 	}
-	&.preview {
+	&.split {
 		.viewer, .editor {
 			width: 50%;
 		}
 		.editor {
 			border-right: 1px solid #ddd;
+		}
+	}
+	&.preview {
+		.viewer, {
+			width: 100%;
+		}
+		.editor, .toolbar .item {
+			display: none;
+		}
+		.toolbar .item.control {
+			display: inline-block;
 		}
 	}
 	&.fullscreen {

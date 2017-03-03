@@ -154,19 +154,29 @@ module.exports = [{
   title: '全屏',
   icon: 'arrows-alt',
   key: 'shift+alt+f',
-  align: 'right',
+  control: true,
   state: 'fullscreen',
   handler() {
     this.fullscreen = !this.fullscreen;
   }
 }, {
   name: 'togglePreview',
-  title: '预览',
-  icon: 'columns',
-  key: 'shift+alt+v',
-  align: 'right',
+  title: 'preview',
+  icon: 'desktop',
+  key: 'shift+alt+w',
+  control: true,
   state: 'preview',
   handler() {
     this.preview = !this.preview;
+  }
+}, {
+  name: 'toggleSplit',
+  title: '预览',
+  icon: 'columns',
+  key: 'shift+alt+s',
+  control: true,
+  state: 'split',
+  handler() {
+    this.split = !this.split;
   }
 }];
