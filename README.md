@@ -8,6 +8,8 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 
 体验: 
 [在线 demo](http://houfeng.net/mditor/demo/index.html)  
+
+![image](http://mditor.com/images/mditor.png)
   
 ## 浏览器端
 
