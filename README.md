@@ -35,13 +35,17 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 ```
 
 创建 Mditor 实例
-```javascript
+```js
 var mditor =  Mditor.fromTextarea(document.getElementById('editor'));
 
 //获取或设置编辑器的值
 console.log(mditor.value);
 mditor.value = '** hello **';	
+```
 
+##### 其它 API:
+
+```js
 //是否打开分屏			
 mditor.split = true;	//打开
 mditor.split = false;	//关闭
