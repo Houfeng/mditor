@@ -102,7 +102,7 @@ var parser = new mditor.Parser();
 var html = parser.parse("** Hello mditor! **");
 ```
 
-在页中展示解析后内容 
+在页面中展示解析后的内容 
 ```html
 ...
 <!--引用样式-->
