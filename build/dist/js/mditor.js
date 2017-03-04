@@ -89,7 +89,7 @@
 	  },
 	
 	  props: {
-	    height: '450px',
+	    height: '400px',
 	    width: 'auto',
 	    preview: false,
 	    split: true,
