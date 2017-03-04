@@ -168,6 +168,12 @@ module.exports = [{
   state: 'preview',
   handler() {
     this.preview = !this.preview;
+    if (this.preview) {
+      this._split = this.split;
+      this.split = false;
+    } else {
+      this.split = this._split;
+    }
   }
 }, {
   name: 'toggleSplit',
@@ -178,5 +184,8 @@ module.exports = [{
   state: 'split',
   handler() {
     this.split = !this.split;
+    if (this.split) {
+      this.preview = false;
+    }
   }
 }];

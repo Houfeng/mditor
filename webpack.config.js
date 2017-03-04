@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const os = require('os');
+const pkg = require('./package.json');
 
 const ENV = process.env.NODE_ENV || 'prod';
 console.log(`${os.EOL}NODE_ENV:`, ENV);
@@ -10,9 +11,10 @@ console.log(`${os.EOL}NODE_ENV:`, ENV);
 const cssBundlePlugin = new ExtractTextPlugin(`css/mokit${ENV == 'prod' ? '.min' : ''}.css`);
 
 const htmlPlugin = new HtmlWebpackPlugin({
-  title: 'template',
+  title: pkg.name,
   filename: 'index.html',
-  template: './src/assets/index.html',
+  template: './src/assets/index.ejs',
+  inject: false
 });
 
 const cleanPlugin = new CleanWebpackPlugin(['build/dist'], {

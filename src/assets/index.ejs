@@ -4,10 +4,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=yes" />
-	<title>mditor</title>
-	
-	<link href="css/mokit.min.css" rel="stylesheet">
-	
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<% for (var css in htmlWebpackPlugin.files.css) { %>
+	<link href="<%=htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+	<% } %>
 	<style>
 		.mditor {
 			margin: 45px auto;
@@ -30,9 +30,9 @@
 		</textarea>
 	</div>
 
-	
-	<script src="js/mditor.min.js"></script>
-	
+	<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+	<script src="<%=htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+	<% } %>
 	<script>
 		var textarea = document.getElementById('editor');
 		var mditor = window.mditor = Mditor.fromTextarea(textarea);

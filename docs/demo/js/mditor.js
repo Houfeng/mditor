@@ -3808,6 +3808,12 @@
 	  state: 'preview',
 	  /*istanbul ignore next*/handler: function handler() {
 	    this.preview = !this.preview;
+	    if (this.preview) {
+	      this._split = this.split;
+	      this.split = false;
+	    } else {
+	      this.split = this._split;
+	    }
 	  }
 	}, {
 	  name: 'toggleSplit',
@@ -3818,6 +3824,9 @@
 	  state: 'split',
 	  /*istanbul ignore next*/handler: function handler() {
 	    this.split = !this.split;
+	    if (this.split) {
+	      this.preview = false;
+	    }
 	  }
 	}];
 
@@ -4079,7 +4088,7 @@
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"viewer markdown-body\" m:html=\"html\" m:on:click=\"onClick\">\n</div>"
+	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\n  <div class=\"markdown-body\" m:html=\"html\"></div>\n</div>"
 
 /***/ },
 /* 51 */

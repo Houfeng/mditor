@@ -40,6 +40,10 @@ var mditor =  Mditor.fromTextarea(document.getElementById('editor'));
 console.log(mditor.value);
 mditor.value = '** hello **';	
 
+//是否打开分屏			
+mditor.split = true;	//打开
+mditor.split = false;	//关闭
+
 //是否打开预览			
 mditor.preivew = true;	//打开
 mditor.preivew = false;	//关闭
@@ -55,13 +59,22 @@ mditor.fullscreen = false;	//关闭
 //只保留第一个按钮
 mditor.toolbar.items = mditor.toolbar.items.slice(0,1);
 
-//更改按钮配置
+//更改指定按钮配置
 let btn = mditor.toolbar.items[0];
-btn.icon = '...'; //设置按钮图标
-btn.title = '...'; //投置按钮标题
-btn.align = 'rigth|left'; //设置按钮对齐方式
+btn.icon = '...';   //设置按钮图标
+btn.title = '...';  //投置按钮标题
+btn.control = true; //作为控制按钮显示在右侧
 btn.key = 'ctrl+d'; //设置按钮快捷建
 btn.handler = function(){}; //替换按钮动作
+
+//编辑器常用 API
+//编辑器相关 AIP 在 mditor.editor 对象上
+
+//在光标前插入文本
+mditor.editor.insertBeforeText('文本');
+//在光标后插入文本
+mditor.editor.insertAfterText('文本');
+
 ```
 
 ## 服务器端
@@ -77,3 +90,16 @@ var mditor = require("mditor");
 var parser = new mditor.Parser();
 var html = parser.parse("** Hello mditor! **");
 ```
+
+在页中展示解析后内容 
+```html
+...
+<!--引用样式-->
+<link rel="stylesheet" href="../build/css/mditor.min.css" />
+...
+<div class="markdown-body">
+<!--这里是解析后的内容-->
+</div>
+```
+
+-end-
