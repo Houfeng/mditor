@@ -31,7 +31,7 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 
 添加 textarea 元素
 ```html
-<textarea name="editor" id="editor">
+<textarea name="editor" id="editor"></textarea>
 ```
 
 创建 Mditor 实例
