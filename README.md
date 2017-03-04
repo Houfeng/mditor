@@ -6,12 +6,14 @@
 
 Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已...  
 
-体验: 
+支持浏览器: chrome/safari/firefox/ie9+
+
+## 在线体验
 [在线 demo](http://houfeng.net/mditor/demo/index.html)  
 
 ![image](http://mditor.com/images/mditor.png)
   
-## 浏览器端
+## 在浏览器集成 Mditor
 
 ##### 第一步:
 
@@ -65,7 +67,12 @@ btn.icon = '...';   //设置按钮图标
 btn.title = '...';  //投置按钮标题
 btn.control = true; //作为控制按钮显示在右侧
 btn.key = 'ctrl+d'; //设置按钮快捷建
-btn.handler = function(){}; //替换按钮动作
+
+//替换按钮动作
+btn.handler = function(){
+  //自定义处理逻辑
+  //this 指向当前 mditor 实例
+}; 
 
 //编辑器常用 API
 //编辑器相关 AIP 在 mditor.editor 对象上
@@ -77,7 +84,7 @@ mditor.editor.insertAfterText('文本');
 
 ```
 
-## 服务器端
+## 在服务器渲染 Markdown
 
 通过 npm 安装
 ```sh
