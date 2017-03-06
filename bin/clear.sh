@@ -2,5 +2,5 @@
 
 set -e
 
-rm -rf ./build/dist/**
-mkdir -p ./build/dist
+rm -rf ./dist/**
+mkdir -p ./dist

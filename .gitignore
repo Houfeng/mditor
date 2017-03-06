@@ -1,7 +1,5 @@
 *.DS_Store
 *.log
-*.js.map
-*.css.map
 logs/
 node_modules/
 .vscode/

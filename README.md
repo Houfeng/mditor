@@ -27,6 +27,15 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 <script src="your-path/dist/js/mditor.min.js"></script>
 ```
 
+当然，也可以使用 CDN 资源
+```html
+...
+<link rel="stylesheet" href="https://unpkg.com/mditor@1.0.5/dist/css/mditor.min.css" />
+...
+<script src="https://unpkg.com/mditor@1.0.5/dist/js/mditor.min.js"></script>
+...
+```
+
 ##### 第二步:
 
 添加 textarea 元素

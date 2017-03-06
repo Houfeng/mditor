@@ -8,7 +8,7 @@ const pkg = require('./package.json');
 const ENV = process.env.NODE_ENV || 'prod';
 console.log(`${os.EOL}NODE_ENV:`, ENV);
 
-const cssBundlePlugin = new ExtractTextPlugin(`css/mokit${ENV == 'prod' ? '.min' : ''}.css`);
+const cssBundlePlugin = new ExtractTextPlugin(`css/mditor${ENV == 'prod' ? '.min' : ''}.css`);
 
 const htmlPlugin = new HtmlWebpackPlugin({
   title: pkg.name,
