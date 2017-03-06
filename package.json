@@ -1,6 +1,6 @@
 {
   "name": "mditor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./src/server/index.js",
   "repository": {

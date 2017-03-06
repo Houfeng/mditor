@@ -12,4 +12,4 @@ export NODE_ENV=prod
 webpack --display-error-details
 
 rm -rf ./docs/demo/*
-cp -R ./build/dist/* ./docs/demo/
+cp -R ./dist/* ./docs/demo/

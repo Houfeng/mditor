@@ -19,12 +19,12 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 
 引入 Mditor 样式文件  
 ```html
-<link rel="stylesheet" href="../build/css/mditor.min.css" />
+<link rel="stylesheet" href="your-path/dist/css/mditor.min.css" />
 ```
 
 引用 Mditor 脚本文件
 ```html
-<script src="../build/js/mditor.min.js"></script>
+<script src="your-path/dist/js/mditor.min.js"></script>
 ```
 
 ##### 第二步:
@@ -106,7 +106,7 @@ var html = parser.parse("** Hello mditor! **");
 ```html
 ...
 <!--引用样式-->
-<link rel="stylesheet" href="../build/css/mditor.min.css" />
+<link rel="stylesheet" href="your-path/dist/css/mditor.min.css" />
 ...
 <div class="markdown-body">
 <!--这里是解析后的内容-->

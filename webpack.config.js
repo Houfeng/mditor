@@ -17,7 +17,7 @@ const htmlPlugin = new HtmlWebpackPlugin({
   inject: false
 });
 
-const cleanPlugin = new CleanWebpackPlugin(['build/dist'], {
+const cleanPlugin = new CleanWebpackPlugin(['dist'], {
   verbose: false
 });
 
@@ -76,7 +76,7 @@ module.exports = {
     mditor: `./src/client`
   },
   output: {
-    path: './build/dist/',
+    path: './dist/',
     filename: `js/[name]${ENV == 'prod' ? '.min' : ''}.js`
   },
   devtool: 'source-map',
