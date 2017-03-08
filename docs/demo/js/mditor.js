@@ -79,6 +79,9 @@
 	      /*istanbul ignore next*/_this._olAutoComplete();
 	      /*istanbul ignore next*/_this._keepIndent();
 	    }, true);
+	    setTimeout(function () {
+	      /*istanbul ignore next*/_this.$emit('ready');
+	    }, 0);
 	  },
 	
 	
@@ -3633,6 +3636,27 @@
 	  },
 	  /*istanbul ignore next*/exec: function exec(name, event) {
 	    this.mditor.execCommand(name, event);
+	  },
+	  /*istanbul ignore next*/getItem: function getItem(name) {
+	    return this.items.find(function (item) /*istanbul ignore next*/{
+	      return item.name === name;
+	    });
+	  },
+	  /*istanbul ignore next*/removeItem: function removeItem(name) {
+	    var index = this.items.findIndex(function (item) /*istanbul ignore next*/{
+	      return item.name === name;
+	    });
+	    return this.items.splice(index, 1);
+	  },
+	  /*istanbul ignore next*/addItem: function addItem(item) {
+	    this.items.push(item);
+	  },
+	  /*istanbul ignore next*/replaceItem: function replaceItem(name, newItem) {
+	    var index = this.items.findIndex(function (item) /*istanbul ignore next*/{
+	      return item.name === name;
+	    });
+	    var oldItem = this.items.splice(index, 1);
+	    this.splice(index, 0, newItem);
 	  }
 	});
 	

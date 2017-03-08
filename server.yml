@@ -1,7 +1,7 @@
 filters:
     ^/: 'nokit-filter-proxy'
 public: 
-      ^/: './build/dist'
+      ^/: './dist'
 cache: 
     enabled: false
 log:

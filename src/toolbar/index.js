@@ -39,6 +39,25 @@ const Toolbar = new mokit.Component({
 
   exec(name, event) {
     this.mditor.execCommand(name, event);
+  },
+
+  getItem(name) {
+    return this.items.find(item => item.name === name);
+  },
+
+  removeItem(name) {
+    let index = this.items.findIndex(item => item.name === name);
+    return this.items.splice(index, 1);
+  },
+
+  addItem(item) {
+    this.items.push(item);
+  },
+
+  replaceItem(name, newItem) {
+    let index = this.items.findIndex(item => item.name === name);
+    let oldItem = this.items.splice(index, 1);
+    this.splice(index, 0, newItem);
   }
 
 });

@@ -30,6 +30,9 @@ const Mditor = new mokit.Component({
       this._olAutoComplete();
       this._keepIndent();
     }, true);
+    setTimeout(() => {
+      this.$emit('ready');
+    }, 0);
   },
 
   components: {

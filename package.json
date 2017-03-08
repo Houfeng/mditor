@@ -1,6 +1,6 @@
 {
   "name": "mditor",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./src/server/index.js",
   "repository": {
@@ -45,7 +45,7 @@
   },
   "dev": {
     "host": "localhost",
-    "port": 8002
+    "port": 8008
   },
   "devDependencies": {
     "babel-core": "^6.21.0",

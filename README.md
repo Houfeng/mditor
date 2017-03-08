@@ -48,9 +48,13 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 var mditor =  Mditor.fromTextarea(document.getElementById('editor'));
 
 //获取或设置编辑器的值
-console.log(mditor.value);
-mditor.value = '** hello **';	
+mditor.on('ready',function(){
+  console.log(mditor.value);
+  mditor.value = '** hello **';	
+});
 ```
+
+所有 API 都应在 ready 事件中进行调用
 
 ##### 其它 API:
 

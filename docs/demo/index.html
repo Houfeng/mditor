@@ -33,7 +33,11 @@
 	
 	<script>
 		var textarea = document.getElementById('editor');
-		var mditor = window.mditor = Mditor.fromTextarea(textarea);
+		var mditor = Mditor.fromTextarea(textarea);
+		mditor.on('ready',function(){
+			console.log('mditor', mditor);
+			console.log('toolbar', mditor.toolbar);
+		});
 	</script>
 </body>
 
