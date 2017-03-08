@@ -57,7 +57,8 @@ const Toolbar = new mokit.Component({
   replaceItem(name, newItem) {
     let index = this.items.findIndex(item => item.name === name);
     let oldItem = this.items.splice(index, 1);
-    this.splice(index, 0, newItem);
+    this.items.splice(index, 0, newItem);
+    return oldItem;
   }
 
 });

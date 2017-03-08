@@ -3656,7 +3656,8 @@
 	      return item.name === name;
 	    });
 	    var oldItem = this.items.splice(index, 1);
-	    this.splice(index, 0, newItem);
+	    this.items.splice(index, 0, newItem);
+	    return oldItem;
 	  }
 	});
 	

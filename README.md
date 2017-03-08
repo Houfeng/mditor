@@ -56,7 +56,7 @@ mditor.on('ready',function(){
 
 所有 API 都应在 ready 事件中进行调用
 
-##### 其它 API:
+##### 模式控制 API:
 
 ```js
 //是否打开分屏			
@@ -69,36 +69,53 @@ mditor.preivew = false;	//关闭
 
 //是否全屏			
 mditor.fullscreen = true;		//打开	
-mditor.fullscreen = false;	//关闭			
+mditor.fullscreen = false;	//关闭	
+```
 
-//配置工具条按钮
+##### 工具条配置 API
+
+```js
 //mditor.toolbar.items 是一个数组，包括所有按钮的信息
 //可以直接操作 items 以控制工具条
 
 //只保留第一个按钮
 mditor.toolbar.items = mditor.toolbar.items.slice(0,1);
+//添加一个按钮
+mditor.toolbar.addItem({...});
+//移除一个按钮
+mditor.toolbar.removeItem(name);
+//替换一个按钮
+mditor.toolbar.replaceItem(name, {...});
+//获取一个按钮
+mditor.toolbar.getItem(name);
 
-//更改指定按钮配置
-let btn = mditor.toolbar.items[0];
-btn.icon = '...';   //设置按钮图标
-btn.title = '...';  //投置按钮标题
-btn.control = true; //作为控制按钮显示在右侧
-btn.key = 'ctrl+d'; //设置按钮快捷建
-
+//更改按钮行为
+//示例，更改「图片」按钮配置，其它按钮是同样的方法
+let btn = mditor.toolbar.getItem('image');
 //替换按钮动作
 btn.handler = function(){
   //自定义处理逻辑
   //this 指向当前 mditor 实例
 }; 
 
-//编辑器常用 API
+//还可以替换其它信息
+btn.icon = '...';   //设置按钮图标
+btn.title = '...';  //投置按钮标题
+btn.control = true; //作为控制按钮显示在右侧
+btn.key = 'ctrl+d'; //设置按钮快捷建
+```
+
+##### 文本编辑 API
+
+```js
 //编辑器相关 AIP 在 mditor.editor 对象上
 
 //在光标前插入文本
 mditor.editor.insertBeforeText('文本');
 //在光标后插入文本
 mditor.editor.insertAfterText('文本');
-
+//其它，说明待补充
+...
 ```
 
 ## 在服务器渲染 Markdown
