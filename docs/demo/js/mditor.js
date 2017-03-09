@@ -52,6 +52,7 @@
 	var Viewer = __webpack_require__(48);
 	var Shortcut = __webpack_require__(51);
 	var Parser = __webpack_require__(53);
+	var marked = __webpack_require__(54);
 	
 	__webpack_require__(229);
 	__webpack_require__(236);
@@ -68,6 +69,7 @@
 	    this.INDENT = '\t';
 	    this.shortcut = new Shortcut(this);
 	    this.Parser = Parser;
+	    this.marked = marked;
 	    this.parser = new Parser(this);
 	  },
 	  /*istanbul ignore next*/onReady: function onReady() {
@@ -200,6 +202,7 @@
 	};
 	
 	Mditor.Parser = Parser;
+	Mditor.marked = marked;
 	
 	module.exports = window.Mditor = Mditor;
 
