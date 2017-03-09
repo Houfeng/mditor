@@ -37,6 +37,9 @@
 		mditor.on('ready',function(){
 			console.log('mditor', mditor);
 			console.log('toolbar', mditor.toolbar);
+			mditor.on('changed', function(){
+				console.log('changed',mditor.value);
+			});
 		});
 	</script>
 </body>

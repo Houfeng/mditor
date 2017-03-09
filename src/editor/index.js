@@ -16,7 +16,9 @@ module.exports = new mokit.Component({
   },
 
   onChanged() {
-    this.$emit('changed');
+    setTimeout(() => {
+      this.$emit('changed');
+    }, 0);
   },
 
   focus() {

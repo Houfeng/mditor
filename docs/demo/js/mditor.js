@@ -3911,7 +3911,11 @@
 	    this.$elementEmitter = new EventEmitter(this.$element);
 	  },
 	  /*istanbul ignore next*/onChanged: function onChanged() {
-	    this.$emit('changed');
+	    /*istanbul ignore next*/var _this = this;
+	
+	    setTimeout(function () {
+	      /*istanbul ignore next*/_this.$emit('changed');
+	    }, 0);
 	  },
 	  /*istanbul ignore next*/focus: function focus() {
 	    this.$element.focus();
@@ -3988,12 +3992,12 @@
 	    return value.substring(start, end).lastIndexOf(char);
 	  },
 	  /*istanbul ignore next*/getBeforeWord: function getBeforeWord() {
-	    /*istanbul ignore next*/var _this = this;
+	    /*istanbul ignore next*/var _this2 = this;
 	
 	    var chars = [' ', '\t', this.mditor.EOL];
 	    var start = 0;
 	    chars.forEach(function (char) {
-	      var index = /*istanbul ignore next*/_this.getBeforeFirstCharIndex(char);
+	      var index = /*istanbul ignore next*/_this2.getBeforeFirstCharIndex(char);
 	      if (index + char.length > start) {
 	        start = index + char.length;
 	      }
@@ -4022,7 +4026,7 @@
 	    this.setSelectRange(start, range.end);
 	  },
 	  /*istanbul ignore next*/addIndent: function addIndent() {
-	    /*istanbul ignore next*/var _this2 = this;
+	    /*istanbul ignore next*/var _this3 = this;
 	
 	    var selectText = this.getSelectText();
 	    if (selectText.length < 1) {
@@ -4033,7 +4037,7 @@
 	    var buffer = [];
 	    var lineCount = textArray.length - 1;
 	    textArray.forEach(function (line, index) {
-	      line = line.trim() !== '' ? /*istanbul ignore next*/_this2.mditor.INDENT + line : line;
+	      line = line.trim() !== '' ? /*istanbul ignore next*/_this3.mditor.INDENT + line : line;
 	      if (index < lineCount || line.trim() !== '') {
 	        buffer.push(line);
 	      }
@@ -4041,7 +4045,7 @@
 	    this.setSelectText(buffer.join(this.mditor.EOL));
 	  },
 	  /*istanbul ignore next*/removeIndent: function removeIndent() {
-	    /*istanbul ignore next*/var _this3 = this;
+	    /*istanbul ignore next*/var _this4 = this;
 	
 	    var indentRegExp = new RegExp('^' + this.mditor.INDENT);
 	    var selectText = this.getSelectText();
@@ -4057,7 +4061,7 @@
 	    var buffer = [];
 	    textArray.forEach(function (line) {
 	      if (indentRegExp.test(line)) {
-	        line = line.replace( /*istanbul ignore next*/_this3.mditor.INDENT, '');
+	        line = line.replace( /*istanbul ignore next*/_this4.mditor.INDENT, '');
 	      }
 	      buffer.push(line);
 	    });
@@ -4079,7 +4083,7 @@
 /* 47 */
 /***/ function(module, exports) {
 
-	module.exports = "<textarea class=\"editor\" m:model=\"value\" m:on:scroll=\"scroll\" m:on:change=\"onChanged\"></textarea>"
+	module.exports = "<textarea class=\"editor\" m:model=\"value\" m:on:scroll=\"scroll\" m:on:input=\"onChanged\"></textarea>"
 
 /***/ },
 /* 48 */
@@ -22640,7 +22644,7 @@
 /* 239 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"scroll\" m:on:onChanged=\"changed\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"scroll\" m:on:changed=\"onChanged\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);
