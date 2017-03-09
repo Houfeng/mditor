@@ -37,11 +37,12 @@
   },
   "homepage": "http://houfeng.net/mditor",
   "dependencies": {
-    "font-awesome": "^4.4.0",
-    "github-markdown-css": "^2.0.10",
-    "highlight.js": "^8.8.0",
+    "font-awesome": "^4.7.0",
+    "github-markdown-css": "^2.4.1",
+    "highlight.js": "^9.10.0",
     "keymaster": "^1.6.2",
-    "marked": "^0.3.5"
+    "marked": "^0.3.6",
+    "mokit": "^3.0.13"
   },
   "dev": {
     "host": "localhost",
@@ -81,7 +82,6 @@
     "karma-webpack": "1.8.0",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
-    "mokit": "^3.0.11",
     "mokit-router": "^1.0.6",
     "mokit-touch": "^1.0.1",
     "mokit-transition": "^1.0.1",

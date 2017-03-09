@@ -19,6 +19,7 @@ const Mditor = new mokit.Component({
     this.CMD = this.PLATFORM.indexOf('mac') > -1 ? 'command' : 'ctrl';
     this.INDENT = '\t';
     this.shortcut = new Shortcut(this);
+    this.Parser = Parser;
     this.parser = new Parser(this);
   },
 
@@ -159,5 +160,7 @@ Mditor.fromTextarea = function (textarea) {
   mditor.$mount(textarea);
   return mditor;
 };
+
+Mditor.Parser = Parser;
 
 module.exports = window.Mditor = Mditor;

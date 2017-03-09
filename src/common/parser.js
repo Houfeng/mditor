@@ -11,15 +11,21 @@ const Parser = function (options) {
 
 Parser.marked = marked;
 
+//使标题解析 # 号可以无空格
+marked.Lexer.rules.gfm.heading = marked.Lexer.rules.heading;
+marked.Lexer.rules.tables.heading = marked.Lexer.rules.heading;
+
+let renderer = new marked.Renderer();
 marked.setOptions({
-	renderer: new marked.Renderer(),
-	gfm: false,
+	renderer: renderer,
+	gfm: true,
 	tables: true,
-	breaks: true,
+	breaks: true, //可行尾不加两空格直接换行
 	pedantic: false,
 	sanitize: false,
 	smartLists: true,
 	smartypants: false,
+	mangle: false,
 	highlight: function (code, lang, callback) {
 		return highlight.highlightAuto(code).value;
 	}
