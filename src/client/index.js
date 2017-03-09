@@ -66,6 +66,10 @@ const Mditor = new mokit.Component({
     this.viewer.$element.scrollTop = viewerScrollTop;
   },
 
+  onChanged() {
+    this.$emit('changed');
+  },
+
   _keepIndent() {
     let text = this.editor.getBeforeTextInLine();
     let parts = text.split(this.INDENT);

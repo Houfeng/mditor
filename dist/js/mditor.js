@@ -114,6 +114,9 @@
 	    var viewerScrollTop = editorScrollTop * (viewerScrollHeight - offsetHeight) / (editorScrollHeight - offsetHeight);
 	    this.viewer.$element.scrollTop = viewerScrollTop;
 	  },
+	  /*istanbul ignore next*/onChanged: function onChanged() {
+	    this.$emit('changed');
+	  },
 	  /*istanbul ignore next*/_keepIndent: function _keepIndent() {
 	    var text = this.editor.getBeforeTextInLine();
 	    var parts = text.split(this.INDENT);
@@ -3890,6 +3893,9 @@
 	  /*istanbul ignore next*/onReady: function onReady() {
 	    this.$elementEmitter = new EventEmitter(this.$element);
 	  },
+	  /*istanbul ignore next*/onChanged: function onChanged() {
+	    this.$emit('changed');
+	  },
 	  /*istanbul ignore next*/focus: function focus() {
 	    this.$element.focus();
 	  },
@@ -4056,7 +4062,7 @@
 /* 47 */
 /***/ function(module, exports) {
 
-	module.exports = "<textarea class=\"editor\" m:model=\"value\" m:on:scroll=\"scroll\"></textarea>"
+	module.exports = "<textarea class=\"editor\" m:model=\"value\" m:on:scroll=\"scroll\" m:on:change=\"onChanged\"></textarea>"
 
 /***/ },
 /* 48 */
@@ -4477,6 +4483,14 @@
 	Parser.marked = marked;
 	
 	marked.setOptions({
+		renderer: new marked.Renderer(),
+		gfm: false,
+		tables: true,
+		breaks: true,
+		pedantic: false,
+		sanitize: false,
+		smartLists: true,
+		smartypants: false,
 		highlight: function /*istanbul ignore next*/highlight(code, lang, callback) {
 			return _highlight.highlightAuto(code).value;
 		}
@@ -20085,7 +20099,7 @@
 /* 204 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"scroll\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"scroll\" m:on:changed=\"changed\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);

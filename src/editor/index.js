@@ -15,6 +15,10 @@ module.exports = new mokit.Component({
     this.$elementEmitter = new EventEmitter(this.$element);
   },
 
+  onChanged() {
+    this.$emit('changed');
+  },
+
   focus() {
     this.$element.focus();
   },
