@@ -1,3 +1,4 @@
 <div class="viewer" m:on:click="onClick">
-  <div class="markdown-body" m:html="html"></div>
+  <div m:show="html" class="markdown-body" m:html="html"></div>
+  <div m:show="!html" class="alert" m:html="alert"></div>
 </div>

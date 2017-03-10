@@ -4100,7 +4100,8 @@
 	
 	  /*istanbul ignore next*/data: function data() {
 	    return {
-	      html: ''
+	      html: '',
+	      alert: '预览区域'
 	    };
 	  },
 	
@@ -4140,7 +4141,7 @@
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\n  <div class=\"markdown-body\" m:html=\"html\"></div>\n</div>"
+	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\n  <div m:show=\"html\" class=\"markdown-body\" m:html=\"html\"></div>\n  <div m:show=\"!html\" class=\"alert\" m:html=\"alert\"></div>\n</div>"
 
 /***/ },
 /* 51 */

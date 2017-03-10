@@ -7,7 +7,8 @@ const Viewer = new mokit.Component({
 
   data() {
     return {
-      html: ''
+      html: '',
+      alert: '预览区域'
     };
   },
 

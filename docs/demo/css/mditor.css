@@ -72,6 +72,16 @@
   max-width: 900px;
   margin: auto;
 }
+.mditor .viewer .alert {
+  color: #ddd;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 50%;
+  font-size: 20px;
+  margin-top: -15px;
+}
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
