@@ -1,6 +1,6 @@
-const keyMaster = require('keymaster');
+const shortcuts = require('shortcut-key');
 
-keyMaster.filter = event => {
+shortcuts.filter = event => {
   return !!event.target;
 };
 
@@ -13,7 +13,7 @@ Shortcut.prototype.bind = function (key, cmd, allowDefault) {
   //检查参数
   if (!key || !cmd) return;
   key = key.replace('{cmd}', mditor.CMD);
-  keyMaster(key, event => {
+  shortcuts(key, event => {
     if (event.target != mditor.editor.$element) return;
     //禁用浏览器默认快捷键
     if (!allowDefault) {
@@ -29,5 +29,5 @@ Shortcut.prototype.bind = function (key, cmd, allowDefault) {
 };
 
 Shortcut.prototype.unbind = function (key) {
-  keyMaster.unbind(key);
+  shortcuts.unbind(key);
 };
