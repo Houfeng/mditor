@@ -54,7 +54,6 @@
 	var Parser = __webpack_require__(53);
 	var marked = __webpack_require__(54);
 	
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 	__webpack_require__(192);
 	__webpack_require__(199);
 	__webpack_require__(200);
@@ -62,25 +61,6 @@
 	
 	var Mditor = new mokit.Component({
 	  template: __webpack_require__(202),
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	__webpack_require__(229);
-	__webpack_require__(236);
-	__webpack_require__(237);
-	__webpack_require__(238);
-	
-	var Mditor = new mokit.Component({
-	  template: __webpack_require__(239),
-=======
-	__webpack_require__(192);
-	__webpack_require__(199);
-	__webpack_require__(200);
-	__webpack_require__(201);
-	
-	var Mditor = new mokit.Component({
-	  template: __webpack_require__(202),
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -272,15 +252,7 @@
 
 	module.exports = {
 		"name": "mokit",
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 		"version": "3.0.10"
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-		"version": "3.0.13"
-=======
-		"version": "3.0.10"
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	};
 
 /***/ },
@@ -5849,182 +5821,6 @@
 	var hljs = __webpack_require__(56);
 	
 	hljs.registerLanguage('1c', __webpack_require__(57));
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	hljs.registerLanguage('abnf', __webpack_require__(58));
-	hljs.registerLanguage('accesslog', __webpack_require__(59));
-	hljs.registerLanguage('actionscript', __webpack_require__(60));
-	hljs.registerLanguage('ada', __webpack_require__(61));
-	hljs.registerLanguage('apache', __webpack_require__(62));
-	hljs.registerLanguage('applescript', __webpack_require__(63));
-	hljs.registerLanguage('cpp', __webpack_require__(64));
-	hljs.registerLanguage('arduino', __webpack_require__(65));
-	hljs.registerLanguage('armasm', __webpack_require__(66));
-	hljs.registerLanguage('xml', __webpack_require__(67));
-	hljs.registerLanguage('asciidoc', __webpack_require__(68));
-	hljs.registerLanguage('aspectj', __webpack_require__(69));
-	hljs.registerLanguage('autohotkey', __webpack_require__(70));
-	hljs.registerLanguage('autoit', __webpack_require__(71));
-	hljs.registerLanguage('avrasm', __webpack_require__(72));
-	hljs.registerLanguage('awk', __webpack_require__(73));
-	hljs.registerLanguage('axapta', __webpack_require__(74));
-	hljs.registerLanguage('bash', __webpack_require__(75));
-	hljs.registerLanguage('basic', __webpack_require__(76));
-	hljs.registerLanguage('bnf', __webpack_require__(77));
-	hljs.registerLanguage('brainfuck', __webpack_require__(78));
-	hljs.registerLanguage('cal', __webpack_require__(79));
-	hljs.registerLanguage('capnproto', __webpack_require__(80));
-	hljs.registerLanguage('ceylon', __webpack_require__(81));
-	hljs.registerLanguage('clean', __webpack_require__(82));
-	hljs.registerLanguage('clojure', __webpack_require__(83));
-	hljs.registerLanguage('clojure-repl', __webpack_require__(84));
-	hljs.registerLanguage('cmake', __webpack_require__(85));
-	hljs.registerLanguage('coffeescript', __webpack_require__(86));
-	hljs.registerLanguage('coq', __webpack_require__(87));
-	hljs.registerLanguage('cos', __webpack_require__(88));
-	hljs.registerLanguage('crmsh', __webpack_require__(89));
-	hljs.registerLanguage('crystal', __webpack_require__(90));
-	hljs.registerLanguage('cs', __webpack_require__(91));
-	hljs.registerLanguage('csp', __webpack_require__(92));
-	hljs.registerLanguage('css', __webpack_require__(93));
-	hljs.registerLanguage('d', __webpack_require__(94));
-	hljs.registerLanguage('markdown', __webpack_require__(95));
-	hljs.registerLanguage('dart', __webpack_require__(96));
-	hljs.registerLanguage('delphi', __webpack_require__(97));
-	hljs.registerLanguage('diff', __webpack_require__(98));
-	hljs.registerLanguage('django', __webpack_require__(99));
-	hljs.registerLanguage('dns', __webpack_require__(100));
-	hljs.registerLanguage('dockerfile', __webpack_require__(101));
-	hljs.registerLanguage('dos', __webpack_require__(102));
-	hljs.registerLanguage('dsconfig', __webpack_require__(103));
-	hljs.registerLanguage('dts', __webpack_require__(104));
-	hljs.registerLanguage('dust', __webpack_require__(105));
-	hljs.registerLanguage('ebnf', __webpack_require__(106));
-	hljs.registerLanguage('elixir', __webpack_require__(107));
-	hljs.registerLanguage('elm', __webpack_require__(108));
-	hljs.registerLanguage('ruby', __webpack_require__(109));
-	hljs.registerLanguage('erb', __webpack_require__(110));
-	hljs.registerLanguage('erlang-repl', __webpack_require__(111));
-	hljs.registerLanguage('erlang', __webpack_require__(112));
-	hljs.registerLanguage('excel', __webpack_require__(113));
-	hljs.registerLanguage('fix', __webpack_require__(114));
-	hljs.registerLanguage('flix', __webpack_require__(115));
-	hljs.registerLanguage('fortran', __webpack_require__(116));
-	hljs.registerLanguage('fsharp', __webpack_require__(117));
-	hljs.registerLanguage('gams', __webpack_require__(118));
-	hljs.registerLanguage('gauss', __webpack_require__(119));
-	hljs.registerLanguage('gcode', __webpack_require__(120));
-	hljs.registerLanguage('gherkin', __webpack_require__(121));
-	hljs.registerLanguage('glsl', __webpack_require__(122));
-	hljs.registerLanguage('go', __webpack_require__(123));
-	hljs.registerLanguage('golo', __webpack_require__(124));
-	hljs.registerLanguage('gradle', __webpack_require__(125));
-	hljs.registerLanguage('groovy', __webpack_require__(126));
-	hljs.registerLanguage('haml', __webpack_require__(127));
-	hljs.registerLanguage('handlebars', __webpack_require__(128));
-	hljs.registerLanguage('haskell', __webpack_require__(129));
-	hljs.registerLanguage('haxe', __webpack_require__(130));
-	hljs.registerLanguage('hsp', __webpack_require__(131));
-	hljs.registerLanguage('htmlbars', __webpack_require__(132));
-	hljs.registerLanguage('http', __webpack_require__(133));
-	hljs.registerLanguage('hy', __webpack_require__(134));
-	hljs.registerLanguage('inform7', __webpack_require__(135));
-	hljs.registerLanguage('ini', __webpack_require__(136));
-	hljs.registerLanguage('irpf90', __webpack_require__(137));
-	hljs.registerLanguage('java', __webpack_require__(138));
-	hljs.registerLanguage('javascript', __webpack_require__(139));
-	hljs.registerLanguage('json', __webpack_require__(140));
-	hljs.registerLanguage('julia', __webpack_require__(141));
-	hljs.registerLanguage('kotlin', __webpack_require__(142));
-	hljs.registerLanguage('lasso', __webpack_require__(143));
-	hljs.registerLanguage('ldif', __webpack_require__(144));
-	hljs.registerLanguage('leaf', __webpack_require__(145));
-	hljs.registerLanguage('less', __webpack_require__(146));
-	hljs.registerLanguage('lisp', __webpack_require__(147));
-	hljs.registerLanguage('livecodeserver', __webpack_require__(148));
-	hljs.registerLanguage('livescript', __webpack_require__(149));
-	hljs.registerLanguage('llvm', __webpack_require__(150));
-	hljs.registerLanguage('lsl', __webpack_require__(151));
-	hljs.registerLanguage('lua', __webpack_require__(152));
-	hljs.registerLanguage('makefile', __webpack_require__(153));
-	hljs.registerLanguage('mathematica', __webpack_require__(154));
-	hljs.registerLanguage('matlab', __webpack_require__(155));
-	hljs.registerLanguage('maxima', __webpack_require__(156));
-	hljs.registerLanguage('mel', __webpack_require__(157));
-	hljs.registerLanguage('mercury', __webpack_require__(158));
-	hljs.registerLanguage('mipsasm', __webpack_require__(159));
-	hljs.registerLanguage('mizar', __webpack_require__(160));
-	hljs.registerLanguage('perl', __webpack_require__(161));
-	hljs.registerLanguage('mojolicious', __webpack_require__(162));
-	hljs.registerLanguage('monkey', __webpack_require__(163));
-	hljs.registerLanguage('moonscript', __webpack_require__(164));
-	hljs.registerLanguage('n1ql', __webpack_require__(165));
-	hljs.registerLanguage('nginx', __webpack_require__(166));
-	hljs.registerLanguage('nimrod', __webpack_require__(167));
-	hljs.registerLanguage('nix', __webpack_require__(168));
-	hljs.registerLanguage('nsis', __webpack_require__(169));
-	hljs.registerLanguage('objectivec', __webpack_require__(170));
-	hljs.registerLanguage('ocaml', __webpack_require__(171));
-	hljs.registerLanguage('openscad', __webpack_require__(172));
-	hljs.registerLanguage('oxygene', __webpack_require__(173));
-	hljs.registerLanguage('parser3', __webpack_require__(174));
-	hljs.registerLanguage('pf', __webpack_require__(175));
-	hljs.registerLanguage('php', __webpack_require__(176));
-	hljs.registerLanguage('pony', __webpack_require__(177));
-	hljs.registerLanguage('powershell', __webpack_require__(178));
-	hljs.registerLanguage('processing', __webpack_require__(179));
-	hljs.registerLanguage('profile', __webpack_require__(180));
-	hljs.registerLanguage('prolog', __webpack_require__(181));
-	hljs.registerLanguage('protobuf', __webpack_require__(182));
-	hljs.registerLanguage('puppet', __webpack_require__(183));
-	hljs.registerLanguage('purebasic', __webpack_require__(184));
-	hljs.registerLanguage('python', __webpack_require__(185));
-	hljs.registerLanguage('q', __webpack_require__(186));
-	hljs.registerLanguage('qml', __webpack_require__(187));
-	hljs.registerLanguage('r', __webpack_require__(188));
-	hljs.registerLanguage('rib', __webpack_require__(189));
-	hljs.registerLanguage('roboconf', __webpack_require__(190));
-	hljs.registerLanguage('rsl', __webpack_require__(191));
-	hljs.registerLanguage('ruleslanguage', __webpack_require__(192));
-	hljs.registerLanguage('rust', __webpack_require__(193));
-	hljs.registerLanguage('scala', __webpack_require__(194));
-	hljs.registerLanguage('scheme', __webpack_require__(195));
-	hljs.registerLanguage('scilab', __webpack_require__(196));
-	hljs.registerLanguage('scss', __webpack_require__(197));
-	hljs.registerLanguage('smali', __webpack_require__(198));
-	hljs.registerLanguage('smalltalk', __webpack_require__(199));
-	hljs.registerLanguage('sml', __webpack_require__(200));
-	hljs.registerLanguage('sqf', __webpack_require__(201));
-	hljs.registerLanguage('sql', __webpack_require__(202));
-	hljs.registerLanguage('stan', __webpack_require__(203));
-	hljs.registerLanguage('stata', __webpack_require__(204));
-	hljs.registerLanguage('step21', __webpack_require__(205));
-	hljs.registerLanguage('stylus', __webpack_require__(206));
-	hljs.registerLanguage('subunit', __webpack_require__(207));
-	hljs.registerLanguage('swift', __webpack_require__(208));
-	hljs.registerLanguage('taggerscript', __webpack_require__(209));
-	hljs.registerLanguage('yaml', __webpack_require__(210));
-	hljs.registerLanguage('tap', __webpack_require__(211));
-	hljs.registerLanguage('tcl', __webpack_require__(212));
-	hljs.registerLanguage('tex', __webpack_require__(213));
-	hljs.registerLanguage('thrift', __webpack_require__(214));
-	hljs.registerLanguage('tp', __webpack_require__(215));
-	hljs.registerLanguage('twig', __webpack_require__(216));
-	hljs.registerLanguage('typescript', __webpack_require__(217));
-	hljs.registerLanguage('vala', __webpack_require__(218));
-	hljs.registerLanguage('vbnet', __webpack_require__(219));
-	hljs.registerLanguage('vbscript', __webpack_require__(220));
-	hljs.registerLanguage('vbscript-html', __webpack_require__(221));
-	hljs.registerLanguage('verilog', __webpack_require__(222));
-	hljs.registerLanguage('vhdl', __webpack_require__(223));
-	hljs.registerLanguage('vim', __webpack_require__(224));
-	hljs.registerLanguage('x86asm', __webpack_require__(225));
-	hljs.registerLanguage('xl', __webpack_require__(226));
-	hljs.registerLanguage('xquery', __webpack_require__(227));
-	hljs.registerLanguage('zephir', __webpack_require__(228));
-=======
->>>>>>> dev
 	hljs.registerLanguage('accesslog', __webpack_require__(58));
 	hljs.registerLanguage('actionscript', __webpack_require__(59));
 	hljs.registerLanguage('apache', __webpack_require__(60));
@@ -6159,10 +5955,6 @@
 	hljs.registerLanguage('xl', __webpack_require__(189));
 	hljs.registerLanguage('xquery', __webpack_require__(190));
 	hljs.registerLanguage('zephir', __webpack_require__(191));
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	
 	module.exports = hljs;
 
@@ -6865,15 +6657,7 @@
 	    contains: [hljs.BACKSLASH_ESCAPE]
 	  };
 	  hljs.PHRASAL_WORDS_MODE = {
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 	    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	    begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|like)\b/
-=======
-	    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	  };
 	  hljs.COMMENT = function (begin, end, inherits) {
 	    var mode = hljs.inherit(
@@ -10475,26 +10259,6 @@
 	      hljs.C_BLOCK_COMMENT_MODE
 	    ]
 	  };
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
-	};
-
-/***/ },
-/* 89 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	  var RESOURCES = 'primitive rsc_template';
-	
-	  var COMMANDS = 'group clone ms master location colocation order fencing_topology ' +
-	      'rsc_ticket acl_target acl_group user role ' +
-	      'tag xml';
-	
-	  var PROPERTY_SETS = 'property rsc_defaults op_defaults';
-	
-	  var KEYWORDS = 'params meta operations op rule attributes utilization';
->>>>>>> dev
 	
 	  var FUNCTION_TITLE = hljs.IDENT_RE + '\\s*\\(';
 	
@@ -10586,8 +10350,6 @@
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-=======
->>>>>>> dev:build/dist/js/mditor.js
 	  var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
 	  var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
 	  var CRYSTAL_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\][=?]?';
@@ -10632,56 +10394,6 @@
 	    ],
 	    relevance: 0,
 	  };
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	  var REGEXP = {
-	    begin: '(' + RE_STARTER + ')\\s*',
-	    contains: [
-	      {
-	        className: 'regexp',
-	        contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-	        variants: [
-	          {begin: '//[a-z]*', relevance: 0},
-	          {begin: '/', end: '/[a-z]*'},
-	          {begin: '%r\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
-	          {begin: '%r\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
-	          {begin: '%r{', end: '}', contains: recursiveParen('{', '}')},
-	          {begin: '%r<', end: '>', contains: recursiveParen('<', '>')},
-	          {begin: '%r/', end: '/'},
-	          {begin: '%r%', end: '%'},
-	          {begin: '%r-', end: '-'},
-	          {begin: '%r\\|', end: '\\|'},
-	        ]
-	      }
-	    ],
-	    relevance: 0
-	  };
-	  var REGEXP2 = {
-	    className: 'regexp',
-	    contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-	    variants: [
-	      {begin: '%r\\(', end: '\\)', contains: recursiveParen('\\(', '\\)')},
-	      {begin: '%r\\[', end: '\\]', contains: recursiveParen('\\[', '\\]')},
-	      {begin: '%r{', end: '}', contains: recursiveParen('{', '}')},
-	      {begin: '%r<', end: '>', contains: recursiveParen('<', '>')},
-	      {begin: '%r/', end: '/'},
-	      {begin: '%r%', end: '%'},
-	      {begin: '%r-', end: '-'},
-	      {begin: '%r\\|', end: '\\|'},
-	    ],
-	    relevance: 0
-	  };
-	  var ATTRIBUTE = {
-	    className: 'meta',
-	    begin: '@\\[', end: '\\]',
-	    contains: [
-	      hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'meta-string'})
-	    ]
-	  };
-=======
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	  var CRYSTAL_DEFAULT_CONTAINS = [
 	    EXPANSION,
 	    STRING,
@@ -10759,11 +10471,6 @@
 	        { begin: '\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)' + NUM_SUFFIX}
 	      ],
 	      relevance: 0
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-=======
->>>>>>> dev
 	    },
 	    {
 	      className: 'variable',
@@ -10782,7 +10489,6 @@
 	        }
 	      ],
 	      relevance: 0
->>>>>>> dev:build/dist/js/mditor.js
 	    }
 	  ];
 	  SUBST.contains = CRYSTAL_DEFAULT_CONTAINS;
@@ -10797,15 +10503,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 81 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 91 */
-=======
-/* 81 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10928,41 +10626,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 82 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 92 */
-=======
-/* 82 */
->>>>>>> dev:build/dist/js/mditor.js
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  return {
-	    case_insensitive: false,
-	    lexemes: '[a-zA-Z][a-zA-Z0-9_-]*',
-	    keywords: {
-	      keyword: 'base-uri child-src connect-src default-src font-src form-action' +
-	        ' frame-ancestors frame-src img-src media-src object-src plugin-types' +
-	        ' report-uri sandbox script-src style-src', 
-	    },
-	    contains: [
-	    {
-	      className: 'string',
-	      begin: "'", end: "'"
-	    },
-	    {
-	      className: 'attribute',
-	      begin: '^Content', end: ':', excludeEnd: true,
-	    },
-	    ]
-	  };
-	};
-
-/***/ },
-/* 93 */
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11069,15 +10733,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 83 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 94 */
-=======
-/* 83 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = /**
@@ -11339,15 +10995,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 84 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 95 */
-=======
-/* 84 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11453,15 +11101,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 85 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 96 */
-=======
-/* 85 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -11566,15 +11206,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 86 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 97 */
-=======
-/* 86 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11645,15 +11277,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 87 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 98 */
-=======
-/* 87 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11697,15 +11321,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 88 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 99 */
-=======
-/* 88 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11759,15 +11375,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 89 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 100 */
-=======
-/* 89 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11799,51 +11407,23 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 90 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 101 */
-=======
-/* 90 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
 	  return {
 	    aliases: ['docker'],
 	    case_insensitive: true,
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 	    keywords: {
 	      built_ins: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env'
 	    },
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	    keywords: 'from maintainer expose env user onbuild',
-=======
-	    keywords: {
-	      built_ins: 'from maintainer cmd expose add copy entrypoint volume user workdir onbuild run env'
-	    },
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	    contains: [
 	      hljs.HASH_COMMENT_MODE,
 	      {
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	        beginKeywords: 'run cmd entrypoint volume add copy workdir label healthcheck',
-=======
->>>>>>> dev
 	        keywords : {
 	          built_in: 'run cmd entrypoint volume add copy workdir onbuild'
 	        },
 	        begin: /^ *(onbuild +)?(run|cmd|entrypoint|volume|add|copy|workdir) +/,
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	        starts: {
 	          end: /[^\\]\n/,
 	          subLanguage: 'bash'
@@ -11866,15 +11446,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 91 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 102 */
-=======
-/* 91 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11926,194 +11498,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 92 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 103 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var QUOTED_PROPERTY = {
-	    className: 'string',
-	    begin: /"/, end: /"/
-	  };
-	  var APOS_PROPERTY = {
-	    className: 'string',
-	    begin: /'/, end: /'/
-	  };
-	  var UNQUOTED_PROPERTY = {
-	    className: 'string',
-	    begin: '[\\w-?]+:\\w+', end: '\\W',
-	    relevance: 0
-	  };
-	  var VALUELESS_PROPERTY = {
-	    className: 'string',
-	    begin: '\\w+-?\\w+', end: '\\W',
-	    relevance: 0
-	  };
-	
-	  return {
-	    keywords: 'dsconfig',
-	    contains: [
-	      {
-	        className: 'keyword',
-	        begin: '^dsconfig', end: '\\s', excludeEnd: true,
-	        relevance: 10
-	      },
-	      {
-	        className: 'built_in',
-	        begin: '(list|create|get|set|delete)-(\\w+)', end: '\\s', excludeEnd: true,
-	        illegal: '!@#$%^&*()',
-	        relevance: 10
-	      },
-	      {
-	        className: 'built_in',
-	        begin: '--(\\w+)', end: '\\s', excludeEnd: true
-	      },
-	      QUOTED_PROPERTY,
-	      APOS_PROPERTY,
-	      UNQUOTED_PROPERTY,
-	      VALUELESS_PROPERTY,
-	      hljs.HASH_COMMENT_MODE
-	    ]
-	  };
-	};
-
-/***/ },
-/* 104 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var STRINGS = {
-	    className: 'string',
-	    variants: [
-	      hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: '((u8?|U)|L)?"' }),
-	      {
-	        begin: '(u8?|U)?R"', end: '"',
-	        contains: [hljs.BACKSLASH_ESCAPE]
-	      },
-	      {
-	        begin: '\'\\\\?.', end: '\'',
-	        illegal: '.'
-	      }
-	    ]
-	  };
-	
-	  var NUMBERS = {
-	    className: 'number',
-	    variants: [
-	      { begin: '\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)' },
-	      { begin: hljs.C_NUMBER_RE }
-	    ],
-	    relevance: 0
-	  };
-	
-	  var PREPROCESSOR = {
-	    className: 'meta',
-	    begin: '#', end: '$',
-	    keywords: {'meta-keyword': 'if else elif endif define undef ifdef ifndef'},
-	    contains: [
-	      {
-	        begin: /\\\n/, relevance: 0
-	      },
-	      {
-	        beginKeywords: 'include', end: '$',
-	        keywords: {'meta-keyword': 'include'},
-	        contains: [
-	          hljs.inherit(STRINGS, {className: 'meta-string'}),
-	          {
-	            className: 'meta-string',
-	            begin: '<', end: '>',
-	            illegal: '\\n'
-	          }
-	        ]
-	      },
-	      STRINGS,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE
-	    ]
-	  };
-	
-	  var DTS_REFERENCE = {
-	    className: 'variable',
-	    begin: '\\&[a-z\\d_]*\\b'
-	  };
-	
-	  var DTS_KEYWORD = {
-	    className: 'meta-keyword',
-	    begin: '/[a-z][a-z\\d-]*/'
-	  };
-	
-	  var DTS_LABEL = {
-	    className: 'symbol',
-	    begin: '^\\s*[a-zA-Z_][a-zA-Z\\d_]*:'
-	  };
-	
-	  var DTS_CELL_PROPERTY = {
-	    className: 'params',
-	    begin: '<',
-	    end: '>',
-	    contains: [
-	      NUMBERS,
-	      DTS_REFERENCE
-	    ]
-	  };
-	
-	  var DTS_NODE = {
-	    className: 'class',
-	    begin: /[a-zA-Z_][a-zA-Z\d_@]*\s{/,
-	    end: /[{;=]/,
-	    returnBegin: true,
-	    excludeEnd: true
-	  };
-	
-	  var DTS_ROOT_NODE = {
-	    className: 'class',
-	    begin: '/\\s*{',
-	    end: '};',
-	    relevance: 10,
-	    contains: [
-	      DTS_REFERENCE,
-	      DTS_KEYWORD,
-	      DTS_LABEL,
-	      DTS_NODE,
-	      DTS_CELL_PROPERTY,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE,
-	      NUMBERS,
-	      STRINGS
-	    ]
-	  };
-	
-	  return {
-	    keywords: "",
-	    contains: [
-	      DTS_ROOT_NODE,
-	      DTS_REFERENCE,
-	      DTS_KEYWORD,
-	      DTS_LABEL,
-	      DTS_NODE,
-	      DTS_CELL_PROPERTY,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE,
-	      NUMBERS,
-	      STRINGS,
-	      PREPROCESSOR,
-	      {
-	        begin: hljs.IDENT_RE + '::',
-	        keywords: ""
-	      }
-	    ]
-	  };
-	};
-
-/***/ },
-/* 105 */
-=======
-/* 92 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12152,52 +11537,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 93 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 106 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	    var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
-	
-	    var nonTerminalMode = {
-	        className: "attribute",
-	        begin: /^[ ]*[a-zA-Z][a-zA-Z-]*([\s-]+[a-zA-Z][a-zA-Z]*)*/
-	    };
-	
-	    var specialSequenceMode = {
-	        className: "meta",
-	        begin: /\?.*\?/
-	    };
-	
-	    var ruleBodyMode = {
-	        begin: /=/, end: /;/,
-	        contains: [
-	            commentMode,
-	            specialSequenceMode,
-	            // terminals
-	            hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE
-	        ]
-	    };
-	
-	    return {
-	        illegal: /\S/,
-	        contains: [
-	            commentMode,
-	            nonTerminalMode,
-	            ruleBodyMode
-	        ]
-	    };
-	};
-
-/***/ },
-/* 107 */
-=======
-/* 93 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12303,15 +11643,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 94 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 108 */
-=======
-/* 94 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12401,15 +11733,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 95 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 109 */
-=======
-/* 95 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12582,15 +11906,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 96 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 110 */
-=======
-/* 96 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12609,15 +11925,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 97 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 111 */
-=======
-/* 97 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12669,15 +11977,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 98 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 112 */
-=======
-/* 98 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12833,67 +12133,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 99 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 113 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  return {
-	    aliases: ['xlsx', 'xls'],
-	    case_insensitive: true,
-	    lexemes: /[a-zA-Z][\w\.]*/,
-	    // built-in functions imported from https://web.archive.org/web/20160513042710/https://support.office.com/en-us/article/Excel-functions-alphabetical-b3944572-255d-4efb-bb96-c6d90033e188
-	    keywords: {
-	        built_in: 'ABS ACCRINT ACCRINTM ACOS ACOSH ACOT ACOTH AGGREGATE ADDRESS AMORDEGRC AMORLINC AND ARABIC AREAS ASC ASIN ASINH ATAN ATAN2 ATANH AVEDEV AVERAGE AVERAGEA AVERAGEIF AVERAGEIFS BAHTTEXT BASE BESSELI BESSELJ BESSELK BESSELY BETADIST BETA.DIST BETAINV BETA.INV BIN2DEC BIN2HEX BIN2OCT BINOMDIST BINOM.DIST BINOM.DIST.RANGE BINOM.INV BITAND BITLSHIFT BITOR BITRSHIFT BITXOR CALL CEILING CEILING.MATH CEILING.PRECISE CELL CHAR CHIDIST CHIINV CHITEST CHISQ.DIST CHISQ.DIST.RT CHISQ.INV CHISQ.INV.RT CHISQ.TEST CHOOSE CLEAN CODE COLUMN COLUMNS COMBIN COMBINA COMPLEX CONCAT CONCATENATE CONFIDENCE CONFIDENCE.NORM CONFIDENCE.T CONVERT CORREL COS COSH COT COTH COUNT COUNTA COUNTBLANK COUNTIF COUNTIFS COUPDAYBS COUPDAYS COUPDAYSNC COUPNCD COUPNUM COUPPCD COVAR COVARIANCE.P COVARIANCE.S CRITBINOM CSC CSCH CUBEKPIMEMBER CUBEMEMBER CUBEMEMBERPROPERTY CUBERANKEDMEMBER CUBESET CUBESETCOUNT CUBEVALUE CUMIPMT CUMPRINC DATE DATEDIF DATEVALUE DAVERAGE DAY DAYS DAYS360 DB DBCS DCOUNT DCOUNTA DDB DEC2BIN DEC2HEX DEC2OCT DECIMAL DEGREES DELTA DEVSQ DGET DISC DMAX DMIN DOLLAR DOLLARDE DOLLARFR DPRODUCT DSTDEV DSTDEVP DSUM DURATION DVAR DVARP EDATE EFFECT ENCODEURL EOMONTH ERF ERF.PRECISE ERFC ERFC.PRECISE ERROR.TYPE EUROCONVERT EVEN EXACT EXP EXPON.DIST EXPONDIST FACT FACTDOUBLE FALSE|0 F.DIST FDIST F.DIST.RT FILTERXML FIND FINDB F.INV F.INV.RT FINV FISHER FISHERINV FIXED FLOOR FLOOR.MATH FLOOR.PRECISE FORECAST FORECAST.ETS FORECAST.ETS.CONFINT FORECAST.ETS.SEASONALITY FORECAST.ETS.STAT FORECAST.LINEAR FORMULATEXT FREQUENCY F.TEST FTEST FV FVSCHEDULE GAMMA GAMMA.DIST GAMMADIST GAMMA.INV GAMMAINV GAMMALN GAMMALN.PRECISE GAUSS GCD GEOMEAN GESTEP GETPIVOTDATA GROWTH HARMEAN HEX2BIN HEX2DEC HEX2OCT HLOOKUP HOUR HYPERLINK HYPGEOM.DIST HYPGEOMDIST IF|0 IFERROR IFNA IFS IMABS IMAGINARY IMARGUMENT IMCONJUGATE IMCOS IMCOSH IMCOT IMCSC IMCSCH IMDIV IMEXP IMLN IMLOG10 IMLOG2 IMPOWER IMPRODUCT IMREAL IMSEC IMSECH IMSIN IMSINH IMSQRT IMSUB IMSUM IMTAN INDEX INDIRECT INFO INT INTERCEPT INTRATE IPMT IRR ISBLANK ISERR ISERROR ISEVEN ISFORMULA ISLOGICAL ISNA ISNONTEXT ISNUMBER ISODD ISREF ISTEXT ISO.CEILING ISOWEEKNUM ISPMT JIS KURT LARGE LCM LEFT LEFTB LEN LENB LINEST LN LOG LOG10 LOGEST LOGINV LOGNORM.DIST LOGNORMDIST LOGNORM.INV LOOKUP LOWER MATCH MAX MAXA MAXIFS MDETERM MDURATION MEDIAN MID MIDBs MIN MINIFS MINA MINUTE MINVERSE MIRR MMULT MOD MODE MODE.MULT MODE.SNGL MONTH MROUND MULTINOMIAL MUNIT N NA NEGBINOM.DIST NEGBINOMDIST NETWORKDAYS NETWORKDAYS.INTL NOMINAL NORM.DIST NORMDIST NORMINV NORM.INV NORM.S.DIST NORMSDIST NORM.S.INV NORMSINV NOT NOW NPER NPV NUMBERVALUE OCT2BIN OCT2DEC OCT2HEX ODD ODDFPRICE ODDFYIELD ODDLPRICE ODDLYIELD OFFSET OR PDURATION PEARSON PERCENTILE.EXC PERCENTILE.INC PERCENTILE PERCENTRANK.EXC PERCENTRANK.INC PERCENTRANK PERMUT PERMUTATIONA PHI PHONETIC PI PMT POISSON.DIST POISSON POWER PPMT PRICE PRICEDISC PRICEMAT PROB PRODUCT PROPER PV QUARTILE QUARTILE.EXC QUARTILE.INC QUOTIENT RADIANS RAND RANDBETWEEN RANK.AVG RANK.EQ RANK RATE RECEIVED REGISTER.ID REPLACE REPLACEB REPT RIGHT RIGHTB ROMAN ROUND ROUNDDOWN ROUNDUP ROW ROWS RRI RSQ RTD SEARCH SEARCHB SEC SECH SECOND SERIESSUM SHEET SHEETS SIGN SIN SINH SKEW SKEW.P SLN SLOPE SMALL SQL.REQUEST SQRT SQRTPI STANDARDIZE STDEV STDEV.P STDEV.S STDEVA STDEVP STDEVPA STEYX SUBSTITUTE SUBTOTAL SUM SUMIF SUMIFS SUMPRODUCT SUMSQ SUMX2MY2 SUMX2PY2 SUMXMY2 SWITCH SYD T TAN TANH TBILLEQ TBILLPRICE TBILLYIELD T.DIST T.DIST.2T T.DIST.RT TDIST TEXT TEXTJOIN TIME TIMEVALUE T.INV T.INV.2T TINV TODAY TRANSPOSE TREND TRIM TRIMMEAN TRUE|0 TRUNC T.TEST TTEST TYPE UNICHAR UNICODE UPPER VALUE VAR VAR.P VAR.S VARA VARP VARPA VDB VLOOKUP WEBSERVICE WEEKDAY WEEKNUM WEIBULL WEIBULL.DIST WORKDAY WORKDAY.INTL XIRR XNPV XOR YEAR YEARFRAC YIELD YIELDDISC YIELDMAT Z.TEST ZTEST'
-	    },
-	    contains: [
-	      {
-	        /* matches a beginning equal sign found in Excel formula examples */ 
-	        begin: /^=/,
-	        end: /[^=]/, returnEnd: true, illegal: /=/, /* only allow single equal sign at front of line */
-	        relevance: 10
-	      },
-	      /* technically, there can be more than 2 letters in column names, but this prevents conflict with some keywords */
-	      {
-	        /* matches a reference to a single cell */
-	        className: 'symbol',
-	        begin: /\b[A-Z]{1,2}\d+\b/,
-	        end: /[^\d]/, excludeEnd: true,
-	        relevance: 0
-	      },
-	      {
-	        /* matches a reference to a range of cells */
-	        className: 'symbol',
-	        begin: /[A-Z]{0,2}\d*:[A-Z]{0,2}\d*/,
-	        relevance: 0
-	      },
-	      hljs.BACKSLASH_ESCAPE,
-	      hljs.QUOTE_STRING_MODE,
-	      {
-	        className: 'number',
-	        begin: hljs.NUMBER_RE + '(%)?',
-	        relevance: 0
-	      },
-	      /* Excel formula comments are done by putting the comment in a function call to N() */
-	      hljs.COMMENT(/\bN\(/,/\)/,
-	      {
-	        excludeBegin: true,
-	        excludeEnd: true,
-	        illegal: /\n/
-	      })
-	    ]
-	  };
-	};
-
-/***/ },
-/* 114 */
-=======
-/* 99 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12926,64 +12166,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 100 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 115 */
-/***/ function(module, exports) {
-
-	module.exports = function (hljs) {
-	
-	    var CHAR = {
-	        className: 'string',
-	        begin: /'(.|\\[xXuU][a-zA-Z0-9]+)'/
-	    };
-	
-	    var STRING = {
-	        className: 'string',
-	        variants: [
-	            {
-	                begin: '"', end: '"'
-	            }
-	        ]
-	    };
-	
-	    var NAME = {
-	        className: 'title',
-	        begin: /[^0-9\n\t "'(),.`{}\[\]:;][^\n\t "'(),.`{}\[\]:;]+|[^0-9\n\t "'(),.`{}\[\]:;=]/
-	    };
-	
-	    var METHOD = {
-	        className: 'function',
-	        beginKeywords: 'def',
-	        end: /[:={\[(\n;]/,
-	        excludeEnd: true,
-	        contains: [NAME]
-	    };
-	
-	    return {
-	        keywords: {
-	            literal: 'true false',
-	            keyword: 'case class def else enum if impl import in lat rel index let match namespace switch type yield with'
-	        },
-	        contains: [
-	            hljs.C_LINE_COMMENT_MODE,
-	            hljs.C_BLOCK_COMMENT_MODE,
-	            CHAR,
-	            STRING,
-	            METHOD,
-	            hljs.C_NUMBER_MODE
-	        ]
-	    };
-	};
-
-/***/ },
-/* 116 */
-=======
-/* 100 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13057,15 +12240,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 101 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 117 */
-=======
-/* 101 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13127,15 +12302,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 102 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 118 */
-=======
-/* 102 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -13180,7 +12347,6 @@
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 	    var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
 	    var GCODE_CLOSE_RE = '\\%';
 	    var GCODE_KEYWORDS = {
@@ -13194,247 +12360,6 @@
 	    };
 	    var GCODE_START = {
 	        className: 'preprocessor',
-=======
-	  var KEYWORDS = {
-	    keyword: 'and bool break call callexe checkinterrupt clear clearg closeall cls comlog compile ' +
-	              'continue create debug declare delete disable dlibrary dllcall do dos ed edit else ' +
-	              'elseif enable end endfor endif endp endo errorlog errorlogat expr external fn ' +
-	              'for format goto gosub graph if keyword let lib library line load loadarray loadexe ' +
-	              'loadf loadk loadm loadp loads loadx local locate loopnextindex lprint lpwidth lshow ' +
-	              'matrix msym ndpclex new not open or output outwidth plot plotsym pop prcsn print ' +
-	              'printdos proc push retp return rndcon rndmod rndmult rndseed run save saveall screen ' +
-	              'scroll setarray show sparse stop string struct system trace trap threadfor ' +
-	              'threadendfor threadbegin threadjoin threadstat threadend until use while winprint',
-	    built_in: 'abs acf aconcat aeye amax amean AmericanBinomCall AmericanBinomCall_Greeks AmericanBinomCall_ImpVol ' +
-	              'AmericanBinomPut AmericanBinomPut_Greeks AmericanBinomPut_ImpVol AmericanBSCall AmericanBSCall_Greeks ' +
-	              'AmericanBSCall_ImpVol AmericanBSPut AmericanBSPut_Greeks AmericanBSPut_ImpVol amin amult annotationGetDefaults ' +
-	              'annotationSetBkd annotationSetFont annotationSetLineColor annotationSetLineStyle annotationSetLineThickness ' +
-	              'annualTradingDays arccos arcsin areshape arrayalloc arrayindex arrayinit arraytomat asciiload asclabel astd ' +
-	              'astds asum atan atan2 atranspose axmargin balance band bandchol bandcholsol bandltsol bandrv bandsolpd bar ' +
-	              'base10 begwind besselj bessely beta box boxcox cdfBeta cdfBetaInv cdfBinomial cdfBinomialInv cdfBvn cdfBvn2 ' +
-	              'cdfBvn2e cdfCauchy cdfCauchyInv cdfChic cdfChii cdfChinc cdfChincInv cdfExp cdfExpInv cdfFc cdfFnc cdfFncInv ' +
-	              'cdfGam cdfGenPareto cdfHyperGeo cdfLaplace cdfLaplaceInv cdfLogistic cdfLogisticInv cdfmControlCreate cdfMvn ' +
-	              'cdfMvn2e cdfMvnce cdfMvne cdfMvt2e cdfMvtce cdfMvte cdfN cdfN2 cdfNc cdfNegBinomial cdfNegBinomialInv cdfNi ' +
-	              'cdfPoisson cdfPoissonInv cdfRayleigh cdfRayleighInv cdfTc cdfTci cdfTnc cdfTvn cdfWeibull cdfWeibullInv cdir ' +
-	              'ceil ChangeDir chdir chiBarSquare chol choldn cholsol cholup chrs close code cols colsf combinate combinated ' +
-	              'complex con cond conj cons ConScore contour conv convertsatostr convertstrtosa corrm corrms corrvc corrx corrxs ' +
-	              'cos cosh counts countwts crossprd crout croutp csrcol csrlin csvReadM csvReadSA cumprodc cumsumc curve cvtos ' +
-	              'datacreate datacreatecomplex datalist dataload dataloop dataopen datasave date datestr datestring datestrymd ' +
-	              'dayinyr dayofweek dbAddDatabase dbClose dbCommit dbCreateQuery dbExecQuery dbGetConnectOptions dbGetDatabaseName ' +
-	              'dbGetDriverName dbGetDrivers dbGetHostName dbGetLastErrorNum dbGetLastErrorText dbGetNumericalPrecPolicy ' +
-	              'dbGetPassword dbGetPort dbGetTableHeaders dbGetTables dbGetUserName dbHasFeature dbIsDriverAvailable dbIsOpen ' +
-	              'dbIsOpenError dbOpen dbQueryBindValue dbQueryClear dbQueryCols dbQueryExecPrepared dbQueryFetchAllM dbQueryFetchAllSA ' +
-	              'dbQueryFetchOneM dbQueryFetchOneSA dbQueryFinish dbQueryGetBoundValue dbQueryGetBoundValues dbQueryGetField ' +
-	              'dbQueryGetLastErrorNum dbQueryGetLastErrorText dbQueryGetLastInsertID dbQueryGetLastQuery dbQueryGetPosition ' +
-	              'dbQueryIsActive dbQueryIsForwardOnly dbQueryIsNull dbQueryIsSelect dbQueryIsValid dbQueryPrepare dbQueryRows ' +
-	              'dbQuerySeek dbQuerySeekFirst dbQuerySeekLast dbQuerySeekNext dbQuerySeekPrevious dbQuerySetForwardOnly ' +
-	              'dbRemoveDatabase dbRollback dbSetConnectOptions dbSetDatabaseName dbSetHostName dbSetNumericalPrecPolicy ' +
-	              'dbSetPort dbSetUserName dbTransaction DeleteFile delif delrows denseToSp denseToSpRE denToZero design det detl ' +
-	              'dfft dffti diag diagrv digamma doswin DOSWinCloseall DOSWinOpen dotfeq dotfeqmt dotfge dotfgemt dotfgt dotfgtmt ' +
-	              'dotfle dotflemt dotflt dotfltmt dotfne dotfnemt draw drop dsCreate dstat dstatmt dstatmtControlCreate dtdate dtday ' +
-	              'dttime dttodtv dttostr dttoutc dtvnormal dtvtodt dtvtoutc dummy dummybr dummydn eig eigh eighv eigv elapsedTradingDays ' +
-	              'endwind envget eof eqSolve eqSolvemt eqSolvemtControlCreate eqSolvemtOutCreate eqSolveset erf erfc erfccplx erfcplx error ' +
-	              'etdays ethsec etstr EuropeanBinomCall EuropeanBinomCall_Greeks EuropeanBinomCall_ImpVol EuropeanBinomPut ' +
-	              'EuropeanBinomPut_Greeks EuropeanBinomPut_ImpVol EuropeanBSCall EuropeanBSCall_Greeks EuropeanBSCall_ImpVol ' +
-	              'EuropeanBSPut EuropeanBSPut_Greeks EuropeanBSPut_ImpVol exctsmpl exec execbg exp extern eye fcheckerr fclearerr feq ' +
-	              'feqmt fflush fft ffti fftm fftmi fftn fge fgemt fgets fgetsa fgetsat fgetst fgt fgtmt fileinfo filesa fle flemt ' +
-	              'floor flt fltmt fmod fne fnemt fonts fopen formatcv formatnv fputs fputst fseek fstrerror ftell ftocv ftos ftostrC ' +
-	              'gamma gammacplx gammaii gausset gdaAppend gdaCreate gdaDStat gdaDStatMat gdaGetIndex gdaGetName gdaGetNames gdaGetOrders ' +
-	              'gdaGetType gdaGetTypes gdaGetVarInfo gdaIsCplx gdaLoad gdaPack gdaRead gdaReadByIndex gdaReadSome gdaReadSparse ' +
-	              'gdaReadStruct gdaReportVarInfo gdaSave gdaUpdate gdaUpdateAndPack gdaVars gdaWrite gdaWrite32 gdaWriteSome getarray ' +
-	              'getdims getf getGAUSShome getmatrix getmatrix4D getname getnamef getNextTradingDay getNextWeekDay getnr getorders ' +
-	              'getpath getPreviousTradingDay getPreviousWeekDay getRow getscalar3D getscalar4D getTrRow getwind glm gradcplx gradMT ' +
-	              'gradMTm gradMTT gradMTTm gradp graphprt graphset hasimag header headermt hess hessMT hessMTg hessMTgw hessMTm ' +
-	              'hessMTmw hessMTT hessMTTg hessMTTgw hessMTTm hessMTw hessp hist histf histp hsec imag indcv indexcat indices indices2 ' +
-	              'indicesf indicesfn indnv indsav integrate1d integrateControlCreate intgrat2 intgrat3 inthp1 inthp2 inthp3 inthp4 ' +
-	              'inthpControlCreate intquad1 intquad2 intquad3 intrleav intrleavsa intrsect intsimp inv invpd invswp iscplx iscplxf ' +
-	              'isden isinfnanmiss ismiss key keyav keyw lag lag1 lagn lapEighb lapEighi lapEighvb lapEighvi lapgEig lapgEigh lapgEighv ' +
-	              'lapgEigv lapgSchur lapgSvdcst lapgSvds lapgSvdst lapSvdcusv lapSvds lapSvdusv ldlp ldlsol linSolve listwise ln lncdfbvn ' +
-	              'lncdfbvn2 lncdfmvn lncdfn lncdfn2 lncdfnc lnfact lngammacplx lnpdfmvn lnpdfmvt lnpdfn lnpdft loadd loadstruct loadwind ' +
-	              'loess loessmt loessmtControlCreate log loglog logx logy lower lowmat lowmat1 ltrisol lu lusol machEpsilon make makevars ' +
-	              'makewind margin matalloc matinit mattoarray maxbytes maxc maxindc maxv maxvec mbesselei mbesselei0 mbesselei1 mbesseli ' +
-	              'mbesseli0 mbesseli1 meanc median mergeby mergevar minc minindc minv miss missex missrv moment momentd movingave ' +
-	              'movingaveExpwgt movingaveWgt nextindex nextn nextnevn nextwind ntos null null1 numCombinations ols olsmt olsmtControlCreate ' +
-	              'olsqr olsqr2 olsqrmt ones optn optnevn orth outtyp pacf packedToSp packr parse pause pdfCauchy pdfChi pdfExp pdfGenPareto ' +
-	              'pdfHyperGeo pdfLaplace pdfLogistic pdfn pdfPoisson pdfRayleigh pdfWeibull pi pinv pinvmt plotAddArrow plotAddBar plotAddBox ' +
-	              'plotAddHist plotAddHistF plotAddHistP plotAddPolar plotAddScatter plotAddShape plotAddTextbox plotAddTS plotAddXY plotArea ' +
-	              'plotBar plotBox plotClearLayout plotContour plotCustomLayout plotGetDefaults plotHist plotHistF plotHistP plotLayout ' +
-	              'plotLogLog plotLogX plotLogY plotOpenWindow plotPolar plotSave plotScatter plotSetAxesPen plotSetBar plotSetBarFill ' +
-	              'plotSetBarStacked plotSetBkdColor plotSetFill plotSetGrid plotSetLegend plotSetLineColor plotSetLineStyle plotSetLineSymbol ' +
-	              'plotSetLineThickness plotSetNewWindow plotSetTitle plotSetWhichYAxis plotSetXAxisShow plotSetXLabel plotSetXRange ' +
-	              'plotSetXTicInterval plotSetXTicLabel plotSetYAxisShow plotSetYLabel plotSetYRange plotSetZAxisShow plotSetZLabel ' +
-	              'plotSurface plotTS plotXY polar polychar polyeval polygamma polyint polymake polymat polymroot polymult polyroot ' +
-	              'pqgwin previousindex princomp printfm printfmt prodc psi putarray putf putvals pvCreate pvGetIndex pvGetParNames ' +
-	              'pvGetParVector pvLength pvList pvPack pvPacki pvPackm pvPackmi pvPacks pvPacksi pvPacksm pvPacksmi pvPutParVector ' +
-	              'pvTest pvUnpack QNewton QNewtonmt QNewtonmtControlCreate QNewtonmtOutCreate QNewtonSet QProg QProgmt QProgmtInCreate ' +
-	              'qqr qqre qqrep qr qre qrep qrsol qrtsol qtyr qtyre qtyrep quantile quantiled qyr qyre qyrep qz rank rankindx readr ' +
-	              'real reclassify reclassifyCuts recode recserar recsercp recserrc rerun rescale reshape rets rev rfft rffti rfftip rfftn ' +
-	              'rfftnp rfftp rndBernoulli rndBeta rndBinomial rndCauchy rndChiSquare rndCon rndCreateState rndExp rndGamma rndGeo rndGumbel ' +
-	              'rndHyperGeo rndi rndKMbeta rndKMgam rndKMi rndKMn rndKMnb rndKMp rndKMu rndKMvm rndLaplace rndLCbeta rndLCgam rndLCi rndLCn ' +
-	              'rndLCnb rndLCp rndLCu rndLCvm rndLogNorm rndMTu rndMVn rndMVt rndn rndnb rndNegBinomial rndp rndPoisson rndRayleigh ' +
-	              'rndStateSkip rndu rndvm rndWeibull rndWishart rotater round rows rowsf rref sampleData satostrC saved saveStruct savewind ' +
-	              'scale scale3d scalerr scalinfnanmiss scalmiss schtoc schur searchsourcepath seekr select selif seqa seqm setdif setdifsa ' +
-	              'setvars setvwrmode setwind shell shiftr sin singleindex sinh sleep solpd sortc sortcc sortd sorthc sorthcc sortind ' +
-	              'sortindc sortmc sortr sortrc spBiconjGradSol spChol spConjGradSol spCreate spDenseSubmat spDiagRvMat spEigv spEye spLDL ' +
-	              'spline spLU spNumNZE spOnes spreadSheetReadM spreadSheetReadSA spreadSheetWrite spScale spSubmat spToDense spTrTDense ' +
-	              'spTScalar spZeros sqpSolve sqpSolveMT sqpSolveMTControlCreate sqpSolveMTlagrangeCreate sqpSolveMToutCreate sqpSolveSet ' +
-	              'sqrt statements stdc stdsc stocv stof strcombine strindx strlen strput strrindx strsect strsplit strsplitPad strtodt ' +
-	              'strtof strtofcplx strtriml strtrimr strtrunc strtruncl strtruncpad strtruncr submat subscat substute subvec sumc sumr ' +
-	              'surface svd svd1 svd2 svdcusv svds svdusv sysstate tab tan tanh tempname threadBegin threadEnd threadEndFor threadFor ' +
-	              'threadJoin threadStat time timedt timestr timeutc title tkf2eps tkf2ps tocart todaydt toeplitz token topolar trapchk ' +
-	              'trigamma trimr trunc type typecv typef union unionsa uniqindx uniqindxsa unique uniquesa upmat upmat1 upper utctodt ' +
-	              'utctodtv utrisol vals varCovMS varCovXS varget vargetl varmall varmares varput varputl vartypef vcm vcms vcx vcxs ' +
-	              'vec vech vecr vector vget view viewxyz vlist vnamecv volume vput vread vtypecv wait waitc walkindex where window ' +
-	              'writer xlabel xlsGetSheetCount xlsGetSheetSize xlsGetSheetTypes xlsMakeRange xlsReadM xlsReadSA xlsWrite xlsWriteM ' +
-	              'xlsWriteSA xpnd xtics xy xyz ylabel ytics zeros zeta zlabel ztics cdfEmpirical dot h5create h5open h5read h5readAttribute ' +
-	              'h5write h5writeAttribute ldl plotAddErrorBar plotAddSurface plotCDFEmpirical plotSetColormap plotSetContourLabels ' +
-	              'plotSetLegendFont plotSetTextInterpreter plotSetXTicCount plotSetYTicCount plotSetZLevels powerm strjoin strtrim sylvester',
-	    literal: 'DB_AFTER_LAST_ROW DB_ALL_TABLES DB_BATCH_OPERATIONS DB_BEFORE_FIRST_ROW DB_BLOB DB_EVENT_NOTIFICATIONS ' +
-	             'DB_FINISH_QUERY DB_HIGH_PRECISION DB_LAST_INSERT_ID DB_LOW_PRECISION_DOUBLE DB_LOW_PRECISION_INT32 ' +
-	             'DB_LOW_PRECISION_INT64 DB_LOW_PRECISION_NUMBERS DB_MULTIPLE_RESULT_SETS DB_NAMED_PLACEHOLDERS ' +
-	             'DB_POSITIONAL_PLACEHOLDERS DB_PREPARED_QUERIES DB_QUERY_SIZE DB_SIMPLE_LOCKING DB_SYSTEM_TABLES DB_TABLES ' +
-	             'DB_TRANSACTIONS DB_UNICODE DB_VIEWS'
-	  };
-	
-	  var PREPROCESSOR =
-	  {
-	    className: 'meta',
-	    begin: '#', end: '$',
-	    keywords: {'meta-keyword': 'define definecs|10 undef ifdef ifndef iflight ifdllcall ifmac ifos2win ifunix else endif lineson linesoff srcfile srcline'},
-	    contains: [
-	      {
-	        begin: /\\\n/, relevance: 0
-	      },
-	      {
-	        beginKeywords: 'include', end: '$',
-	        keywords: {'meta-keyword': 'include'},
-	        contains: [
-	          {
-	            className: 'meta-string',
-	            begin: '"', end: '"',
-	            illegal: '\\n'
-	          }
-	        ]
-	      },
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE
-	    ]
-	  };
-	
-	  var FUNCTION_TITLE = hljs.UNDERSCORE_IDENT_RE + '\\s*\\(?';
-	  var PARSE_PARAMS = [
-	    {
-	      className: 'params',
-	      begin: /\(/, end: /\)/,
-	      keywords: KEYWORDS,
-	      relevance: 0,
-	      contains: [
-	        hljs.C_NUMBER_MODE,
-	        hljs.C_LINE_COMMENT_MODE,
-	        hljs.C_BLOCK_COMMENT_MODE
-	      ]
-	    }
-	  ];
-	
-	  return {
-	    aliases: ['gss'],
-	    case_insensitive: true, // language is case-insensitive
-	    keywords: KEYWORDS,
-	    illegal: '(\\{[%#]|[%#]\\})',
-	    contains: [
-	      hljs.C_NUMBER_MODE,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE,
-	      hljs.COMMENT('@', '@'),
-	      PREPROCESSOR,
-	      {
-	        className: 'string',
-	        begin: '"', end: '"',
-	        contains: [hljs.BACKSLASH_ESCAPE]
-	      },
-	      {
-	        className: 'function',
-	        beginKeywords: 'proc keyword',
-	        end: ';',
-	        excludeEnd: true,
-	        keywords: KEYWORDS,
-	        contains: [
-	          {
-	            begin: FUNCTION_TITLE, returnBegin: true,
-	            contains: [hljs.UNDERSCORE_TITLE_MODE],
-	            relevance: 0
-	          },
-	          hljs.C_NUMBER_MODE,
-	          hljs.C_LINE_COMMENT_MODE,
-	          hljs.C_BLOCK_COMMENT_MODE,
-	          PREPROCESSOR
-	        ].concat(PARSE_PARAMS)
-	      },
-	      {
-	        className: 'function',
-	        beginKeywords: 'fn',
-	        end: ';',
-	        excludeEnd: true,
-	        keywords: KEYWORDS,
-	        contains: [
-	          {
-	            begin: FUNCTION_TITLE + hljs.IDENT_RE + '\\)?\\s*\\=\\s*', returnBegin: true,
-	            contains: [hljs.UNDERSCORE_TITLE_MODE],
-	            relevance: 0
-	          },
-	          hljs.C_NUMBER_MODE,
-	          hljs.C_LINE_COMMENT_MODE,
-	          hljs.C_BLOCK_COMMENT_MODE
-	        ].concat(PARSE_PARAMS)
-	      },
-	      {
-	        className: 'function',
-	        begin: '\\bexternal (proc|keyword|fn)\\s+',
-	        end: ';',
-	        excludeEnd: true,
-	        keywords: KEYWORDS,
-	        contains: [
-	          {
-	            begin: FUNCTION_TITLE, returnBegin: true,
-	            contains: [hljs.UNDERSCORE_TITLE_MODE],
-	            relevance: 0
-	          },
-	          hljs.C_LINE_COMMENT_MODE,
-	          hljs.C_BLOCK_COMMENT_MODE
-	        ]
-	      },
-	      {
-	        className: 'function',
-	        begin: '\\bexternal (matrix|string|array|sparse matrix|struct ' + hljs.IDENT_RE + ')\\s+',
-	        end: ';',
-	        excludeEnd: true,
-	        keywords: KEYWORDS,
-	        contains: [
-	          hljs.C_LINE_COMMENT_MODE,
-	          hljs.C_BLOCK_COMMENT_MODE
-	        ]
-	      }
-	    ]
-	  };
-	};
-
-/***/ },
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 120 */
-=======
-/* 103 */
->>>>>>> dev:build/dist/js/mditor.js
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	    var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
-	    var GCODE_CLOSE_RE = '\\%';
-	    var GCODE_KEYWORDS =
-	      'IF DO WHILE ENDWHILE CALL ENDIF SUB ENDSUB GOTO REPEAT ENDREPEAT ' +
-	      'EQ LT GT NE GE LE OR XOR';
-	    var GCODE_START = {
-	        className: 'meta',
->>>>>>> dev
 	        begin: '([O])([0-9]+)'
 	    };
 	    var GCODE_CODE = [
@@ -13495,15 +12420,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 104 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 121 */
-=======
-/* 104 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -13540,15 +12457,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 105 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 122 */
-=======
-/* 105 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13646,15 +12555,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 106 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 123 */
-=======
-/* 106 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13697,15 +12598,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 107 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 124 */
-=======
-/* 107 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13733,15 +12626,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 108 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 125 */
-=======
-/* 108 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13780,15 +12665,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 109 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 126 */
-=======
-/* 109 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13880,15 +12757,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 110 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 127 */
-=======
-/* 110 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = // TODO support filter tags like :javascript, support inline HTML
@@ -14000,15 +12869,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 111 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 128 */
-=======
-/* 111 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14045,15 +12906,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 112 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 129 */
-=======
-/* 112 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14181,15 +13034,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 113 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 130 */
-=======
-/* 113 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14254,15 +13099,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 114 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 133 */
-=======
-/* 114 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14301,121 +13138,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 115 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 134 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var keywords = {
-	    'builtin-name':
-	      // keywords
-	      '!= % %= & &= * ** **= *= *map ' +
-	      '+ += , --build-class-- --import-- -= . / // //= ' +
-	      '/= < << <<= <= = > >= >> >>= ' +
-	      '@ @= ^ ^= abs accumulate all and any ap-compose ' +
-	      'ap-dotimes ap-each ap-each-while ap-filter ap-first ap-if ap-last ap-map ap-map-when ap-pipe ' +
-	      'ap-reduce ap-reject apply as-> ascii assert assoc bin break butlast ' +
-	      'callable calling-module-name car case cdr chain chr coll? combinations compile ' +
-	      'compress cond cons cons? continue count curry cut cycle dec ' +
-	      'def default-method defclass defmacro defmacro-alias defmacro/g! defmain defmethod defmulti defn ' +
-	      'defn-alias defnc defnr defreader defseq del delattr delete-route dict-comp dir ' +
-	      'disassemble dispatch-reader-macro distinct divmod do doto drop drop-last drop-while empty? ' +
-	      'end-sequence eval eval-and-compile eval-when-compile even? every? except exec filter first ' +
-	      'flatten float? fn fnc fnr for for* format fraction genexpr ' +
-	      'gensym get getattr global globals group-by hasattr hash hex id ' +
-	      'identity if if* if-not if-python2 import in inc input instance? ' +
-	      'integer integer-char? integer? interleave interpose is is-coll is-cons is-empty is-even ' +
-	      'is-every is-float is-instance is-integer is-integer-char is-iterable is-iterator is-keyword is-neg is-none ' +
-	      'is-not is-numeric is-odd is-pos is-string is-symbol is-zero isinstance islice issubclass ' +
-	      'iter iterable? iterate iterator? keyword keyword? lambda last len let ' +
-	      'lif lif-not list* list-comp locals loop macro-error macroexpand macroexpand-1 macroexpand-all ' +
-	      'map max merge-with method-decorator min multi-decorator multicombinations name neg? next ' +
-	      'none? nonlocal not not-in not? nth numeric? oct odd? open ' +
-	      'or ord partition permutations pos? post-route postwalk pow prewalk print ' +
-	      'product profile/calls profile/cpu put-route quasiquote quote raise range read read-str ' +
-	      'recursive-replace reduce remove repeat repeatedly repr require rest round route ' +
-	      'route-with-methods rwm second seq set-comp setattr setv some sorted string ' +
-	      'string? sum switch symbol? take take-nth take-while tee try unless ' +
-	      'unquote unquote-splicing vars walk when while with with* with-decorator with-gensyms ' +
-	      'xi xor yield yield-from zero? zip zip-longest | |= ~'
-	   };
-	
-	  var SYMBOLSTART = 'a-zA-Z_\\-!.?+*=<>&#\'';
-	  var SYMBOL_RE = '[' + SYMBOLSTART + '][' + SYMBOLSTART + '0-9/;:]*';
-	  var SIMPLE_NUMBER_RE = '[-+]?\\d+(\\.\\d+)?';
-	
-	  var SHEBANG = {
-	    className: 'meta',
-	    begin: '^#!', end: '$'
-	  };
-	
-	  var SYMBOL = {
-	    begin: SYMBOL_RE,
-	    relevance: 0
-	  };
-	  var NUMBER = {
-	    className: 'number', begin: SIMPLE_NUMBER_RE,
-	    relevance: 0
-	  };
-	  var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null});
-	  var COMMENT = hljs.COMMENT(
-	    ';',
-	    '$',
-	    {
-	      relevance: 0
-	    }
-	  );
-	  var LITERAL = {
-	    className: 'literal',
-	    begin: /\b([Tt]rue|[Ff]alse|nil|None)\b/
-	  };
-	  var COLLECTION = {
-	    begin: '[\\[\\{]', end: '[\\]\\}]'
-	  };
-	  var HINT = {
-	    className: 'comment',
-	    begin: '\\^' + SYMBOL_RE
-	  };
-	  var HINT_COL = hljs.COMMENT('\\^\\{', '\\}');
-	  var KEY = {
-	    className: 'symbol',
-	    begin: '[:]{1,2}' + SYMBOL_RE
-	  };
-	  var LIST = {
-	    begin: '\\(', end: '\\)'
-	  };
-	  var BODY = {
-	    endsWithParent: true,
-	    relevance: 0
-	  };
-	  var NAME = {
-	    keywords: keywords,
-	    lexemes: SYMBOL_RE,
-	    className: 'name', begin: SYMBOL_RE,
-	    starts: BODY
-	  };
-	  var DEFAULT_CONTAINS = [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL, SYMBOL];
-	
-	  LIST.contains = [hljs.COMMENT('comment', ''), NAME, BODY];
-	  BODY.contains = DEFAULT_CONTAINS;
-	  COLLECTION.contains = DEFAULT_CONTAINS;
-	
-	  return {
-	    aliases: ['hylang'],
-	    illegal: /\S/,
-	    contains: [SHEBANG, LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
-	  }
-	};
-
-/***/ },
-/* 135 */
-=======
-/* 115 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14477,15 +13200,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 116 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 136 */
-=======
-/* 116 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14549,15 +13264,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 117 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 137 */
-=======
-/* 117 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14636,15 +13343,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 118 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 138 */
-=======
-/* 118 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14748,15 +13447,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 119 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 139 */
-=======
-/* 119 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14872,15 +13563,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 120 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 140 */
-=======
-/* 120 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14922,15 +13605,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 121 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 141 */
-=======
-/* 121 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15095,15 +13770,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 122 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 142 */
-=======
-/* 122 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -15208,15 +13875,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 123 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 143 */
-=======
-/* 123 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15406,86 +14065,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 124 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 144 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  return {
-	    contains: [
-	      {
-	        className: 'attribute',
-	        begin: '^dn', end: ': ', excludeEnd: true,
-	        starts: {end: '$', relevance: 0},
-	        relevance: 10
-	      },
-	      {
-	        className: 'attribute',
-	        begin: '^\\w', end: ': ', excludeEnd: true,
-	        starts: {end: '$', relevance: 0}
-	      },
-	      {
-	        className: 'literal',
-	        begin: '^-', end: '$'
-	      },
-	      hljs.HASH_COMMENT_MODE
-	    ]
-	  };
-	};
-
-/***/ },
-/* 145 */
-/***/ function(module, exports) {
-
-	module.exports = function (hljs) {
-	  return {
-	    contains: [
-	      {
-	        className: 'function',
-	        begin: '#+' + '[A-Za-z_0-9]*' + '\\(',
-	        end:' {',
-	        returnBegin: true,
-	        excludeEnd: true,
-	        contains : [
-	          {
-	            className: 'keyword',
-	            begin: '#+'
-	          },
-	          {
-	            className: 'title',
-	            begin: '[A-Za-z_][A-Za-z_0-9]*'
-	          },
-	          {
-	            className: 'params',
-	            begin: '\\(', end: '\\)',
-	            endsParent: true,
-	            contains: [
-	              {
-	                className: 'string',
-	                begin: '"',
-	                end: '"'
-	              },
-	              {
-	                className: 'variable',
-	                begin: '[A-Za-z_][A-Za-z_0-9]*'
-	              }
-	            ]
-	          }
-	        ]
-	      }
-	    ]
-	  };
-	};
-
-/***/ },
-/* 146 */
-=======
-/* 124 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15626,15 +14206,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 125 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 147 */
-=======
-/* 125 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15745,15 +14317,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 126 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 148 */
-=======
-/* 126 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15915,15 +14479,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 127 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 149 */
-=======
-/* 127 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16078,195 +14634,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 128 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 150 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
-	  return {
-	    //lexemes: '[.%]?' + hljs.IDENT_RE,
-	    keywords:
-	      'begin end true false declare define global ' +
-	      'constant private linker_private internal ' +
-	      'available_externally linkonce linkonce_odr weak ' +
-	      'weak_odr appending dllimport dllexport common ' +
-	      'default hidden protected extern_weak external ' +
-	      'thread_local zeroinitializer undef null to tail ' +
-	      'target triple datalayout volatile nuw nsw nnan ' +
-	      'ninf nsz arcp fast exact inbounds align ' +
-	      'addrspace section alias module asm sideeffect ' +
-	      'gc dbg linker_private_weak attributes blockaddress ' +
-	      'initialexec localdynamic localexec prefix unnamed_addr ' +
-	      'ccc fastcc coldcc x86_stdcallcc x86_fastcallcc ' +
-	      'arm_apcscc arm_aapcscc arm_aapcs_vfpcc ptx_device ' +
-	      'ptx_kernel intel_ocl_bicc msp430_intrcc spir_func ' +
-	      'spir_kernel x86_64_sysvcc x86_64_win64cc x86_thiscallcc ' +
-	      'cc c signext zeroext inreg sret nounwind ' +
-	      'noreturn noalias nocapture byval nest readnone ' +
-	      'readonly inlinehint noinline alwaysinline optsize ssp ' +
-	      'sspreq noredzone noimplicitfloat naked builtin cold ' +
-	      'nobuiltin noduplicate nonlazybind optnone returns_twice ' +
-	      'sanitize_address sanitize_memory sanitize_thread sspstrong ' +
-	      'uwtable returned type opaque eq ne slt sgt ' +
-	      'sle sge ult ugt ule uge oeq one olt ogt ' +
-	      'ole oge ord uno ueq une x acq_rel acquire ' +
-	      'alignstack atomic catch cleanup filter inteldialect ' +
-	      'max min monotonic nand personality release seq_cst ' +
-	      'singlethread umax umin unordered xchg add fadd ' +
-	      'sub fsub mul fmul udiv sdiv fdiv urem srem ' +
-	      'frem shl lshr ashr and or xor icmp fcmp ' +
-	      'phi call trunc zext sext fptrunc fpext uitofp ' +
-	      'sitofp fptoui fptosi inttoptr ptrtoint bitcast ' +
-	      'addrspacecast select va_arg ret br switch invoke ' +
-	      'unwind unreachable indirectbr landingpad resume ' +
-	      'malloc alloca free load store getelementptr ' +
-	      'extractelement insertelement shufflevector getresult ' +
-	      'extractvalue insertvalue atomicrmw cmpxchg fence ' +
-	      'argmemonly double',
-	    contains: [
-	      {
-	        className: 'keyword',
-	        begin: 'i\\d+'
-	      },
-	      hljs.COMMENT(
-	        ';', '\\n', {relevance: 0}
-	      ),
-	      // Double quote string
-	      hljs.QUOTE_STRING_MODE,
-	      {
-	        className: 'string',
-	        variants: [
-	          // Double-quoted string
-	          { begin: '"', end: '[^\\\\]"' },
-	        ],
-	        relevance: 0
-	      },
-	      {
-	        className: 'title',
-	        variants: [
-	          { begin: '@' + identifier },
-	          { begin: '@\\d+' },
-	          { begin: '!' + identifier },
-	          { begin: '!\\d+' + identifier }
-	        ]
-	      },
-	      {
-	        className: 'symbol',
-	        variants: [
-	          { begin: '%' + identifier },
-	          { begin: '%\\d+' },
-	          { begin: '#\\d+' },
-	        ]
-	      },
-	      {
-	        className: 'number',
-	        variants: [
-	            { begin: '0[xX][a-fA-F0-9]+' },
-	            { begin: '-?\\d+(?:[.]\\d+)?(?:[eE][-+]?\\d+(?:[.]\\d+)?)?' }
-	        ],
-	        relevance: 0
-	      },
-	    ]
-	  };
-	};
-
-/***/ },
-/* 151 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	
-	    var LSL_STRING_ESCAPE_CHARS = {
-	        className: 'subst',
-	        begin: /\\[tn"\\]/
-	    };
-	
-	    var LSL_STRINGS = {
-	        className: 'string',
-	        begin: '"',
-	        end: '"',
-	        contains: [
-	            LSL_STRING_ESCAPE_CHARS
-	        ]
-	    };
-	
-	    var LSL_NUMBERS = {
-	        className: 'number',
-	        begin: hljs.C_NUMBER_RE
-	    };
-	
-	    var LSL_CONSTANTS = {
-	        className: 'literal',
-	        variants: [
-	            {
-	                begin: '\\b(?:PI|TWO_PI|PI_BY_TWO|DEG_TO_RAD|RAD_TO_DEG|SQRT2)\\b'
-	            },
-	            {
-	                begin: '\\b(?:XP_ERROR_(?:EXPERIENCES_DISABLED|EXPERIENCE_(?:DISABLED|SUSPENDED)|INVALID_(?:EXPERIENCE|PARAMETERS)|KEY_NOT_FOUND|MATURITY_EXCEEDED|NONE|NOT_(?:FOUND|PERMITTED(?:_LAND)?)|NO_EXPERIENCE|QUOTA_EXCEEDED|RETRY_UPDATE|STORAGE_EXCEPTION|STORE_DISABLED|THROTTLED|UNKNOWN_ERROR)|JSON_APPEND|STATUS_(?:PHYSICS|ROTATE_[XYZ]|PHANTOM|SANDBOX|BLOCK_GRAB(?:_OBJECT)?|(?:DIE|RETURN)_AT_EDGE|CAST_SHADOWS|OK|MALFORMED_PARAMS|TYPE_MISMATCH|BOUNDS_ERROR|NOT_(?:FOUND|SUPPORTED)|INTERNAL_ERROR|WHITELIST_FAILED)|AGENT(?:_(?:BY_(?:LEGACY_|USER)NAME|FLYING|ATTACHMENTS|SCRIPTED|MOUSELOOK|SITTING|ON_OBJECT|AWAY|WALKING|IN_AIR|TYPING|CROUCHING|BUSY|ALWAYS_RUN|AUTOPILOT|LIST_(?:PARCEL(?:_OWNER)?|REGION)))?|CAMERA_(?:PITCH|DISTANCE|BEHINDNESS_(?:ANGLE|LAG)|(?:FOCUS|POSITION)(?:_(?:THRESHOLD|LOCKED|LAG))?|FOCUS_OFFSET|ACTIVE)|ANIM_ON|LOOP|REVERSE|PING_PONG|SMOOTH|ROTATE|SCALE|ALL_SIDES|LINK_(?:ROOT|SET|ALL_(?:OTHERS|CHILDREN)|THIS)|ACTIVE|PASS(?:IVE|_(?:ALWAYS|IF_NOT_HANDLED|NEVER))|SCRIPTED|CONTROL_(?:FWD|BACK|(?:ROT_)?(?:LEFT|RIGHT)|UP|DOWN|(?:ML_)?LBUTTON)|PERMISSION_(?:RETURN_OBJECTS|DEBIT|OVERRIDE_ANIMATIONS|SILENT_ESTATE_MANAGEMENT|TAKE_CONTROLS|TRIGGER_ANIMATION|ATTACH|CHANGE_LINKS|(?:CONTROL|TRACK)_CAMERA|TELEPORT)|INVENTORY_(?:TEXTURE|SOUND|OBJECT|SCRIPT|LANDMARK|CLOTHING|NOTECARD|BODYPART|ANIMATION|GESTURE|ALL|NONE)|CHANGED_(?:INVENTORY|COLOR|SHAPE|SCALE|TEXTURE|LINK|ALLOWED_DROP|OWNER|REGION(?:_START)?|TELEPORT|MEDIA)|OBJECT_(?:CLICK_ACTION|HOVER_HEIGHT|LAST_OWNER_ID|(?:PHYSICS|SERVER|STREAMING)_COST|UNKNOWN_DETAIL|CHARACTER_TIME|PHANTOM|PHYSICS|TEMP_ON_REZ|NAME|DESC|POS|PRIM_(?:COUNT|EQUIVALENCE)|RETURN_(?:PARCEL(?:_OWNER)?|REGION)|REZZER_KEY|ROO?T|VELOCITY|OMEGA|OWNER|GROUP|CREATOR|ATTACHED_POINT|RENDER_WEIGHT|(?:BODY_SHAPE|PATHFINDING)_TYPE|(?:RUNNING|TOTAL)_SCRIPT_COUNT|TOTAL_INVENTORY_COUNT|SCRIPT_(?:MEMORY|TIME))|TYPE_(?:INTEGER|FLOAT|STRING|KEY|VECTOR|ROTATION|INVALID)|(?:DEBUG|PUBLIC)_CHANNEL|ATTACH_(?:AVATAR_CENTER|CHEST|HEAD|BACK|PELVIS|MOUTH|CHIN|NECK|NOSE|BELLY|[LR](?:SHOULDER|HAND|FOOT|EAR|EYE|[UL](?:ARM|LEG)|HIP)|(?:LEFT|RIGHT)_PEC|HUD_(?:CENTER_[12]|TOP_(?:RIGHT|CENTER|LEFT)|BOTTOM(?:_(?:RIGHT|LEFT))?)|[LR]HAND_RING1|TAIL_(?:BASE|TIP)|[LR]WING|FACE_(?:JAW|[LR]EAR|[LR]EYE|TOUNGE)|GROIN|HIND_[LR]FOOT)|LAND_(?:LEVEL|RAISE|LOWER|SMOOTH|NOISE|REVERT)|DATA_(?:ONLINE|NAME|BORN|SIM_(?:POS|STATUS|RATING)|PAYINFO)|PAYMENT_INFO_(?:ON_FILE|USED)|REMOTE_DATA_(?:CHANNEL|REQUEST|REPLY)|PSYS_(?:PART_(?:BF_(?:ZERO|ONE(?:_MINUS_(?:DEST_COLOR|SOURCE_(ALPHA|COLOR)))?|DEST_COLOR|SOURCE_(ALPHA|COLOR))|BLEND_FUNC_(DEST|SOURCE)|FLAGS|(?:START|END)_(?:COLOR|ALPHA|SCALE|GLOW)|MAX_AGE|(?:RIBBON|WIND|INTERP_(?:COLOR|SCALE)|BOUNCE|FOLLOW_(?:SRC|VELOCITY)|TARGET_(?:POS|LINEAR)|EMISSIVE)_MASK)|SRC_(?:MAX_AGE|PATTERN|ANGLE_(?:BEGIN|END)|BURST_(?:RATE|PART_COUNT|RADIUS|SPEED_(?:MIN|MAX))|ACCEL|TEXTURE|TARGET_KEY|OMEGA|PATTERN_(?:DROP|EXPLODE|ANGLE(?:_CONE(?:_EMPTY)?)?)))|VEHICLE_(?:REFERENCE_FRAME|TYPE_(?:NONE|SLED|CAR|BOAT|AIRPLANE|BALLOON)|(?:LINEAR|ANGULAR)_(?:FRICTION_TIMESCALE|MOTOR_DIRECTION)|LINEAR_MOTOR_OFFSET|HOVER_(?:HEIGHT|EFFICIENCY|TIMESCALE)|BUOYANCY|(?:LINEAR|ANGULAR)_(?:DEFLECTION_(?:EFFICIENCY|TIMESCALE)|MOTOR_(?:DECAY_)?TIMESCALE)|VERTICAL_ATTRACTION_(?:EFFICIENCY|TIMESCALE)|BANKING_(?:EFFICIENCY|MIX|TIMESCALE)|FLAG_(?:NO_DEFLECTION_UP|LIMIT_(?:ROLL_ONLY|MOTOR_UP)|HOVER_(?:(?:WATER|TERRAIN|UP)_ONLY|GLOBAL_HEIGHT)|MOUSELOOK_(?:STEER|BANK)|CAMERA_DECOUPLED))|PRIM_(?:ALPHA_MODE(?:_(?:BLEND|EMISSIVE|MASK|NONE))?|NORMAL|SPECULAR|TYPE(?:_(?:BOX|CYLINDER|PRISM|SPHERE|TORUS|TUBE|RING|SCULPT))?|HOLE_(?:DEFAULT|CIRCLE|SQUARE|TRIANGLE)|MATERIAL(?:_(?:STONE|METAL|GLASS|WOOD|FLESH|PLASTIC|RUBBER))?|SHINY_(?:NONE|LOW|MEDIUM|HIGH)|BUMP_(?:NONE|BRIGHT|DARK|WOOD|BARK|BRICKS|CHECKER|CONCRETE|TILE|STONE|DISKS|GRAVEL|BLOBS|SIDING|LARGETILE|STUCCO|SUCTION|WEAVE)|TEXGEN_(?:DEFAULT|PLANAR)|SCULPT_(?:TYPE_(?:SPHERE|TORUS|PLANE|CYLINDER|MASK)|FLAG_(?:MIRROR|INVERT))|PHYSICS(?:_(?:SHAPE_(?:CONVEX|NONE|PRIM|TYPE)))?|(?:POS|ROT)_LOCAL|SLICE|TEXT|FLEXIBLE|POINT_LIGHT|TEMP_ON_REZ|PHANTOM|POSITION|SIZE|ROTATION|TEXTURE|NAME|OMEGA|DESC|LINK_TARGET|COLOR|BUMP_SHINY|FULLBRIGHT|TEXGEN|GLOW|MEDIA_(?:ALT_IMAGE_ENABLE|CONTROLS|(?:CURRENT|HOME)_URL|AUTO_(?:LOOP|PLAY|SCALE|ZOOM)|FIRST_CLICK_INTERACT|(?:WIDTH|HEIGHT)_PIXELS|WHITELIST(?:_ENABLE)?|PERMS_(?:INTERACT|CONTROL)|PARAM_MAX|CONTROLS_(?:STANDARD|MINI)|PERM_(?:NONE|OWNER|GROUP|ANYONE)|MAX_(?:URL_LENGTH|WHITELIST_(?:SIZE|COUNT)|(?:WIDTH|HEIGHT)_PIXELS)))|MASK_(?:BASE|OWNER|GROUP|EVERYONE|NEXT)|PERM_(?:TRANSFER|MODIFY|COPY|MOVE|ALL)|PARCEL_(?:MEDIA_COMMAND_(?:STOP|PAUSE|PLAY|LOOP|TEXTURE|URL|TIME|AGENT|UNLOAD|AUTO_ALIGN|TYPE|SIZE|DESC|LOOP_SET)|FLAG_(?:ALLOW_(?:FLY|(?:GROUP_)?SCRIPTS|LANDMARK|TERRAFORM|DAMAGE|CREATE_(?:GROUP_)?OBJECTS)|USE_(?:ACCESS_(?:GROUP|LIST)|BAN_LIST|LAND_PASS_LIST)|LOCAL_SOUND_ONLY|RESTRICT_PUSHOBJECT|ALLOW_(?:GROUP|ALL)_OBJECT_ENTRY)|COUNT_(?:TOTAL|OWNER|GROUP|OTHER|SELECTED|TEMP)|DETAILS_(?:NAME|DESC|OWNER|GROUP|AREA|ID|SEE_AVATARS))|LIST_STAT_(?:MAX|MIN|MEAN|MEDIAN|STD_DEV|SUM(?:_SQUARES)?|NUM_COUNT|GEOMETRIC_MEAN|RANGE)|PAY_(?:HIDE|DEFAULT)|REGION_FLAG_(?:ALLOW_DAMAGE|FIXED_SUN|BLOCK_TERRAFORM|SANDBOX|DISABLE_(?:COLLISIONS|PHYSICS)|BLOCK_FLY|ALLOW_DIRECT_TELEPORT|RESTRICT_PUSHOBJECT)|HTTP_(?:METHOD|MIMETYPE|BODY_(?:MAXLENGTH|TRUNCATED)|CUSTOM_HEADER|PRAGMA_NO_CACHE|VERBOSE_THROTTLE|VERIFY_CERT)|STRING_(?:TRIM(?:_(?:HEAD|TAIL))?)|CLICK_ACTION_(?:NONE|TOUCH|SIT|BUY|PAY|OPEN(?:_MEDIA)?|PLAY|ZOOM)|TOUCH_INVALID_FACE|PROFILE_(?:NONE|SCRIPT_MEMORY)|RC_(?:DATA_FLAGS|DETECT_PHANTOM|GET_(?:LINK_NUM|NORMAL|ROOT_KEY)|MAX_HITS|REJECT_(?:TYPES|AGENTS|(?:NON)?PHYSICAL|LAND))|RCERR_(?:CAST_TIME_EXCEEDED|SIM_PERF_LOW|UNKNOWN)|ESTATE_ACCESS_(?:ALLOWED_(?:AGENT|GROUP)_(?:ADD|REMOVE)|BANNED_AGENT_(?:ADD|REMOVE))|DENSITY|FRICTION|RESTITUTION|GRAVITY_MULTIPLIER|KFM_(?:COMMAND|CMD_(?:PLAY|STOP|PAUSE)|MODE|FORWARD|LOOP|PING_PONG|REVERSE|DATA|ROTATION|TRANSLATION)|ERR_(?:GENERIC|PARCEL_PERMISSIONS|MALFORMED_PARAMS|RUNTIME_PERMISSIONS|THROTTLED)|CHARACTER_(?:CMD_(?:(?:SMOOTH_)?STOP|JUMP)|DESIRED_(?:TURN_)?SPEED|RADIUS|STAY_WITHIN_PARCEL|LENGTH|ORIENTATION|ACCOUNT_FOR_SKIPPED_FRAMES|AVOIDANCE_MODE|TYPE(?:_(?:[ABCD]|NONE))?|MAX_(?:DECEL|TURN_RADIUS|(?:ACCEL|SPEED)))|PURSUIT_(?:OFFSET|FUZZ_FACTOR|GOAL_TOLERANCE|INTERCEPT)|REQUIRE_LINE_OF_SIGHT|FORCE_DIRECT_PATH|VERTICAL|HORIZONTAL|AVOID_(?:CHARACTERS|DYNAMIC_OBSTACLES|NONE)|PU_(?:EVADE_(?:HIDDEN|SPOTTED)|FAILURE_(?:DYNAMIC_PATHFINDING_DISABLED|INVALID_(?:GOAL|START)|NO_(?:NAVMESH|VALID_DESTINATION)|OTHER|TARGET_GONE|(?:PARCEL_)?UNREACHABLE)|(?:GOAL|SLOWDOWN_DISTANCE)_REACHED)|TRAVERSAL_TYPE(?:_(?:FAST|NONE|SLOW))?|CONTENT_TYPE_(?:ATOM|FORM|HTML|JSON|LLSD|RSS|TEXT|XHTML|XML)|GCNP_(?:RADIUS|STATIC)|(?:PATROL|WANDER)_PAUSE_AT_WAYPOINTS|OPT_(?:AVATAR|CHARACTER|EXCLUSION_VOLUME|LEGACY_LINKSET|MATERIAL_VOLUME|OTHER|STATIC_OBSTACLE|WALKABLE)|SIM_STAT_PCT_CHARS_STEPPED)\\b'
-	            },
-	            {
-	                begin: '\\b(?:FALSE|TRUE)\\b'
-	            },
-	            {
-	                begin: '\\b(?:ZERO_ROTATION)\\b'
-	            },
-	            {
-	                begin: '\\b(?:EOF|JSON_(?:ARRAY|DELETE|FALSE|INVALID|NULL|NUMBER|OBJECT|STRING|TRUE)|NULL_KEY|TEXTURE_(?:BLANK|DEFAULT|MEDIA|PLYWOOD|TRANSPARENT)|URL_REQUEST_(?:GRANTED|DENIED))\\b'
-	            },
-	            {
-	                begin: '\\b(?:ZERO_VECTOR|TOUCH_INVALID_(?:TEXCOORD|VECTOR))\\b'
-	            }
-	        ]
-	    };
-	
-	    var LSL_FUNCTIONS = {
-	        className: 'built_in',
-	        begin: '\\b(?:ll(?:AgentInExperience|(?:Create|DataSize|Delete|KeyCount|Keys|Read|Update)KeyValue|GetExperience(?:Details|ErrorMessage)|ReturnObjectsBy(?:ID|Owner)|Json(?:2List|[GS]etValue|ValueType)|Sin|Cos|Tan|Atan2|Sqrt|Pow|Abs|Fabs|Frand|Floor|Ceil|Round|Vec(?:Mag|Norm|Dist)|Rot(?:Between|2(?:Euler|Fwd|Left|Up))|(?:Euler|Axes)2Rot|Whisper|(?:Region|Owner)?Say|Shout|Listen(?:Control|Remove)?|Sensor(?:Repeat|Remove)?|Detected(?:Name|Key|Owner|Type|Pos|Vel|Grab|Rot|Group|LinkNumber)|Die|Ground|Wind|(?:[GS]et)(?:AnimationOverride|MemoryLimit|PrimMediaParams|ParcelMusicURL|Object(?:Desc|Name)|PhysicsMaterial|Status|Scale|Color|Alpha|Texture|Pos|Rot|Force|Torque)|ResetAnimationOverride|(?:Scale|Offset|Rotate)Texture|(?:Rot)?Target(?:Remove)?|(?:Stop)?MoveToTarget|Apply(?:Rotational)?Impulse|Set(?:KeyframedMotion|ContentType|RegionPos|(?:Angular)?Velocity|Buoyancy|HoverHeight|ForceAndTorque|TimerEvent|ScriptState|Damage|TextureAnim|Sound(?:Queueing|Radius)|Vehicle(?:Type|(?:Float|Vector|Rotation)Param)|(?:Touch|Sit)?Text|Camera(?:Eye|At)Offset|PrimitiveParams|ClickAction|Link(?:Alpha|Color|PrimitiveParams(?:Fast)?|Texture(?:Anim)?|Camera|Media)|RemoteScriptAccessPin|PayPrice|LocalRot)|ScaleByFactor|Get(?:(?:Max|Min)ScaleFactor|ClosestNavPoint|StaticPath|SimStats|Env|PrimitiveParams|Link(?:PrimitiveParams|Number(?:OfSides)?|Key|Name|Media)|HTTPHeader|FreeURLs|Object(?:Details|PermMask|PrimCount)|Parcel(?:MaxPrims|Details|Prim(?:Count|Owners))|Attached(?:List)?|(?:SPMax|Free|Used)Memory|Region(?:Name|TimeDilation|FPS|Corner|AgentCount)|Root(?:Position|Rotation)|UnixTime|(?:Parcel|Region)Flags|(?:Wall|GMT)clock|SimulatorHostname|BoundingBox|GeometricCenter|Creator|NumberOf(?:Prims|NotecardLines|Sides)|Animation(?:List)?|(?:Camera|Local)(?:Pos|Rot)|Vel|Accel|Omega|Time(?:stamp|OfDay)|(?:Object|CenterOf)?Mass|MassMKS|Energy|Owner|(?:Owner)?Key|SunDirection|Texture(?:Offset|Scale|Rot)|Inventory(?:Number|Name|Key|Type|Creator|PermMask)|Permissions(?:Key)?|StartParameter|List(?:Length|EntryType)|Date|Agent(?:Size|Info|Language|List)|LandOwnerAt|NotecardLine|Script(?:Name|State))|(?:Get|Reset|GetAndReset)Time|PlaySound(?:Slave)?|LoopSound(?:Master|Slave)?|(?:Trigger|Stop|Preload)Sound|(?:(?:Get|Delete)Sub|Insert)String|To(?:Upper|Lower)|Give(?:InventoryList|Money)|RezObject|(?:Stop)?LookAt|Sleep|CollisionFilter|(?:Take|Release)Controls|DetachFromAvatar|AttachToAvatar(?:Temp)?|InstantMessage|(?:GetNext)?Email|StopHover|MinEventDelay|RotLookAt|String(?:Length|Trim)|(?:Start|Stop)Animation|TargetOmega|Request(?:Experience)?Permissions|(?:Create|Break)Link|BreakAllLinks|(?:Give|Remove)Inventory|Water|PassTouches|Request(?:Agent|Inventory)Data|TeleportAgent(?:Home|GlobalCoords)?|ModifyLand|CollisionSound|ResetScript|MessageLinked|PushObject|PassCollisions|AxisAngle2Rot|Rot2(?:Axis|Angle)|A(?:cos|sin)|AngleBetween|AllowInventoryDrop|SubStringIndex|List2(?:CSV|Integer|Json|Float|String|Key|Vector|Rot|List(?:Strided)?)|DeleteSubList|List(?:Statistics|Sort|Randomize|(?:Insert|Find|Replace)List)|EdgeOfWorld|AdjustSoundVolume|Key2Name|TriggerSoundLimited|EjectFromLand|(?:CSV|ParseString)2List|OverMyLand|SameGroup|UnSit|Ground(?:Slope|Normal|Contour)|GroundRepel|(?:Set|Remove)VehicleFlags|(?:AvatarOn)?(?:Link)?SitTarget|Script(?:Danger|Profiler)|Dialog|VolumeDetect|ResetOtherScript|RemoteLoadScriptPin|(?:Open|Close)RemoteDataChannel|SendRemoteData|RemoteDataReply|(?:Integer|String)ToBase64|XorBase64|Log(?:10)?|Base64To(?:String|Integer)|ParseStringKeepNulls|RezAtRoot|RequestSimulatorData|ForceMouselook|(?:Load|Release|(?:E|Une)scape)URL|ParcelMedia(?:CommandList|Query)|ModPow|MapDestination|(?:RemoveFrom|AddTo|Reset)Land(?:Pass|Ban)List|(?:Set|Clear)CameraParams|HTTP(?:Request|Response)|TextBox|DetectedTouch(?:UV|Face|Pos|(?:N|Bin)ormal|ST)|(?:MD5|SHA1|DumpList2)String|Request(?:Secure)?URL|Clear(?:Prim|Link)Media|(?:Link)?ParticleSystem|(?:Get|Request)(?:Username|DisplayName)|RegionSayTo|CastRay|GenerateKey|TransferLindenDollars|ManageEstateAccess|(?:Create|Delete)Character|ExecCharacterCmd|Evade|FleeFrom|NavigateTo|PatrolPoints|Pursue|UpdateCharacter|WanderWithin))\\b'
-	    };
-	
-	    return {
-	        illegal: ':',
-	        contains: [
-	            LSL_STRINGS,
-	            {
-	                className: 'comment',
-	                variants: [
-	                    hljs.COMMENT('//', '$'),
-	                    hljs.COMMENT('/\\*', '\\*/')
-	                ]
-	            },
-	            LSL_NUMBERS,
-	            {
-	                className: 'section',
-	                variants: [
-	                    {
-	                        begin: '\\b(?:state|default)\\b'
-	                    },
-	                    {
-	                        begin: '\\b(?:state_(?:entry|exit)|touch(?:_(?:start|end))?|(?:land_)?collision(?:_(?:start|end))?|timer|listen|(?:no_)?sensor|control|(?:not_)?at_(?:rot_)?target|money|email|experience_permissions(?:_denied)?|run_time_permissions|changed|attach|dataserver|moving_(?:start|end)|link_message|(?:on|object)_rez|remote_data|http_re(?:sponse|quest)|path_update|transaction_result)\\b'
-	                    }
-	                ]
-	            },
-	            LSL_FUNCTIONS,
-	            LSL_CONSTANTS,
-	            {
-	                className: 'type',
-	                begin: '\\b(?:integer|float|string|key|vector|quaternion|rotation|list)\\b'
-	            }
-	        ]
-	    };
-	};
-
-/***/ },
-/* 152 */
-=======
-/* 128 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16326,15 +14694,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 129 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 153 */
-=======
-/* 129 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16384,15 +14744,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 130 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 154 */
-=======
-/* 130 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16455,15 +14807,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 131 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 155 */
-=======
-/* 131 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16548,8 +14892,6 @@
 	      {
 	        // transpose operators at the end of a function call
 	        begin: /\)/,
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
 	        relevance: 0,
 	        starts: TRANSPOSE
 	      },
@@ -16560,406 +14902,7 @@
 	};
 
 /***/ },
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 156 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var KEYWORDS = 'if then else elseif for thru do while unless step in and or not';
-	  var LITERALS = 'true false unknown inf minf ind und %e %i %pi %phi %gamma';
-	  var BUILTIN_FUNCTIONS =
-	        ' abasep abs absint absolute_real_time acos acosh acot acoth acsc acsch activate'
-	      + ' addcol add_edge add_edges addmatrices addrow add_vertex add_vertices adjacency_matrix'
-	      + ' adjoin adjoint af agd airy airy_ai airy_bi airy_dai airy_dbi algsys alg_type'
-	      + ' alias allroots alphacharp alphanumericp amortization %and annuity_fv'
-	      + ' annuity_pv antid antidiff AntiDifference append appendfile apply apply1 apply2'
-	      + ' applyb1 apropos args arit_amortization arithmetic arithsum array arrayapply'
-	      + ' arrayinfo arraymake arraysetapply ascii asec asech asin asinh askinteger'
-	      + ' asksign assoc assoc_legendre_p assoc_legendre_q assume assume_external_byte_order'
-	      + ' asympa at atan atan2 atanh atensimp atom atvalue augcoefmatrix augmented_lagrangian_method'
-	      + ' av average_degree backtrace bars barsplot barsplot_description base64 base64_decode'
-	      + ' bashindices batch batchload bc2 bdvac belln benefit_cost bern bernpoly bernstein_approx'
-	      + ' bernstein_expand bernstein_poly bessel bessel_i bessel_j bessel_k bessel_simplify'
-	      + ' bessel_y beta beta_incomplete beta_incomplete_generalized beta_incomplete_regularized'
-	      + ' bezout bfallroots bffac bf_find_root bf_fmin_cobyla bfhzeta bfloat bfloatp'
-	      + ' bfpsi bfpsi0 bfzeta biconnected_components bimetric binomial bipartition'
-	      + ' block blockmatrixp bode_gain bode_phase bothcoef box boxplot boxplot_description'
-	      + ' break bug_report build_info|10 buildq build_sample burn cabs canform canten'
-	      + ' cardinality carg cartan cartesian_product catch cauchy_matrix cbffac cdf_bernoulli'
-	      + ' cdf_beta cdf_binomial cdf_cauchy cdf_chi2 cdf_continuous_uniform cdf_discrete_uniform'
-	      + ' cdf_exp cdf_f cdf_gamma cdf_general_finite_discrete cdf_geometric cdf_gumbel'
-	      + ' cdf_hypergeometric cdf_laplace cdf_logistic cdf_lognormal cdf_negative_binomial'
-	      + ' cdf_noncentral_chi2 cdf_noncentral_student_t cdf_normal cdf_pareto cdf_poisson'
-	      + ' cdf_rank_sum cdf_rayleigh cdf_signed_rank cdf_student_t cdf_weibull cdisplay'
-	      + ' ceiling central_moment cequal cequalignore cf cfdisrep cfexpand cgeodesic'
-	      + ' cgreaterp cgreaterpignore changename changevar chaosgame charat charfun charfun2'
-	      + ' charlist charp charpoly chdir chebyshev_t chebyshev_u checkdiv check_overlaps'
-	      + ' chinese cholesky christof chromatic_index chromatic_number cint circulant_graph'
-	      + ' clear_edge_weight clear_rules clear_vertex_label clebsch_gordan clebsch_graph'
-	      + ' clessp clesspignore close closefile cmetric coeff coefmatrix cograd col collapse'
-	      + ' collectterms columnop columnspace columnswap columnvector combination combine'
-	      + ' comp2pui compare compfile compile compile_file complement_graph complete_bipartite_graph'
-	      + ' complete_graph complex_number_p components compose_functions concan concat'
-	      + ' conjugate conmetderiv connected_components connect_vertices cons constant'
-	      + ' constantp constituent constvalue cont2part content continuous_freq contortion'
-	      + ' contour_plot contract contract_edge contragrad contrib_ode convert coord'
-	      + ' copy copy_file copy_graph copylist copymatrix cor cos cosh cot coth cov cov1'
-	      + ' covdiff covect covers crc24sum create_graph create_list csc csch csetup cspline'
-	      + ' ctaylor ct_coordsys ctransform ctranspose cube_graph cuboctahedron_graph'
-	      + ' cunlisp cv cycle_digraph cycle_graph cylindrical days360 dblint deactivate'
-	      + ' declare declare_constvalue declare_dimensions declare_fundamental_dimensions'
-	      + ' declare_fundamental_units declare_qty declare_translated declare_unit_conversion'
-	      + ' declare_units declare_weights decsym defcon define define_alt_display define_variable'
-	      + ' defint defmatch defrule defstruct deftaylor degree_sequence del delete deleten'
-	      + ' delta demo demoivre denom depends derivdegree derivlist describe desolve'
-	      + ' determinant dfloat dgauss_a dgauss_b dgeev dgemm dgeqrf dgesv dgesvd diag'
-	      + ' diagmatrix diag_matrix diagmatrixp diameter diff digitcharp dimacs_export'
-	      + ' dimacs_import dimension dimensionless dimensions dimensions_as_list direct'
-	      + ' directory discrete_freq disjoin disjointp disolate disp dispcon dispform'
-	      + ' dispfun dispJordan display disprule dispterms distrib divide divisors divsum'
-	      + ' dkummer_m dkummer_u dlange dodecahedron_graph dotproduct dotsimp dpart'
-	      + ' draw draw2d draw3d drawdf draw_file draw_graph dscalar echelon edge_coloring'
-	      + ' edge_connectivity edges eigens_by_jacobi eigenvalues eigenvectors eighth'
-	      + ' einstein eivals eivects elapsed_real_time elapsed_run_time ele2comp ele2polynome'
-	      + ' ele2pui elem elementp elevation_grid elim elim_allbut eliminate eliminate_using'
-	      + ' ellipse elliptic_e elliptic_ec elliptic_eu elliptic_f elliptic_kc elliptic_pi'
-	      + ' ematrix empty_graph emptyp endcons entermatrix entertensor entier equal equalp'
-	      + ' equiv_classes erf erfc erf_generalized erfi errcatch error errormsg errors'
-	      + ' euler ev eval_string evenp every evolution evolution2d evundiff example exp'
-	      + ' expand expandwrt expandwrt_factored expint expintegral_chi expintegral_ci'
-	      + ' expintegral_e expintegral_e1 expintegral_ei expintegral_e_simplify expintegral_li'
-	      + ' expintegral_shi expintegral_si explicit explose exponentialize express expt'
-	      + ' exsec extdiff extract_linear_equations extremal_subset ezgcd %f f90 facsum'
-	      + ' factcomb factor factorfacsum factorial factorout factorsum facts fast_central_elements'
-	      + ' fast_linsolve fasttimes featurep fernfale fft fib fibtophi fifth filename_merge'
-	      + ' file_search file_type fillarray findde find_root find_root_abs find_root_error'
-	      + ' find_root_rel first fix flatten flength float floatnump floor flower_snark'
-	      + ' flush flush1deriv flushd flushnd flush_output fmin_cobyla forget fortran'
-	      + ' fourcos fourexpand fourier fourier_elim fourint fourintcos fourintsin foursimp'
-	      + ' foursin fourth fposition frame_bracket freeof freshline fresnel_c fresnel_s'
-	      + ' from_adjacency_matrix frucht_graph full_listify fullmap fullmapl fullratsimp'
-	      + ' fullratsubst fullsetify funcsolve fundamental_dimensions fundamental_units'
-	      + ' fundef funmake funp fv g0 g1 gamma gamma_greek gamma_incomplete gamma_incomplete_generalized'
-	      + ' gamma_incomplete_regularized gauss gauss_a gauss_b gaussprob gcd gcdex gcdivide'
-	      + ' gcfac gcfactor gd generalized_lambert_w genfact gen_laguerre genmatrix gensym'
-	      + ' geo_amortization geo_annuity_fv geo_annuity_pv geomap geometric geometric_mean'
-	      + ' geosum get getcurrentdirectory get_edge_weight getenv get_lu_factors get_output_stream_string'
-	      + ' get_pixel get_plot_option get_tex_environment get_tex_environment_default'
-	      + ' get_vertex_label gfactor gfactorsum ggf girth global_variances gn gnuplot_close'
-	      + ' gnuplot_replot gnuplot_reset gnuplot_restart gnuplot_start go Gosper GosperSum'
-	      + ' gr2d gr3d gradef gramschmidt graph6_decode graph6_encode graph6_export graph6_import'
-	      + ' graph_center graph_charpoly graph_eigenvalues graph_flow graph_order graph_periphery'
-	      + ' graph_product graph_size graph_union great_rhombicosidodecahedron_graph great_rhombicuboctahedron_graph'
-	      + ' grid_graph grind grobner_basis grotzch_graph hamilton_cycle hamilton_path'
-	      + ' hankel hankel_1 hankel_2 harmonic harmonic_mean hav heawood_graph hermite'
-	      + ' hessian hgfred hilbertmap hilbert_matrix hipow histogram histogram_description'
-	      + ' hodge horner hypergeometric i0 i1 %ibes ic1 ic2 ic_convert ichr1 ichr2 icosahedron_graph'
-	      + ' icosidodecahedron_graph icurvature ident identfor identity idiff idim idummy'
-	      + ' ieqn %if ifactors iframes ifs igcdex igeodesic_coords ilt image imagpart'
-	      + ' imetric implicit implicit_derivative implicit_plot indexed_tensor indices'
-	      + ' induced_subgraph inferencep inference_result infix info_display init_atensor'
-	      + ' init_ctensor in_neighbors innerproduct inpart inprod inrt integerp integer_partitions'
-	      + ' integrate intersect intersection intervalp intopois intosum invariant1 invariant2'
-	      + ' inverse_fft inverse_jacobi_cd inverse_jacobi_cn inverse_jacobi_cs inverse_jacobi_dc'
-	      + ' inverse_jacobi_dn inverse_jacobi_ds inverse_jacobi_nc inverse_jacobi_nd inverse_jacobi_ns'
-	      + ' inverse_jacobi_sc inverse_jacobi_sd inverse_jacobi_sn invert invert_by_adjoint'
-	      + ' invert_by_lu inv_mod irr is is_biconnected is_bipartite is_connected is_digraph'
-	      + ' is_edge_in_graph is_graph is_graph_or_digraph ishow is_isomorphic isolate'
-	      + ' isomorphism is_planar isqrt isreal_p is_sconnected is_tree is_vertex_in_graph'
-	      + ' items_inference %j j0 j1 jacobi jacobian jacobi_cd jacobi_cn jacobi_cs jacobi_dc'
-	      + ' jacobi_dn jacobi_ds jacobi_nc jacobi_nd jacobi_ns jacobi_p jacobi_sc jacobi_sd'
-	      + ' jacobi_sn JF jn join jordan julia julia_set julia_sin %k kdels kdelta kill'
-	      + ' killcontext kostka kron_delta kronecker_product kummer_m kummer_u kurtosis'
-	      + ' kurtosis_bernoulli kurtosis_beta kurtosis_binomial kurtosis_chi2 kurtosis_continuous_uniform'
-	      + ' kurtosis_discrete_uniform kurtosis_exp kurtosis_f kurtosis_gamma kurtosis_general_finite_discrete'
-	      + ' kurtosis_geometric kurtosis_gumbel kurtosis_hypergeometric kurtosis_laplace'
-	      + ' kurtosis_logistic kurtosis_lognormal kurtosis_negative_binomial kurtosis_noncentral_chi2'
-	      + ' kurtosis_noncentral_student_t kurtosis_normal kurtosis_pareto kurtosis_poisson'
-	      + ' kurtosis_rayleigh kurtosis_student_t kurtosis_weibull label labels lagrange'
-	      + ' laguerre lambda lambert_w laplace laplacian_matrix last lbfgs lc2kdt lcharp'
-	      + ' lc_l lcm lc_u ldefint ldisp ldisplay legendre_p legendre_q leinstein length'
-	      + ' let letrules letsimp levi_civita lfreeof lgtreillis lhs li liediff limit'
-	      + ' Lindstedt linear linearinterpol linear_program linear_regression line_graph'
-	      + ' linsolve listarray list_correlations listify list_matrix_entries list_nc_monomials'
-	      + ' listoftens listofvars listp lmax lmin load loadfile local locate_matrix_entry'
-	      + ' log logcontract log_gamma lopow lorentz_gauge lowercasep lpart lratsubst'
-	      + ' lreduce lriemann lsquares_estimates lsquares_estimates_approximate lsquares_estimates_exact'
-	      + ' lsquares_mse lsquares_residual_mse lsquares_residuals lsum ltreillis lu_backsub'
-	      + ' lucas lu_factor %m macroexpand macroexpand1 make_array makebox makefact makegamma'
-	      + ' make_graph make_level_picture makelist makeOrders make_poly_continent make_poly_country'
-	      + ' make_polygon make_random_state make_rgb_picture makeset make_string_input_stream'
-	      + ' make_string_output_stream make_transform mandelbrot mandelbrot_set map mapatom'
-	      + ' maplist matchdeclare matchfix mat_cond mat_fullunblocker mat_function mathml_display'
-	      + ' mat_norm matrix matrixmap matrixp matrix_size mattrace mat_trace mat_unblocker'
-	      + ' max max_clique max_degree max_flow maximize_lp max_independent_set max_matching'
-	      + ' maybe md5sum mean mean_bernoulli mean_beta mean_binomial mean_chi2 mean_continuous_uniform'
-	      + ' mean_deviation mean_discrete_uniform mean_exp mean_f mean_gamma mean_general_finite_discrete'
-	      + ' mean_geometric mean_gumbel mean_hypergeometric mean_laplace mean_logistic'
-	      + ' mean_lognormal mean_negative_binomial mean_noncentral_chi2 mean_noncentral_student_t'
-	      + ' mean_normal mean_pareto mean_poisson mean_rayleigh mean_student_t mean_weibull'
-	      + ' median median_deviation member mesh metricexpandall mgf1_sha1 min min_degree'
-	      + ' min_edge_cut minfactorial minimalPoly minimize_lp minimum_spanning_tree minor'
-	      + ' minpack_lsquares minpack_solve min_vertex_cover min_vertex_cut mkdir mnewton'
-	      + ' mod mode_declare mode_identity ModeMatrix moebius mon2schur mono monomial_dimensions'
-	      + ' multibernstein_poly multi_display_for_texinfo multi_elem multinomial multinomial_coeff'
-	      + ' multi_orbit multiplot_mode multi_pui multsym multthru mycielski_graph nary'
-	      + ' natural_unit nc_degree ncexpt ncharpoly negative_picture neighbors new newcontext'
-	      + ' newdet new_graph newline newton new_variable next_prime nicedummies niceindices'
-	      + ' ninth nofix nonarray noncentral_moment nonmetricity nonnegintegerp nonscalarp'
-	      + ' nonzeroandfreeof notequal nounify nptetrad npv nroots nterms ntermst'
-	      + ' nthroot nullity nullspace num numbered_boundaries numberp number_to_octets'
-	      + ' num_distinct_partitions numerval numfactor num_partitions nusum nzeta nzetai'
-	      + ' nzetar octets_to_number octets_to_oid odd_girth oddp ode2 ode_check odelin'
-	      + ' oid_to_octets op opena opena_binary openr openr_binary openw openw_binary'
-	      + ' operatorp opsubst optimize %or orbit orbits ordergreat ordergreatp orderless'
-	      + ' orderlessp orthogonal_complement orthopoly_recur orthopoly_weight outermap'
-	      + ' out_neighbors outofpois pade parabolic_cylinder_d parametric parametric_surface'
-	      + ' parg parGosper parse_string parse_timedate part part2cont partfrac partition'
-	      + ' partition_set partpol path_digraph path_graph pathname_directory pathname_name'
-	      + ' pathname_type pdf_bernoulli pdf_beta pdf_binomial pdf_cauchy pdf_chi2 pdf_continuous_uniform'
-	      + ' pdf_discrete_uniform pdf_exp pdf_f pdf_gamma pdf_general_finite_discrete'
-	      + ' pdf_geometric pdf_gumbel pdf_hypergeometric pdf_laplace pdf_logistic pdf_lognormal'
-	      + ' pdf_negative_binomial pdf_noncentral_chi2 pdf_noncentral_student_t pdf_normal'
-	      + ' pdf_pareto pdf_poisson pdf_rank_sum pdf_rayleigh pdf_signed_rank pdf_student_t'
-	      + ' pdf_weibull pearson_skewness permanent permut permutation permutations petersen_graph'
-	      + ' petrov pickapart picture_equalp picturep piechart piechart_description planar_embedding'
-	      + ' playback plog plot2d plot3d plotdf ploteq plsquares pochhammer points poisdiff'
-	      + ' poisexpt poisint poismap poisplus poissimp poissubst poistimes poistrim polar'
-	      + ' polarform polartorect polar_to_xy poly_add poly_buchberger poly_buchberger_criterion'
-	      + ' poly_colon_ideal poly_content polydecomp poly_depends_p poly_elimination_ideal'
-	      + ' poly_exact_divide poly_expand poly_expt poly_gcd polygon poly_grobner poly_grobner_equal'
-	      + ' poly_grobner_member poly_grobner_subsetp poly_ideal_intersection poly_ideal_polysaturation'
-	      + ' poly_ideal_polysaturation1 poly_ideal_saturation poly_ideal_saturation1 poly_lcm'
-	      + ' poly_minimization polymod poly_multiply polynome2ele polynomialp poly_normal_form'
-	      + ' poly_normalize poly_normalize_list poly_polysaturation_extension poly_primitive_part'
-	      + ' poly_pseudo_divide poly_reduced_grobner poly_reduction poly_saturation_extension'
-	      + ' poly_s_polynomial poly_subtract polytocompanion pop postfix potential power_mod'
-	      + ' powerseries powerset prefix prev_prime primep primes principal_components'
-	      + ' print printf printfile print_graph printpois printprops prodrac product properties'
-	      + ' propvars psi psubst ptriangularize pui pui2comp pui2ele pui2polynome pui_direct'
-	      + ' puireduc push put pv qput qrange qty quad_control quad_qag quad_qagi quad_qagp'
-	      + ' quad_qags quad_qawc quad_qawf quad_qawo quad_qaws quadrilateral quantile'
-	      + ' quantile_bernoulli quantile_beta quantile_binomial quantile_cauchy quantile_chi2'
-	      + ' quantile_continuous_uniform quantile_discrete_uniform quantile_exp quantile_f'
-	      + ' quantile_gamma quantile_general_finite_discrete quantile_geometric quantile_gumbel'
-	      + ' quantile_hypergeometric quantile_laplace quantile_logistic quantile_lognormal'
-	      + ' quantile_negative_binomial quantile_noncentral_chi2 quantile_noncentral_student_t'
-	      + ' quantile_normal quantile_pareto quantile_poisson quantile_rayleigh quantile_student_t'
-	      + ' quantile_weibull quartile_skewness quit qunit quotient racah_v racah_w radcan'
-	      + ' radius random random_bernoulli random_beta random_binomial random_bipartite_graph'
-	      + ' random_cauchy random_chi2 random_continuous_uniform random_digraph random_discrete_uniform'
-	      + ' random_exp random_f random_gamma random_general_finite_discrete random_geometric'
-	      + ' random_graph random_graph1 random_gumbel random_hypergeometric random_laplace'
-	      + ' random_logistic random_lognormal random_negative_binomial random_network'
-	      + ' random_noncentral_chi2 random_noncentral_student_t random_normal random_pareto'
-	      + ' random_permutation random_poisson random_rayleigh random_regular_graph random_student_t'
-	      + ' random_tournament random_tree random_weibull range rank rat ratcoef ratdenom'
-	      + ' ratdiff ratdisrep ratexpand ratinterpol rational rationalize ratnumer ratnump'
-	      + ' ratp ratsimp ratsubst ratvars ratweight read read_array read_binary_array'
-	      + ' read_binary_list read_binary_matrix readbyte readchar read_hashed_array readline'
-	      + ' read_list read_matrix read_nested_list readonly read_xpm real_imagpart_to_conjugate'
-	      + ' realpart realroots rearray rectangle rectform rectform_log_if_constant recttopolar'
-	      + ' rediff reduce_consts reduce_order region region_boundaries region_boundaries_plus'
-	      + ' rem remainder remarray rembox remcomps remcon remcoord remfun remfunction'
-	      + ' remlet remove remove_constvalue remove_dimensions remove_edge remove_fundamental_dimensions'
-	      + ' remove_fundamental_units remove_plot_option remove_vertex rempart remrule'
-	      + ' remsym remvalue rename rename_file reset reset_displays residue resolvante'
-	      + ' resolvante_alternee1 resolvante_bipartite resolvante_diedrale resolvante_klein'
-	      + ' resolvante_klein3 resolvante_produit_sym resolvante_unitaire resolvante_vierer'
-	      + ' rest resultant return reveal reverse revert revert2 rgb2level rhs ricci riemann'
-	      + ' rinvariant risch rk rmdir rncombine romberg room rootscontract round row'
-	      + ' rowop rowswap rreduce run_testsuite %s save saving scalarp scaled_bessel_i'
-	      + ' scaled_bessel_i0 scaled_bessel_i1 scalefactors scanmap scatterplot scatterplot_description'
-	      + ' scene schur2comp sconcat scopy scsimp scurvature sdowncase sec sech second'
-	      + ' sequal sequalignore set_alt_display setdifference set_draw_defaults set_edge_weight'
-	      + ' setelmx setequalp setify setp set_partitions set_plot_option set_prompt set_random_state'
-	      + ' set_tex_environment set_tex_environment_default setunits setup_autoload set_up_dot_simplifications'
-	      + ' set_vertex_label seventh sexplode sf sha1sum sha256sum shortest_path shortest_weighted_path'
-	      + ' show showcomps showratvars sierpinskiale sierpinskimap sign signum similaritytransform'
-	      + ' simp_inequality simplify_sum simplode simpmetderiv simtran sin sinh sinsert'
-	      + ' sinvertcase sixth skewness skewness_bernoulli skewness_beta skewness_binomial'
-	      + ' skewness_chi2 skewness_continuous_uniform skewness_discrete_uniform skewness_exp'
-	      + ' skewness_f skewness_gamma skewness_general_finite_discrete skewness_geometric'
-	      + ' skewness_gumbel skewness_hypergeometric skewness_laplace skewness_logistic'
-	      + ' skewness_lognormal skewness_negative_binomial skewness_noncentral_chi2 skewness_noncentral_student_t'
-	      + ' skewness_normal skewness_pareto skewness_poisson skewness_rayleigh skewness_student_t'
-	      + ' skewness_weibull slength smake small_rhombicosidodecahedron_graph small_rhombicuboctahedron_graph'
-	      + ' smax smin smismatch snowmap snub_cube_graph snub_dodecahedron_graph solve'
-	      + ' solve_rec solve_rec_rat some somrac sort sparse6_decode sparse6_encode sparse6_export'
-	      + ' sparse6_import specint spherical spherical_bessel_j spherical_bessel_y spherical_hankel1'
-	      + ' spherical_hankel2 spherical_harmonic spherical_to_xyz splice split sposition'
-	      + ' sprint sqfr sqrt sqrtdenest sremove sremovefirst sreverse ssearch ssort sstatus'
-	      + ' ssubst ssubstfirst staircase standardize standardize_inverse_trig starplot'
-	      + ' starplot_description status std std1 std_bernoulli std_beta std_binomial'
-	      + ' std_chi2 std_continuous_uniform std_discrete_uniform std_exp std_f std_gamma'
-	      + ' std_general_finite_discrete std_geometric std_gumbel std_hypergeometric std_laplace'
-	      + ' std_logistic std_lognormal std_negative_binomial std_noncentral_chi2 std_noncentral_student_t'
-	      + ' std_normal std_pareto std_poisson std_rayleigh std_student_t std_weibull'
-	      + ' stemplot stirling stirling1 stirling2 strim striml strimr string stringout'
-	      + ' stringp strong_components struve_h struve_l sublis sublist sublist_indices'
-	      + ' submatrix subsample subset subsetp subst substinpart subst_parallel substpart'
-	      + ' substring subvar subvarp sum sumcontract summand_to_rec supcase supcontext'
-	      + ' symbolp symmdifference symmetricp system take_channel take_inference tan'
-	      + ' tanh taylor taylorinfo taylorp taylor_simplifier taytorat tcl_output tcontract'
-	      + ' tellrat tellsimp tellsimpafter tentex tenth test_mean test_means_difference'
-	      + ' test_normality test_proportion test_proportions_difference test_rank_sum'
-	      + ' test_sign test_signed_rank test_variance test_variance_ratio tex tex1 tex_display'
-	      + ' texput %th third throw time timedate timer timer_info tldefint tlimit todd_coxeter'
-	      + ' toeplitz tokens to_lisp topological_sort to_poly to_poly_solve totaldisrep'
-	      + ' totalfourier totient tpartpol trace tracematrix trace_options transform_sample'
-	      + ' translate translate_file transpose treefale tree_reduce treillis treinat'
-	      + ' triangle triangularize trigexpand trigrat trigreduce trigsimp trunc truncate'
-	      + ' truncated_cube_graph truncated_dodecahedron_graph truncated_icosahedron_graph'
-	      + ' truncated_tetrahedron_graph tr_warnings_get tube tutte_graph ueivects uforget'
-	      + ' ultraspherical underlying_graph undiff union unique uniteigenvectors unitp'
-	      + ' units unit_step unitvector unorder unsum untellrat untimer'
-	      + ' untrace uppercasep uricci uriemann uvect vandermonde_matrix var var1 var_bernoulli'
-	      + ' var_beta var_binomial var_chi2 var_continuous_uniform var_discrete_uniform'
-	      + ' var_exp var_f var_gamma var_general_finite_discrete var_geometric var_gumbel'
-	      + ' var_hypergeometric var_laplace var_logistic var_lognormal var_negative_binomial'
-	      + ' var_noncentral_chi2 var_noncentral_student_t var_normal var_pareto var_poisson'
-	      + ' var_rayleigh var_student_t var_weibull vector vectorpotential vectorsimp'
-	      + ' verbify vers vertex_coloring vertex_connectivity vertex_degree vertex_distance'
-	      + ' vertex_eccentricity vertex_in_degree vertex_out_degree vertices vertices_to_cycle'
-	      + ' vertices_to_path %w weyl wheel_graph wiener_index wigner_3j wigner_6j'
-	      + ' wigner_9j with_stdout write_binary_data writebyte write_data writefile wronskian'
-	      + ' xreduce xthru %y Zeilberger zeroequiv zerofor zeromatrix zeromatrixp zeta'
-	      + ' zgeev zheev zlange zn_add_table zn_carmichael_lambda zn_characteristic_factors'
-	      + ' zn_determinant zn_factor_generators zn_invert_by_lu zn_log zn_mult_table'
-	      + ' absboxchar activecontexts adapt_depth additive adim aform algebraic'
-	      + ' algepsilon algexact aliases allbut all_dotsimp_denoms allocation allsym alphabetic'
-	      + ' animation antisymmetric arrays askexp assume_pos assume_pos_pred assumescalar'
-	      + ' asymbol atomgrad atrig1 axes axis_3d axis_bottom axis_left axis_right axis_top'
-	      + ' azimuth background background_color backsubst berlefact bernstein_explicit'
-	      + ' besselexpand beta_args_sum_to_integer beta_expand bftorat bftrunc bindtest'
-	      + ' border boundaries_array box boxchar breakup %c capping cauchysum cbrange'
-	      + ' cbtics center cflength cframe_flag cnonmet_flag color color_bar color_bar_tics'
-	      + ' colorbox columns commutative complex cone context contexts contour contour_levels'
-	      + ' cosnpiflag ctaypov ctaypt ctayswitch ctayvar ct_coords ctorsion_flag ctrgsimp'
-	      + ' cube current_let_rule_package cylinder data_file_name debugmode decreasing'
-	      + ' default_let_rule_package delay dependencies derivabbrev derivsubst detout'
-	      + ' diagmetric diff dim dimensions dispflag display2d|10 display_format_internal'
-	      + ' distribute_over doallmxops domain domxexpt domxmxops domxnctimes dontfactor'
-	      + ' doscmxops doscmxplus dot0nscsimp dot0simp dot1simp dotassoc dotconstrules'
-	      + ' dotdistrib dotexptsimp dotident dotscrules draw_graph_program draw_realpart'
-	      + ' edge_color edge_coloring edge_partition edge_type edge_width %edispflag'
-	      + ' elevation %emode endphi endtheta engineering_format_floats enhanced3d %enumer'
-	      + ' epsilon_lp erfflag erf_representation errormsg error_size error_syms error_type'
-	      + ' %e_to_numlog eval even evenfun evflag evfun ev_point expandwrt_denom expintexpand'
-	      + ' expintrep expon expop exptdispflag exptisolate exptsubst facexpand facsum_combine'
-	      + ' factlim factorflag factorial_expand factors_only fb feature features'
-	      + ' file_name file_output_append file_search_demo file_search_lisp file_search_maxima|10'
-	      + ' file_search_tests file_search_usage file_type_lisp file_type_maxima|10 fill_color'
-	      + ' fill_density filled_func fixed_vertices flipflag float2bf font font_size'
-	      + ' fortindent fortspaces fpprec fpprintprec functions gamma_expand gammalim'
-	      + ' gdet genindex gensumnum GGFCFMAX GGFINFINITY globalsolve gnuplot_command'
-	      + ' gnuplot_curve_styles gnuplot_curve_titles gnuplot_default_term_command gnuplot_dumb_term_command'
-	      + ' gnuplot_file_args gnuplot_file_name gnuplot_out_file gnuplot_pdf_term_command'
-	      + ' gnuplot_pm3d gnuplot_png_term_command gnuplot_postamble gnuplot_preamble'
-	      + ' gnuplot_ps_term_command gnuplot_svg_term_command gnuplot_term gnuplot_view_args'
-	      + ' Gosper_in_Zeilberger gradefs grid grid2d grind halfangles head_angle head_both'
-	      + ' head_length head_type height hypergeometric_representation %iargs ibase'
-	      + ' icc1 icc2 icounter idummyx ieqnprint ifb ifc1 ifc2 ifg ifgi ifr iframe_bracket_form'
-	      + ' ifri igeowedge_flag ikt1 ikt2 imaginary inchar increasing infeval'
-	      + ' infinity inflag infolists inm inmc1 inmc2 intanalysis integer integervalued'
-	      + ' integrate_use_rootsof integration_constant integration_constant_counter interpolate_color'
-	      + ' intfaclim ip_grid ip_grid_in irrational isolate_wrt_times iterations itr'
-	      + ' julia_parameter %k1 %k2 keepfloat key key_pos kinvariant kt label label_alignment'
-	      + ' label_orientation labels lassociative lbfgs_ncorrections lbfgs_nfeval_max'
-	      + ' leftjust legend letrat let_rule_packages lfg lg lhospitallim limsubst linear'
-	      + ' linear_solver linechar linel|10 linenum line_type linewidth line_width linsolve_params'
-	      + ' linsolvewarn lispdisp listarith listconstvars listdummyvars lmxchar load_pathname'
-	      + ' loadprint logabs logarc logcb logconcoeffp logexpand lognegint logsimp logx'
-	      + ' logx_secondary logy logy_secondary logz lriem m1pbranch macroexpansion macros'
-	      + ' mainvar manual_demo maperror mapprint matrix_element_add matrix_element_mult'
-	      + ' matrix_element_transpose maxapplydepth maxapplyheight maxima_tempdir|10 maxima_userdir|10'
-	      + ' maxnegex MAX_ORD maxposex maxpsifracdenom maxpsifracnum maxpsinegint maxpsiposint'
-	      + ' maxtayorder mesh_lines_color method mod_big_prime mode_check_errorp'
-	      + ' mode_checkp mode_check_warnp mod_test mod_threshold modular_linear_solver'
-	      + ' modulus multiplicative multiplicities myoptions nary negdistrib negsumdispflag'
-	      + ' newline newtonepsilon newtonmaxiter nextlayerfactor niceindicespref nm nmc'
-	      + ' noeval nolabels nonegative_lp noninteger nonscalar noun noundisp nouns np'
-	      + ' npi nticks ntrig numer numer_pbranch obase odd oddfun opacity opproperties'
-	      + ' opsubst optimprefix optionset orientation origin orthopoly_returns_intervals'
-	      + ' outative outchar packagefile palette partswitch pdf_file pfeformat phiresolution'
-	      + ' %piargs piece pivot_count_sx pivot_max_sx plot_format plot_options plot_realpart'
-	      + ' png_file pochhammer_max_index points pointsize point_size points_joined point_type'
-	      + ' poislim poisson poly_coefficient_ring poly_elimination_order polyfactor poly_grobner_algorithm'
-	      + ' poly_grobner_debug poly_monomial_order poly_primary_elimination_order poly_return_term_list'
-	      + ' poly_secondary_elimination_order poly_top_reduction_only posfun position'
-	      + ' powerdisp pred prederror primep_number_of_tests product_use_gamma program'
-	      + ' programmode promote_float_to_bigfloat prompt proportional_axes props psexpand'
-	      + ' ps_file radexpand radius radsubstflag rassociative ratalgdenom ratchristof'
-	      + ' ratdenomdivide rateinstein ratepsilon ratfac rational ratmx ratprint ratriemann'
-	      + ' ratsimpexpons ratvarswitch ratweights ratweyl ratwtlvl real realonly redraw'
-	      + ' refcheck resolution restart resultant ric riem rmxchar %rnum_list rombergabs'
-	      + ' rombergit rombergmin rombergtol rootsconmode rootsepsilon run_viewer same_xy'
-	      + ' same_xyz savedef savefactors scalar scalarmatrixp scale scale_lp setcheck'
-	      + ' setcheckbreak setval show_edge_color show_edges show_edge_type show_edge_width'
-	      + ' show_id show_label showtime show_vertex_color show_vertex_size show_vertex_type'
-	      + ' show_vertices show_weight simp simplified_output simplify_products simpproduct'
-	      + ' simpsum sinnpiflag solvedecomposes solveexplicit solvefactors solvenullwarn'
-	      + ' solveradcan solvetrigwarn space sparse sphere spring_embedding_depth sqrtdispflag'
-	      + ' stardisp startphi starttheta stats_numer stringdisp structures style sublis_apply_lambda'
-	      + ' subnumsimp sumexpand sumsplitfact surface surface_hide svg_file symmetric'
-	      + ' tab taylordepth taylor_logexpand taylor_order_coefficients taylor_truncate_polynomials'
-	      + ' tensorkill terminal testsuite_files thetaresolution timer_devalue title tlimswitch'
-	      + ' tr track transcompile transform transform_xy translate_fast_arrays transparent'
-	      + ' transrun tr_array_as_ref tr_bound_function_applyp tr_file_tty_messagesp tr_float_can_branch_complex'
-	      + ' tr_function_call_default trigexpandplus trigexpandtimes triginverses trigsign'
-	      + ' trivial_solutions tr_numer tr_optimize_max_loop tr_semicompile tr_state_vars'
-	      + ' tr_warn_bad_function_calls tr_warn_fexpr tr_warn_meval tr_warn_mode'
-	      + ' tr_warn_undeclared tr_warn_undefined_variable tstep ttyoff tube_extremes'
-	      + ' ufg ug %unitexpand unit_vectors uric uriem use_fast_arrays user_preamble'
-	      + ' usersetunits values vect_cross verbose vertex_color vertex_coloring vertex_partition'
-	      + ' vertex_size vertex_type view warnings weyl width windowname windowtitle wired_surface'
-	      + ' wireframe xaxis xaxis_color xaxis_secondary xaxis_type xaxis_width xlabel'
-	      + ' xlabel_secondary xlength xrange xrange_secondary xtics xtics_axis xtics_rotate'
-	      + ' xtics_rotate_secondary xtics_secondary xtics_secondary_axis xu_grid x_voxel'
-	      + ' xy_file xyplane xy_scale yaxis yaxis_color yaxis_secondary yaxis_type yaxis_width'
-	      + ' ylabel ylabel_secondary ylength yrange yrange_secondary ytics ytics_axis'
-	      + ' ytics_rotate ytics_rotate_secondary ytics_secondary ytics_secondary_axis'
-	      + ' yv_grid y_voxel yx_ratio zaxis zaxis_color zaxis_type zaxis_width zeroa zerob'
-	      + ' zerobern zeta%pi zlabel zlabel_rotate zlength zmin zn_primroot_limit zn_primroot_pretest';
-	  var SYMBOLS = '_ __ %|0 %%|0';
-	
-	  return {
-	    lexemes: '[A-Za-z_%][0-9A-Za-z_%]*',
-	    keywords: {
-	      keyword: KEYWORDS,
-	      literal: LITERALS,
-	      built_in: BUILTIN_FUNCTIONS,
-	      symbol: SYMBOLS,
-	    },
-	    contains: [
-	      {
-	        className: 'comment',
-	        begin: '/\\*',
-	        end: '\\*/',
-	        contains: ['self']
-	      },
-	      hljs.QUOTE_STRING_MODE,
-	      {
-	        className: 'number',
->>>>>>> dev
-	        relevance: 0,
-	        starts: TRANSPOSE
-	      },
-	      hljs.COMMENT('^\\s*\\%\\{\\s*$', '^\\s*\\%\\}\\s*$'),
-	      hljs.COMMENT('\\%', '$')
-	    ].concat(COMMON_CONTAINS)
-	  };
-	};
-
-/***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 132 */
-=======
-/* 157 */
-=======
-/* 132 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17193,15 +15136,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 133 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 158 */
-=======
-/* 133 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17294,105 +15229,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 134 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 159 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	    //local labels: %?[FB]?[AT]?\d{1,2}\w+
-	  return {
-	    case_insensitive: true,
-	    aliases: ['mips'],
-	    lexemes: '\\.?' + hljs.IDENT_RE,
-	    keywords: {
-	      meta:
-	        //GNU preprocs
-	        '.2byte .4byte .align .ascii .asciz .balign .byte .code .data .else .end .endif .endm .endr .equ .err .exitm .extern .global .hword .if .ifdef .ifndef .include .irp .long .macro .rept .req .section .set .skip .space .text .word .ltorg ',
-	      built_in:
-	        '$0 $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 $12 $13 $14 $15 ' + // integer registers
-	        '$16 $17 $18 $19 $20 $21 $22 $23 $24 $25 $26 $27 $28 $29 $30 $31 ' + // integer registers
-	        'zero at v0 v1 a0 a1 a2 a3 a4 a5 a6 a7 ' + // integer register aliases
-	        't0 t1 t2 t3 t4 t5 t6 t7 t8 t9 s0 s1 s2 s3 s4 s5 s6 s7 s8 ' + // integer register aliases
-	        'k0 k1 gp sp fp ra ' + // integer register aliases
-	        '$f0 $f1 $f2 $f2 $f4 $f5 $f6 $f7 $f8 $f9 $f10 $f11 $f12 $f13 $f14 $f15 ' + // floating-point registers
-	        '$f16 $f17 $f18 $f19 $f20 $f21 $f22 $f23 $f24 $f25 $f26 $f27 $f28 $f29 $f30 $f31 ' + // floating-point registers
-	        'Context Random EntryLo0 EntryLo1 Context PageMask Wired EntryHi ' + // Coprocessor 0 registers
-	        'HWREna BadVAddr Count Compare SR IntCtl SRSCtl SRSMap Cause EPC PRId ' + // Coprocessor 0 registers
-	        'EBase Config Config1 Config2 Config3 LLAddr Debug DEPC DESAVE CacheErr ' + // Coprocessor 0 registers
-	        'ECC ErrorEPC TagLo DataLo TagHi DataHi WatchLo WatchHi PerfCtl PerfCnt ' // Coprocessor 0 registers
-	    },
-	    contains: [
-	      {
-	        className: 'keyword',
-	        begin: '\\b('+     //mnemonics
-	            // 32-bit integer instructions
-	            'addi?u?|andi?|b(al)?|beql?|bgez(al)?l?|bgtzl?|blezl?|bltz(al)?l?|' +
-	            'bnel?|cl[oz]|divu?|ext|ins|j(al)?|jalr(\.hb)?|jr(\.hb)?|lbu?|lhu?|' +
-	            'll|lui|lw[lr]?|maddu?|mfhi|mflo|movn|movz|move|msubu?|mthi|mtlo|mul|' +
-	            'multu?|nop|nor|ori?|rotrv?|sb|sc|se[bh]|sh|sllv?|slti?u?|srav?|' +
-	            'srlv?|subu?|sw[lr]?|xori?|wsbh|' +
-	            // floating-point instructions
-	            'abs\.[sd]|add\.[sd]|alnv.ps|bc1[ft]l?|' +
-	            'c\.(s?f|un|u?eq|[ou]lt|[ou]le|ngle?|seq|l[et]|ng[et])\.[sd]|' +
-	            '(ceil|floor|round|trunc)\.[lw]\.[sd]|cfc1|cvt\.d\.[lsw]|' +
-	            'cvt\.l\.[dsw]|cvt\.ps\.s|cvt\.s\.[dlw]|cvt\.s\.p[lu]|cvt\.w\.[dls]|' +
-	            'div\.[ds]|ldx?c1|luxc1|lwx?c1|madd\.[sd]|mfc1|mov[fntz]?\.[ds]|' +
-	            'msub\.[sd]|mth?c1|mul\.[ds]|neg\.[ds]|nmadd\.[ds]|nmsub\.[ds]|' +
-	            'p[lu][lu]\.ps|recip\.fmt|r?sqrt\.[ds]|sdx?c1|sub\.[ds]|suxc1|' +
-	            'swx?c1|' +
-	            // system control instructions
-	            'break|cache|d?eret|[de]i|ehb|mfc0|mtc0|pause|prefx?|rdhwr|' +
-	            'rdpgpr|sdbbp|ssnop|synci?|syscall|teqi?|tgei?u?|tlb(p|r|w[ir])|' +
-	            'tlti?u?|tnei?|wait|wrpgpr'+
-	        ')',
-	        end: '\\s'
-	      },
-	      hljs.COMMENT('[;#]', '$'),
-	      hljs.C_BLOCK_COMMENT_MODE,
-	      hljs.QUOTE_STRING_MODE,
-	      {
-	        className: 'string',
-	        begin: '\'',
-	        end: '[^\\\\]\'',
-	        relevance: 0
-	      },
-	      {
-	        className: 'title',
-	        begin: '\\|', end: '\\|',
-	        illegal: '\\n',
-	        relevance: 0
-	      },
-	      {
-	        className: 'number',
-	        variants: [
-	            {begin: '0x[0-9a-f]+'}, //hex
-	            {begin: '\\b-?\\d+'}           //bare number
-	        ],
-	        relevance: 0
-	      },
-	      {
-	        className: 'symbol',
-	        variants: [
-	            {begin: '^\\s*[a-z_\\.\\$][a-z0-9_\\.\\$]+:'}, //GNU MIPS syntax
-	            {begin: '^\\s*[0-9]+:'}, // numbered local labels
-	            {begin: '[0-9]+[bf]' }  // number local label reference (backwards, forwards)
-	        ],
-	        relevance: 0
-	      }
-	    ],
-	    illegal: '\/'
-	  };
-	};
-
-/***/ },
-/* 160 */
-=======
-/* 134 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17415,15 +15252,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 135 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 161 */
-=======
-/* 135 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17584,15 +15413,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 136 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 162 */
-=======
-/* 136 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17621,15 +15442,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 137 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 163 */
-=======
-/* 137 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17711,15 +15524,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 138 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 166 */
-=======
-/* 138 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17805,15 +15610,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 139 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 167 */
-=======
-/* 139 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17869,15 +15666,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 140 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 168 */
-=======
-/* 140 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17932,15 +15721,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 141 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 169 */
-=======
-/* 141 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18032,15 +15813,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 142 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 170 */
-=======
-/* 142 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18123,15 +15896,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 143 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 171 */
-=======
-/* 143 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18206,15 +15971,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 144 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 172 */
-=======
-/* 144 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18276,15 +16033,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 145 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 173 */
-=======
-/* 145 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18357,15 +16106,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 146 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 174 */
-=======
-/* 146 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18417,15 +16158,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 147 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 175 */
-=======
-/* 147 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18481,15 +16214,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 148 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 176 */
-=======
-/* 148 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18618,110 +16343,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 149 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 177 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var KEYWORDS = {
-	    keyword:
-	      'actor addressof and as be break class compile_error compile_intrinsic' +
-	      'consume continue delegate digestof do else elseif embed end error' +
-	      'for fun if ifdef in interface is isnt lambda let match new not object' +
-	      'or primitive recover repeat return struct then trait try type until ' +
-	      'use var where while with xor',
-	    meta:
-	      'iso val tag trn box ref',
-	    literal:
-	      'this false true'
-	  };
-	
-	  var TRIPLE_QUOTE_STRING_MODE = {
-	    className: 'string',
-	    begin: '"""', end: '"""',
-	    relevance: 10
-	  };
-	
-	  var QUOTE_STRING_MODE = {
-	    className: 'string',
-	    begin: '"', end: '"',
-	    contains: [hljs.BACKSLASH_ESCAPE]
-	  };
-	
-	  var SINGLE_QUOTE_CHAR_MODE = {
-	    className: 'string',
-	    begin: '\'', end: '\'',
-	    contains: [hljs.BACKSLASH_ESCAPE],
-	    relevance: 0
-	  };
-	
-	  var TYPE_NAME = {
-	    className: 'type',
-	    begin: '\\b_?[A-Z][\\w]*',
-	    relevance: 0
-	  };
-	
-	  var PRIMED_NAME = {
-	    begin: hljs.IDENT_RE + '\'', relevance: 0
-	  };
-	
-	  var CLASS = {
-	    className: 'class',
-	    beginKeywords: 'class actor', end: '$',
-	    contains: [
-	      hljs.TITLE_MODE,
-	      hljs.C_LINE_COMMENT_MODE
-	    ]
-	  }
-	
-	  var FUNCTION = {
-	    className: 'function',
-	    beginKeywords: 'new fun', end: '=>',
-	    contains: [
-	      hljs.TITLE_MODE,
-	      {
-	        begin: /\(/, end: /\)/,
-	        contains: [
-	          TYPE_NAME,
-	          PRIMED_NAME,
-	          hljs.C_NUMBER_MODE,
-	          hljs.C_BLOCK_COMMENT_MODE
-	        ]
-	      },
-	      {
-	        begin: /:/, endsWithParent: true,
-	        contains: [TYPE_NAME]
-	      },
-	      hljs.C_LINE_COMMENT_MODE
-	    ]
-	  }
-	
-	  return {
-	    keywords: KEYWORDS,
-	    contains: [
-	      CLASS,
-	      FUNCTION,
-	      TYPE_NAME,
-	      TRIPLE_QUOTE_STRING_MODE,
-	      QUOTE_STRING_MODE,
-	      SINGLE_QUOTE_CHAR_MODE,
-	      PRIMED_NAME,
-	      hljs.C_NUMBER_MODE,
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE
-	    ]
-	  };
-	};
-
-/***/ },
-/* 178 */
-=======
-/* 149 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18773,15 +16395,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 150 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 179 */
-=======
-/* 150 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18833,15 +16447,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 151 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 180 */
-=======
-/* 151 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18887,15 +16493,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 152 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 181 */
-=======
-/* 152 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18988,15 +16586,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 153 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 182 */
-=======
-/* 153 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19037,15 +16627,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 154 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 183 */
-=======
-/* 154 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19157,77 +16739,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 155 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 184 */
-/***/ function(module, exports) {
-
-	module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
-	
-	function(hljs) {
-	  var STRINGS = { // PB IDE color: #0080FF (Azure Radiance)
-	    className: 'string',
-	    begin: '(~)?"', end: '"',
-	    illegal: '\\n'
-	  };
-	  var CONSTANTS = { // PB IDE color: #924B72 (Cannon Pink)
-	    //  "#" + a letter or underscore + letters, digits or underscores + (optional) "$"
-	    className: 'symbol',
-	    begin: '#[a-zA-Z_]\\w*\\$?'
-	  };
-	
-	  return {
-	    aliases: ['pb', 'pbi'],
-	    keywords: // PB IDE color: #006666 (Blue Stone) + Bold
-	      // The following keywords list was taken and adapted from GuShH's PureBasic language file for GeSHi...
-	      'And As Break CallDebugger Case CompilerCase CompilerDefault CompilerElse CompilerEndIf CompilerEndSelect ' +
-	      'CompilerError CompilerIf CompilerSelect Continue Data DataSection EndDataSection Debug DebugLevel ' +
-	      'Default Define Dim DisableASM DisableDebugger DisableExplicit Else ElseIf EnableASM ' +
-	      'EnableDebugger EnableExplicit End EndEnumeration EndIf EndImport EndInterface EndMacro EndProcedure ' +
-	      'EndSelect EndStructure EndStructureUnion EndWith Enumeration Extends FakeReturn For Next ForEach ' +
-	      'ForEver Global Gosub Goto If Import ImportC IncludeBinary IncludeFile IncludePath Interface Macro ' +
-	      'NewList Not Or ProcedureReturn Protected Prototype ' +
-	      'PrototypeC Read ReDim Repeat Until Restore Return Select Shared Static Step Structure StructureUnion ' +
-	      'Swap To Wend While With XIncludeFile XOr ' +
-	      'Procedure ProcedureC ProcedureCDLL ProcedureDLL Declare DeclareC DeclareCDLL DeclareDLL',
-	    contains: [
-	      // COMMENTS | PB IDE color: #00AAAA (Persian Green)
-	      hljs.COMMENT(';', '$', {relevance: 0}),
-	
-	      { // PROCEDURES DEFINITIONS
-	        className: 'function',
-	        begin: '\\b(Procedure|Declare)(C|CDLL|DLL)?\\b',
-	        end: '\\(',
-	        excludeEnd: true,
-	        returnBegin: true,
-	        contains: [
-	          { // PROCEDURE KEYWORDS | PB IDE color: #006666 (Blue Stone) + Bold
-	            className: 'keyword',
-	            begin: '(Procedure|Declare)(C|CDLL|DLL)?',
-	            excludeEnd: true
-	          },
-	          { // PROCEDURE RETURN TYPE SETTING | PB IDE color: #000000 (Black)
-	            className: 'type',
-	            begin: '\\.\\w*'
-	            // end: ' ',
-	          },
-	          hljs.UNDERSCORE_TITLE_MODE // PROCEDURE NAME | PB IDE color: #006666 (Blue Stone)
-	        ]
-	      },
-	      STRINGS,
-	      CONSTANTS
-	    ]
-	  };
-	};
-
-/***/ },
-/* 185 */
-=======
-/* 155 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19316,15 +16828,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 156 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 186 */
-=======
-/* 156 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19351,188 +16855,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 157 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 187 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var KEYWORDS = {
-	      keyword:
-	        'in of on if for while finally var new function do return void else break catch ' +
-	        'instanceof with throw case default try this switch continue typeof delete ' +
-	        'let yield const export super debugger as async await import',
-	      literal:
-	        'true false null undefined NaN Infinity',
-	      built_in:
-	        'eval isFinite isNaN parseFloat parseInt decodeURI decodeURIComponent ' +
-	        'encodeURI encodeURIComponent escape unescape Object Function Boolean Error ' +
-	        'EvalError InternalError RangeError ReferenceError StopIteration SyntaxError ' +
-	        'TypeError URIError Number Math Date String RegExp Array Float32Array ' +
-	        'Float64Array Int16Array Int32Array Int8Array Uint16Array Uint32Array ' +
-	        'Uint8Array Uint8ClampedArray ArrayBuffer DataView JSON Intl arguments require ' +
-	        'module console window document Symbol Set Map WeakSet WeakMap Proxy Reflect ' +
-	        'Behavior bool color coordinate date double enumeration font geocircle georectangle ' +
-	        'geoshape int list matrix4x4 parent point quaternion real rect ' +
-	        'size string url var variant vector2d vector3d vector4d' +
-	        'Promise'
-	    };
-	
-	  var QML_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9\\._]*';
-	
-	  // Isolate property statements. Ends at a :, =, ;, ,, a comment or end of line.
-	  // Use property class.
-	  var PROPERTY = {
-	      className: 'keyword',
-	      begin: '\\bproperty\\b',
-	      starts: {
-	        className: 'string',
-	        end: '(:|=|;|,|//|/\\*|$)',
-	        returnEnd: true
-	      }
-	  };
-	
-	  // Isolate signal statements. Ends at a ) a comment or end of line.
-	  // Use property class.
-	  var SIGNAL = {
-	      className: 'keyword',
-	      begin: '\\bsignal\\b',
-	      starts: {
-	        className: 'string',
-	        end: '(\\(|:|=|;|,|//|/\\*|$)',
-	        returnEnd: true
-	      }
-	  };
-	
-	  // id: is special in QML. When we see id: we want to mark the id: as attribute and
-	  // emphasize the token following.
-	  var ID_ID = {
-	      className: 'attribute',
-	      begin: '\\bid\\s*:',
-	      starts: {
-	        className: 'string',
-	        end: QML_IDENT_RE,
-	        returnEnd: false
-	      }
-	  };
-	
-	  // Find QML object attribute. An attribute is a QML identifier followed by :.
-	  // Unfortunately it's hard to know where it ends, as it may contain scalars,
-	  // objects, object definitions, or javascript. The true end is either when the parent
-	  // ends or the next attribute is detected.
-	  var QML_ATTRIBUTE = {
-	    begin: QML_IDENT_RE + '\\s*:',
-	    returnBegin: true,
-	    contains: [
-	      {
-	        className: 'attribute',
-	        begin: QML_IDENT_RE,
-	        end: '\\s*:',
-	        excludeEnd: true,
-	        relevance: 0
-	      }
-	    ],
-	    relevance: 0
-	  };
-	
-	  // Find QML object. A QML object is a QML identifier followed by { and ends at the matching }.
-	  // All we really care about is finding IDENT followed by { and just mark up the IDENT and ignore the {.
-	  var QML_OBJECT = {
-	    begin: QML_IDENT_RE + '\\s*{', end: '{',
-	    returnBegin: true,
-	    relevance: 0,
-	    contains: [
-	      hljs.inherit(hljs.TITLE_MODE, {begin: QML_IDENT_RE})
-	    ]
-	  };
-	
-	  return {
-	    aliases: ['qt'],
-	    case_insensitive: false,
-	    keywords: KEYWORDS,
-	    contains: [
-	      {
-	        className: 'meta',
-	        begin: /^\s*['"]use (strict|asm)['"]/
-	      },
-	      hljs.APOS_STRING_MODE,
-	      hljs.QUOTE_STRING_MODE,
-	      { // template string
-	        className: 'string',
-	        begin: '`', end: '`',
-	        contains: [
-	          hljs.BACKSLASH_ESCAPE,
-	          {
-	            className: 'subst',
-	            begin: '\\$\\{', end: '\\}'
-	          }
-	        ]
-	      },
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE,
-	      {
-	        className: 'number',
-	        variants: [
-	          { begin: '\\b(0[bB][01]+)' },
-	          { begin: '\\b(0[oO][0-7]+)' },
-	          { begin: hljs.C_NUMBER_RE }
-	        ],
-	        relevance: 0
-	      },
-	      { // "value" container
-	        begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
-	        keywords: 'return throw case',
-	        contains: [
-	          hljs.C_LINE_COMMENT_MODE,
-	          hljs.C_BLOCK_COMMENT_MODE,
-	          hljs.REGEXP_MODE,
-	          { // E4X / JSX
-	            begin: /</, end: />\s*[);\]]/,
-	            relevance: 0,
-	            subLanguage: 'xml'
-	          }
-	        ],
-	        relevance: 0
-	      },
-	      SIGNAL,
-	      PROPERTY,
-	      {
-	        className: 'function',
-	        beginKeywords: 'function', end: /\{/, excludeEnd: true,
-	        contains: [
-	          hljs.inherit(hljs.TITLE_MODE, {begin: /[A-Za-z$_][0-9A-Za-z$_]*/}),
-	          {
-	            className: 'params',
-	            begin: /\(/, end: /\)/,
-	            excludeBegin: true,
-	            excludeEnd: true,
-	            contains: [
-	              hljs.C_LINE_COMMENT_MODE,
-	              hljs.C_BLOCK_COMMENT_MODE
-	            ]
-	          }
-	        ],
-	        illegal: /\[|%/
-	      },
-	      {
-	        begin: '\\.' + hljs.IDENT_RE, relevance: 0 // hack: prevents detection of keywords after dots
-	      },
-	      ID_ID,
-	      QML_ATTRIBUTE,
-	      QML_OBJECT
-	    ],
-	    illegal: /#/
-	  };
-	};
-
-/***/ },
-/* 188 */
-=======
-/* 157 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19606,15 +16929,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 158 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 189 */
-=======
-/* 158 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19645,15 +16960,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 159 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 190 */
-=======
-/* 159 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19717,15 +17024,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 160 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 191 */
-=======
-/* 160 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19766,15 +17065,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 161 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 192 */
-=======
-/* 161 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19839,15 +17130,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 162 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 193 */
-=======
-/* 162 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19937,15 +17220,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 163 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 194 */
-=======
-/* 163 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20012,15 +17287,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 164 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 195 */
-=======
-/* 164 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20146,15 +17413,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 165 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 196 */
-=======
-/* 165 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20213,15 +17472,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 166 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 197 */
-=======
-/* 166 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20342,15 +17593,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 167 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 198 */
-=======
-/* 167 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20437,15 +17680,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 168 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 199 */
-=======
-/* 168 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20502,15 +17737,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 169 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 200 */
-=======
-/* 169 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20579,390 +17806,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 170 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 201 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var CPP = hljs.getLanguage('cpp').exports;
-	
-	  // In SQF, a variable start with _
-	  var VARIABLE = {
-	    className: 'variable',
-	    begin: /\b_+[a-zA-Z_]\w*/
-	  };
-	
-	  // In SQF, a function should fit myTag_fnc_myFunction pattern
-	  // https://community.bistudio.com/wiki/Functions_Library_(Arma_3)#Adding_a_Function
-	  var FUNCTION = {
-	    className: 'title',
-	    begin: /[a-zA-Z][a-zA-Z0-9]+_fnc_\w*/
-	  };
-	
-	  // In SQF strings, quotes matching the start are escaped by adding a consecutive.
-	  // Example of single escaped quotes: " "" " and  ' '' '.
-	  var STRINGS = {
-	    className: 'string',
-	    variants: [
-	      {
-	        begin: '"',
-	        end: '"',
-	        contains: [{begin: '""', relevance: 0}]
-	      },
-	      {
-	        begin: '\'',
-	        end: '\'',
-	        contains: [{begin: '\'\'', relevance: 0}]
-	      }
-	    ]
-	  };
-	
-	  return {
-	    aliases: ['sqf'],
-	    case_insensitive: true,
-	    keywords: {
-	      keyword:
-	        'case catch default do else exit exitWith for forEach from if ' +
-	        'switch then throw to try waitUntil while with',
-	      built_in:
-	        'abs accTime acos action actionIDs actionKeys actionKeysImages actionKeysNames ' +
-	        'actionKeysNamesArray actionName actionParams activateAddons activatedAddons activateKey ' +
-	        'add3DENConnection add3DENEventHandler add3DENLayer addAction addBackpack addBackpackCargo ' +
-	        'addBackpackCargoGlobal addBackpackGlobal addCamShake addCuratorAddons addCuratorCameraArea ' +
-	        'addCuratorEditableObjects addCuratorEditingArea addCuratorPoints addEditorObject addEventHandler ' +
-	        'addGoggles addGroupIcon addHandgunItem addHeadgear addItem addItemCargo addItemCargoGlobal ' +
-	        'addItemPool addItemToBackpack addItemToUniform addItemToVest addLiveStats addMagazine ' +
-	        'addMagazineAmmoCargo addMagazineCargo addMagazineCargoGlobal addMagazineGlobal addMagazinePool ' +
-	        'addMagazines addMagazineTurret addMenu addMenuItem addMissionEventHandler addMPEventHandler ' +
-	        'addMusicEventHandler addOwnedMine addPlayerScores addPrimaryWeaponItem ' +
-	        'addPublicVariableEventHandler addRating addResources addScore addScoreSide addSecondaryWeaponItem ' +
-	        'addSwitchableUnit addTeamMember addToRemainsCollector addUniform addVehicle addVest addWaypoint ' +
-	        'addWeapon addWeaponCargo addWeaponCargoGlobal addWeaponGlobal addWeaponItem addWeaponPool ' +
-	        'addWeaponTurret agent agents AGLToASL aimedAtTarget aimPos airDensityRTD airportSide ' +
-	        'AISFinishHeal alive all3DENEntities allControls allCurators allCutLayers allDead allDeadMen ' +
-	        'allDisplays allGroups allMapMarkers allMines allMissionObjects allow3DMode allowCrewInImmobile ' +
-	        'allowCuratorLogicIgnoreAreas allowDamage allowDammage allowFileOperations allowFleeing allowGetIn ' +
-	        'allowSprint allPlayers allSites allTurrets allUnits allUnitsUAV allVariables ammo and animate ' +
-	        'animateDoor animateSource animationNames animationPhase animationSourcePhase animationState ' +
-	        'append apply armoryPoints arrayIntersect asin ASLToAGL ASLToATL assert assignAsCargo ' +
-	        'assignAsCargoIndex assignAsCommander assignAsDriver assignAsGunner assignAsTurret assignCurator ' +
-	        'assignedCargo assignedCommander assignedDriver assignedGunner assignedItems assignedTarget ' +
-	        'assignedTeam assignedVehicle assignedVehicleRole assignItem assignTeam assignToAirport atan atan2 ' +
-	        'atg ATLToASL attachedObject attachedObjects attachedTo attachObject attachTo attackEnabled ' +
-	        'backpack backpackCargo backpackContainer backpackItems backpackMagazines backpackSpaceFor ' +
-	        'behaviour benchmark binocular blufor boundingBox boundingBoxReal boundingCenter breakOut breakTo ' +
-	        'briefingName buildingExit buildingPos buttonAction buttonSetAction cadetMode call callExtension ' +
-	        'camCommand camCommit camCommitPrepared camCommitted camConstuctionSetParams camCreate camDestroy ' +
-	        'cameraEffect cameraEffectEnableHUD cameraInterest cameraOn cameraView campaignConfigFile ' +
-	        'camPreload camPreloaded camPrepareBank camPrepareDir camPrepareDive camPrepareFocus camPrepareFov ' +
-	        'camPrepareFovRange camPreparePos camPrepareRelPos camPrepareTarget camSetBank camSetDir ' +
-	        'camSetDive camSetFocus camSetFov camSetFovRange camSetPos camSetRelPos camSetTarget camTarget ' +
-	        'camUseNVG canAdd canAddItemToBackpack canAddItemToUniform canAddItemToVest ' +
-	        'cancelSimpleTaskDestination canFire canMove canSlingLoad canStand canSuspend canUnloadInCombat ' +
-	        'canVehicleCargo captive captiveNum cbChecked cbSetChecked ceil channelEnabled cheatsEnabled ' +
-	        'checkAIFeature checkVisibility civilian className clearAllItemsFromBackpack clearBackpackCargo ' +
-	        'clearBackpackCargoGlobal clearGroupIcons clearItemCargo clearItemCargoGlobal clearItemPool ' +
-	        'clearMagazineCargo clearMagazineCargoGlobal clearMagazinePool clearOverlay clearRadio ' +
-	        'clearWeaponCargo clearWeaponCargoGlobal clearWeaponPool clientOwner closeDialog closeDisplay ' +
-	        'closeOverlay collapseObjectTree collect3DENHistory combatMode commandArtilleryFire commandChat ' +
-	        'commander commandFire commandFollow commandFSM commandGetOut commandingMenu commandMove ' +
-	        'commandRadio commandStop commandSuppressiveFire commandTarget commandWatch comment commitOverlay ' +
-	        'compile compileFinal completedFSM composeText configClasses configFile configHierarchy configName ' +
-	        'configNull configProperties configSourceAddonList configSourceMod configSourceModList ' +
-	        'connectTerminalToUAV controlNull controlsGroupCtrl copyFromClipboard copyToClipboard ' +
-	        'copyWaypoints cos count countEnemy countFriendly countSide countType countUnknown ' +
-	        'create3DENComposition create3DENEntity createAgent createCenter createDialog createDiaryLink ' +
-	        'createDiaryRecord createDiarySubject createDisplay createGearDialog createGroup ' +
-	        'createGuardedPoint createLocation createMarker createMarkerLocal createMenu createMine ' +
-	        'createMissionDisplay createMPCampaignDisplay createSimpleObject createSimpleTask createSite ' +
-	        'createSoundSource createTask createTeam createTrigger createUnit createVehicle createVehicleCrew ' +
-	        'createVehicleLocal crew ctrlActivate ctrlAddEventHandler ctrlAngle ctrlAutoScrollDelay ' +
-	        'ctrlAutoScrollRewind ctrlAutoScrollSpeed ctrlChecked ctrlClassName ctrlCommit ctrlCommitted ' +
-	        'ctrlCreate ctrlDelete ctrlEnable ctrlEnabled ctrlFade ctrlHTMLLoaded ctrlIDC ctrlIDD ' +
-	        'ctrlMapAnimAdd ctrlMapAnimClear ctrlMapAnimCommit ctrlMapAnimDone ctrlMapCursor ctrlMapMouseOver ' +
-	        'ctrlMapScale ctrlMapScreenToWorld ctrlMapWorldToScreen ctrlModel ctrlModelDirAndUp ctrlModelScale ' +
-	        'ctrlParent ctrlParentControlsGroup ctrlPosition ctrlRemoveAllEventHandlers ctrlRemoveEventHandler ' +
-	        'ctrlScale ctrlSetActiveColor ctrlSetAngle ctrlSetAutoScrollDelay ctrlSetAutoScrollRewind ' +
-	        'ctrlSetAutoScrollSpeed ctrlSetBackgroundColor ctrlSetChecked ctrlSetEventHandler ctrlSetFade ' +
-	        'ctrlSetFocus ctrlSetFont ctrlSetFontH1 ctrlSetFontH1B ctrlSetFontH2 ctrlSetFontH2B ctrlSetFontH3 ' +
-	        'ctrlSetFontH3B ctrlSetFontH4 ctrlSetFontH4B ctrlSetFontH5 ctrlSetFontH5B ctrlSetFontH6 ' +
-	        'ctrlSetFontH6B ctrlSetFontHeight ctrlSetFontHeightH1 ctrlSetFontHeightH2 ctrlSetFontHeightH3 ' +
-	        'ctrlSetFontHeightH4 ctrlSetFontHeightH5 ctrlSetFontHeightH6 ctrlSetFontHeightSecondary ' +
-	        'ctrlSetFontP ctrlSetFontPB ctrlSetFontSecondary ctrlSetForegroundColor ctrlSetModel ' +
-	        'ctrlSetModelDirAndUp ctrlSetModelScale ctrlSetPosition ctrlSetScale ctrlSetStructuredText ' +
-	        'ctrlSetText ctrlSetTextColor ctrlSetTooltip ctrlSetTooltipColorBox ctrlSetTooltipColorShade ' +
-	        'ctrlSetTooltipColorText ctrlShow ctrlShown ctrlText ctrlTextHeight ctrlType ctrlVisible ' +
-	        'curatorAddons curatorCamera curatorCameraArea curatorCameraAreaCeiling curatorCoef ' +
-	        'curatorEditableObjects curatorEditingArea curatorEditingAreaType curatorMouseOver curatorPoints ' +
-	        'curatorRegisteredObjects curatorSelected curatorWaypointCost current3DENOperation currentChannel ' +
-	        'currentCommand currentMagazine currentMagazineDetail currentMagazineDetailTurret ' +
-	        'currentMagazineTurret currentMuzzle currentNamespace currentTask currentTasks currentThrowable ' +
-	        'currentVisionMode currentWaypoint currentWeapon currentWeaponMode currentWeaponTurret ' +
-	        'currentZeroing cursorObject cursorTarget customChat customRadio cutFadeOut cutObj cutRsc cutText ' +
-	        'damage date dateToNumber daytime deActivateKey debriefingText debugFSM debugLog deg ' +
-	        'delete3DENEntities deleteAt deleteCenter deleteCollection deleteEditorObject deleteGroup ' +
-	        'deleteIdentity deleteLocation deleteMarker deleteMarkerLocal deleteRange deleteResources ' +
-	        'deleteSite deleteStatus deleteTeam deleteVehicle deleteVehicleCrew deleteWaypoint detach ' +
-	        'detectedMines diag_activeMissionFSMs diag_activeScripts diag_activeSQFScripts ' +
-	        'diag_activeSQSScripts diag_captureFrame diag_captureSlowFrame diag_codePerformance diag_drawMode ' +
-	        'diag_enable diag_enabled diag_fps diag_fpsMin diag_frameNo diag_list diag_log diag_logSlowFrame ' +
-	        'diag_mergeConfigFile diag_recordTurretLimits diag_tickTime diag_toggle dialog diarySubjectExists ' +
-	        'didJIP didJIPOwner difficulty difficultyEnabled difficultyEnabledRTD difficultyOption direction ' +
-	        'directSay disableAI disableCollisionWith disableConversation disableDebriefingStats ' +
-	        'disableNVGEquipment disableRemoteSensors disableSerialization disableTIEquipment ' +
-	        'disableUAVConnectability disableUserInput displayAddEventHandler displayCtrl displayNull ' +
-	        'displayParent displayRemoveAllEventHandlers displayRemoveEventHandler displaySetEventHandler ' +
-	        'dissolveTeam distance distance2D distanceSqr distributionRegion do3DENAction doArtilleryFire ' +
-	        'doFire doFollow doFSM doGetOut doMove doorPhase doStop doSuppressiveFire doTarget doWatch ' +
-	        'drawArrow drawEllipse drawIcon drawIcon3D drawLine drawLine3D drawLink drawLocation drawPolygon ' +
-	        'drawRectangle driver drop east echo edit3DENMissionAttributes editObject editorSetEventHandler ' +
-	        'effectiveCommander emptyPositions enableAI enableAIFeature enableAimPrecision enableAttack ' +
-	        'enableAudioFeature enableCamShake enableCaustics enableChannel enableCollisionWith enableCopilot ' +
-	        'enableDebriefingStats enableDiagLegend enableEndDialog enableEngineArtillery enableEnvironment ' +
-	        'enableFatigue enableGunLights enableIRLasers enableMimics enablePersonTurret enableRadio ' +
-	        'enableReload enableRopeAttach enableSatNormalOnDetail enableSaving enableSentences ' +
-	        'enableSimulation enableSimulationGlobal enableStamina enableTeamSwitch enableUAVConnectability ' +
-	        'enableUAVWaypoints enableVehicleCargo endLoadingScreen endMission engineOn enginesIsOnRTD ' +
-	        'enginesRpmRTD enginesTorqueRTD entities estimatedEndServerTime estimatedTimeLeft ' +
-	        'evalObjectArgument everyBackpack everyContainer exec execEditorScript execFSM execVM exp ' +
-	        'expectedDestination exportJIPMessages eyeDirection eyePos face faction fadeMusic fadeRadio ' +
-	        'fadeSound fadeSpeech failMission fillWeaponsFromPool find findCover findDisplay findEditorObject ' +
-	        'findEmptyPosition findEmptyPositionReady findNearestEnemy finishMissionInit finite fire ' +
-	        'fireAtTarget firstBackpack flag flagOwner flagSide flagTexture fleeing floor flyInHeight ' +
-	        'flyInHeightASL fog fogForecast fogParams forceAddUniform forcedMap forceEnd forceMap forceRespawn ' +
-	        'forceSpeed forceWalk forceWeaponFire forceWeatherChange forEachMember forEachMemberAgent ' +
-	        'forEachMemberTeam format formation formationDirection formationLeader formationMembers ' +
-	        'formationPosition formationTask formatText formLeader freeLook fromEditor fuel fullCrew ' +
-	        'gearIDCAmmoCount gearSlotAmmoCount gearSlotData get3DENActionState get3DENAttribute get3DENCamera ' +
-	        'get3DENConnections get3DENEntity get3DENEntityID get3DENGrid get3DENIconsVisible ' +
-	        'get3DENLayerEntities get3DENLinesVisible get3DENMissionAttribute get3DENMouseOver get3DENSelected ' +
-	        'getAimingCoef getAllHitPointsDamage getAllOwnedMines getAmmoCargo getAnimAimPrecision ' +
-	        'getAnimSpeedCoef getArray getArtilleryAmmo getArtilleryComputerSettings getArtilleryETA ' +
-	        'getAssignedCuratorLogic getAssignedCuratorUnit getBackpackCargo getBleedingRemaining ' +
-	        'getBurningValue getCameraViewDirection getCargoIndex getCenterOfMass getClientState ' +
-	        'getClientStateNumber getConnectedUAV getCustomAimingCoef getDammage getDescription getDir ' +
-	        'getDirVisual getDLCs getEditorCamera getEditorMode getEditorObjectScope getElevationOffset ' +
-	        'getFatigue getFriend getFSMVariable getFuelCargo getGroupIcon getGroupIconParams getGroupIcons ' +
-	        'getHideFrom getHit getHitIndex getHitPointDamage getItemCargo getMagazineCargo getMarkerColor ' +
-	        'getMarkerPos getMarkerSize getMarkerType getMass getMissionConfig getMissionConfigValue ' +
-	        'getMissionDLCs getMissionLayerEntities getModelInfo getMousePosition getNumber getObjectArgument ' +
-	        'getObjectChildren getObjectDLC getObjectMaterials getObjectProxy getObjectTextures getObjectType ' +
-	        'getObjectViewDistance getOxygenRemaining getPersonUsedDLCs getPilotCameraDirection ' +
-	        'getPilotCameraPosition getPilotCameraRotation getPilotCameraTarget getPlayerChannel ' +
-	        'getPlayerScores getPlayerUID getPos getPosASL getPosASLVisual getPosASLW getPosATL ' +
-	        'getPosATLVisual getPosVisual getPosWorld getRelDir getRelPos getRemoteSensorsDisabled ' +
-	        'getRepairCargo getResolution getShadowDistance getShotParents getSlingLoad getSpeed getStamina ' +
-	        'getStatValue getSuppression getTerrainHeightASL getText getUnitLoadout getUnitTrait getVariable ' +
-	        'getVehicleCargo getWeaponCargo getWeaponSway getWPPos glanceAt globalChat globalRadio goggles ' +
-	        'goto group groupChat groupFromNetId groupIconSelectable groupIconsVisible groupId groupOwner ' +
-	        'groupRadio groupSelectedUnits groupSelectUnit grpNull gunner gusts halt handgunItems ' +
-	        'handgunMagazine handgunWeapon handsHit hasInterface hasPilotCamera hasWeapon hcAllGroups ' +
-	        'hcGroupParams hcLeader hcRemoveAllGroups hcRemoveGroup hcSelected hcSelectGroup hcSetGroup ' +
-	        'hcShowBar hcShownBar headgear hideBody hideObject hideObjectGlobal hideSelection hint hintC ' +
-	        'hintCadet hintSilent hmd hostMission htmlLoad HUDMovementLevels humidity image importAllGroups ' +
-	        'importance in inArea inAreaArray incapacitatedState independent inflame inflamed ' +
-	        'inGameUISetEventHandler inheritsFrom initAmbientLife inPolygon inputAction inRangeOfArtillery ' +
-	        'insertEditorObject intersect is3DEN is3DENMultiplayer isAbleToBreathe isAgent isArray ' +
-	        'isAutoHoverOn isAutonomous isAutotest isBleeding isBurning isClass isCollisionLightOn ' +
-	        'isCopilotEnabled isDedicated isDLCAvailable isEngineOn isEqualTo isEqualType isEqualTypeAll ' +
-	        'isEqualTypeAny isEqualTypeArray isEqualTypeParams isFilePatchingEnabled isFlashlightOn ' +
-	        'isFlatEmpty isForcedWalk isFormationLeader isHidden isInRemainsCollector ' +
-	        'isInstructorFigureEnabled isIRLaserOn isKeyActive isKindOf isLightOn isLocalized isManualFire ' +
-	        'isMarkedForCollection isMultiplayer isMultiplayerSolo isNil isNull isNumber isObjectHidden ' +
-	        'isObjectRTD isOnRoad isPipEnabled isPlayer isRealTime isRemoteExecuted isRemoteExecutedJIP ' +
-	        'isServer isShowing3DIcons isSprintAllowed isStaminaEnabled isSteamMission ' +
-	        'isStreamFriendlyUIEnabled isText isTouchingGround isTurnedOut isTutHintsEnabled isUAVConnectable ' +
-	        'isUAVConnected isUniformAllowed isVehicleCargo isWalking isWeaponDeployed isWeaponRested ' +
-	        'itemCargo items itemsWithMagazines join joinAs joinAsSilent joinSilent joinString kbAddDatabase ' +
-	        'kbAddDatabaseTargets kbAddTopic kbHasTopic kbReact kbRemoveTopic kbTell kbWasSaid keyImage ' +
-	        'keyName knowsAbout land landAt landResult language laserTarget lbAdd lbClear lbColor lbCurSel ' +
-	        'lbData lbDelete lbIsSelected lbPicture lbSelection lbSetColor lbSetCurSel lbSetData lbSetPicture ' +
-	        'lbSetPictureColor lbSetPictureColorDisabled lbSetPictureColorSelected lbSetSelectColor ' +
-	        'lbSetSelectColorRight lbSetSelected lbSetTooltip lbSetValue lbSize lbSort lbSortByValue lbText ' +
-	        'lbValue leader leaderboardDeInit leaderboardGetRows leaderboardInit leaveVehicle libraryCredits ' +
-	        'libraryDisclaimers lifeState lightAttachObject lightDetachObject lightIsOn lightnings limitSpeed ' +
-	        'linearConversion lineBreak lineIntersects lineIntersectsObjs lineIntersectsSurfaces ' +
-	        'lineIntersectsWith linkItem list listObjects ln lnbAddArray lnbAddColumn lnbAddRow lnbClear ' +
-	        'lnbColor lnbCurSelRow lnbData lnbDeleteColumn lnbDeleteRow lnbGetColumnsPosition lnbPicture ' +
-	        'lnbSetColor lnbSetColumnsPos lnbSetCurSelRow lnbSetData lnbSetPicture lnbSetText lnbSetValue ' +
-	        'lnbSize lnbText lnbValue load loadAbs loadBackpack loadFile loadGame loadIdentity loadMagazine ' +
-	        'loadOverlay loadStatus loadUniform loadVest local localize locationNull locationPosition lock ' +
-	        'lockCameraTo lockCargo lockDriver locked lockedCargo lockedDriver lockedTurret lockIdentity ' +
-	        'lockTurret lockWP log logEntities logNetwork logNetworkTerminate lookAt lookAtPos magazineCargo ' +
-	        'magazines magazinesAllTurrets magazinesAmmo magazinesAmmoCargo magazinesAmmoFull magazinesDetail ' +
-	        'magazinesDetailBackpack magazinesDetailUniform magazinesDetailVest magazinesTurret ' +
-	        'magazineTurretAmmo mapAnimAdd mapAnimClear mapAnimCommit mapAnimDone mapCenterOnCamera ' +
-	        'mapGridPosition markAsFinishedOnSteam markerAlpha markerBrush markerColor markerDir markerPos ' +
-	        'markerShape markerSize markerText markerType max members menuAction menuAdd menuChecked menuClear ' +
-	        'menuCollapse menuData menuDelete menuEnable menuEnabled menuExpand menuHover menuPicture ' +
-	        'menuSetAction menuSetCheck menuSetData menuSetPicture menuSetValue menuShortcut menuShortcutText ' +
-	        'menuSize menuSort menuText menuURL menuValue min mineActive mineDetectedBy missionConfigFile ' +
-	        'missionDifficulty missionName missionNamespace missionStart missionVersion mod modelToWorld ' +
-	        'modelToWorldVisual modParams moonIntensity moonPhase morale move move3DENCamera moveInAny ' +
-	        'moveInCargo moveInCommander moveInDriver moveInGunner moveInTurret moveObjectToEnd moveOut ' +
-	        'moveTime moveTo moveToCompleted moveToFailed musicVolume name nameSound nearEntities ' +
-	        'nearestBuilding nearestLocation nearestLocations nearestLocationWithDubbing nearestObject ' +
-	        'nearestObjects nearestTerrainObjects nearObjects nearObjectsReady nearRoads nearSupplies ' +
-	        'nearTargets needReload netId netObjNull newOverlay nextMenuItemIndex nextWeatherChange nMenuItems ' +
-	        'not numberToDate objectCurators objectFromNetId objectParent objNull objStatus onBriefingGroup ' +
-	        'onBriefingNotes onBriefingPlan onBriefingTeamSwitch onCommandModeChanged onDoubleClick ' +
-	        'onEachFrame onGroupIconClick onGroupIconOverEnter onGroupIconOverLeave onHCGroupSelectionChanged ' +
-	        'onMapSingleClick onPlayerConnected onPlayerDisconnected onPreloadFinished onPreloadStarted ' +
-	        'onShowNewObject onTeamSwitch openCuratorInterface openDLCPage openMap openYoutubeVideo opfor or ' +
-	        'orderGetIn overcast overcastForecast owner param params parseNumber parseText parsingNamespace ' +
-	        'particlesQuality pi pickWeaponPool pitch pixelGrid pixelGridBase pixelGridNoUIScale pixelH pixelW ' +
-	        'playableSlotsNumber playableUnits playAction playActionNow player playerRespawnTime playerSide ' +
-	        'playersNumber playGesture playMission playMove playMoveNow playMusic playScriptedMission ' +
-	        'playSound playSound3D position positionCameraToWorld posScreenToWorld posWorldToScreen ' +
-	        'ppEffectAdjust ppEffectCommit ppEffectCommitted ppEffectCreate ppEffectDestroy ppEffectEnable ' +
-	        'ppEffectEnabled ppEffectForceInNVG precision preloadCamera preloadObject preloadSound ' +
-	        'preloadTitleObj preloadTitleRsc preprocessFile preprocessFileLineNumbers primaryWeapon ' +
-	        'primaryWeaponItems primaryWeaponMagazine priority private processDiaryLink productVersion ' +
-	        'profileName profileNamespace profileNameSteam progressLoadingScreen progressPosition ' +
-	        'progressSetPosition publicVariable publicVariableClient publicVariableServer pushBack ' +
-	        'pushBackUnique putWeaponPool queryItemsPool queryMagazinePool queryWeaponPool rad radioChannelAdd ' +
-	        'radioChannelCreate radioChannelRemove radioChannelSetCallSign radioChannelSetLabel radioVolume ' +
-	        'rain rainbow random rank rankId rating rectangular registeredTasks registerTask reload ' +
-	        'reloadEnabled remoteControl remoteExec remoteExecCall remove3DENConnection remove3DENEventHandler ' +
-	        'remove3DENLayer removeAction removeAll3DENEventHandlers removeAllActions removeAllAssignedItems ' +
-	        'removeAllContainers removeAllCuratorAddons removeAllCuratorCameraAreas ' +
-	        'removeAllCuratorEditingAreas removeAllEventHandlers removeAllHandgunItems removeAllItems ' +
-	        'removeAllItemsWithMagazines removeAllMissionEventHandlers removeAllMPEventHandlers ' +
-	        'removeAllMusicEventHandlers removeAllOwnedMines removeAllPrimaryWeaponItems removeAllWeapons ' +
-	        'removeBackpack removeBackpackGlobal removeCuratorAddons removeCuratorCameraArea ' +
-	        'removeCuratorEditableObjects removeCuratorEditingArea removeDrawIcon removeDrawLinks ' +
-	        'removeEventHandler removeFromRemainsCollector removeGoggles removeGroupIcon removeHandgunItem ' +
-	        'removeHeadgear removeItem removeItemFromBackpack removeItemFromUniform removeItemFromVest ' +
-	        'removeItems removeMagazine removeMagazineGlobal removeMagazines removeMagazinesTurret ' +
-	        'removeMagazineTurret removeMenuItem removeMissionEventHandler removeMPEventHandler ' +
-	        'removeMusicEventHandler removeOwnedMine removePrimaryWeaponItem removeSecondaryWeaponItem ' +
-	        'removeSimpleTask removeSwitchableUnit removeTeamMember removeUniform removeVest removeWeapon ' +
-	        'removeWeaponGlobal removeWeaponTurret requiredVersion resetCamShake resetSubgroupDirection ' +
-	        'resistance resize resources respawnVehicle restartEditorCamera reveal revealMine reverse ' +
-	        'reversedMouseY roadAt roadsConnectedTo roleDescription ropeAttachedObjects ropeAttachedTo ' +
-	        'ropeAttachEnabled ropeAttachTo ropeCreate ropeCut ropeDestroy ropeDetach ropeEndPosition ' +
-	        'ropeLength ropes ropeUnwind ropeUnwound rotorsForcesRTD rotorsRpmRTD round runInitScript ' +
-	        'safeZoneH safeZoneW safeZoneWAbs safeZoneX safeZoneXAbs safeZoneY save3DENInventory saveGame ' +
-	        'saveIdentity saveJoysticks saveOverlay saveProfileNamespace saveStatus saveVar savingEnabled say ' +
-	        'say2D say3D scopeName score scoreSide screenshot screenToWorld scriptDone scriptName scriptNull ' +
-	        'scudState secondaryWeapon secondaryWeaponItems secondaryWeaponMagazine select selectBestPlaces ' +
-	        'selectDiarySubject selectedEditorObjects selectEditorObject selectionNames selectionPosition ' +
-	        'selectLeader selectMax selectMin selectNoPlayer selectPlayer selectRandom selectWeapon ' +
-	        'selectWeaponTurret sendAUMessage sendSimpleCommand sendTask sendTaskResult sendUDPMessage ' +
-	        'serverCommand serverCommandAvailable serverCommandExecutable serverName serverTime set ' +
-	        'set3DENAttribute set3DENAttributes set3DENGrid set3DENIconsVisible set3DENLayer ' +
-	        'set3DENLinesVisible set3DENMissionAttributes set3DENModelsVisible set3DENObjectType ' +
-	        'set3DENSelected setAccTime setAirportSide setAmmo setAmmoCargo setAnimSpeedCoef setAperture ' +
-	        'setApertureNew setArmoryPoints setAttributes setAutonomous setBehaviour setBleedingRemaining ' +
-	        'setCameraInterest setCamShakeDefParams setCamShakeParams setCamUseTi setCaptive setCenterOfMass ' +
-	        'setCollisionLight setCombatMode setCompassOscillation setCuratorCameraAreaCeiling setCuratorCoef ' +
-	        'setCuratorEditingAreaType setCuratorWaypointCost setCurrentChannel setCurrentTask ' +
-	        'setCurrentWaypoint setCustomAimCoef setDamage setDammage setDate setDebriefingText ' +
-	        'setDefaultCamera setDestination setDetailMapBlendPars setDir setDirection setDrawIcon ' +
-	        'setDropInterval setEditorMode setEditorObjectScope setEffectCondition setFace setFaceAnimation ' +
-	        'setFatigue setFlagOwner setFlagSide setFlagTexture setFog setFormation setFormationTask ' +
-	        'setFormDir setFriend setFromEditor setFSMVariable setFuel setFuelCargo setGroupIcon ' +
-	        'setGroupIconParams setGroupIconsSelectable setGroupIconsVisible setGroupId setGroupIdGlobal ' +
-	        'setGroupOwner setGusts setHideBehind setHit setHitIndex setHitPointDamage setHorizonParallaxCoef ' +
-	        'setHUDMovementLevels setIdentity setImportance setLeader setLightAmbient setLightAttenuation ' +
-	        'setLightBrightness setLightColor setLightDayLight setLightFlareMaxDistance setLightFlareSize ' +
-	        'setLightIntensity setLightnings setLightUseFlare setLocalWindParams setMagazineTurretAmmo ' +
-	        'setMarkerAlpha setMarkerAlphaLocal setMarkerBrush setMarkerBrushLocal setMarkerColor ' +
-	        'setMarkerColorLocal setMarkerDir setMarkerDirLocal setMarkerPos setMarkerPosLocal setMarkerShape ' +
-	        'setMarkerShapeLocal setMarkerSize setMarkerSizeLocal setMarkerText setMarkerTextLocal ' +
-	        'setMarkerType setMarkerTypeLocal setMass setMimic setMousePosition setMusicEffect ' +
-	        'setMusicEventHandler setName setNameSound setObjectArguments setObjectMaterial ' +
-	        'setObjectMaterialGlobal setObjectProxy setObjectTexture setObjectTextureGlobal ' +
-	        'setObjectViewDistance setOvercast setOwner setOxygenRemaining setParticleCircle setParticleClass ' +
-	        'setParticleFire setParticleParams setParticleRandom setPilotCameraDirection ' +
-	        'setPilotCameraRotation setPilotCameraTarget setPilotLight setPiPEffect setPitch setPlayable ' +
-	        'setPlayerRespawnTime setPos setPosASL setPosASL2 setPosASLW setPosATL setPosition setPosWorld ' +
-	        'setRadioMsg setRain setRainbow setRandomLip setRank setRectangular setRepairCargo ' +
-	        'setShadowDistance setShotParents setSide setSimpleTaskAlwaysVisible setSimpleTaskCustomData ' +
-	        'setSimpleTaskDescription setSimpleTaskDestination setSimpleTaskTarget setSimpleTaskType ' +
-	        'setSimulWeatherLayers setSize setSkill setSlingLoad setSoundEffect setSpeaker setSpeech ' +
-	        'setSpeedMode setStamina setStaminaScheme setStatValue setSuppression setSystemOfUnits ' +
-	        'setTargetAge setTaskResult setTaskState setTerrainGrid setText setTimeMultiplier setTitleEffect ' +
-	        'setTriggerActivation setTriggerArea setTriggerStatements setTriggerText setTriggerTimeout ' +
-	        'setTriggerType setType setUnconscious setUnitAbility setUnitLoadout setUnitPos setUnitPosWeak ' +
-	        'setUnitRank setUnitRecoilCoefficient setUnitTrait setUnloadInCombat setUserActionText setVariable ' +
-	        'setVectorDir setVectorDirAndUp setVectorUp setVehicleAmmo setVehicleAmmoDef setVehicleArmor ' +
-	        'setVehicleCargo setVehicleId setVehicleLock setVehiclePosition setVehicleTiPars setVehicleVarName ' +
-	        'setVelocity setVelocityTransformation setViewDistance setVisibleIfTreeCollapsed setWaves ' +
-	        'setWaypointBehaviour setWaypointCombatMode setWaypointCompletionRadius setWaypointDescription ' +
-	        'setWaypointForceBehaviour setWaypointFormation setWaypointHousePosition setWaypointLoiterRadius ' +
-	        'setWaypointLoiterType setWaypointName setWaypointPosition setWaypointScript setWaypointSpeed ' +
-	        'setWaypointStatements setWaypointTimeout setWaypointType setWaypointVisible ' +
-	        'setWeaponReloadingTime setWind setWindDir setWindForce setWindStr setWPPos show3DIcons showChat ' +
-	        'showCinemaBorder showCommandingMenu showCompass showCuratorCompass showGPS showHUD showLegend ' +
-	        'showMap shownArtilleryComputer shownChat shownCompass shownCuratorCompass showNewEditorObject ' +
-	        'shownGPS shownHUD shownMap shownPad shownRadio shownScoretable shownUAVFeed shownWarrant ' +
-	        'shownWatch showPad showRadio showScoretable showSubtitles showUAVFeed showWarrant showWatch ' +
-	        'showWaypoint showWaypoints side sideAmbientLife sideChat sideEmpty sideEnemy sideFriendly ' +
-	        'sideLogic sideRadio sideUnknown simpleTasks simulationEnabled simulCloudDensity ' +
-	        'simulCloudOcclusion simulInClouds simulWeatherSync sin size sizeOf skill skillFinal skipTime ' +
-	        'sleep sliderPosition sliderRange sliderSetPosition sliderSetRange sliderSetSpeed sliderSpeed ' +
-	        'slingLoadAssistantShown soldierMagazines someAmmo sort soundVolume spawn speaker speed speedMode ' +
-	        'splitString sqrt squadParams stance startLoadingScreen step stop stopEngineRTD stopped str ' +
-	        'sunOrMoon supportInfo suppressFor surfaceIsWater surfaceNormal surfaceType swimInDepth ' +
-	        'switchableUnits switchAction switchCamera switchGesture switchLight switchMove ' +
-	        'synchronizedObjects synchronizedTriggers synchronizedWaypoints synchronizeObjectsAdd ' +
-	        'synchronizeObjectsRemove synchronizeTrigger synchronizeWaypoint systemChat systemOfUnits tan ' +
-	        'targetKnowledge targetsAggregate targetsQuery taskAlwaysVisible taskChildren taskCompleted ' +
-	        'taskCustomData taskDescription taskDestination taskHint taskMarkerOffset taskNull taskParent ' +
-	        'taskResult taskState taskType teamMember teamMemberNull teamName teams teamSwitch ' +
-	        'teamSwitchEnabled teamType terminate terrainIntersect terrainIntersectASL text textLog ' +
-	        'textLogFormat tg time timeMultiplier titleCut titleFadeOut titleObj titleRsc titleText toArray ' +
-	        'toFixed toLower toString toUpper triggerActivated triggerActivation triggerArea ' +
-	        'triggerAttachedVehicle triggerAttachObject triggerAttachVehicle triggerStatements triggerText ' +
-	        'triggerTimeout triggerTimeoutCurrent triggerType turretLocal turretOwner turretUnit tvAdd tvClear ' +
-	        'tvCollapse tvCount tvCurSel tvData tvDelete tvExpand tvPicture tvSetCurSel tvSetData tvSetPicture ' +
-	        'tvSetPictureColor tvSetPictureColorDisabled tvSetPictureColorSelected tvSetPictureRight ' +
-	        'tvSetPictureRightColor tvSetPictureRightColorDisabled tvSetPictureRightColorSelected tvSetText ' +
-	        'tvSetTooltip tvSetValue tvSort tvSortByValue tvText tvTooltip tvValue type typeName typeOf ' +
-	        'UAVControl uiNamespace uiSleep unassignCurator unassignItem unassignTeam unassignVehicle ' +
-	        'underwater uniform uniformContainer uniformItems uniformMagazines unitAddons unitAimPosition ' +
-	        'unitAimPositionVisual unitBackpack unitIsUAV unitPos unitReady unitRecoilCoefficient units ' +
-	        'unitsBelowHeight unlinkItem unlockAchievement unregisterTask updateDrawIcon updateMenuItem ' +
-	        'updateObjectTree useAISteeringComponent useAudioTimeForMoves vectorAdd vectorCos ' +
-	        'vectorCrossProduct vectorDiff vectorDir vectorDirVisual vectorDistance vectorDistanceSqr ' +
-	        'vectorDotProduct vectorFromTo vectorMagnitude vectorMagnitudeSqr vectorMultiply vectorNormalized ' +
-	        'vectorUp vectorUpVisual vehicle vehicleCargoEnabled vehicleChat vehicleRadio vehicles ' +
-	        'vehicleVarName velocity velocityModelSpace verifySignature vest vestContainer vestItems ' +
-	        'vestMagazines viewDistance visibleCompass visibleGPS visibleMap visiblePosition ' +
-	        'visiblePositionASL visibleScoretable visibleWatch waves waypointAttachedObject ' +
-	        'waypointAttachedVehicle waypointAttachObject waypointAttachVehicle waypointBehaviour ' +
-	        'waypointCombatMode waypointCompletionRadius waypointDescription waypointForceBehaviour ' +
-	        'waypointFormation waypointHousePosition waypointLoiterRadius waypointLoiterType waypointName ' +
-	        'waypointPosition waypoints waypointScript waypointsEnabledUAV waypointShow waypointSpeed ' +
-	        'waypointStatements waypointTimeout waypointTimeoutCurrent waypointType waypointVisible ' +
-	        'weaponAccessories weaponAccessoriesCargo weaponCargo weaponDirection weaponInertia weaponLowered ' +
-	        'weapons weaponsItems weaponsItemsCargo weaponState weaponsTurret weightRTD west WFSideText wind',
-	      literal:
-	        'true false nil'
-	    },
-	    contains: [
-	      hljs.C_LINE_COMMENT_MODE,
-	      hljs.C_BLOCK_COMMENT_MODE,
-	      hljs.NUMBER_MODE,
-	      VARIABLE,
-	      FUNCTION,
-	      STRINGS,
-	      CPP.preprocessor
-	    ],
-	    illegal: /#/
-	  };
-	};
-
-/***/ },
-/* 202 */
-=======
-/* 170 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21126,15 +17970,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 171 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 204 */
-=======
-/* 171 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21176,15 +18012,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 172 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 205 */
-=======
-/* 172 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21240,15 +18068,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 173 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 206 */
-=======
-/* 173 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21695,53 +18515,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 174 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 207 */
-/***/ function(module, exports) {
-
-	module.exports = function(hljs) {
-	  var DETAILS = {
-	    className: 'string',
-	    begin: '\\[\n(multipart)?', end: '\\]\n'
-	  };
-	  var TIME = {
-	    className: 'string',
-	    begin: '\\d{4}-\\d{2}-\\d{2}(\\s+)\\d{2}:\\d{2}:\\d{2}\.\\d+Z'
-	  };
-	  var PROGRESSVALUE = {
-	    className: 'string',
-	    begin: '(\\+|-)\\d+'
-	  };
-	  var KEYWORDS = {
-	    className: 'keyword',
-	    relevance: 10,
-	    variants: [
-	      { begin: '^(test|testing|success|successful|failure|error|skip|xfail|uxsuccess)(:?)\\s+(test)?' },
-	      { begin: '^progress(:?)(\\s+)?(pop|push)?' },
-	      { begin: '^tags:' },
-	      { begin: '^time:' }
-	    ],
-	  };
-	  return {
-	    case_insensitive: true,
-	    contains: [
-	      DETAILS,
-	      TIME,
-	      PROGRESSVALUE,
-	      KEYWORDS
-	    ]
-	  };
-	};
-
-/***/ },
-/* 208 */
-=======
-/* 174 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21845,22 +18619,11 @@
 	        ]
 	      },
 	      {
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	        className: 'number',
-	        begin: ' (\\d+) '
-=======
->>>>>>> dev
 	        className: 'preprocessor', // @attributes
 	        begin: '(@assignment|@class_protocol|@exported|@final|@lazy|@noreturn|' +
 	                  '@NSCopying|@NSManaged|@objc|@optional|@required|@auto_closure|' +
 	                  '@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|' +
 	                  '@infix|@prefix|@postfix)'
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	      },
 	      {
 	        beginKeywords: 'import', end: /$/,
@@ -21871,15 +18634,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 175 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 212 */
-=======
-/* 175 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21945,15 +18700,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 176 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 213 */
-=======
-/* 176 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22012,15 +18759,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 177 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 214 */
-=======
-/* 177 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22059,15 +18798,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 178 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 215 */
-=======
-/* 178 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22155,15 +18886,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 179 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 216 */
-=======
-/* 179 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22224,15 +18947,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 180 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 217 */
-=======
-/* 180 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22240,19 +18955,8 @@
 	    keyword:
 	      'in if for while finally var new function|0 do return void else break catch ' +
 	      'instanceof with throw case default try this switch continue typeof delete ' +
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 	      'let yield const class public private get set super ' +
 	      'static implements enum export import declare type protected',
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-	      'let yield const class public private protected get set super ' +
-	      'static implements enum export import declare type namespace abstract ' +
-	      'as from extends async await',
-=======
-	      'let yield const class public private get set super ' +
-	      'static implements enum export import declare type protected',
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 	    literal:
 	      'true false null undefined NaN Infinity',
 	    built_in:
@@ -22345,15 +19049,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 181 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 218 */
-=======
-/* 181 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22412,15 +19108,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 182 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 219 */
-=======
-/* 182 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22480,15 +19168,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 183 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 220 */
-=======
-/* 183 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22531,15 +19211,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 184 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 221 */
-=======
-/* 184 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22555,15 +19227,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 185 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 222 */
-=======
-/* 185 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22617,15 +19281,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 186 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 223 */
-=======
-/* 186 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22685,15 +19341,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 187 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 224 */
-=======
-/* 187 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22760,15 +19408,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 188 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 225 */
-=======
-/* 188 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22908,15 +19548,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 189 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 226 */
-=======
-/* 189 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23007,15 +19639,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 190 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 227 */
-=======
-/* 190 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23092,15 +19716,7 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 191 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 228 */
-=======
-/* 191 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -23211,32 +19827,12 @@
 	};
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 192 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 229 */
-=======
-/* 192 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */
-=======
->>>>>>> dev
 /* 193 */,
 /* 194 */,
 /* 195 */,
@@ -23244,52 +19840,24 @@
 /* 197 */,
 /* 198 */,
 /* 199 */
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
-=======
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 200 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 237 */
-=======
-/* 200 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 201 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 238 */
-=======
-/* 201 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-<<<<<<< 127c98b5d1dcdb88657d12dae9ece0244a39cfe3
 /* 202 */
-=======
-<<<<<<< 23011ff8eece4439b370e50b290d2f393123feeb:docs/demo/js/mditor.js
-/* 239 */
-=======
-/* 202 */
->>>>>>> dev:build/dist/js/mditor.js
->>>>>>> dev
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"scroll\" m:on:changed=\"onChanged\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
