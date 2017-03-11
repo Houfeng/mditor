@@ -8,13 +8,13 @@ Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 mar
 
 支持浏览器: chrome/safari/firefox/ie9+
 
+![image](http://embed.mditor.com/images/mditor.png)
+
 ## 在线体验
 [在线 demo](http://embed.mditor.com/demo/index.html)  
 
 ## 使用桌面版
 下载桌面版本 [http://mditor.com/](http://mditor.com/)
-
-![image](http://embed.mditor.com/images/mditor.png)
   
 ## 在浏览器集成 Mditor
 
