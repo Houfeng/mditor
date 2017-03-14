@@ -38,7 +38,13 @@
 			console.log('mditor', mditor);
 			console.log('toolbar', mditor.toolbar);
 			mditor.on('changed', function(){
-				console.log('changed',mditor.value);
+				//console.log('changed',mditor.value);
+			});
+			mditor.editor.on('drop',function(event){
+				console.log('drop',event);
+			});
+			mditor.editor.on('paste',function(event){
+				console.log('paste',event.clipboardData.types);
 			});
 		});
 	</script>

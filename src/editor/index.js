@@ -21,6 +21,20 @@ module.exports = new mokit.Component({
     }, 0);
   },
 
+  onPaste(event) {
+    this.$emit('paste', event);
+  },
+
+  onDragover(event) {
+    event.preventDefault();
+    this.$emit('dragover', event);
+  },
+
+  onDrop(event) {
+    event.preventDefault();
+    this.$emit('drop', event);
+  },
+
   focus() {
     this.$element.focus();
   },
@@ -29,7 +43,7 @@ module.exports = new mokit.Component({
     this.$element.blur();
   },
 
-  scroll(event) {
+  onScroll(event) {
     this.$emit('scroll', event);
   },
 

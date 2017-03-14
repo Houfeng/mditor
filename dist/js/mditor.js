@@ -3919,13 +3919,24 @@
 	      /*istanbul ignore next*/_this.$emit('changed');
 	    }, 0);
 	  },
+	  /*istanbul ignore next*/onPaste: function onPaste(event) {
+	    this.$emit('paste', event);
+	  },
+	  /*istanbul ignore next*/onDragover: function onDragover(event) {
+	    event.preventDefault();
+	    this.$emit('dragover', event);
+	  },
+	  /*istanbul ignore next*/onDrop: function onDrop(event) {
+	    event.preventDefault();
+	    this.$emit('drop', event);
+	  },
 	  /*istanbul ignore next*/focus: function focus() {
 	    this.$element.focus();
 	  },
 	  /*istanbul ignore next*/blur: function blur() {
 	    this.$element.blur();
 	  },
-	  /*istanbul ignore next*/scroll: function scroll(event) {
+	  /*istanbul ignore next*/onScroll: function onScroll(event) {
 	    this.$emit('scroll', event);
 	  },
 	  /*istanbul ignore next*/getValue: function getValue() {
@@ -4085,7 +4096,7 @@
 /* 47 */
 /***/ function(module, exports) {
 
-	module.exports = "<textarea class=\"editor\" m:model=\"value\" m:on:scroll=\"scroll\" m:on:input=\"onChanged\"></textarea>"
+	module.exports = "<textarea class=\"editor\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\" m:on:scroll=\"onScroll\" m:on:input=\"onChanged\"></textarea>"
 
 /***/ },
 /* 48 */
