@@ -1,3 +1,7 @@
+/*!
+ * Mditor embed version 1.0.14
+ * Homepage: http://mditor.com
+ */
 .mditor .toolbar {
   margin: 0px;
   padding: 4px;
@@ -71,6 +75,12 @@
 .mditor .viewer .markdown-body {
   max-width: 900px;
   margin: auto;
+}
+.mditor .viewer .markdown-body > ul {
+  list-style-type: initial;
+}
+.mditor .viewer .markdown-body > ol {
+  list-style-type: decimal;
 }
 .mditor .viewer .alert {
   color: #ddd;
@@ -3257,9 +3267,10 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 .mditor .body.active {
   border: 1px solid #aaa;
 }
-.mditor.split .viewer,
-.mditor.split .editor {
+.mditor.split .editor,
+.mditor.split .viewer {
   width: 50%;
+  float: left;
 }
 .mditor.split .editor {
   border-right: 1px solid #ddd;

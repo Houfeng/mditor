@@ -1,3 +1,7 @@
+/*!
+ * Mditor embed version 1.0.14
+ * Homepage: http://mditor.com
+ */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
