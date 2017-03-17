@@ -61,6 +61,10 @@ const Mditor = new mokit.Component({
     };
   },
 
+  find(text) {
+    this.finder.show(text);
+  },
+
   syncScroll() {
     if (!this.split || this.preview) return;
     let offsetHeight = this.editor.textarea.offsetHeight;

@@ -53,18 +53,19 @@
 	var mokit = __webpack_require__(1);
 	var Toolbar = __webpack_require__(40);
 	var Editor = __webpack_require__(45);
-	var Viewer = __webpack_require__(48);
-	var Shortcut = __webpack_require__(51);
-	var Parser = __webpack_require__(53);
-	var marked = __webpack_require__(54);
+	var Viewer = __webpack_require__(49);
+	var Finder = __webpack_require__(52);
+	var Shortcut = __webpack_require__(55);
+	var Parser = __webpack_require__(57);
+	var marked = __webpack_require__(58);
 	
-	__webpack_require__(229);
-	__webpack_require__(236);
-	__webpack_require__(237);
-	__webpack_require__(238);
+	__webpack_require__(233);
+	__webpack_require__(240);
+	__webpack_require__(241);
+	__webpack_require__(242);
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(239),
+	  template: __webpack_require__(243),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -95,7 +96,8 @@
 	  components: {
 	    Toolbar: Toolbar,
 	    Editor: Editor,
-	    Viewer: Viewer
+	    Viewer: Viewer,
+	    Finder: Finder
 	  },
 	
 	  props: {
@@ -112,12 +114,15 @@
 	      value: ''
 	    };
 	  },
-	  /*istanbul ignore next*/scroll: function scroll() {
+	  /*istanbul ignore next*/find: function find(text) {
+	    this.finder.show(text);
+	  },
+	  /*istanbul ignore next*/syncScroll: function syncScroll() {
 	    if (!this.split || this.preview) return;
-	    var offsetHeight = this.editor.$element.offsetHeight;
-	    var editorScrollHeight = this.editor.$element.scrollHeight;
+	    var offsetHeight = this.editor.textarea.offsetHeight;
+	    var editorScrollHeight = this.editor.textarea.scrollHeight;
 	    var viewerScrollHeight = this.viewer.$element.scrollHeight;
-	    var editorScrollTop = this.editor.$element.scrollTop;
+	    var editorScrollTop = this.editor.textarea.scrollTop;
 	    var viewerScrollTop = editorScrollTop * (viewerScrollHeight - offsetHeight) / (editorScrollHeight - offsetHeight);
 	    this.viewer.$element.scrollTop = viewerScrollTop;
 	  },
@@ -174,7 +179,7 @@
 	    this.commands = this.commands || {};
 	    this.commands[item.name] = item;
 	    if (item.key) {
-	      this.shortcut.bind(item.key, item.name);
+	      this.shortcut.bind(item.key, item.name, item.allowDefault, item.owner);
 	    }
 	  },
 	  /*istanbul ignore next*/removeCommand: function removeCommand(name) {
@@ -3902,19 +3907,26 @@
 	
 	var mokit = __webpack_require__(1);
 	var EventEmitter = mokit.EventEmitter;
+	var utils = __webpack_require__(46);
 	
-	__webpack_require__(46);
+	__webpack_require__(47);
+	
+	var ua = window.navigator.userAgent.toLowerCase();
+	var isIE = !!ua.match(/msie|trident\/7|edge/);
+	var isWinPhone = ua.indexOf('windows phone') !== -1;
+	var isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
 	
 	module.exports = new mokit.Component({
-	  template: __webpack_require__(47),
+	  template: __webpack_require__(48),
 	
 	  props: {
 	    mditor: null,
-	    value: null
+	    value: null,
+	    markExp: null
 	  },
 	
 	  /*istanbul ignore next*/onReady: function onReady() {
-	    this.$elementEmitter = new EventEmitter(this.$element);
+	    this.textareaEmitter = new EventEmitter(this.textarea);
 	  },
 	  /*istanbul ignore next*/onChanged: function onChanged() {
 	    /*istanbul ignore next*/var _this = this;
@@ -3935,22 +3947,67 @@
 	    this.$emit('drop', event);
 	  },
 	  /*istanbul ignore next*/focus: function focus() {
-	    this.$element.focus();
+	    this.textarea.focus();
 	  },
 	  /*istanbul ignore next*/blur: function blur() {
-	    this.$element.blur();
+	    this.textarea.blur();
 	  },
 	  /*istanbul ignore next*/onScroll: function onScroll(event) {
+	    this.syncScroll();
 	    this.$emit('scroll', event);
 	  },
+	  /*istanbul ignore next*/syncScroll: function syncScroll() {
+	    /*istanbul ignore next*/var _this2 = this;
+	
+	    this.backdrop.scrollTop = this.textarea.scrollTop;
+	    this.backdrop.scrollLeft = this.textarea.scrollLeft;
+	    setTimeout(function () {
+	      /*istanbul ignore next*/_this2.backdrop.scrollTop = /*istanbul ignore next*/_this2.textarea.scrollTop;
+	      /*istanbul ignore next*/_this2.backdrop.scrollLeft = /*istanbul ignore next*/_this2.textarea.scrollLeft;
+	    }, 0);
+	  },
+	  /*istanbul ignore next*/applyHighlights: function applyHighlights(text) {
+	    if (!text || !this.markExp) return;
+	    text = text.replace(/\n$/g, '\n\n').replace(this.markExp, '<mark>$&</mark>');
+	    if (isIE) {
+	      // IE wraps whitespace differently in a div vs textarea, this fixes it
+	      text = text.replace(/ /g, ' <wbr>');
+	    }
+	    return text;
+	  },
+	  /*istanbul ignore next*/activeMark: function activeMark(index) {
+	    var marks = [].slice.call(this.backdrop.querySelectorAll('mark'));
+	    if (marks.length < 1) return;
+	    this.activeMarkIndex = utils.isNull(this.activeMarkIndex) ? -1 : this.activeMarkIndex;
+	    if (utils.isNull(index)) {
+	      this.activeMarkIndex++;
+	    } else {
+	      this.activeMarkIndex = index;
+	    }
+	    if (this.activeMarkIndex >= marks.length) {
+	      this.activeMarkIndex = 0;
+	    }
+	    marks.forEach(function (mark) {
+	      mark.classList.remove('active');
+	    });
+	    var activeMark = marks[this.activeMarkIndex];
+	    activeMark.classList.add('active');
+	    this.scrollToMark(activeMark);
+	  },
+	  /*istanbul ignore next*/scrollToMark: function scrollToMark(mark) {
+	    // mark.scrollIntoView();
+	    // this.textarea.scrollTop = this.backdrop.scrollTop;
+	    // this.textarea.scrollTop -= 20;
+	    this.textarea.scrollTop = mark.offsetTop - 20;
+	  },
 	  /*istanbul ignore next*/getValue: function getValue() {
-	    return this.$element.value;
+	    return this.textarea.value;
 	  },
 	  /*istanbul ignore next*/setValue: function setValue(value) {
-	    this.$element.value = value;
+	    this.textarea.value = value;
 	  },
 	  /*istanbul ignore next*/getActiveElement: function getActiveElement() {
-	    this.$element.focus();
+	    this.textarea.focus();
 	    return document.activeElement;
 	  },
 	  /*istanbul ignore next*/getSelectRange: function getSelectRange() {
@@ -3976,7 +4033,7 @@
 	    if (range.end == range.start) {
 	      this.setSelectRange(range.start, range.end + text.length);
 	    }
-	    this.$elementEmitter.emit('input');
+	    this.textareaEmitter.emit('input');
 	  },
 	  /*istanbul ignore next*/wrapSelectText: function wrapSelectText(before, after) {
 	    before = before !== null && before !== undefined ? before : '';
@@ -4009,12 +4066,12 @@
 	    return value.substring(start, end).lastIndexOf(char);
 	  },
 	  /*istanbul ignore next*/getBeforeWord: function getBeforeWord() {
-	    /*istanbul ignore next*/var _this2 = this;
+	    /*istanbul ignore next*/var _this3 = this;
 	
 	    var chars = [' ', '\t', this.mditor.EOL];
 	    var start = 0;
 	    chars.forEach(function (char) {
-	      var index = /*istanbul ignore next*/_this2.getBeforeFirstCharIndex(char);
+	      var index = /*istanbul ignore next*/_this3.getBeforeFirstCharIndex(char);
 	      if (index + char.length > start) {
 	        start = index + char.length;
 	      }
@@ -4043,7 +4100,7 @@
 	    this.setSelectRange(start, range.end);
 	  },
 	  /*istanbul ignore next*/addIndent: function addIndent() {
-	    /*istanbul ignore next*/var _this3 = this;
+	    /*istanbul ignore next*/var _this4 = this;
 	
 	    var selectText = this.getSelectText();
 	    if (selectText.length < 1) {
@@ -4054,7 +4111,7 @@
 	    var buffer = [];
 	    var lineCount = textArray.length - 1;
 	    textArray.forEach(function (line, index) {
-	      line = line.trim() !== '' ? /*istanbul ignore next*/_this3.mditor.INDENT + line : line;
+	      line = line.trim() !== '' ? /*istanbul ignore next*/_this4.mditor.INDENT + line : line;
 	      if (index < lineCount || line.trim() !== '') {
 	        buffer.push(line);
 	      }
@@ -4062,7 +4119,7 @@
 	    this.setSelectText(buffer.join(this.mditor.EOL));
 	  },
 	  /*istanbul ignore next*/removeIndent: function removeIndent() {
-	    /*istanbul ignore next*/var _this4 = this;
+	    /*istanbul ignore next*/var _this5 = this;
 	
 	    var indentRegExp = new RegExp('^' + this.mditor.INDENT);
 	    var selectText = this.getSelectText();
@@ -4078,7 +4135,7 @@
 	    var buffer = [];
 	    textArray.forEach(function (line) {
 	      if (indentRegExp.test(line)) {
-	        line = line.replace( /*istanbul ignore next*/_this4.mditor.INDENT, '');
+	        line = line.replace( /*istanbul ignore next*/_this5.mditor.INDENT, '');
 	      }
 	      buffer.push(line);
 	    });
@@ -4092,28 +4149,681 @@
 
 /***/ },
 /* 46 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// removed by extract-text-webpack-plugin
+	(function (ntils) {
+	
+	  /**
+	   * 空函数
+	   */
+	  ntils.noop = function () { };
+	
+	  /**
+	   * 验证一个对象是否为NULL
+	   * @method isNull
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isNull = function (obj) {
+	    return obj === null || typeof obj === "undefined";
+	  };
+	
+	  /**
+	   * 除去字符串两端的空格
+	   * @method trim
+	   * @param  {String} str 源字符串
+	   * @return {String}     结果字符串
+	   * @static
+	   */
+	  ntils.trim = function (str) {
+	    if (this.isNull(str)) return str;
+	    if (str.trim) {
+	      return str.trim();
+	    } else {
+	      return str.replace(/(^[\\s]*)|([\\s]*$)/g, "");
+	    }
+	  };
+	
+	  /**
+	   * 替换所有
+	   * @method replace
+	   * @param {String} str 源字符串
+	   * @param {String} str1 要替换的字符串
+	   * @param {String} str2 替换为的字符串
+	   * @static
+	   */
+	  ntils.replace = function (str, str1, str2) {
+	    if (this.isNull(str)) return str;
+	    return str.replace(new RegExp(str1, 'g'), str2);
+	  };
+	
+	  /**
+	   * 从字符串开头匹配
+	   * @method startWith
+	   * @param {String} str1 源字符串
+	   * @param {String} str2 要匹配的字符串
+	   * @return {Boolean} 匹配结果
+	   * @static
+	   */
+	  ntils.startWith = function (str1, str2) {
+	    if (this.isNull(str1) || this.isNull(str2)) return false;
+	    return str1.indexOf(str2) === 0;
+	  };
+	
+	  /**
+	   * 是否包含
+	   * @method contains
+	   * @param {String} str1 源字符串
+	   * @param {String} str2 检查包括字符串
+	   * @return {Boolean} 结果
+	   * @static
+	   */
+	  ntils.contains = function (str1, str2) {
+	    var self = this;
+	    if (this.isNull(str1) || this.isNull(str2)) return false;
+	    return str1.indexOf(str2) > -1;
+	  };
+	
+	  /**
+	   * 从字符串结束匹配
+	   * @method endWidth
+	   * @param {String} str1 源字符串
+	   * @param {String} str2 匹配字符串
+	   * @return {Boolean} 匹配结果
+	   * @static
+	   */
+	  ntils.endWith = function (str1, str2) {
+	    if (this.isNull(str1) || this.isNull(str2)) return false;
+	    return str1.indexOf(str2) === (str1.length - str2.length);
+	  };
+	
+	  /**
+	   * 是否包含属性
+	   * @method hasProperty
+	   * @param  {Object}  obj  对象
+	   * @param  {String}  name 属性名
+	   * @return {Boolean}      结果
+	   * @static
+	   */
+	  ntils.has = ntils.hasProperty = function (obj, name) {
+	    if (this.isNull(obj) || this.isNull(name)) return false;
+	    return (name in obj) || (obj.hasOwnProperty(name));
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Function
+	   * @method isFunction
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isFunction = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === "function";
+	  };
+	
+	  /**
+	   * 验证一个对象是否为String
+	   * @method isString
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isString = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === 'string' || obj instanceof String;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Number
+	   * @method isNumber
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isNumber = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === 'number' || obj instanceof Number;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Boolean
+	   * @method isBoolean
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isBoolean = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === 'boolean' || obj instanceof Boolean;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为HTML Element
+	   * @method isElement
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isElement = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    if (window.Element) {
+	      return obj instanceof Element;
+	    } else {
+	      return (obj.tagName && obj.nodeType && obj.nodeName && obj.attributes && obj.ownerDocument);
+	    }
+	  };
+	
+	  /**
+	   * 验证一个对象是否为HTML Text Element
+	   * @method isText
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isText = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return obj instanceof Text;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Object
+	   * @method isObject
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isObject = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === "object";
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Array或伪Array
+	   * @method isArray
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isArray = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    var v1 = Object.prototype.toString.call(obj) === '[object Array]';
+	    var v2 = obj instanceof Array;
+	    var v3 = !this.isString(obj) && this.isNumber(obj.length) && this.isFunction(obj.splice);
+	    var v4 = !this.isString(obj) && this.isNumber(obj.length) && obj[0];
+	    return v1 || v2 || v3 || v4;
+	  };
+	
+	  /**
+	   * 验证是不是一个日期对象
+	   * @method isDate
+	   * @param {Object} val   要检查的对象
+	   * @return {Boolean}           结果
+	   * @static
+	   */
+	  ntils.isDate = function (val) {
+	    if (this.isNull(val)) return false;
+	    return val instanceof Date;
+	  };
+	
+	  /**
+	   * 验证是不是一个正则对象
+	   * @method isDate
+	   * @param {Object} val   要检查的对象
+	   * @return {Boolean}           结果
+	   * @static
+	   */
+	  ntils.isRegexp = function (val) {
+	    return val instanceof RegExp;
+	  };
+	
+	  /**
+	   * 转换为数组
+	   * @method toArray
+	   * @param {Array|Object} array 伪数组
+	   * @return {Array} 转换结果数组
+	   * @static
+	   */
+	  ntils.toArray = function (array) {
+	    if (this.isNull(array)) return [];
+	    return Array.prototype.slice.call(array);
+	  };
+	
+	  /**
+	   * 转为日期格式
+	   * @method toDate
+	   * @param {Number|String} val 日期字符串或整型数值
+	   * @return {Date} 日期对象
+	   * @static
+	   */
+	  ntils.toDate = function (val) {
+	    var self = this;
+	    if (self.isNumber(val))
+	      return new Date(val);
+	    else if (self.isString(val))
+	      return new Date(self.replace(self.replace(val, '-', '/'), 'T', ' '));
+	    else if (self.isDate(val))
+	      return val;
+	    else
+	      return null;
+	  };
+	
+	  /**
+	   * 遍历一个对像或数组
+	   * @method each
+	   * @param  {Object or Array}   obj  要遍历的数组或对象
+	   * @param  {Function} fn            处理函数
+	   * @return {void}                   无返回值
+	   * @static
+	   */
+	  ntils.each = function (list, handler, scope) {
+	    if (this.isNull(list) || this.isNull(handler)) return;
+	    if (this.isArray(list)) {
+	      var listLength = list.length;
+	      for (var i = 0; i < listLength; i++) {
+	        var rs = handler.call(scope || list[i], i, list[i]);
+	        if (!this.isNull(rs)) return rs;
+	      }
+	    } else {
+	      for (var key in list) {
+	        var rs = handler.call(scope || list[key], key, list[key]);
+	        if (!this.isNull(rs)) return rs;
+	      }
+	    }
+	  };
+	
+	  /**
+	   * 格式化日期
+	   * @method formatDate
+	   * @param {Date|String|Number} date 日期
+	   * @param {String} format 格式化字符串
+	   * @param {object} dict 反译字典
+	   * @return {String} 格式化结果
+	   * @static
+	   */
+	  ntils.formatDate = function (date, format, dict) {
+	    if (this.isNull(format) || this.isNull(date)) return date;
+	    date = this.toDate(date);
+	    dict = dict || {};
+	    var placeholder = {
+	      "M+": date.getMonth() + 1, //month
+	      "d+": date.getDate(), //day
+	      "h+": date.getHours(), //hour
+	      "m+": date.getMinutes(), //minute
+	      "s+": date.getSeconds(), //second
+	      "w+": date.getDay(), //week
+	      "q+": Math.floor((date.getMonth() + 3) / 3), //quarter
+	      "S": date.getMilliseconds() //millisecond
+	    }
+	    if (/(y+)/.test(format)) {
+	      format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+	    }
+	    for (var key in placeholder) {
+	      if (new RegExp("(" + key + ")").test(format)) {
+	        var value = placeholder[key];
+	        value = dict[value] || value;
+	        format = format.replace(RegExp.$1, RegExp.$1.length == 1
+	          ? value : ("00" + value).substr(("" + value).length));
+	      }
+	    }
+	    return format;
+	  };
+	
+	  /**
+	   * 拷贝对象
+	   * @method copy
+	   * @param {Object} src 源对象
+	   * @param {Object} dst 目标对象
+	   * @static
+	   */
+	  ntils.copy = function (src, dst, igonres) {
+	    dst = dst || (this.isArray(src) ? [] : {});
+	    this.each(src, function (key) {
+	      if (igonres && igonres.indexOf(key) > -1) return;
+	      delete dst[key];
+	      if (Object.getOwnPropertyDescriptor) {
+	        try {
+	          Object.defineProperty(dst, key, Object.getOwnPropertyDescriptor(src, key));
+	        } catch (ex) {
+	          dst[key] = src[key];
+	        }
+	      } else {
+	        dst[key] = src[key];
+	      }
+	    })
+	    return dst;
+	  };
+	
+	  /**
+	   * 深度克隆对象
+	   * @method clone
+	   * @param {Object} src 源对象
+	   * @return {Object} 新对象
+	   * @static
+	   */
+	  ntils.clone = function (src, igonres) {
+	    if (this.isNull(src) ||
+	      this.isString(src) ||
+	      this.isNumber(src) ||
+	      this.isBoolean(src) ||
+	      this.isDate(src)) {
+	      return src;
+	    }
+	    var objClone = src;
+	    try {
+	      objClone = new src.constructor();
+	    } catch (ex) { }
+	    this.each(src, function (key, value) {
+	      if (objClone[key] != value && !this.contains(igonres, key)) {
+	        if (this.isObject(value)) {
+	          objClone[key] = this.clone(value, igonres);
+	        } else {
+	          objClone[key] = value;
+	        }
+	      }
+	    }, this);
+	    ['toString', 'valueOf'].forEach(function (key) {
+	      if (this.contains(igonres, key)) return;
+	      this.defineFreezeProp(objClone, key, src[key]);
+	    }, this);
+	    return objClone;
+	  };
+	
+	  /**
+	   * 合并对象
+	   * @method mix
+	   * @return 合并后的对象
+	   * @param {Object} dst 目标对象
+	   * @param {Object} src 源对象
+	   * @param {Array} igonres 忽略的属性名,
+	   * @param {Number} mode 模式
+	   */
+	  ntils.mix = function (dst, src, igonres, mode) {
+	    //根据模式来判断，默认是Obj to Obj的  
+	    if (mode) {
+	      switch (mode) {
+	        case 1: // proto to proto  
+	          return ntils.mix(dst.prototype, src.prototype, igonres, 0);
+	        case 2: // object to object and proto to proto  
+	          ntils.mix(dst.prototype, src.prototype, igonres, 0);
+	          break; // pass through  
+	        case 3: // proto to static  
+	          return ntils.mix(dst, src.prototype, igonres, 0);
+	        case 4: // static to proto  
+	          return ntils.mix(dst.prototype, src, igonres, 0);
+	        default: // object to object is what happens below  
+	      }
+	    }
+	    //---
+	    src = src || {};
+	    dst = dst || (this.isArray(src) ? [] : {});
+	    this.keys(src).forEach(function (key) {
+	      if (this.contains(igonres, key)) return;
+	      if (this.isObject(src[key]) &&
+	        (src[key].constructor == Object ||
+	          src[key].constructor == Array ||
+	          src[key].constructor == null)) {
+	        dst[key] = ntils.mix(dst[key], src[key], igonres, 0);
+	      } else {
+	        dst[key] = src[key];
+	      }
+	    }, this);
+	    return dst;
+	  };
+	
+	  /**
+	   * 定义不可遍历的属性
+	   **/
+	  ntils.defineFreezeProp = function (obj, name, value) {
+	    try {
+	      Object.defineProperty(obj, name, {
+	        value: value,
+	        enumerable: false,
+	        configurable: true, //能不能重写定义
+	        writable: false //能不能用「赋值」运算更改
+	      });
+	    } catch (err) {
+	      obj[name] = value;
+	    }
+	  };
+	
+	  /**
+	   * 获取所有 key 
+	   */
+	  ntils.keys = function (obj) {
+	    if (Object.keys) return Object.keys(obj);
+	    var keys = [];
+	    this.each(obj, function (key) {
+	      keys.push(key);
+	    });
+	    return keys;
+	  };
+	
+	  /**
+	   * 创建一个对象
+	   */
+	  ntils.create = function (proto, props) {
+	    if (Object.create) return Object.create(proto, props);
+	    var Cotr = function () { };
+	    Cotr.prototype = proto;
+	    var obj = new Cotr();
+	    if (props) this.copy(props, obj);
+	    return obj;
+	  };
+	
+	  /**
+	   * 设置 proto
+	   * 在不支持 setPrototypeOf 也不支持 __proto__ 的浏览器
+	   * 中，会采用 copy 方式
+	   */
+	  ntils.setPrototypeOf = function (obj, proto) {
+	    if (Object.setPrototypeOf) {
+	      return Object.setPrototypeOf(obj, proto || this.create(null));
+	    } else {
+	      if (!('__proto__' in Object)) this.copy(proto, obj);
+	      obj.__proto__ = proto;
+	    }
+	  };
+	
+	  /**
+	   * 获取 proto
+	   */
+	  ntils.getPrototypeOf = function (obj) {
+	    if (obj.__proto__) return obj.__proto__;
+	    if (Object.getPrototypeOf) return Object.getPrototypeOf(obj);
+	    if (obj.constructor) return obj.constructor.prototype;
+	  };
+	
+	  /**
+	   * 是否深度相等
+	   */
+	  ntils.deepEqual = function (a, b) {
+	    if (a === b) return true;
+	    if (!this.isObject(a) || !this.isObject(b)) return false;
+	    var aKeys = this.keys(a);
+	    var bKeys = this.keys(b);
+	    if (aKeys.length !== bKeys.length) return false;
+	    var allKeys = aKeys.concat(bKeys);
+	    var checkedMap = this.create(null);
+	    var result = true;
+	    this.each(allKeys, function (i, key) {
+	      if (checkedMap[key]) return;
+	      if (!this.deepEqual(a[key], b[key])) result = false;
+	      checkedMap[key] = true;
+	    }, this);
+	    return result;
+	  };
+	
+	  /**
+	   * 从一个数值循环到别一个数
+	   * @param {number} fromNum 开始数值
+	   * @param {Number} toNum 结束数值
+	   * @param {Number} step 步长值
+	   * @param {function} handler 执行函数
+	   * @returns {void} 无返回
+	   */
+	  ntils.fromTo = function (fromNum, toNum, step, handler) {
+	    if (!handler) handler = [step, step = handler][0];
+	    step = Math.abs(step || 1);
+	    if (fromNum < toNum) {
+	      for (var i = fromNum; i <= toNum; i += step) handler(i);
+	    } else {
+	      for (var i = fromNum; i >= toNum; i -= step) handler(i);
+	    }
+	  };
+	
+	  /**
+	   * 生成一个Guid
+	   * @method newGuid
+	   * @return {String} GUID字符串
+	   * @static
+	   */
+	  ntils.newGuid = function () {
+	    var S4 = function () {
+	      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+	    };
+	    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+	  };
+	
+	  /**
+	   * 对象变换
+	   **/
+	  ntils.map = function (list, fn) {
+	    var buffer = this.isArray(list) ? [] : {};
+	    this.each(list, function (name, value) {
+	      buffer[name] = fn(name, value);
+	    });
+	    return buffer;
+	  };
+	
+	  /**
+	   * 通过路径设置属性值
+	   */
+	  ntils.setByPath = function (obj, path, value) {
+	    if (this.isNull(obj) || this.isNull(path) || path === '') {
+	      return;
+	    }
+	    if (!this.isArray(path)) {
+	      path = path.replace(/\[/, '.').replace(/\]/, '.').split('.');
+	    }
+	    this.each(path, function (index, name) {
+	      if (this.isNull(name) || name.length < 1) return;
+	      if (index === path.length - 1) {
+	        obj[name] = value;
+	      } else {
+	        obj[name] = obj[name] || {};
+	        obj = obj[name];
+	      }
+	    }, this);
+	  };
+	
+	  /**
+	   * 通过路径获取属性值
+	   */
+	  ntils.getByPath = function (obj, path) {
+	    if (this.isNull(obj) || this.isNull(path) || path === '') {
+	      return obj;
+	    }
+	    if (!this.isArray(path)) {
+	      path = path.replace(/\[/, '.').replace(/\]/, '.').split('.');
+	    }
+	    this.each(path, function (index, name) {
+	      if (this.isNull(name) || name.length < 1) return;
+	      if (!this.isNull(obj)) obj = obj[name];
+	    }, this);
+	    return obj;
+	  };
+	
+	  /**
+	   * 数组去重
+	   **/
+	  ntils.unique = function (array) {
+	    if (this.isNull(array)) return array;
+	    var newArray = [];
+	    this.each(array, function (i, value) {
+	      if (newArray.indexOf(value) > -1) return;
+	      newArray.push(value);
+	    });
+	    return newArray;
+	  };
+	
+	  /**
+	   * 解析 function 的参数列表
+	   **/
+	  ntils.getFunctionArgumentNames = function (fn) {
+	    if (!fn) return [];
+	    var src = fn.toString();
+	    var parts = src.split(')')[0].split('=>')[0].split('(');
+	    return (parts[1] || parts[0]).split(',').map(function (name) {
+	      return name.trim();
+	    }).filter(function (name) {
+	      return name != 'function';
+	    });
+	  };
+	
+	  /**
+	   * 缩短字符串
+	   */
+	  ntils.short = function (str, maxLength) {
+	    if (!str) return str;
+	    maxLength = maxLength || 40;
+	    var strLength = str.length;
+	    var trimLength = maxLength / 2;
+	    return strLength > maxLength ? str.substr(0, trimLength) + '...' + str.substr(strLength - trimLength) : str;
+	  };
+	
+	  /**
+	   * 首字母大写
+	   */
+	  ntils.firstUpper = function (str) {
+	    if (this.isNull(str)) return;
+	    str[0] = str[0].toLowerCase();
+	    return str;
+	  };
+	
+	  /**
+	   * 解析字符串为 dom 
+	   * @param {string} str 字符串
+	   * @returns {HTMLNode} 解析后的 DOM 
+	   */
+	  ntils.parseDom = function (str) {
+	    this._PDD_ = this._PDD_ || document.createElement('div');
+	    this._PDD_.innerHTML = ntils.trim(str);
+	    var firstNode = this._PDD_.childNodes[0];
+	    //先 clone 一份再通过 innerHTML 清空
+	    //否则 IE9 下，清空时会导出返回的 DOM 没有子结点
+	    if (firstNode) firstNode = firstNode.cloneNode(true);
+	    this._PDD_.innerHTML = '';
+	    return firstNode;
+	  };
+	
+	})(( false) ? (window.ntils = {}) : exports);
 
 /***/ },
 /* 47 */
 /***/ function(module, exports) {
 
-	module.exports = "<textarea class=\"editor\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\" m:on:scroll=\"onScroll\" m:on:input=\"onChanged\"></textarea>"
+	// removed by extract-text-webpack-plugin
 
 /***/ },
 /* 48 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"editor\">\n  <div class=\"backdrop\" m:id=\"backdrop\">\n    <div class=\"highlight\" m:html=\"applyHighlights(value)\"></div>\n  </div>\n  <textarea class=\"textarea\" m:id=\"textarea\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\"\n    m:on:scroll=\"onScroll\" m:on:input=\"onChanged\"></textarea>\n</div>"
+
+/***/ },
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
 	
-	__webpack_require__(49);
+	__webpack_require__(50);
 	
 	var Viewer = new mokit.Component({
-	  template: __webpack_require__(50),
+	  template: __webpack_require__(51),
 	
 	  /*istanbul ignore next*/data: function data() {
 	    return {
@@ -4149,40 +4859,151 @@
 	module.exports = Viewer;
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\n  <div m:show=\"html\" class=\"markdown-body\" m:html=\"html\"></div>\n  <div m:show=\"!html\" class=\"alert\" m:html=\"alert\"></div>\n</div>"
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var shortcuts = __webpack_require__(52);
+	var mokit = __webpack_require__(1);
+	
+	__webpack_require__(53);
+	
+	var Finder = new mokit.Component({
+	  template: __webpack_require__(54),
+	  props: {
+	    mditor: null,
+	    active: false,
+	    findWord: '',
+	    replaceWord: ''
+	  },
+	  /*istanbul ignore next*/onReady: function onReady() {
+	    this.mditor.removeCommand('find');
+	    this.mditor.addCommand({
+	      name: 'find',
+	      key: '{cmd}+f',
+	      owner: this.mditor.$element,
+	      handler: this.show.bind(this, null)
+	    });
+	    this.mditor.removeCommand('cancel-find');
+	    this.mditor.addCommand({
+	      name: 'cancel-find',
+	      key: 'esc',
+	      owner: this.mditor.$element,
+	      handler: this.hide.bind(this)
+	    });
+	  },
+	  /*istanbul ignore next*/hide: function hide() {
+	    this.findWord = '';
+	    this.replaceWord = '';
+	    this.mditor.editor.markExp = null;
+	    this.active = false;
+	  },
+	  /*istanbul ignore next*/show: function show(text) {
+	    /*istanbul ignore next*/var _this = this;
+	
+	    this.active = true;
+	    this.findWord = text || this.mditor.editor.getSelectText();
+	    if (this.active) {
+	      setTimeout(function () {
+	        /*istanbul ignore next*/_this.findBox.focus();
+	      }, 200);
+	    }
+	  },
+	
+	  watch: {
+	    /*istanbul ignore next*/findWord: function findWord() {
+	      /*istanbul ignore next*/var _this2 = this;
+	
+	      if (!this.findWord) {
+	        this.mditor.editor.markExp = null;
+	      } else {
+	        try {
+	          this.mditor.editor.markExp = new RegExp(this.findWord, 'gm');
+	        } catch (ex) {
+	          this.mditor.editor.markExp = new RegExp('\\' + this.findWord.split('').join('\\'), 'gm');
+	        }
+	      }
+	      setTimeout(function () {
+	        /*istanbul ignore next*/_this2.mditor.editor.activeMark(0);
+	      }, 100);
+	    }
+	  },
+	  /*istanbul ignore next*/find: function find() {
+	    this.mditor.editor.activeMark();
+	  },
+	  /*istanbul ignore next*/replace: function replace() {
+	    this.mditor.value = this.mditor.value.replace(new RegExp(this.findWord, 'gm'), this.replaceWord || '');
+	  },
+	  /*istanbul ignore next*/onFindEnter: function onFindEnter(event) {
+	    if (event.keyCode != 13) return;
+	    event.preventDefault();
+	    this.find();
+	  },
+	  /*istanbul ignore next*/onReplaceEnter: function onReplaceEnter(event) {
+	    if (event.keyCode != 13) return;
+	    event.preventDefault();
+	    this.replace();
+	  }
+	});
+	
+	module.exports = Finder;
+
+/***/ },
+/* 53 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" type=\"text\" placeholder=\"回车查找，ESC 关闭\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" type=\"text\" placeholder=\"回车替换，ESC 关闭\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var shortcuts = __webpack_require__(56);
+	var utils = __webpack_require__(46);
 	
 	shortcuts.filter = function (event) {
 	  return !!event.target;
 	};
 	
 	var Shortcut = module.exports = function (mditor) {
-	  self.mditor = mditor;
+	  utils.defineFreezeProp(this, 'mditor', mditor);
 	};
 	
-	Shortcut.prototype.bind = function (key, cmd, allowDefault) {
-	  var mditor = self.mditor;
+	Shortcut.prototype._inRegion = function (target, owner) {
+	  if (!target) return false;
+	  owner = owner || this.mditor.editor.$element;
+	  return target === owner || this._inRegion(target.parentNode, owner);
+	};
+	
+	Shortcut.prototype.bind = function (key, cmd, allowDefault, owner) {
+	  /*istanbul ignore next*/var _this = this;
+	
+	  var mditor = this.mditor;
 	  //检查参数
 	  if (!key || !cmd) return;
 	  key = key.replace('{cmd}', mditor.CMD);
 	  shortcuts(key, function (event) {
-	    if (event.target != mditor.editor.$element) return;
+	    if (! /*istanbul ignore next*/_this._inRegion(event.target, owner)) return;
 	    //禁用浏览器默认快捷键
 	    if (!allowDefault) {
 	      event.preventDefault();
@@ -4201,7 +5022,7 @@
 	};
 
 /***/ },
-/* 52 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (global) {
@@ -4546,13 +5367,13 @@
 	})(window);
 
 /***/ },
-/* 53 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var marked = __webpack_require__(54);
-	var _highlight = __webpack_require__(55);
+	var marked = __webpack_require__(58);
+	var _highlight = __webpack_require__(59);
 	
 	/**
 	 * 定义解析类型
@@ -4594,7 +5415,7 @@
 	module.exports = Parser;
 
 /***/ },
-/* 54 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -5887,188 +6708,188 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 55 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hljs = __webpack_require__(56);
+	var hljs = __webpack_require__(60);
 	
-	hljs.registerLanguage('1c', __webpack_require__(57));
-	hljs.registerLanguage('abnf', __webpack_require__(58));
-	hljs.registerLanguage('accesslog', __webpack_require__(59));
-	hljs.registerLanguage('actionscript', __webpack_require__(60));
-	hljs.registerLanguage('ada', __webpack_require__(61));
-	hljs.registerLanguage('apache', __webpack_require__(62));
-	hljs.registerLanguage('applescript', __webpack_require__(63));
-	hljs.registerLanguage('cpp', __webpack_require__(64));
-	hljs.registerLanguage('arduino', __webpack_require__(65));
-	hljs.registerLanguage('armasm', __webpack_require__(66));
-	hljs.registerLanguage('xml', __webpack_require__(67));
-	hljs.registerLanguage('asciidoc', __webpack_require__(68));
-	hljs.registerLanguage('aspectj', __webpack_require__(69));
-	hljs.registerLanguage('autohotkey', __webpack_require__(70));
-	hljs.registerLanguage('autoit', __webpack_require__(71));
-	hljs.registerLanguage('avrasm', __webpack_require__(72));
-	hljs.registerLanguage('awk', __webpack_require__(73));
-	hljs.registerLanguage('axapta', __webpack_require__(74));
-	hljs.registerLanguage('bash', __webpack_require__(75));
-	hljs.registerLanguage('basic', __webpack_require__(76));
-	hljs.registerLanguage('bnf', __webpack_require__(77));
-	hljs.registerLanguage('brainfuck', __webpack_require__(78));
-	hljs.registerLanguage('cal', __webpack_require__(79));
-	hljs.registerLanguage('capnproto', __webpack_require__(80));
-	hljs.registerLanguage('ceylon', __webpack_require__(81));
-	hljs.registerLanguage('clean', __webpack_require__(82));
-	hljs.registerLanguage('clojure', __webpack_require__(83));
-	hljs.registerLanguage('clojure-repl', __webpack_require__(84));
-	hljs.registerLanguage('cmake', __webpack_require__(85));
-	hljs.registerLanguage('coffeescript', __webpack_require__(86));
-	hljs.registerLanguage('coq', __webpack_require__(87));
-	hljs.registerLanguage('cos', __webpack_require__(88));
-	hljs.registerLanguage('crmsh', __webpack_require__(89));
-	hljs.registerLanguage('crystal', __webpack_require__(90));
-	hljs.registerLanguage('cs', __webpack_require__(91));
-	hljs.registerLanguage('csp', __webpack_require__(92));
-	hljs.registerLanguage('css', __webpack_require__(93));
-	hljs.registerLanguage('d', __webpack_require__(94));
-	hljs.registerLanguage('markdown', __webpack_require__(95));
-	hljs.registerLanguage('dart', __webpack_require__(96));
-	hljs.registerLanguage('delphi', __webpack_require__(97));
-	hljs.registerLanguage('diff', __webpack_require__(98));
-	hljs.registerLanguage('django', __webpack_require__(99));
-	hljs.registerLanguage('dns', __webpack_require__(100));
-	hljs.registerLanguage('dockerfile', __webpack_require__(101));
-	hljs.registerLanguage('dos', __webpack_require__(102));
-	hljs.registerLanguage('dsconfig', __webpack_require__(103));
-	hljs.registerLanguage('dts', __webpack_require__(104));
-	hljs.registerLanguage('dust', __webpack_require__(105));
-	hljs.registerLanguage('ebnf', __webpack_require__(106));
-	hljs.registerLanguage('elixir', __webpack_require__(107));
-	hljs.registerLanguage('elm', __webpack_require__(108));
-	hljs.registerLanguage('ruby', __webpack_require__(109));
-	hljs.registerLanguage('erb', __webpack_require__(110));
-	hljs.registerLanguage('erlang-repl', __webpack_require__(111));
-	hljs.registerLanguage('erlang', __webpack_require__(112));
-	hljs.registerLanguage('excel', __webpack_require__(113));
-	hljs.registerLanguage('fix', __webpack_require__(114));
-	hljs.registerLanguage('flix', __webpack_require__(115));
-	hljs.registerLanguage('fortran', __webpack_require__(116));
-	hljs.registerLanguage('fsharp', __webpack_require__(117));
-	hljs.registerLanguage('gams', __webpack_require__(118));
-	hljs.registerLanguage('gauss', __webpack_require__(119));
-	hljs.registerLanguage('gcode', __webpack_require__(120));
-	hljs.registerLanguage('gherkin', __webpack_require__(121));
-	hljs.registerLanguage('glsl', __webpack_require__(122));
-	hljs.registerLanguage('go', __webpack_require__(123));
-	hljs.registerLanguage('golo', __webpack_require__(124));
-	hljs.registerLanguage('gradle', __webpack_require__(125));
-	hljs.registerLanguage('groovy', __webpack_require__(126));
-	hljs.registerLanguage('haml', __webpack_require__(127));
-	hljs.registerLanguage('handlebars', __webpack_require__(128));
-	hljs.registerLanguage('haskell', __webpack_require__(129));
-	hljs.registerLanguage('haxe', __webpack_require__(130));
-	hljs.registerLanguage('hsp', __webpack_require__(131));
-	hljs.registerLanguage('htmlbars', __webpack_require__(132));
-	hljs.registerLanguage('http', __webpack_require__(133));
-	hljs.registerLanguage('hy', __webpack_require__(134));
-	hljs.registerLanguage('inform7', __webpack_require__(135));
-	hljs.registerLanguage('ini', __webpack_require__(136));
-	hljs.registerLanguage('irpf90', __webpack_require__(137));
-	hljs.registerLanguage('java', __webpack_require__(138));
-	hljs.registerLanguage('javascript', __webpack_require__(139));
-	hljs.registerLanguage('json', __webpack_require__(140));
-	hljs.registerLanguage('julia', __webpack_require__(141));
-	hljs.registerLanguage('kotlin', __webpack_require__(142));
-	hljs.registerLanguage('lasso', __webpack_require__(143));
-	hljs.registerLanguage('ldif', __webpack_require__(144));
-	hljs.registerLanguage('leaf', __webpack_require__(145));
-	hljs.registerLanguage('less', __webpack_require__(146));
-	hljs.registerLanguage('lisp', __webpack_require__(147));
-	hljs.registerLanguage('livecodeserver', __webpack_require__(148));
-	hljs.registerLanguage('livescript', __webpack_require__(149));
-	hljs.registerLanguage('llvm', __webpack_require__(150));
-	hljs.registerLanguage('lsl', __webpack_require__(151));
-	hljs.registerLanguage('lua', __webpack_require__(152));
-	hljs.registerLanguage('makefile', __webpack_require__(153));
-	hljs.registerLanguage('mathematica', __webpack_require__(154));
-	hljs.registerLanguage('matlab', __webpack_require__(155));
-	hljs.registerLanguage('maxima', __webpack_require__(156));
-	hljs.registerLanguage('mel', __webpack_require__(157));
-	hljs.registerLanguage('mercury', __webpack_require__(158));
-	hljs.registerLanguage('mipsasm', __webpack_require__(159));
-	hljs.registerLanguage('mizar', __webpack_require__(160));
-	hljs.registerLanguage('perl', __webpack_require__(161));
-	hljs.registerLanguage('mojolicious', __webpack_require__(162));
-	hljs.registerLanguage('monkey', __webpack_require__(163));
-	hljs.registerLanguage('moonscript', __webpack_require__(164));
-	hljs.registerLanguage('n1ql', __webpack_require__(165));
-	hljs.registerLanguage('nginx', __webpack_require__(166));
-	hljs.registerLanguage('nimrod', __webpack_require__(167));
-	hljs.registerLanguage('nix', __webpack_require__(168));
-	hljs.registerLanguage('nsis', __webpack_require__(169));
-	hljs.registerLanguage('objectivec', __webpack_require__(170));
-	hljs.registerLanguage('ocaml', __webpack_require__(171));
-	hljs.registerLanguage('openscad', __webpack_require__(172));
-	hljs.registerLanguage('oxygene', __webpack_require__(173));
-	hljs.registerLanguage('parser3', __webpack_require__(174));
-	hljs.registerLanguage('pf', __webpack_require__(175));
-	hljs.registerLanguage('php', __webpack_require__(176));
-	hljs.registerLanguage('pony', __webpack_require__(177));
-	hljs.registerLanguage('powershell', __webpack_require__(178));
-	hljs.registerLanguage('processing', __webpack_require__(179));
-	hljs.registerLanguage('profile', __webpack_require__(180));
-	hljs.registerLanguage('prolog', __webpack_require__(181));
-	hljs.registerLanguage('protobuf', __webpack_require__(182));
-	hljs.registerLanguage('puppet', __webpack_require__(183));
-	hljs.registerLanguage('purebasic', __webpack_require__(184));
-	hljs.registerLanguage('python', __webpack_require__(185));
-	hljs.registerLanguage('q', __webpack_require__(186));
-	hljs.registerLanguage('qml', __webpack_require__(187));
-	hljs.registerLanguage('r', __webpack_require__(188));
-	hljs.registerLanguage('rib', __webpack_require__(189));
-	hljs.registerLanguage('roboconf', __webpack_require__(190));
-	hljs.registerLanguage('rsl', __webpack_require__(191));
-	hljs.registerLanguage('ruleslanguage', __webpack_require__(192));
-	hljs.registerLanguage('rust', __webpack_require__(193));
-	hljs.registerLanguage('scala', __webpack_require__(194));
-	hljs.registerLanguage('scheme', __webpack_require__(195));
-	hljs.registerLanguage('scilab', __webpack_require__(196));
-	hljs.registerLanguage('scss', __webpack_require__(197));
-	hljs.registerLanguage('smali', __webpack_require__(198));
-	hljs.registerLanguage('smalltalk', __webpack_require__(199));
-	hljs.registerLanguage('sml', __webpack_require__(200));
-	hljs.registerLanguage('sqf', __webpack_require__(201));
-	hljs.registerLanguage('sql', __webpack_require__(202));
-	hljs.registerLanguage('stan', __webpack_require__(203));
-	hljs.registerLanguage('stata', __webpack_require__(204));
-	hljs.registerLanguage('step21', __webpack_require__(205));
-	hljs.registerLanguage('stylus', __webpack_require__(206));
-	hljs.registerLanguage('subunit', __webpack_require__(207));
-	hljs.registerLanguage('swift', __webpack_require__(208));
-	hljs.registerLanguage('taggerscript', __webpack_require__(209));
-	hljs.registerLanguage('yaml', __webpack_require__(210));
-	hljs.registerLanguage('tap', __webpack_require__(211));
-	hljs.registerLanguage('tcl', __webpack_require__(212));
-	hljs.registerLanguage('tex', __webpack_require__(213));
-	hljs.registerLanguage('thrift', __webpack_require__(214));
-	hljs.registerLanguage('tp', __webpack_require__(215));
-	hljs.registerLanguage('twig', __webpack_require__(216));
-	hljs.registerLanguage('typescript', __webpack_require__(217));
-	hljs.registerLanguage('vala', __webpack_require__(218));
-	hljs.registerLanguage('vbnet', __webpack_require__(219));
-	hljs.registerLanguage('vbscript', __webpack_require__(220));
-	hljs.registerLanguage('vbscript-html', __webpack_require__(221));
-	hljs.registerLanguage('verilog', __webpack_require__(222));
-	hljs.registerLanguage('vhdl', __webpack_require__(223));
-	hljs.registerLanguage('vim', __webpack_require__(224));
-	hljs.registerLanguage('x86asm', __webpack_require__(225));
-	hljs.registerLanguage('xl', __webpack_require__(226));
-	hljs.registerLanguage('xquery', __webpack_require__(227));
-	hljs.registerLanguage('zephir', __webpack_require__(228));
+	hljs.registerLanguage('1c', __webpack_require__(61));
+	hljs.registerLanguage('abnf', __webpack_require__(62));
+	hljs.registerLanguage('accesslog', __webpack_require__(63));
+	hljs.registerLanguage('actionscript', __webpack_require__(64));
+	hljs.registerLanguage('ada', __webpack_require__(65));
+	hljs.registerLanguage('apache', __webpack_require__(66));
+	hljs.registerLanguage('applescript', __webpack_require__(67));
+	hljs.registerLanguage('cpp', __webpack_require__(68));
+	hljs.registerLanguage('arduino', __webpack_require__(69));
+	hljs.registerLanguage('armasm', __webpack_require__(70));
+	hljs.registerLanguage('xml', __webpack_require__(71));
+	hljs.registerLanguage('asciidoc', __webpack_require__(72));
+	hljs.registerLanguage('aspectj', __webpack_require__(73));
+	hljs.registerLanguage('autohotkey', __webpack_require__(74));
+	hljs.registerLanguage('autoit', __webpack_require__(75));
+	hljs.registerLanguage('avrasm', __webpack_require__(76));
+	hljs.registerLanguage('awk', __webpack_require__(77));
+	hljs.registerLanguage('axapta', __webpack_require__(78));
+	hljs.registerLanguage('bash', __webpack_require__(79));
+	hljs.registerLanguage('basic', __webpack_require__(80));
+	hljs.registerLanguage('bnf', __webpack_require__(81));
+	hljs.registerLanguage('brainfuck', __webpack_require__(82));
+	hljs.registerLanguage('cal', __webpack_require__(83));
+	hljs.registerLanguage('capnproto', __webpack_require__(84));
+	hljs.registerLanguage('ceylon', __webpack_require__(85));
+	hljs.registerLanguage('clean', __webpack_require__(86));
+	hljs.registerLanguage('clojure', __webpack_require__(87));
+	hljs.registerLanguage('clojure-repl', __webpack_require__(88));
+	hljs.registerLanguage('cmake', __webpack_require__(89));
+	hljs.registerLanguage('coffeescript', __webpack_require__(90));
+	hljs.registerLanguage('coq', __webpack_require__(91));
+	hljs.registerLanguage('cos', __webpack_require__(92));
+	hljs.registerLanguage('crmsh', __webpack_require__(93));
+	hljs.registerLanguage('crystal', __webpack_require__(94));
+	hljs.registerLanguage('cs', __webpack_require__(95));
+	hljs.registerLanguage('csp', __webpack_require__(96));
+	hljs.registerLanguage('css', __webpack_require__(97));
+	hljs.registerLanguage('d', __webpack_require__(98));
+	hljs.registerLanguage('markdown', __webpack_require__(99));
+	hljs.registerLanguage('dart', __webpack_require__(100));
+	hljs.registerLanguage('delphi', __webpack_require__(101));
+	hljs.registerLanguage('diff', __webpack_require__(102));
+	hljs.registerLanguage('django', __webpack_require__(103));
+	hljs.registerLanguage('dns', __webpack_require__(104));
+	hljs.registerLanguage('dockerfile', __webpack_require__(105));
+	hljs.registerLanguage('dos', __webpack_require__(106));
+	hljs.registerLanguage('dsconfig', __webpack_require__(107));
+	hljs.registerLanguage('dts', __webpack_require__(108));
+	hljs.registerLanguage('dust', __webpack_require__(109));
+	hljs.registerLanguage('ebnf', __webpack_require__(110));
+	hljs.registerLanguage('elixir', __webpack_require__(111));
+	hljs.registerLanguage('elm', __webpack_require__(112));
+	hljs.registerLanguage('ruby', __webpack_require__(113));
+	hljs.registerLanguage('erb', __webpack_require__(114));
+	hljs.registerLanguage('erlang-repl', __webpack_require__(115));
+	hljs.registerLanguage('erlang', __webpack_require__(116));
+	hljs.registerLanguage('excel', __webpack_require__(117));
+	hljs.registerLanguage('fix', __webpack_require__(118));
+	hljs.registerLanguage('flix', __webpack_require__(119));
+	hljs.registerLanguage('fortran', __webpack_require__(120));
+	hljs.registerLanguage('fsharp', __webpack_require__(121));
+	hljs.registerLanguage('gams', __webpack_require__(122));
+	hljs.registerLanguage('gauss', __webpack_require__(123));
+	hljs.registerLanguage('gcode', __webpack_require__(124));
+	hljs.registerLanguage('gherkin', __webpack_require__(125));
+	hljs.registerLanguage('glsl', __webpack_require__(126));
+	hljs.registerLanguage('go', __webpack_require__(127));
+	hljs.registerLanguage('golo', __webpack_require__(128));
+	hljs.registerLanguage('gradle', __webpack_require__(129));
+	hljs.registerLanguage('groovy', __webpack_require__(130));
+	hljs.registerLanguage('haml', __webpack_require__(131));
+	hljs.registerLanguage('handlebars', __webpack_require__(132));
+	hljs.registerLanguage('haskell', __webpack_require__(133));
+	hljs.registerLanguage('haxe', __webpack_require__(134));
+	hljs.registerLanguage('hsp', __webpack_require__(135));
+	hljs.registerLanguage('htmlbars', __webpack_require__(136));
+	hljs.registerLanguage('http', __webpack_require__(137));
+	hljs.registerLanguage('hy', __webpack_require__(138));
+	hljs.registerLanguage('inform7', __webpack_require__(139));
+	hljs.registerLanguage('ini', __webpack_require__(140));
+	hljs.registerLanguage('irpf90', __webpack_require__(141));
+	hljs.registerLanguage('java', __webpack_require__(142));
+	hljs.registerLanguage('javascript', __webpack_require__(143));
+	hljs.registerLanguage('json', __webpack_require__(144));
+	hljs.registerLanguage('julia', __webpack_require__(145));
+	hljs.registerLanguage('kotlin', __webpack_require__(146));
+	hljs.registerLanguage('lasso', __webpack_require__(147));
+	hljs.registerLanguage('ldif', __webpack_require__(148));
+	hljs.registerLanguage('leaf', __webpack_require__(149));
+	hljs.registerLanguage('less', __webpack_require__(150));
+	hljs.registerLanguage('lisp', __webpack_require__(151));
+	hljs.registerLanguage('livecodeserver', __webpack_require__(152));
+	hljs.registerLanguage('livescript', __webpack_require__(153));
+	hljs.registerLanguage('llvm', __webpack_require__(154));
+	hljs.registerLanguage('lsl', __webpack_require__(155));
+	hljs.registerLanguage('lua', __webpack_require__(156));
+	hljs.registerLanguage('makefile', __webpack_require__(157));
+	hljs.registerLanguage('mathematica', __webpack_require__(158));
+	hljs.registerLanguage('matlab', __webpack_require__(159));
+	hljs.registerLanguage('maxima', __webpack_require__(160));
+	hljs.registerLanguage('mel', __webpack_require__(161));
+	hljs.registerLanguage('mercury', __webpack_require__(162));
+	hljs.registerLanguage('mipsasm', __webpack_require__(163));
+	hljs.registerLanguage('mizar', __webpack_require__(164));
+	hljs.registerLanguage('perl', __webpack_require__(165));
+	hljs.registerLanguage('mojolicious', __webpack_require__(166));
+	hljs.registerLanguage('monkey', __webpack_require__(167));
+	hljs.registerLanguage('moonscript', __webpack_require__(168));
+	hljs.registerLanguage('n1ql', __webpack_require__(169));
+	hljs.registerLanguage('nginx', __webpack_require__(170));
+	hljs.registerLanguage('nimrod', __webpack_require__(171));
+	hljs.registerLanguage('nix', __webpack_require__(172));
+	hljs.registerLanguage('nsis', __webpack_require__(173));
+	hljs.registerLanguage('objectivec', __webpack_require__(174));
+	hljs.registerLanguage('ocaml', __webpack_require__(175));
+	hljs.registerLanguage('openscad', __webpack_require__(176));
+	hljs.registerLanguage('oxygene', __webpack_require__(177));
+	hljs.registerLanguage('parser3', __webpack_require__(178));
+	hljs.registerLanguage('pf', __webpack_require__(179));
+	hljs.registerLanguage('php', __webpack_require__(180));
+	hljs.registerLanguage('pony', __webpack_require__(181));
+	hljs.registerLanguage('powershell', __webpack_require__(182));
+	hljs.registerLanguage('processing', __webpack_require__(183));
+	hljs.registerLanguage('profile', __webpack_require__(184));
+	hljs.registerLanguage('prolog', __webpack_require__(185));
+	hljs.registerLanguage('protobuf', __webpack_require__(186));
+	hljs.registerLanguage('puppet', __webpack_require__(187));
+	hljs.registerLanguage('purebasic', __webpack_require__(188));
+	hljs.registerLanguage('python', __webpack_require__(189));
+	hljs.registerLanguage('q', __webpack_require__(190));
+	hljs.registerLanguage('qml', __webpack_require__(191));
+	hljs.registerLanguage('r', __webpack_require__(192));
+	hljs.registerLanguage('rib', __webpack_require__(193));
+	hljs.registerLanguage('roboconf', __webpack_require__(194));
+	hljs.registerLanguage('rsl', __webpack_require__(195));
+	hljs.registerLanguage('ruleslanguage', __webpack_require__(196));
+	hljs.registerLanguage('rust', __webpack_require__(197));
+	hljs.registerLanguage('scala', __webpack_require__(198));
+	hljs.registerLanguage('scheme', __webpack_require__(199));
+	hljs.registerLanguage('scilab', __webpack_require__(200));
+	hljs.registerLanguage('scss', __webpack_require__(201));
+	hljs.registerLanguage('smali', __webpack_require__(202));
+	hljs.registerLanguage('smalltalk', __webpack_require__(203));
+	hljs.registerLanguage('sml', __webpack_require__(204));
+	hljs.registerLanguage('sqf', __webpack_require__(205));
+	hljs.registerLanguage('sql', __webpack_require__(206));
+	hljs.registerLanguage('stan', __webpack_require__(207));
+	hljs.registerLanguage('stata', __webpack_require__(208));
+	hljs.registerLanguage('step21', __webpack_require__(209));
+	hljs.registerLanguage('stylus', __webpack_require__(210));
+	hljs.registerLanguage('subunit', __webpack_require__(211));
+	hljs.registerLanguage('swift', __webpack_require__(212));
+	hljs.registerLanguage('taggerscript', __webpack_require__(213));
+	hljs.registerLanguage('yaml', __webpack_require__(214));
+	hljs.registerLanguage('tap', __webpack_require__(215));
+	hljs.registerLanguage('tcl', __webpack_require__(216));
+	hljs.registerLanguage('tex', __webpack_require__(217));
+	hljs.registerLanguage('thrift', __webpack_require__(218));
+	hljs.registerLanguage('tp', __webpack_require__(219));
+	hljs.registerLanguage('twig', __webpack_require__(220));
+	hljs.registerLanguage('typescript', __webpack_require__(221));
+	hljs.registerLanguage('vala', __webpack_require__(222));
+	hljs.registerLanguage('vbnet', __webpack_require__(223));
+	hljs.registerLanguage('vbscript', __webpack_require__(224));
+	hljs.registerLanguage('vbscript-html', __webpack_require__(225));
+	hljs.registerLanguage('verilog', __webpack_require__(226));
+	hljs.registerLanguage('vhdl', __webpack_require__(227));
+	hljs.registerLanguage('vim', __webpack_require__(228));
+	hljs.registerLanguage('x86asm', __webpack_require__(229));
+	hljs.registerLanguage('xl', __webpack_require__(230));
+	hljs.registerLanguage('xquery', __webpack_require__(231));
+	hljs.registerLanguage('zephir', __webpack_require__(232));
 	
 	module.exports = hljs;
 
 /***/ },
-/* 56 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -6898,7 +7719,7 @@
 
 
 /***/ },
-/* 57 */
+/* 61 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -6981,7 +7802,7 @@
 	};
 
 /***/ },
-/* 58 */
+/* 62 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7056,7 +7877,7 @@
 	};
 
 /***/ },
-/* 59 */
+/* 63 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7098,7 +7919,7 @@
 	};
 
 /***/ },
-/* 60 */
+/* 64 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7176,7 +7997,7 @@
 	};
 
 /***/ },
-/* 61 */
+/* 65 */
 /***/ function(module, exports) {
 
 	module.exports = // We try to support full Ada2012
@@ -7353,7 +8174,7 @@
 	};
 
 /***/ },
-/* 62 */
+/* 66 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7403,7 +8224,7 @@
 	};
 
 /***/ },
-/* 63 */
+/* 67 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7493,7 +8314,7 @@
 	};
 
 /***/ },
-/* 64 */
+/* 68 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7663,7 +8484,7 @@
 	};
 
 /***/ },
-/* 65 */
+/* 69 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7767,7 +8588,7 @@
 	};
 
 /***/ },
-/* 66 */
+/* 70 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7863,7 +8684,7 @@
 	};
 
 /***/ },
-/* 67 */
+/* 71 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -7970,7 +8791,7 @@
 	};
 
 /***/ },
-/* 68 */
+/* 72 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8162,7 +8983,7 @@
 	};
 
 /***/ },
-/* 69 */
+/* 73 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -8310,7 +9131,7 @@
 	};
 
 /***/ },
-/* 70 */
+/* 74 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8362,7 +9183,7 @@
 	};
 
 /***/ },
-/* 71 */
+/* 75 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8502,7 +9323,7 @@
 	};
 
 /***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8568,7 +9389,7 @@
 	};
 
 /***/ },
-/* 73 */
+/* 77 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8625,7 +9446,7 @@
 	};
 
 /***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8660,7 +9481,7 @@
 	};
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8739,7 +9560,7 @@
 	};
 
 /***/ },
-/* 76 */
+/* 80 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8794,7 +9615,7 @@
 	};
 
 /***/ },
-/* 77 */
+/* 81 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -8827,7 +9648,7 @@
 	};
 
 /***/ },
-/* 78 */
+/* 82 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -8868,7 +9689,7 @@
 	};
 
 /***/ },
-/* 79 */
+/* 83 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -8952,7 +9773,7 @@
 	};
 
 /***/ },
-/* 80 */
+/* 84 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9005,7 +9826,7 @@
 	};
 
 /***/ },
-/* 81 */
+/* 85 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9076,7 +9897,7 @@
 	};
 
 /***/ },
-/* 82 */
+/* 86 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9105,7 +9926,7 @@
 	};
 
 /***/ },
-/* 83 */
+/* 87 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9204,7 +10025,7 @@
 	};
 
 /***/ },
-/* 84 */
+/* 88 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9223,7 +10044,7 @@
 	};
 
 /***/ },
-/* 85 */
+/* 89 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9265,7 +10086,7 @@
 	};
 
 /***/ },
-/* 86 */
+/* 90 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9415,7 +10236,7 @@
 	};
 
 /***/ },
-/* 87 */
+/* 91 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9486,7 +10307,7 @@
 	};
 
 /***/ },
-/* 88 */
+/* 92 */
 /***/ function(module, exports) {
 
 	module.exports = function cos (hljs) {
@@ -9614,7 +10435,7 @@
 	};
 
 /***/ },
-/* 89 */
+/* 93 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9712,7 +10533,7 @@
 	};
 
 /***/ },
-/* 90 */
+/* 94 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -9893,7 +10714,7 @@
 	};
 
 /***/ },
-/* 91 */
+/* 95 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10064,7 +10885,7 @@
 	};
 
 /***/ },
-/* 92 */
+/* 96 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10090,7 +10911,7 @@
 	};
 
 /***/ },
-/* 93 */
+/* 97 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10199,7 +11020,7 @@
 	};
 
 /***/ },
-/* 94 */
+/* 98 */
 /***/ function(module, exports) {
 
 	module.exports = /**
@@ -10461,7 +11282,7 @@
 	};
 
 /***/ },
-/* 95 */
+/* 99 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10573,7 +11394,7 @@
 	};
 
 /***/ },
-/* 96 */
+/* 100 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -10678,7 +11499,7 @@
 	};
 
 /***/ },
-/* 97 */
+/* 101 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10751,7 +11572,7 @@
 	};
 
 /***/ },
-/* 98 */
+/* 102 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10795,7 +11616,7 @@
 	};
 
 /***/ },
-/* 99 */
+/* 103 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10863,7 +11684,7 @@
 	};
 
 /***/ },
-/* 100 */
+/* 104 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10896,7 +11717,7 @@
 	};
 
 /***/ },
-/* 101 */
+/* 105 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10922,7 +11743,7 @@
 	};
 
 /***/ },
-/* 102 */
+/* 106 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -10978,7 +11799,7 @@
 	};
 
 /***/ },
-/* 103 */
+/* 107 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11029,7 +11850,7 @@
 	};
 
 /***/ },
-/* 104 */
+/* 108 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11157,7 +11978,7 @@
 	};
 
 /***/ },
-/* 105 */
+/* 109 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11193,7 +12014,7 @@
 	};
 
 /***/ },
-/* 106 */
+/* 110 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11230,7 +12051,7 @@
 	};
 
 /***/ },
-/* 107 */
+/* 111 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11331,7 +12152,7 @@
 	};
 
 /***/ },
-/* 108 */
+/* 112 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11418,7 +12239,7 @@
 	};
 
 /***/ },
-/* 109 */
+/* 113 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11598,7 +12419,7 @@
 	};
 
 /***/ },
-/* 110 */
+/* 114 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11617,7 +12438,7 @@
 	};
 
 /***/ },
-/* 111 */
+/* 115 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11667,7 +12488,7 @@
 	};
 
 /***/ },
-/* 112 */
+/* 116 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11817,7 +12638,7 @@
 	};
 
 /***/ },
-/* 113 */
+/* 117 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11869,7 +12690,7 @@
 	};
 
 /***/ },
-/* 114 */
+/* 118 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -11902,7 +12723,7 @@
 	};
 
 /***/ },
-/* 115 */
+/* 119 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -11951,7 +12772,7 @@
 	};
 
 /***/ },
-/* 116 */
+/* 120 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12026,7 +12847,7 @@
 	};
 
 /***/ },
-/* 117 */
+/* 121 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12089,7 +12910,7 @@
 	};
 
 /***/ },
-/* 118 */
+/* 122 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -12247,7 +13068,7 @@
 	};
 
 /***/ },
-/* 119 */
+/* 123 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12475,7 +13296,7 @@
 	};
 
 /***/ },
-/* 120 */
+/* 124 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12546,7 +13367,7 @@
 	};
 
 /***/ },
-/* 121 */
+/* 125 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -12587,7 +13408,7 @@
 	};
 
 /***/ },
-/* 122 */
+/* 126 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12708,7 +13529,7 @@
 	};
 
 /***/ },
-/* 123 */
+/* 127 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12766,7 +13587,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 128 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12793,7 +13614,7 @@
 	};
 
 /***/ },
-/* 125 */
+/* 129 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12832,7 +13653,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 130 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -12930,7 +13751,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 131 */
 /***/ function(module, exports) {
 
 	module.exports = // TODO support filter tags like :javascript, support inline HTML
@@ -13041,7 +13862,7 @@
 	};
 
 /***/ },
-/* 128 */
+/* 132 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13079,7 +13900,7 @@
 	};
 
 /***/ },
-/* 129 */
+/* 133 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13205,7 +14026,7 @@
 	};
 
 /***/ },
-/* 130 */
+/* 134 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13321,7 +14142,7 @@
 	};
 
 /***/ },
-/* 131 */
+/* 135 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13371,7 +14192,7 @@
 	};
 
 /***/ },
-/* 132 */
+/* 136 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13446,7 +14267,7 @@
 	};
 
 /***/ },
-/* 133 */
+/* 137 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13491,7 +14312,7 @@
 	};
 
 /***/ },
-/* 134 */
+/* 138 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13597,7 +14418,7 @@
 	};
 
 /***/ },
-/* 135 */
+/* 139 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13658,7 +14479,7 @@
 	};
 
 /***/ },
-/* 136 */
+/* 140 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13728,7 +14549,7 @@
 	};
 
 /***/ },
-/* 137 */
+/* 141 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13808,7 +14629,7 @@
 	};
 
 /***/ },
-/* 138 */
+/* 142 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -13920,7 +14741,7 @@
 	};
 
 /***/ },
-/* 139 */
+/* 143 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14095,7 +14916,7 @@
 	};
 
 /***/ },
-/* 140 */
+/* 144 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14136,7 +14957,7 @@
 	};
 
 /***/ },
-/* 141 */
+/* 145 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14318,7 +15139,7 @@
 	};
 
 /***/ },
-/* 142 */
+/* 146 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14496,7 +15317,7 @@
 	};
 
 /***/ },
-/* 143 */
+/* 147 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14663,7 +15484,7 @@
 	};
 
 /***/ },
-/* 144 */
+/* 148 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14690,7 +15511,7 @@
 	};
 
 /***/ },
-/* 145 */
+/* 149 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -14734,7 +15555,7 @@
 	};
 
 /***/ },
-/* 146 */
+/* 150 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14878,7 +15699,7 @@
 	};
 
 /***/ },
-/* 147 */
+/* 151 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -14985,7 +15806,7 @@
 	};
 
 /***/ },
-/* 148 */
+/* 152 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15146,7 +15967,7 @@
 	};
 
 /***/ },
-/* 149 */
+/* 153 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15299,7 +16120,7 @@
 	};
 
 /***/ },
-/* 150 */
+/* 154 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15392,7 +16213,7 @@
 	};
 
 /***/ },
-/* 151 */
+/* 155 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15479,7 +16300,7 @@
 	};
 
 /***/ },
-/* 152 */
+/* 156 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15549,7 +16370,7 @@
 	};
 
 /***/ },
-/* 153 */
+/* 157 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15598,7 +16419,7 @@
 	};
 
 /***/ },
-/* 154 */
+/* 158 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15660,7 +16481,7 @@
 	};
 
 /***/ },
-/* 155 */
+/* 159 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -15752,7 +16573,7 @@
 	};
 
 /***/ },
-/* 156 */
+/* 160 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16162,7 +16983,7 @@
 	};
 
 /***/ },
-/* 157 */
+/* 161 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16391,7 +17212,7 @@
 	};
 
 /***/ },
-/* 158 */
+/* 162 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16477,7 +17298,7 @@
 	};
 
 /***/ },
-/* 159 */
+/* 163 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16567,7 +17388,7 @@
 	};
 
 /***/ },
-/* 160 */
+/* 164 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16590,7 +17411,7 @@
 	};
 
 /***/ },
-/* 161 */
+/* 165 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16751,7 +17572,7 @@
 	};
 
 /***/ },
-/* 162 */
+/* 166 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16780,7 +17601,7 @@
 	};
 
 /***/ },
-/* 163 */
+/* 167 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16859,7 +17680,7 @@
 	};
 
 /***/ },
-/* 164 */
+/* 168 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -16975,7 +17796,7 @@
 	};
 
 /***/ },
-/* 165 */
+/* 169 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17048,7 +17869,7 @@
 	};
 
 /***/ },
-/* 166 */
+/* 170 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17145,7 +17966,7 @@
 	};
 
 /***/ },
-/* 167 */
+/* 171 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17204,7 +18025,7 @@
 	};
 
 /***/ },
-/* 168 */
+/* 172 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17257,7 +18078,7 @@
 	};
 
 /***/ },
-/* 169 */
+/* 173 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17367,7 +18188,7 @@
 	};
 
 /***/ },
-/* 170 */
+/* 174 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17462,7 +18283,7 @@
 	};
 
 /***/ },
-/* 171 */
+/* 175 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17537,7 +18358,7 @@
 	};
 
 /***/ },
-/* 172 */
+/* 176 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17598,7 +18419,7 @@
 	};
 
 /***/ },
-/* 173 */
+/* 177 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17672,7 +18493,7 @@
 	};
 
 /***/ },
-/* 174 */
+/* 178 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17724,7 +18545,7 @@
 	};
 
 /***/ },
-/* 175 */
+/* 179 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17780,7 +18601,7 @@
 	};
 
 /***/ },
-/* 176 */
+/* 180 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -17911,7 +18732,7 @@
 	};
 
 /***/ },
-/* 177 */
+/* 181 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18006,7 +18827,7 @@
 	};
 
 /***/ },
-/* 178 */
+/* 182 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18091,7 +18912,7 @@
 	};
 
 /***/ },
-/* 179 */
+/* 183 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18143,7 +18964,7 @@
 	};
 
 /***/ },
-/* 180 */
+/* 184 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18177,7 +18998,7 @@
 	};
 
 /***/ },
-/* 181 */
+/* 185 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18269,7 +19090,7 @@
 	};
 
 /***/ },
-/* 182 */
+/* 186 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18309,7 +19130,7 @@
 	};
 
 /***/ },
-/* 183 */
+/* 187 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18428,7 +19249,7 @@
 	};
 
 /***/ },
-/* 184 */
+/* 188 */
 /***/ function(module, exports) {
 
 	module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
@@ -18490,7 +19311,7 @@
 	};
 
 /***/ },
-/* 185 */
+/* 189 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18610,7 +19431,7 @@
 	};
 
 /***/ },
-/* 186 */
+/* 190 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18637,7 +19458,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 191 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18810,7 +19631,7 @@
 	};
 
 /***/ },
-/* 188 */
+/* 192 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18884,7 +19705,7 @@
 	};
 
 /***/ },
-/* 189 */
+/* 193 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18915,7 +19736,7 @@
 	};
 
 /***/ },
-/* 190 */
+/* 194 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -18986,7 +19807,7 @@
 	};
 
 /***/ },
-/* 191 */
+/* 195 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19026,7 +19847,7 @@
 	};
 
 /***/ },
-/* 192 */
+/* 196 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19091,7 +19912,7 @@
 	};
 
 /***/ },
-/* 193 */
+/* 197 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19203,7 +20024,7 @@
 	};
 
 /***/ },
-/* 194 */
+/* 198 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19322,7 +20143,7 @@
 	};
 
 /***/ },
-/* 195 */
+/* 199 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19470,7 +20291,7 @@
 	};
 
 /***/ },
-/* 196 */
+/* 200 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19528,7 +20349,7 @@
 	};
 
 /***/ },
-/* 197 */
+/* 201 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19630,7 +20451,7 @@
 	};
 
 /***/ },
-/* 198 */
+/* 202 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19690,7 +20511,7 @@
 	};
 
 /***/ },
-/* 199 */
+/* 203 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19744,7 +20565,7 @@
 	};
 
 /***/ },
-/* 200 */
+/* 204 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -19814,7 +20635,7 @@
 	};
 
 /***/ },
-/* 201 */
+/* 205 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20189,7 +21010,7 @@
 	};
 
 /***/ },
-/* 202 */
+/* 206 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20353,7 +21174,7 @@
 	};
 
 /***/ },
-/* 203 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20440,7 +21261,7 @@
 	};
 
 /***/ },
-/* 204 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20482,7 +21303,7 @@
 	};
 
 /***/ },
-/* 205 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20533,7 +21354,7 @@
 	};
 
 /***/ },
-/* 206 */
+/* 210 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -20991,7 +21812,7 @@
 	};
 
 /***/ },
-/* 207 */
+/* 211 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21029,7 +21850,7 @@
 	};
 
 /***/ },
-/* 208 */
+/* 212 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21150,7 +21971,7 @@
 	};
 
 /***/ },
-/* 209 */
+/* 213 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21198,7 +22019,7 @@
 	};
 
 /***/ },
-/* 210 */
+/* 214 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21290,7 +22111,7 @@
 	};
 
 /***/ },
-/* 211 */
+/* 215 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21330,7 +22151,7 @@
 	};
 
 /***/ },
-/* 212 */
+/* 216 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21395,7 +22216,7 @@
 	};
 
 /***/ },
-/* 213 */
+/* 217 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21461,7 +22282,7 @@
 	};
 
 /***/ },
-/* 214 */
+/* 218 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21500,7 +22321,7 @@
 	};
 
 /***/ },
-/* 215 */
+/* 219 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21588,7 +22409,7 @@
 	};
 
 /***/ },
-/* 216 */
+/* 220 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21658,7 +22479,7 @@
 	};
 
 /***/ },
-/* 217 */
+/* 221 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21818,7 +22639,7 @@
 	};
 
 /***/ },
-/* 218 */
+/* 222 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21872,7 +22693,7 @@
 	};
 
 /***/ },
-/* 219 */
+/* 223 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21932,7 +22753,7 @@
 	};
 
 /***/ },
-/* 220 */
+/* 224 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21975,7 +22796,7 @@
 	};
 
 /***/ },
-/* 221 */
+/* 225 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -21991,7 +22812,7 @@
 	};
 
 /***/ },
-/* 222 */
+/* 226 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22094,7 +22915,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 227 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22159,7 +22980,7 @@
 	};
 
 /***/ },
-/* 224 */
+/* 228 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22269,7 +23090,7 @@
 	};
 
 /***/ },
-/* 225 */
+/* 229 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22409,7 +23230,7 @@
 	};
 
 /***/ },
-/* 226 */
+/* 230 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22486,7 +23307,7 @@
 	};
 
 /***/ },
-/* 227 */
+/* 231 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22561,7 +23382,7 @@
 	};
 
 /***/ },
-/* 228 */
+/* 232 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -22672,40 +23493,40 @@
 	};
 
 /***/ },
-/* 229 */
+/* 233 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
 /* 234 */,
 /* 235 */,
-/* 236 */
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 237 */
+/* 241 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 238 */
+/* 242 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 239 */
+/* 243 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"scroll\" m:on:changed=\"onChanged\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);

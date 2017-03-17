@@ -16,7 +16,7 @@ const Finder = new mokit.Component({
       name: 'find',
       key: '{cmd}+f',
       owner: this.mditor.$element,
-      handler: this.show.bind(this)
+      handler: this.show.bind(this, null)
     });
     this.mditor.removeCommand('cancel-find');
     this.mditor.addCommand({
@@ -32,9 +32,9 @@ const Finder = new mokit.Component({
     this.mditor.editor.markExp = null;
     this.active = false;
   },
-  show() {
+  show(text) {
     this.active = true;
-    this.findWord = this.mditor.editor.getSelectText();
+    this.findWord = text || this.mditor.editor.getSelectText();
     if (this.active) {
       setTimeout(() => {
         this.findBox.focus();
