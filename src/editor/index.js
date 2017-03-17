@@ -98,9 +98,10 @@ module.exports = new mokit.Component({
   },
 
   scrollToMark(mark) {
-    mark.scrollIntoView();
-    this.textarea.scrollTop = this.backdrop.scrollTop;
-    this.textarea.scrollTop -= 20;
+    // mark.scrollIntoView();
+    // this.textarea.scrollTop = this.backdrop.scrollTop;
+    // this.textarea.scrollTop -= 20;
+    this.textarea.scrollTop = mark.offsetTop - 20;
   },
 
   getValue() {

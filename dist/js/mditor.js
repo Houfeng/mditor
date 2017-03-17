@@ -3992,9 +3992,10 @@
 	    this.scrollToMark(activeMark);
 	  },
 	  /*istanbul ignore next*/scrollToMark: function scrollToMark(mark) {
-	    mark.scrollIntoView();
-	    this.textarea.scrollTop = this.backdrop.scrollTop;
-	    this.textarea.scrollTop -= 20;
+	    // mark.scrollIntoView();
+	    // this.textarea.scrollTop = this.backdrop.scrollTop;
+	    // this.textarea.scrollTop -= 20;
+	    this.textarea.scrollTop = mark.offsetTop - 20;
 	  },
 	  /*istanbul ignore next*/getValue: function getValue() {
 	    return this.textarea.value;
