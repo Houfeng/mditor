@@ -2,18 +2,54 @@
   .editor {
     position: relative;
     display: inline-block;
-    border: none;
-    outline: none;
     width: 100%;
     height: 100%;
-    resize: none;
-    background-color: transparent;
-    -webkit-font-smoothing: antialiased;
-    font: 16px/1.5 "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "\\5FAE软雅黑", STHeitiSC-Light, simsun, "\\5B8B体", "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
-    margin: 0px;
-    padding: 10px;
-    color: #333;
-    word-break: break-all;
-    word-wrap: break-word;
+    -webkit-text-size-adjust: none;
+    transform: translateZ(0);
+    .textarea, .backdrop {
+      position: absolute;
+      border: none;
+      outline: none;
+      display: block;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      resize: none;
+      background-color: transparent;
+      -webkit-font-smoothing: antialiased;
+      font: 16px/1.5 "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "\\5FAE软雅黑", STHeitiSC-Light, simsun, "\\5B8B体", "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
+      margin: 0px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      transition: transform 1s;
+      letter-spacing: 1px;
+    }
+    .textarea, .highlight {
+      padding: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .textarea {
+      z-index: 1;
+      color: #444;
+    }
+    .backdrop {
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      padding: 0px;
+      .highlight {
+        color: transparent;
+        mark {
+          border-radius: 2px;
+          color: transparent;
+          background-color: #ddd;
+          &.active {
+            background-color: lightskyblue;
+          }
+        }
+      }
+    }
   }
 }

@@ -1,18 +1,25 @@
 const mokit = require('mokit');
 const EventEmitter = mokit.EventEmitter;
+const utils = require('ntils');
 
 require('./index.less');
+
+const ua = window.navigator.userAgent.toLowerCase();
+const isIE = !!ua.match(/msie|trident\/7|edge/);
+const isWinPhone = ua.indexOf('windows phone') !== -1;
+const isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
 
 module.exports = new mokit.Component({
   template: require('./index.html'),
 
   props: {
     mditor: null,
-    value: null
+    value: null,
+    markExp: null
   },
 
   onReady() {
-    this.$elementEmitter = new EventEmitter(this.$element);
+    this.textareaEmitter = new EventEmitter(this.textarea);
   },
 
   onChanged() {
@@ -36,27 +43,76 @@ module.exports = new mokit.Component({
   },
 
   focus() {
-    this.$element.focus();
+    this.textarea.focus();
   },
 
   blur() {
-    this.$element.blur();
+    this.textarea.blur();
   },
 
   onScroll(event) {
+    this.syncScroll();
     this.$emit('scroll', event);
   },
 
+  syncScroll() {
+    this.backdrop.scrollTop = this.textarea.scrollTop;
+    this.backdrop.scrollLeft = this.textarea.scrollLeft;
+    setTimeout(() => {
+      this.backdrop.scrollTop = this.textarea.scrollTop;
+      this.backdrop.scrollLeft = this.textarea.scrollLeft;
+    }, 0);
+  },
+
+  applyHighlights(text) {
+    if (!text || !this.markExp) return;
+    text = text
+      .replace(/\n$/g, '\n\n')
+      .replace(this.markExp, '<mark>$&</mark>');
+    if (isIE) {
+      // IE wraps whitespace differently in a div vs textarea, this fixes it
+      text = text.replace(/ /g, ' <wbr>');
+    }
+    return text;
+  },
+
+  activeMark(index) {
+    let marks = [].slice.call(this.backdrop.querySelectorAll('mark'));
+    if (marks.length < 1) return;
+    this.activeMarkIndex = utils.isNull(this.activeMarkIndex) ?
+      -1 : this.activeMarkIndex;
+    if (utils.isNull(index)) {
+      this.activeMarkIndex++;
+    } else {
+      this.activeMarkIndex = index;
+    }
+    if (this.activeMarkIndex >= marks.length) {
+      this.activeMarkIndex = 0;
+    }
+    marks.forEach(mark => {
+      mark.classList.remove('active');
+    });
+    let activeMark = marks[this.activeMarkIndex];
+    activeMark.classList.add('active');
+    this.scrollToMark(activeMark);
+  },
+
+  scrollToMark(mark) {
+    mark.scrollIntoView();
+    this.textarea.scrollTop = this.backdrop.scrollTop;
+    this.textarea.scrollTop -= 20;
+  },
+
   getValue() {
-    return this.$element.value;
+    return this.textarea.value;
   },
 
   setValue(value) {
-    this.$element.value = value;
+    this.textarea.value = value;
   },
 
   getActiveElement() {
-    this.$element.focus();
+    this.textarea.focus();
     return document.activeElement;
   },
 
@@ -86,7 +142,7 @@ module.exports = new mokit.Component({
     if (range.end == range.start) {
       this.setSelectRange(range.start, range.end + text.length);
     }
-    this.$elementEmitter.emit('input');
+    this.textareaEmitter.emit('input');
   },
 
   wrapSelectText(before, after) {

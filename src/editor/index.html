@@ -1,1 +1,7 @@
-<textarea class="editor" m:model="value" m:on:paste="onPaste" m:on:dragover="onDragover" m:on:drop="onDrop" m:on:scroll="onScroll" m:on:input="onChanged"></textarea>
+<div class="editor">
+  <div class="backdrop" m:id="backdrop">
+    <div class="highlight" m:html="applyHighlights(value)"></div>
+  </div>
+  <textarea class="textarea" m:id="textarea" m:model="value" m:on:paste="onPaste" m:on:dragover="onDragover" m:on:drop="onDrop"
+    m:on:scroll="onScroll" m:on:input="onChanged"></textarea>
+</div>

@@ -2,6 +2,7 @@ const mokit = require('mokit');
 const Toolbar = require('../toolbar');
 const Editor = require('../editor');
 const Viewer = require('../viewer');
+const Finder = require('../finder');
 const Shortcut = require('./shortcut');
 const Parser = require('../common/parser');
 const marked = require('marked');
@@ -41,7 +42,8 @@ const Mditor = new mokit.Component({
   components: {
     Toolbar,
     Editor,
-    Viewer
+    Viewer,
+    Finder
   },
 
   props: {
@@ -59,12 +61,12 @@ const Mditor = new mokit.Component({
     };
   },
 
-  scroll() {
+  syncScroll() {
     if (!this.split || this.preview) return;
-    let offsetHeight = this.editor.$element.offsetHeight;
-    let editorScrollHeight = this.editor.$element.scrollHeight;
+    let offsetHeight = this.editor.textarea.offsetHeight;
+    let editorScrollHeight = this.editor.textarea.scrollHeight;
     let viewerScrollHeight = this.viewer.$element.scrollHeight;
-    let editorScrollTop = this.editor.$element.scrollTop;
+    let editorScrollTop = this.editor.textarea.scrollTop;
     let viewerScrollTop = editorScrollTop * (viewerScrollHeight - offsetHeight) / (editorScrollHeight - offsetHeight);
     this.viewer.$element.scrollTop = viewerScrollTop;
   },
@@ -129,7 +131,7 @@ const Mditor = new mokit.Component({
     this.commands = this.commands || {};
     this.commands[item.name] = item;
     if (item.key) {
-      this.shortcut.bind(item.key, item.name);
+      this.shortcut.bind(item.key, item.name, item.allowDefault, item.owner);
     }
   },
 
