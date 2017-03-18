@@ -1,10 +1,11 @@
 <div class="finder {{active?'active':''}}">
   <div>
-    <input m:id="findBox" m:model="findWord" m:on:keydown="onFindEnter" type="text" placeholder="回车查找，ESC 关闭">
+    <input m:id="findBox" m:model="findWord" m:on:keydown="onFindEnter" m:on:compositionend="onCompositionEnd" type="text" placeholder="回车查找，ESC 关闭">
     <i class="fa fa-search" aria-hidden="true" tabindex="-1" m:on:click="find()"></i>
   </div>
   <div>
-    <input m:id="replaceBox" m:model="replaceWord" m:on:keydown="onReplaceEnter" type="text" placeholder="回车替换，ESC 关闭">
+    <input m:id="replaceBox" m:model="replaceWord" m:on:keydown="onReplaceEnter" m:on:compositionend="onCompositionEnd" type="text"
+      placeholder="回车替换，ESC 关闭">
     <i class="fa fa-exchange" aria-hidden="true" tabindex="-1" m:on:click="replace()"></i>
   </div>
 </div>

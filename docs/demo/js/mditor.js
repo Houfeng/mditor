@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.0.18
+ * Mditor embed version 1.0.19
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -3979,17 +3979,18 @@
 	    this._changedTimer = setTimeout(function () {
 	      if (! /*istanbul ignore next*/_this2._changedTimer) return;
 	      /*istanbul ignore next*/_this2.stack.change( /*istanbul ignore next*/_this2.getValue());
+	      console.log('changed');
 	      /*istanbul ignore next*/_this2.$emit('changed');
-	    }, 300);
+	    }, 1000);
 	  },
 	  /*istanbul ignore next*/undo: function undo() {
 	    var value = this.stack.undo();
-	    if (!value) return;
+	    if (utils.isNull(value)) return;
 	    this.value = value;
 	  },
 	  /*istanbul ignore next*/redo: function redo() {
 	    var value = this.stack.redo();
-	    if (!value) return;
+	    if (utils.isNull(value)) return;
 	    this.value = value;
 	  },
 	  /*istanbul ignore next*/onPaste: function onPaste(event) {
@@ -5147,6 +5148,10 @@
 	    if (event.keyCode != 13) return;
 	    event.preventDefault();
 	    this.replace();
+	  },
+	  /*istanbul ignore next*/onCompositionEnd: function onCompositionEnd(event) {
+	    event.target.blur();
+	    event.target.focus();
 	  }
 	});
 	
@@ -5162,7 +5167,7 @@
 /* 56 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" type=\"text\" placeholder=\"回车查找，ESC 关闭\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" type=\"text\" placeholder=\"回车替换，ESC 关闭\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
+	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"回车查找，ESC 关闭\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"回车替换，ESC 关闭\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
 
 /***/ },
 /* 57 */

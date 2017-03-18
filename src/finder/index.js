@@ -89,7 +89,11 @@ const Finder = new mokit.Component({
     if (event.keyCode != 13) return;
     event.preventDefault();
     this.replace();
-  }
+  },
+  onCompositionEnd(event) {
+    event.target.blur();
+    event.target.focus();
+  },
 });
 
 module.exports = Finder;

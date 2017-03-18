@@ -65,19 +65,20 @@ module.exports = new mokit.Component({
     this._changedTimer = setTimeout(() => {
       if (!this._changedTimer) return;
       this.stack.change(this.getValue());
+      console.log('changed');
       this.$emit('changed');
-    }, 300);
+    }, 1000);
   },
 
   undo() {
     let value = this.stack.undo();
-    if (!value) return;
+    if (utils.isNull(value)) return;
     this.value = value;
   },
 
   redo() {
     let value = this.stack.redo();
-    if (!value) return;
+    if (utils.isNull(value)) return;
     this.value = value;
   },
 
