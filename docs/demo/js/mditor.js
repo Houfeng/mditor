@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.0.15
+ * Mditor embed version 1.0.16
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5046,6 +5046,8 @@
 	
 	__webpack_require__(55);
 	
+	var CHECK_REGEXP = /^\/.+\/(i|g|m)*$/;
+	
 	var Finder = new mokit.Component({
 	  template: __webpack_require__(56),
 	  props: {
@@ -5095,15 +5097,18 @@
 	      if (!this.findWord) {
 	        this.mditor.editor.markExp = null;
 	      } else {
-	        try {
-	          this.mditor.editor.markExp = new RegExp(this.findWord, 'gm');
-	        } catch (ex) {
-	          this.mditor.editor.markExp = new RegExp('\\' + this.findWord.split('').join('\\'), 'gm');
-	        }
+	        this.mditor.editor.markExp = this.parseRegexp(this.findWord);
 	      }
 	      setTimeout(function () {
 	        /*istanbul ignore next*/_this2.mditor.editor.activeMark(0);
 	      }, 100);
+	    }
+	  },
+	  /*istanbul ignore next*/parseRegexp: function parseRegexp(text) {
+	    if (CHECK_REGEXP.test(text)) {
+	      return new Function( /*istanbul ignore next*/'return ' + text)();
+	    } else {
+	      return new RegExp(text.replace(/\\/igm, '\\\\'), 'gm');
 	    }
 	  },
 	  /*istanbul ignore next*/find: function find() {

@@ -2,6 +2,8 @@ const mokit = require('mokit');
 
 require('./index.less');
 
+const CHECK_REGEXP = /^\/.+\/(i|g|m)*$/;
+
 const Finder = new mokit.Component({
   template: require('./index.html'),
   props: {
@@ -46,15 +48,18 @@ const Finder = new mokit.Component({
       if (!this.findWord) {
         this.mditor.editor.markExp = null;
       } else {
-        try {
-          this.mditor.editor.markExp = new RegExp(this.findWord, 'gm');
-        } catch (ex) {
-          this.mditor.editor.markExp = new RegExp('\\' + this.findWord.split('').join('\\'), 'gm');
-        }
+        this.mditor.editor.markExp = this.parseRegexp(this.findWord);
       }
       setTimeout(() => {
         this.mditor.editor.activeMark(0);
       }, 100);
+    }
+  },
+  parseRegexp(text) {
+    if (CHECK_REGEXP.test(text)) {
+      return (new Function(`return ${text}`))();
+    } else {
+      return new RegExp(text.replace(/\\/igm, '\\\\'), 'gm');
     }
   },
   find() {
