@@ -9,6 +9,7 @@ const Parser = function (options) {
 	this.options = options;
 };
 
+Parser.highlights = {};
 Parser.marked = marked;
 
 //使标题解析 # 号可以无空格
@@ -27,7 +28,12 @@ marked.setOptions({
 	smartypants: false,
 	mangle: false,
 	highlight: function (code, lang, callback) {
-		return highlight.highlightAuto(code).value;
+		let hl = Parser.highlights[lang];
+		if (hl) {
+			return hl(code, lang, callback);
+		} else {
+			return highlight.highlightAuto(code).value;
+		}
 	}
 });
 

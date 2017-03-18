@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.0
+ * Mditor embed version 1.1.1
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -172,7 +172,11 @@
 	    event.preventDefault();
 	  },
 	  /*istanbul ignore next*/focus: function focus() {
-	    this.editor.focus();
+	    if (this.preview) {
+	      this.$element.focus();
+	    } else {
+	      this.editor.focus();
+	    }
 	  },
 	  /*istanbul ignore next*/blur: function blur() {
 	    this.editor.blur();
@@ -3765,7 +3769,7 @@
 	  title: '代码',
 	  key: 'shift+alt+c',
 	  /*istanbul ignore next*/handler: function handler() {
-	    var lang = 'javascript' + this.EOL;
+	    var lang = 'js' + this.EOL;
 	    var before = '```' + lang;
 	    var after = '```  ' + this.EOL;
 	    var text = this.editor.getSelectText().trim();
@@ -3859,6 +3863,9 @@
 	  key: 'shift+alt+f',
 	  control: true,
 	  state: 'fullscreen',
+	  owner: function /*istanbul ignore next*/owner(mditor) {
+	    return mditor.$element;
+	  },
 	  /*istanbul ignore next*/handler: function handler() {
 	    this.fullscreen = !this.fullscreen;
 	  }
@@ -3866,9 +3873,12 @@
 	  name: 'togglePreview',
 	  title: 'preview',
 	  icon: 'desktop',
-	  key: 'shift+alt+w',
+	  key: 'shift+alt+v',
 	  control: true,
 	  state: 'preview',
+	  owner: function /*istanbul ignore next*/owner(mditor) {
+	    return mditor.$element;
+	  },
 	  /*istanbul ignore next*/handler: function handler() {
 	    this.preview = !this.preview;
 	    if (this.preview) {
@@ -3885,6 +3895,9 @@
 	  key: 'shift+alt+s',
 	  control: true,
 	  state: 'split',
+	  owner: function /*istanbul ignore next*/owner(mditor) {
+	    return mditor.$element;
+	  },
 	  /*istanbul ignore next*/handler: function handler() {
 	    this.split = !this.split;
 	    if (this.split) {
@@ -3904,7 +3917,7 @@
 /* 44 */
 /***/ function(module, exports) {
 
-	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
+	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
 
 /***/ },
 /* 45 */
@@ -5191,6 +5204,7 @@
 	Shortcut.prototype._inRegion = function (target, owner) {
 	  if (!target) return false;
 	  owner = owner || this.mditor.editor.$element;
+	  if (utils.isFunction(owner)) owner = owner(this.mditor);
 	  return target === owner || this._inRegion(target.parentNode, owner);
 	};
 	
@@ -5212,7 +5226,9 @@
 	    } else {
 	      mditor.execCommand(cmd, event);
 	    }
-	    mditor.focus();
+	    setTimeout(function () {
+	      mditor.focus();
+	    }, 0);
 	  });
 	};
 	
@@ -5582,6 +5598,7 @@
 		this.options = options;
 	};
 	
+	Parser.highlights = {};
 	Parser.marked = marked;
 	
 	//使标题解析 # 号可以无空格
@@ -5600,7 +5617,12 @@
 		smartypants: false,
 		mangle: false,
 		highlight: function /*istanbul ignore next*/highlight(code, lang, callback) {
-			return _highlight.highlightAuto(code).value;
+			var hl = Parser.highlights[lang];
+			if (hl) {
+				return hl(code, lang, callback);
+			} else {
+				return _highlight.highlightAuto(code).value;
+			}
 		}
 	});
 	
@@ -23725,7 +23747,7 @@
 /* 245 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);

@@ -56,7 +56,7 @@ module.exports = [{
   title: '代码',
   key: 'shift+alt+c',
   handler() {
-    let lang = 'javascript' + this.EOL;
+    let lang = 'js' + this.EOL;
     let before = '```' + lang;
     let after = '```  ' + this.EOL;
     let text = this.editor.getSelectText().trim();
@@ -156,6 +156,9 @@ module.exports = [{
   key: 'shift+alt+f',
   control: true,
   state: 'fullscreen',
+  owner: function (mditor) {
+    return mditor.$element;
+  },
   handler() {
     this.fullscreen = !this.fullscreen;
   }
@@ -163,9 +166,12 @@ module.exports = [{
   name: 'togglePreview',
   title: 'preview',
   icon: 'desktop',
-  key: 'shift+alt+w',
+  key: 'shift+alt+v',
   control: true,
   state: 'preview',
+  owner: function (mditor) {
+    return mditor.$element;
+  },
   handler() {
     this.preview = !this.preview;
     if (this.preview) {
@@ -182,6 +188,9 @@ module.exports = [{
   key: 'shift+alt+s',
   control: true,
   state: 'split',
+  owner: function (mditor) {
+    return mditor.$element;
+  },
   handler() {
     this.split = !this.split;
     if (this.split) {

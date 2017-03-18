@@ -9,7 +9,7 @@ const marked = require('marked');
 
 require('font-awesome/css/font-awesome.css');
 require('github-markdown-css/github-markdown.css');
-require('highlight.js/styles/default.css');
+require('highlight.js/styles/github.css');
 require('./index.less');
 
 const Mditor = new mokit.Component({
@@ -127,7 +127,11 @@ const Mditor = new mokit.Component({
   },
 
   focus() {
-    this.editor.focus();
+    if (this.preview) {
+      this.$element.focus();
+    } else {
+      this.editor.focus();
+    }
   },
 
   blur() {

@@ -12,6 +12,7 @@ const Shortcut = module.exports = function (mditor) {
 Shortcut.prototype._inRegion = function (target, owner) {
   if (!target) return false;
   owner = owner || this.mditor.editor.$element;
+  if (utils.isFunction(owner)) owner = owner(this.mditor);
   return (target === owner) || this._inRegion(target.parentNode, owner);
 };
 
@@ -31,7 +32,9 @@ Shortcut.prototype.bind = function (key, cmd, allowDefault, owner) {
     } else {
       mditor.execCommand(cmd, event);
     }
-    mditor.focus();
+    setTimeout(() => {
+      mditor.focus();
+    }, 0);
   });
 };
 
