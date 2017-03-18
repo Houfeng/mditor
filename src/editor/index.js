@@ -1,6 +1,7 @@
 const mokit = require('mokit');
 const EventEmitter = mokit.EventEmitter;
 const utils = require('ntils');
+const Stack = require('./dostack');
 
 require('./index.less');
 
@@ -18,14 +19,61 @@ module.exports = new mokit.Component({
     markExp: null
   },
 
-  onReady() {
-    this.textareaEmitter = new EventEmitter(this.textarea);
+  data() {
+    return {
+      _changedTimer: null,
+      _compositionLock: false
+    };
   },
 
-  onChanged() {
-    setTimeout(() => {
+  onReady() {
+    this.stack = new Stack();
+    this.textareaEmitter = new EventEmitter(this.textarea);
+    this.mditor.removeCommand('undo');
+    this.mditor.addCommand({
+      name: 'undo',
+      key: '{cmd}+z',
+      handler: this.undo.bind(this, null)
+    });
+    this.mditor.removeCommand('redo');
+    this.mditor.addCommand({
+      name: 'redo',
+      key: '{cmd}+shift+z',
+      handler: this.redo.bind(this)
+    });
+    this.stack.change(this.value);
+  },
+
+  onCompositionStart() {
+    this._compositionLock = true;
+  },
+  onCompositionEnd() {
+    this._compositionLock = false;
+  },
+  onInput() {
+    this.$emit('input');
+    if (this._compositionLock) return;
+    if (this._changedTimer) {
+      clearTimeout(this._changedTimer);
+      this._changedTimer = null;
+    }
+    this._changedTimer = setTimeout(() => {
+      if (!this._changedTimer) return;
+      this.stack.change(this.value);
       this.$emit('changed');
-    }, 0);
+    }, 200);
+  },
+
+  undo() {
+    let value = this.stack.undo();
+    if (!value) return;
+    this.value = value;
+  },
+
+  redo() {
+    let value = this.stack.redo();
+    if (!value) return;
+    this.value = value;
   },
 
   onPaste(event) {
@@ -143,7 +191,8 @@ module.exports = new mokit.Component({
     if (range.end == range.start) {
       this.setSelectRange(range.start, range.end + text.length);
     }
-    this.textareaEmitter.emit('input');
+    this.value = this.getValue();
+    this.onInput();
   },
 
   wrapSelectText(before, after) {

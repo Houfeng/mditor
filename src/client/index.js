@@ -29,10 +29,10 @@ const Mditor = new mokit.Component({
   onReady() {
     this.shortcut.bind('tab', this.editor.addIndent.bind(this.editor));
     this.shortcut.bind('shift+tab', this.editor.removeIndent.bind(this.editor));
-    this.shortcut.bind('enter', () => {
-      this._ulAndQuoteAutoComplete();
-      this._olAutoComplete();
-      this._keepIndent();
+    this.shortcut.bind('enter', (event) => {
+      this._ulAndQuoteAutoComplete(event);
+      this._olAutoComplete(event);
+      this._keepIndent(event);
     }, true);
     setTimeout(() => {
       this.$emit('ready');
@@ -79,7 +79,7 @@ const Mditor = new mokit.Component({
     this.$emit('changed');
   },
 
-  _keepIndent() {
+  _keepIndent(event) {
     let text = this.editor.getBeforeTextInLine();
     let parts = text.split(this.INDENT);
     if (parts.length < 2) return;
@@ -94,7 +94,7 @@ const Mditor = new mokit.Component({
     event.preventDefault();
   },
 
-  _ulAndQuoteAutoComplete() {
+  _ulAndQuoteAutoComplete(event) {
     let text = this.editor.getBeforeTextInLine();
     let prefix = text.substr(0, 2);
     if (prefix != '- ' && prefix != '* ' && prefix != '> ') return;
@@ -107,7 +107,7 @@ const Mditor = new mokit.Component({
     event.preventDefault();
   },
 
-  _olAutoComplete() {
+  _olAutoComplete(event) {
     let exp = /^\d+\./;
     let text = this.editor.getBeforeTextInLine();
     let trimedText = text.trim();
