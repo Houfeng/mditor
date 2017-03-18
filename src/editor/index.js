@@ -65,9 +65,8 @@ module.exports = new mokit.Component({
     this._changedTimer = setTimeout(() => {
       if (!this._changedTimer) return;
       this.stack.change(this.getValue());
-      console.log('changed');
       this.$emit('changed');
-    }, 1000);
+    }, 600);
   },
 
   undo() {

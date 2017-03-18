@@ -79,6 +79,10 @@ const Mditor = new mokit.Component({
     this.$emit('changed');
   },
 
+  onInput() {
+    this.$emit('input');
+  },
+
   _keepIndent(event) {
     let text = this.editor.getBeforeTextInLine();
     let parts = text.split(this.INDENT);

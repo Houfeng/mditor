@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.0.19
+ * Mditor embed version 1.1.0
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -128,6 +128,9 @@
 	  },
 	  /*istanbul ignore next*/onChanged: function onChanged() {
 	    this.$emit('changed');
+	  },
+	  /*istanbul ignore next*/onInput: function onInput() {
+	    this.$emit('input');
 	  },
 	  /*istanbul ignore next*/_keepIndent: function _keepIndent(event) {
 	    var text = this.editor.getBeforeTextInLine();
@@ -3979,9 +3982,8 @@
 	    this._changedTimer = setTimeout(function () {
 	      if (! /*istanbul ignore next*/_this2._changedTimer) return;
 	      /*istanbul ignore next*/_this2.stack.change( /*istanbul ignore next*/_this2.getValue());
-	      console.log('changed');
 	      /*istanbul ignore next*/_this2.$emit('changed');
-	    }, 1000);
+	    }, 600);
 	  },
 	  /*istanbul ignore next*/undo: function undo() {
 	    var value = this.stack.undo();
@@ -23723,7 +23725,7 @@
 /* 245 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);
