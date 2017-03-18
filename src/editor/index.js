@@ -20,10 +20,10 @@ module.exports = new mokit.Component({
   },
 
   data() {
-    return {
-      _changedTimer: null,
-      _compositionLock: false
-    };
+    // return {
+    //   _changedTimer: null,
+    //   _compositionLock: false
+    // };
   },
 
   onReady() {
@@ -61,7 +61,7 @@ module.exports = new mokit.Component({
       if (!this._changedTimer) return;
       this.stack.change(this.value);
       this.$emit('changed');
-    }, 200);
+    }, 220);
   },
 
   undo() {

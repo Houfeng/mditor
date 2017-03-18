@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.0.14
+ * Mditor embed version 1.0.15
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -261,7 +261,7 @@
 
 	module.exports = {
 		"name": "mokit",
-		"version": "3.0.14"
+		"version": "3.0.15"
 	};
 
 /***/ },
@@ -1055,7 +1055,7 @@
 	
 	var OBSERVER_PROP_NAME = '_observer_';
 	var CHANGE_EVENT_NAME = 'change';
-	var EVENT_MAX_DISPATCH_LAYER = 20;
+	var EVENT_MAX_DISPATCH_LAYER = 10;
 	var IGNORE_REGEXPS = [/^\_(.*)\_$/i, /^\_\_/i];
 	
 	/**
@@ -1183,8 +1183,7 @@
 	    if (event._src_ === this) return;
 	    event._src_ = event._src_ || this;
 	    event._layer_ = event._layer_ || 0;
-	    event._layer_++;
-	    if (event._layer_ >= EVENT_MAX_DISPATCH_LAYER) return;
+	    if (event._layer_++ >= EVENT_MAX_DISPATCH_LAYER) return;
 	    this.emit(eventName, event);
 	    if (!this.parents || this.parents.length < 1) return;
 	    this.parents.forEach(function (item) {
@@ -2128,11 +2127,16 @@
 	
 	var Scope = function Scope(parent, props) {
 	  //新的 scope 因为「继承」了 _observer_ 
-	  //所以在新 scope 上进行双向绑定时，能将值成功回写
+	  //所以在新 scope 上进行双向绑定时，将将值成功回写
 	  //如果有天不须用 utils.cteate 继承法，需要注意 _observer_ 
 	  //或在新 scope 上 defineProperty 代理 parentScope
 	  var scope = utils.create(parent);
 	  utils.copy(props, scope);
+	  //将 func 绑定到原 scope 上;
+	  utils.each(parent, function (key, value) {
+	    if (!utils.isFunction(value)) return;
+	    scope[key] = value.bind(parent);
+	  });
 	  return scope;
 	};
 	
@@ -3927,10 +3931,10 @@
 	  },
 	
 	  /*istanbul ignore next*/data: function data() {
-	    return {
-	      _changedTimer: null,
-	      _compositionLock: false
-	    };
+	    // return {
+	    //   _changedTimer: null,
+	    //   _compositionLock: false
+	    // };
 	  },
 	  /*istanbul ignore next*/onReady: function onReady() {
 	    this.stack = new Stack();
@@ -3968,7 +3972,7 @@
 	      if (! /*istanbul ignore next*/_this._changedTimer) return;
 	      /*istanbul ignore next*/_this.stack.change( /*istanbul ignore next*/_this.value);
 	      /*istanbul ignore next*/_this.$emit('changed');
-	    }, 200);
+	    }, 220);
 	  },
 	  /*istanbul ignore next*/undo: function undo() {
 	    var value = this.stack.undo();

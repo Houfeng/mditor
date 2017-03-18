@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.0.14
+ * Mditor embed version 1.0.15
  * Homepage: http://mditor.com
  */
 .mditor .toolbar {
@@ -149,6 +149,7 @@
   border: solid 1px #ddd;
   margin: 2px;
   min-width: 200px;
+  -webkit-font-smoothing: antialiased;
 }
 .mditor .body .finder i.fa {
   vertical-align: middle;
