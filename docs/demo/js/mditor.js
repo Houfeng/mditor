@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.0.17
+ * Mditor embed version 1.0.18
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -3948,7 +3948,7 @@
 	    });
 	    setTimeout(function () {
 	      /*istanbul ignore next*/_this.textareaEmitter = new EventEmitter( /*istanbul ignore next*/_this.textarea);
-	      /*istanbul ignore next*/_this.stack.change( /*istanbul ignore next*/_this.getValue());
+	      /*istanbul ignore next*/_this.stack.init( /*istanbul ignore next*/_this.getValue());
 	    }, 100);
 	  },
 	  /*istanbul ignore next*/onCompositionStart: function onCompositionStart() {
@@ -4868,8 +4868,11 @@
 	var utils = __webpack_require__(46);
 	
 	var Stack = new Class({
-	  /*istanbul ignore next*/constructor: function constructor() {
-	    this.undoList = [];
+	  /*istanbul ignore next*/constructor: function constructor(value) {
+	    this.init(value);
+	  },
+	  /*istanbul ignore next*/init: function init(value) {
+	    this.undoList = [value || ''];
 	    this.redoList = [];
 	  },
 	  /*istanbul ignore next*/change: function change(value) {

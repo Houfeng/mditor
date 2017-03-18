@@ -2,8 +2,11 @@ const Class = require('cify').Class;
 const utils = require('ntils');
 
 const Stack = new Class({
-  constructor() {
-    this.undoList = [];
+  constructor(value) {
+    this.init(value);
+  },
+  init(value) {
+    this.undoList = [value || ''];
     this.redoList = [];
   },
   change(value) {

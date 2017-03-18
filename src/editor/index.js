@@ -35,7 +35,7 @@ module.exports = new mokit.Component({
     });
     setTimeout(() => {
       this.textareaEmitter = new EventEmitter(this.textarea);
-      this.stack.change(this.getValue());
+      this.stack.init(this.getValue());
     }, 100);
   },
 
