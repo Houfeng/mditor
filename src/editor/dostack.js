@@ -1,4 +1,5 @@
 const Class = require('cify').Class;
+const utils = require('ntils');
 
 const Stack = new Class({
   constructor() {
@@ -6,7 +7,7 @@ const Stack = new Class({
     this.redoList = [];
   },
   change(value) {
-    if (this.last() == value) return;
+    if (this.last() === value) return;
     this.undoList.push(value);
   },
   last() {
@@ -15,14 +16,14 @@ const Stack = new Class({
   undo() {
     if (this.undoList.length > 1) {
       let value = this.undoList.pop();
-      if (!value) return;
+      if (utils.isNull(value)) return;
       this.redoList.push(value);
     }
     return this.last();
   },
   redo() {
     let value = this.redoList.pop();
-    if (!value) return;
+    if (utils.isNull(value)) return;
     this.undoList.push(value);
     return value;
   }

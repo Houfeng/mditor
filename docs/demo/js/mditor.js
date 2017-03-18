@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.0.16
+ * Mditor embed version 1.0.17
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -4857,6 +4857,7 @@
 	/*istanbul ignore next*/'use strict';
 	
 	var Class = __webpack_require__(48).Class;
+	var utils = __webpack_require__(46);
 	
 	var Stack = new Class({
 	  /*istanbul ignore next*/constructor: function constructor() {
@@ -4864,7 +4865,7 @@
 	    this.redoList = [];
 	  },
 	  /*istanbul ignore next*/change: function change(value) {
-	    if (this.last() == value) return;
+	    if (this.last() === value) return;
 	    this.undoList.push(value);
 	  },
 	  /*istanbul ignore next*/last: function last() {
@@ -4873,14 +4874,14 @@
 	  /*istanbul ignore next*/undo: function undo() {
 	    if (this.undoList.length > 1) {
 	      var value = this.undoList.pop();
-	      if (!value) return;
+	      if (utils.isNull(value)) return;
 	      this.redoList.push(value);
 	    }
 	    return this.last();
 	  },
 	  /*istanbul ignore next*/redo: function redo() {
 	    var value = this.redoList.pop();
-	    if (!value) return;
+	    if (utils.isNull(value)) return;
 	    this.undoList.push(value);
 	    return value;
 	  }
@@ -5098,6 +5099,7 @@
 	    /*istanbul ignore next*/findWord: function findWord() {
 	      /*istanbul ignore next*/var _this2 = this;
 	
+	      if (!this.mditor || !this.mditor.editor) return;
 	      if (!this.findWord) {
 	        this.mditor.editor.markExp = null;
 	      } else {

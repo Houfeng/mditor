@@ -49,6 +49,7 @@ const Finder = new mokit.Component({
   },
   watch: {
     findWord() {
+      if (!this.mditor || !this.mditor.editor) return;
       if (!this.findWord) {
         this.mditor.editor.markExp = null;
       } else {
