@@ -3930,15 +3930,10 @@
 	    markExp: null
 	  },
 	
-	  /*istanbul ignore next*/data: function data() {
-	    // return {
-	    //   _changedTimer: null,
-	    //   _compositionLock: false
-	    // };
-	  },
 	  /*istanbul ignore next*/onReady: function onReady() {
+	    /*istanbul ignore next*/var _this = this;
+	
 	    this.stack = new Stack();
-	    this.textareaEmitter = new EventEmitter(this.textarea);
 	    this.mditor.removeCommand('undo');
 	    this.mditor.addCommand({
 	      name: 'undo',
@@ -3951,16 +3946,29 @@
 	      key: '{cmd}+shift+z',
 	      handler: this.redo.bind(this)
 	    });
-	    this.stack.change(this.value);
+	    setTimeout(function () {
+	      /*istanbul ignore next*/_this.textareaEmitter = new EventEmitter( /*istanbul ignore next*/_this.textarea);
+	      /*istanbul ignore next*/_this.stack.change( /*istanbul ignore next*/_this.getValue());
+	    }, 100);
 	  },
 	  /*istanbul ignore next*/onCompositionStart: function onCompositionStart() {
 	    this._compositionLock = true;
 	  },
 	  /*istanbul ignore next*/onCompositionEnd: function onCompositionEnd() {
 	    this._compositionLock = false;
+	    /**
+	     * 在输入中文时，输入法「候选词面板」位置会发生定位错误
+	     * 经过反复尝试发现了「规律」，第一次「侯选词」上屏后才会位置错误
+	     * 在「候选词」上屏后让输入框「失去焦点再获取焦点」可「规避」这个 Bug
+	     * 附上相关 issues
+	     * https://github.com/electron/electron/issues/8894
+	     * https://github.com/electron/electron/issues/4539
+	     */
+	    this.textarea.blur();
+	    this.textarea.focus();
 	  },
 	  /*istanbul ignore next*/onInput: function onInput() {
-	    /*istanbul ignore next*/var _this = this;
+	    /*istanbul ignore next*/var _this2 = this;
 	
 	    this.$emit('input');
 	    if (this._compositionLock) return;
@@ -3969,10 +3977,10 @@
 	      this._changedTimer = null;
 	    }
 	    this._changedTimer = setTimeout(function () {
-	      if (! /*istanbul ignore next*/_this._changedTimer) return;
-	      /*istanbul ignore next*/_this.stack.change( /*istanbul ignore next*/_this.value);
-	      /*istanbul ignore next*/_this.$emit('changed');
-	    }, 220);
+	      if (! /*istanbul ignore next*/_this2._changedTimer) return;
+	      /*istanbul ignore next*/_this2.stack.change( /*istanbul ignore next*/_this2.getValue());
+	      /*istanbul ignore next*/_this2.$emit('changed');
+	    }, 300);
 	  },
 	  /*istanbul ignore next*/undo: function undo() {
 	    var value = this.stack.undo();
@@ -4006,13 +4014,13 @@
 	    this.$emit('scroll', event);
 	  },
 	  /*istanbul ignore next*/syncScroll: function syncScroll() {
-	    /*istanbul ignore next*/var _this2 = this;
+	    /*istanbul ignore next*/var _this3 = this;
 	
 	    this.backdrop.scrollTop = this.textarea.scrollTop;
 	    this.backdrop.scrollLeft = this.textarea.scrollLeft;
 	    setTimeout(function () {
-	      /*istanbul ignore next*/_this2.backdrop.scrollTop = /*istanbul ignore next*/_this2.textarea.scrollTop;
-	      /*istanbul ignore next*/_this2.backdrop.scrollLeft = /*istanbul ignore next*/_this2.textarea.scrollLeft;
+	      /*istanbul ignore next*/_this3.backdrop.scrollTop = /*istanbul ignore next*/_this3.textarea.scrollTop;
+	      /*istanbul ignore next*/_this3.backdrop.scrollLeft = /*istanbul ignore next*/_this3.textarea.scrollLeft;
 	    }, 0);
 	  },
 	  /*istanbul ignore next*/applyHighlights: function applyHighlights(text) {
@@ -4116,12 +4124,12 @@
 	    return value.substring(start, end).lastIndexOf(char);
 	  },
 	  /*istanbul ignore next*/getBeforeWord: function getBeforeWord() {
-	    /*istanbul ignore next*/var _this3 = this;
+	    /*istanbul ignore next*/var _this4 = this;
 	
 	    var chars = [' ', '\t', this.mditor.EOL];
 	    var start = 0;
 	    chars.forEach(function (char) {
-	      var index = /*istanbul ignore next*/_this3.getBeforeFirstCharIndex(char);
+	      var index = /*istanbul ignore next*/_this4.getBeforeFirstCharIndex(char);
 	      if (index + char.length > start) {
 	        start = index + char.length;
 	      }
@@ -4150,7 +4158,7 @@
 	    this.setSelectRange(start, range.end);
 	  },
 	  /*istanbul ignore next*/addIndent: function addIndent() {
-	    /*istanbul ignore next*/var _this4 = this;
+	    /*istanbul ignore next*/var _this5 = this;
 	
 	    var selectText = this.getSelectText();
 	    if (selectText.length < 1) {
@@ -4161,7 +4169,7 @@
 	    var buffer = [];
 	    var lineCount = textArray.length - 1;
 	    textArray.forEach(function (line, index) {
-	      line = line.trim() !== '' ? /*istanbul ignore next*/_this4.mditor.INDENT + line : line;
+	      line = line.trim() !== '' ? /*istanbul ignore next*/_this5.mditor.INDENT + line : line;
 	      if (index < lineCount || line.trim() !== '') {
 	        buffer.push(line);
 	      }
@@ -4169,7 +4177,7 @@
 	    this.setSelectText(buffer.join(this.mditor.EOL));
 	  },
 	  /*istanbul ignore next*/removeIndent: function removeIndent() {
-	    /*istanbul ignore next*/var _this5 = this;
+	    /*istanbul ignore next*/var _this6 = this;
 	
 	    var indentRegExp = new RegExp('^' + this.mditor.INDENT);
 	    var selectText = this.getSelectText();
@@ -4185,7 +4193,7 @@
 	    var buffer = [];
 	    textArray.forEach(function (line) {
 	      if (indentRegExp.test(line)) {
-	        line = line.replace( /*istanbul ignore next*/_this5.mditor.INDENT, '');
+	        line = line.replace( /*istanbul ignore next*/_this6.mditor.INDENT, '');
 	      }
 	      buffer.push(line);
 	    });

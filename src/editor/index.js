@@ -19,16 +19,8 @@ module.exports = new mokit.Component({
     markExp: null
   },
 
-  data() {
-    // return {
-    //   _changedTimer: null,
-    //   _compositionLock: false
-    // };
-  },
-
   onReady() {
     this.stack = new Stack();
-    this.textareaEmitter = new EventEmitter(this.textarea);
     this.mditor.removeCommand('undo');
     this.mditor.addCommand({
       name: 'undo',
@@ -41,7 +33,10 @@ module.exports = new mokit.Component({
       key: '{cmd}+shift+z',
       handler: this.redo.bind(this)
     });
-    this.stack.change(this.value);
+    setTimeout(() => {
+      this.textareaEmitter = new EventEmitter(this.textarea);
+      this.stack.change(this.getValue());
+    }, 100);
   },
 
   onCompositionStart() {
@@ -49,6 +44,16 @@ module.exports = new mokit.Component({
   },
   onCompositionEnd() {
     this._compositionLock = false;
+    /**
+     * 在输入中文时，输入法「候选词面板」位置会发生定位错误
+     * 经过反复尝试发现了「规律」，第一次「侯选词」上屏后才会位置错误
+     * 在「候选词」上屏后让输入框「失去焦点再获取焦点」可「规避」这个 Bug
+     * 附上相关 issues
+     * https://github.com/electron/electron/issues/8894
+     * https://github.com/electron/electron/issues/4539
+     */
+    this.textarea.blur();
+    this.textarea.focus();
   },
   onInput() {
     this.$emit('input');
@@ -59,9 +64,9 @@ module.exports = new mokit.Component({
     }
     this._changedTimer = setTimeout(() => {
       if (!this._changedTimer) return;
-      this.stack.change(this.value);
+      this.stack.change(this.getValue());
       this.$emit('changed');
-    }, 220);
+    }, 300);
   },
 
   undo() {
