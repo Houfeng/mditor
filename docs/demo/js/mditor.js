@@ -5046,7 +5046,11 @@
 	
 	__webpack_require__(55);
 	
-	var CHECK_REGEXP = /^\/.+\/(i|g|m)*$/;
+	var CHECK_REGEXP = /^\/[\s\S]+\/(i|g|m)*$/;
+	
+	RegExp.escape = function (string) {
+	  return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	};
 	
 	var Finder = new mokit.Component({
 	  template: __webpack_require__(56),
@@ -5104,11 +5108,15 @@
 	      }, 100);
 	    }
 	  },
-	  /*istanbul ignore next*/parseRegexp: function parseRegexp(text) {
-	    if (CHECK_REGEXP.test(text)) {
-	      return new Function( /*istanbul ignore next*/'return ' + text)();
+	  /*istanbul ignore next*/parseRegexp: function parseRegexp(text, forceStr) {
+	    if (!forceStr && CHECK_REGEXP.test(text)) {
+	      try {
+	        return new Function( /*istanbul ignore next*/'return ' + text)();
+	      } catch (err) {
+	        return this.parseRegexp(text, true);
+	      }
 	    } else {
-	      return new RegExp(text.replace(/\\/igm, '\\\\'), 'gm');
+	      return new RegExp(RegExp.escape(text), 'gm');
 	    }
 	  },
 	  /*istanbul ignore next*/find: function find() {

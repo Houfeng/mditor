@@ -2,7 +2,11 @@ const mokit = require('mokit');
 
 require('./index.less');
 
-const CHECK_REGEXP = /^\/.+\/(i|g|m)*$/;
+const CHECK_REGEXP = /^\/[\s\S]+\/(i|g|m)*$/;
+
+RegExp.escape = function (string) {
+  return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
 
 const Finder = new mokit.Component({
   template: require('./index.html'),
@@ -55,11 +59,15 @@ const Finder = new mokit.Component({
       }, 100);
     }
   },
-  parseRegexp(text) {
-    if (CHECK_REGEXP.test(text)) {
-      return (new Function(`return ${text}`))();
+  parseRegexp(text, forceStr) {
+    if (!forceStr && CHECK_REGEXP.test(text)) {
+      try {
+        return (new Function(`return ${text}`))();
+      } catch (err) {
+        return this.parseRegexp(text, true);
+      }
     } else {
-      return new RegExp(text.replace(/\\/igm, '\\\\'), 'gm');
+      return new RegExp(RegExp.escape(text), 'gm');
     }
   },
   find() {
