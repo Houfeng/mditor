@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.5
+ * Mditor embed version 1.1.6
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -59,13 +59,13 @@
 	var Parser = __webpack_require__(59);
 	var marked = __webpack_require__(60);
 	
-	__webpack_require__(107);
-	__webpack_require__(114);
-	__webpack_require__(115);
+	__webpack_require__(109);
 	__webpack_require__(116);
+	__webpack_require__(117);
+	__webpack_require__(118);
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(117),
+	  template: __webpack_require__(119),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -5640,6 +5640,8 @@
 	__webpack_require__(104);
 	__webpack_require__(105);
 	__webpack_require__(106);
+	__webpack_require__(107);
+	__webpack_require__(108);
 	
 	//alias
 	Prism.languages.js = Prism.languages.javascript;
@@ -10290,27 +10292,176 @@
 /* 107 */
 /***/ function(module, exports) {
 
+	Prism.languages.makefile = {
+		'comment': {
+			pattern: /(^|[^\\])#(?:\\(?:\r\n|[\s\S])|.)*/,
+			lookbehind: true
+		},
+		'string': /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+	
+		// Built-in target names
+		'builtin': /\.[A-Z][^:#=\s]+(?=\s*:(?!=))/,
+	
+		// Targets
+		'symbol': {
+			pattern: /^[^:=\r\n]+(?=\s*:(?!=))/m,
+			inside: {
+				'variable': /\$+(?:[^(){}:#=\s]+|(?=[({]))/
+			}
+		},
+		'variable': /\$+(?:[^(){}:#=\s]+|\([@*%<^+?][DF]\)|(?=[({]))/,
+	
+		'keyword': [
+			// Directives
+			/-include\b|\b(?:define|else|endef|endif|export|ifn?def|ifn?eq|include|override|private|sinclude|undefine|unexport|vpath)\b/,
+			// Functions
+			{
+				pattern: /(\()(?:addsuffix|abspath|and|basename|call|dir|error|eval|file|filter(?:-out)?|findstring|firstword|flavor|foreach|guile|if|info|join|lastword|load|notdir|or|origin|patsubst|realpath|shell|sort|strip|subst|suffix|value|warning|wildcard|word(?:s|list)?)(?=[ \t])/,
+				lookbehind: true
+			}
+		],
+		'operator': /(?:::|[?:+!])?=|[|@]/,
+		'punctuation': /[:;(){}]/
+	};
+
+/***/ },
+/* 108 */
+/***/ function(module, exports) {
+
+	Prism.languages.markdown = Prism.languages.extend('markup', {});
+	Prism.languages.insertBefore('markdown', 'prolog', {
+		'blockquote': {
+			// > ...
+			pattern: /^>(?:[\t ]*>)*/m,
+			alias: 'punctuation'
+		},
+		'code': [
+			{
+				// Prefixed by 4 spaces or 1 tab
+				pattern: /^(?: {4}|\t).+/m,
+				alias: 'keyword'
+			},
+			{
+				// `code`
+				// ``code``
+				pattern: /``.+?``|`[^`\n]+`/,
+				alias: 'keyword'
+			}
+		],
+		'title': [
+			{
+				// title 1
+				// =======
+	
+				// title 2
+				// -------
+				pattern: /\w+.*(?:\r?\n|\r)(?:==+|--+)/,
+				alias: 'important',
+				inside: {
+					punctuation: /==+$|--+$/
+				}
+			},
+			{
+				// # title 1
+				// ###### title 6
+				pattern: /(^\s*)#+.+/m,
+				lookbehind: true,
+				alias: 'important',
+				inside: {
+					punctuation: /^#+|#+$/
+				}
+			}
+		],
+		'hr': {
+			// ***
+			// ---
+			// * * *
+			// -----------
+			pattern: /(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,
+			lookbehind: true,
+			alias: 'punctuation'
+		},
+		'list': {
+			// * item
+			// + item
+			// - item
+			// 1. item
+			pattern: /(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,
+			lookbehind: true,
+			alias: 'punctuation'
+		},
+		'url-reference': {
+			// [id]: http://example.com "Optional title"
+			// [id]: http://example.com 'Optional title'
+			// [id]: http://example.com (Optional title)
+			// [id]: <http://example.com> "Optional title"
+			pattern: /!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,
+			inside: {
+				'variable': {
+					pattern: /^(!?\[)[^\]]+/,
+					lookbehind: true
+				},
+				'string': /(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,
+				'punctuation': /^[\[\]!:]|[<>]/
+			},
+			alias: 'url'
+		},
+		'bold': {
+			// **strong**
+			// __strong__
+	
+			// Allow only one line break
+			pattern: /(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,
+			lookbehind: true,
+			inside: {
+				'punctuation': /^\*\*|^__|\*\*$|__$/
+			}
+		},
+		'italic': {
+			// *em*
+			// _em_
+	
+			// Allow only one line break
+			pattern: /(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,
+			lookbehind: true,
+			inside: {
+				'punctuation': /^[*_]|[*_]$/
+			}
+		},
+		'url': {
+			// [example](http://example.com "Optional title")
+			// [example] [id]
+			pattern: /!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,
+			inside: {
+				'variable': {
+					pattern: /(!?\[)[^\]]+(?=\]$)/,
+					lookbehind: true
+				},
+				'string': {
+					pattern: /"(?:\\.|[^"\\])*"(?=\)$)/
+				}
+			}
+		}
+	});
+	
+	Prism.languages.markdown['bold'].inside['url'] = Prism.util.clone(Prism.languages.markdown['url']);
+	Prism.languages.markdown['italic'].inside['url'] = Prism.util.clone(Prism.languages.markdown['url']);
+	Prism.languages.markdown['bold'].inside['italic'] = Prism.util.clone(Prism.languages.markdown['italic']);
+	Prism.languages.markdown['italic'].inside['bold'] = Prism.util.clone(Prism.languages.markdown['bold']);
+
+/***/ },
+/* 109 */
+/***/ function(module, exports) {
+
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 108 */,
-/* 109 */,
 /* 110 */,
 /* 111 */,
 /* 112 */,
 /* 113 */,
-/* 114 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 115 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
+/* 114 */,
+/* 115 */,
 /* 116 */
 /***/ function(module, exports) {
 
@@ -10318,6 +10469,18 @@
 
 /***/ },
 /* 117 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 118 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 119 */
 /***/ function(module, exports) {
 
 	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"

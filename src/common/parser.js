@@ -47,6 +47,8 @@ require('prismjs/components/prism-graphql');
 require('prismjs/components/prism-nginx');
 require('prismjs/components/prism-erlang');
 require('prismjs/components/prism-powershell');
+require('prismjs/components/prism-makefile');
+require('prismjs/components/prism-markdown');
 
 //alias
 Prism.languages.js = Prism.languages.javascript;
