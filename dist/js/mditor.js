@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.4
+ * Mditor embed version 1.1.5
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
