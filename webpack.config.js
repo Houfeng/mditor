@@ -28,7 +28,7 @@ const compressPlugin = new webpack.optimize.UglifyJsPlugin({
 });
 
 const bannerPlugin = new webpack.BannerPlugin(`${pkg.displayName} version ${pkg.version}
-Homepage: http://mditor.com`);
+Homepage: ${pkg.homepage}`);
 
 // webpack plugins
 const plugins = [

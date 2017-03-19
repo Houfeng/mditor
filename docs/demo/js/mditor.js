@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.1
+ * Mditor embed version 1.1.2
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5034,8 +5034,12 @@
 	        return this._value;
 	      },
 	      /*istanbul ignore next*/set: function set(value) {
+	        /*istanbul ignore next*/var _this = this;
+	
 	        this._value = value;
-	        this.html = this.mditor.parser.parse(this._value);
+	        this.mditor.parser.parse(this._value, function (err, result) {
+	          /*istanbul ignore next*/_this.html = result || err;
+	        });
 	      }
 	    }
 	  },
@@ -5618,19 +5622,18 @@
 		mangle: false,
 		highlight: function /*istanbul ignore next*/highlight(code, lang, callback) {
 			var hl = Parser.highlights[lang];
-			if (hl) {
-				return hl(code, lang, callback);
-			} else {
-				return _highlight.highlightAuto(code).value;
-			}
+			if (hl) return hl(code, lang, callback);
+			var result = _highlight.highlightAuto(code).value;
+			if (callback) callback(null, result);
+			return result;
 		}
 	});
 	
 	/**
 	 * 解析方法
 	 **/
-	Parser.prototype.parse = function (mdText) {
-		return marked(mdText);
+	Parser.prototype.parse = function (mdText, callback) {
+		return marked(mdText, callback);
 	};
 	
 	module.exports = Parser;

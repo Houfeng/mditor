@@ -20,7 +20,9 @@ const Viewer = new mokit.Component({
       },
       set(value) {
         this._value = value;
-        this.html = this.mditor.parser.parse(this._value);
+        this.mditor.parser.parse(this._value, (err, result) => {
+          this.html = result || err;
+        });
       }
     }
   },

@@ -1,7 +1,7 @@
 {
   "name": "mditor",
   "displayName": "Mditor embed",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./src/server/index.js",
   "repository": {
@@ -36,7 +36,7 @@
   "bugs": {
     "url": "https://github.com/houfeng/mditor/issues"
   },
-  "homepage": "http://houfeng.net/mditor",
+  "homepage": "http://mditor.com",
   "dependencies": {
     "font-awesome": "^4.7.0",
     "github-markdown-css": "^2.4.1",

@@ -29,19 +29,18 @@ marked.setOptions({
 	mangle: false,
 	highlight: function (code, lang, callback) {
 		let hl = Parser.highlights[lang];
-		if (hl) {
-			return hl(code, lang, callback);
-		} else {
-			return highlight.highlightAuto(code).value;
-		}
+		if (hl) return hl(code, lang, callback);
+		let result = highlight.highlightAuto(code).value;
+		if (callback) callback(null, result);
+		return result;
 	}
 });
 
 /**
  * 解析方法
  **/
-Parser.prototype.parse = function (mdText) {
-	return marked(mdText);
+Parser.prototype.parse = function (mdText, callback) {
+	return marked(mdText, callback);
 };
 
 module.exports = Parser;
