@@ -9,7 +9,7 @@ const marked = require('marked');
 
 require('font-awesome/css/font-awesome.css');
 require('github-markdown-css/github-markdown.css');
-require('highlight.js/styles/github.css');
+require('prismjs/themes/prism.css');
 require('./index.less');
 
 const Mditor = new mokit.Component({
