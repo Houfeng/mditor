@@ -54,6 +54,7 @@ require('prismjs/components/prism-markdown');
 Prism.languages.js = Prism.languages.javascript;
 Prism.languages['c#'] = Prism.languages.csharp;
 Prism.languages.sh = Prism.languages.bash;
+Prism.languages.md = Prism.languages.markdown;
 
 /**
  * 定义解析类型
