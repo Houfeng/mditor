@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.3
+ * Mditor embed version 1.1.4
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5673,16 +5673,15 @@
 		smartypants: false,
 		mangle: false,
 		highlight: function /*istanbul ignore next*/highlight(code, lang, callback) {
-			var result = /*istanbul ignore next*/void 0;
 			if (Parser.highlights[lang]) {
-				result = Parser.highlights[lang].parse(code, lang, callback);
+				var result = Parser.highlights[lang].parse(code, lang, callback);
+				if (!callback) return result;
 			} else if (Prism.languages[lang]) {
-				result = Prism.highlight(code, Prism.languages[lang]);
+				var _result = Prism.highlight(code, Prism.languages[lang]);
+				if (callback) callback(null, _result);else return _result;
 			} else {
-				result = code;
+				if (callback) callback(null, code);else return code;
 			}
-			if (callback) callback(null, result);
-			return result;
 		}
 	});
 	

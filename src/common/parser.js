@@ -80,16 +80,17 @@ marked.setOptions({
 	smartypants: false,
 	mangle: false,
 	highlight: function (code, lang, callback) {
-		let result;
 		if (Parser.highlights[lang]) {
-			result = Parser.highlights[lang].parse(code, lang, callback);
+			let result = Parser.highlights[lang].parse(code, lang, callback);
+			if (!callback) return result;
 		} else if (Prism.languages[lang]) {
-			result = Prism.highlight(code, Prism.languages[lang]);
+			let result = Prism.highlight(code, Prism.languages[lang]);
+			if (callback) callback(null, result);
+			else return result;
 		} else {
-			result = code;
+			if (callback) callback(null, code);
+			else return code;
 		}
-		if (callback) callback(null, result);
-		return result;
 	}
 });
 
