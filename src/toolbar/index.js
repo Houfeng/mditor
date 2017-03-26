@@ -38,6 +38,7 @@ const Toolbar = new mokit.Component({
   },
 
   exec(name, event) {
+    event.preventDefault();
     this.mditor.execCommand(name, event);
   },
 

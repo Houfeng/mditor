@@ -74,7 +74,7 @@ const Finder = new mokit.Component({
   },
   replace() {
     this.mditor.value = this.mditor.value.replace(
-      new RegExp(this.findWord, 'gm'),
+      this.mditor.editor.markExp,
       this.replaceWord || ''
     );
   },

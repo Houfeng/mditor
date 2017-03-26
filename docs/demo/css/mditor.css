@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.7
+ * Mditor embed version 1.1.8
  * Homepage: http://mditor.com
  */
 .mditor .toolbar {
@@ -57,8 +57,6 @@
   height: 100%;
   resize: none;
   background-color: transparent;
-  -webkit-font-smoothing: antialiased;
-  font: 16px/1.8 'Roboto Mono', 'PingFang SC', 'Lantinghei SC', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', '\\5FAE\8F6F\96C5\9ED1', 'STHeitiSC-Light', 'simsun', '\\5B8B\4F53', 'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', sans-serif;
   margin: 0px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -102,8 +100,6 @@
   height: 100%;
   resize: none;
   background-color: transparent;
-  -webkit-font-smoothing: antialiased;
-  font: 16px/1.8 'Roboto Mono', 'PingFang SC', 'Lantinghei SC', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', '\\5FAE\8F6F\96C5\9ED1', 'STHeitiSC-Light', 'simsun', '\\5B8B\4F53', 'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', sans-serif;
   margin: 0px;
   padding: 10px 12px;
   color: #333;
@@ -3319,6 +3315,12 @@ pre[class*="language-"] {
 /**
  Mditor 公共样式
  **/
+@font-face {
+  font-family: 'RobotoMono';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../font/a48ac41620cd818c5020d0f4302489ff.ttf) format('truetype');
+}
 .mditor {
   transition: .05s;
   border-radius: 3px;
@@ -3411,6 +3413,12 @@ pre[class*="language-"] {
 }
 .mditor.toolbar-hidden .body {
   border-radius: 3px;
+}
+.mditor .textarea,
+.mditor .backdrop,
+.mditor .viewer {
+  -webkit-font-smoothing: antialiased;
+  font: 16px/1.8 'RobotoMono', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', sans-serif;
 }
 
 /*# sourceMappingURL=mditor.css.map*/

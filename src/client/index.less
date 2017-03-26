@@ -2,6 +2,13 @@
  Mditor 公共样式
  **/
 
+@font-face {
+	font-family: 'RobotoMono';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../assets/fonts/RobotoMono-Regular.ttf') format('truetype');
+}
+
 .mditor {
 	transition: .05s;
 	border-radius: 3px;
@@ -96,5 +103,9 @@
 		.body {
 			border-radius: 3px;
 		}
+	}
+	.textarea, .backdrop, .viewer {
+		-webkit-font-smoothing: antialiased;
+		font: 16px/1.8 'RobotoMono', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', sans-serif;
 	}
 }

@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.7
+ * Mditor embed version 1.1.8
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -64,7 +64,7 @@
 	__webpack_require__(119);
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(120),
+	  template: __webpack_require__(121),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -129,6 +129,10 @@
 	  },
 	  /*istanbul ignore next*/onInput: function onInput() {
 	    this.$emit('input');
+	  },
+	  /*istanbul ignore next*/onHeadDblClick: function onHeadDblClick(event) {
+	    if (event.target.tagName == 'I') return;
+	    this.$emit('headDblClick');
 	  },
 	  /*istanbul ignore next*/_keepIndent: function _keepIndent(event) {
 	    var text = this.editor.getBeforeTextInLine();
@@ -3674,6 +3678,7 @@
 	    return this.mditor && item.state && this.mditor[item.state];
 	  },
 	  /*istanbul ignore next*/exec: function exec(name, event) {
+	    event.preventDefault();
 	    this.mditor.execCommand(name, event);
 	  },
 	  /*istanbul ignore next*/getItem: function getItem(name) {
@@ -5200,7 +5205,7 @@
 	    this.mditor.editor.activeMark();
 	  },
 	  /*istanbul ignore next*/replace: function replace() {
-	    this.mditor.value = this.mditor.value.replace(new RegExp(this.findWord, 'gm'), this.replaceWord || '');
+	    this.mditor.value = this.mditor.value.replace(this.mditor.editor.markExp, this.replaceWord || '');
 	  },
 	  /*istanbul ignore next*/onFindEnter: function onFindEnter(event) {
 	    if (event.keyCode != 13) return;
@@ -5230,7 +5235,7 @@
 /* 57 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"回车查找，ESC 关闭\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"回车替换，ESC 关闭\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
+	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"回车查找，esc 关闭\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"回车替换，esc 关闭\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
 
 /***/ },
 /* 58 */
@@ -10530,10 +10535,11 @@
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 120 */
+/* 120 */,
+/* 121 */
 /***/ function(module, exports) {
 
-	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);

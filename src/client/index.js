@@ -81,6 +81,11 @@ const Mditor = new mokit.Component({
     this.$emit('input');
   },
 
+  onHeadDblClick(event) {
+    if (event.target.tagName == 'I') return;
+    this.$emit('headDblClick');
+  },
+
   _keepIndent(event) {
     let text = this.editor.getBeforeTextInLine();
     let parts = text.split(this.INDENT);
