@@ -29,7 +29,7 @@ module.exports = [{
 }, {
   name: 'header',
   title: '标题',
-  key: 'shift+alt+h',
+  key: 'shift+alt+1',
   handler() {
     this.editor.wrapSelectText('# ');
   }
@@ -130,7 +130,7 @@ module.exports = [{
   name: 'line',
   title: '分隔线',
   icon: 'minus',
-  key: 'shift+alt+n',
+  key: 'shift+alt+h',
   handler() {
     this.editor.wrapSelectText('----' + this.EOL);
   }

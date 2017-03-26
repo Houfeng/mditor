@@ -18,15 +18,15 @@
       resize: none;
       background-color: transparent;
       -webkit-font-smoothing: antialiased;
-      font: 16px/1.5 "PingFang SC", "Lantinghei SC", "Helvetica Neue", Helvetica, Arial, "Microsoft YaHei", "\\5FAE软雅黑", STHeitiSC-Light, simsun, "\\5B8B体", "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
+      font: 16px/1.8 'Roboto Mono', 'PingFang SC', 'Lantinghei SC', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', '\\5FAE软雅黑', 'STHeitiSC-Light', 'simsun', '\\5B8B体', 'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', sans-serif;
       margin: 0px;
       overflow-x: hidden;
       overflow-y: auto;
       transition: transform 1s;
       letter-spacing: 1px;
     }
-    .textarea, .highlight {
-      padding: 10px;
+    .textarea, .backdrop .inner {
+      padding: 10px 12px;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
@@ -39,10 +39,10 @@
       pointer-events: none;
       overflow: hidden;
       padding: 0px;
-      .highlight {
+      .inner {
         color: transparent;
         mark {
-          border-radius: 2px;
+          border-radius: 3px;
           color: transparent;
           background-color: #ddd;
           &.active {

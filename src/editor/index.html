@@ -1,7 +1,7 @@
 <div class="editor">
-  <div class="backdrop" m:id="backdrop">
-    <div class="highlight" m:html="applyHighlights(value)"></div>
+  <div class="backdrop" m:id="marks">
+    <div class="inner" m:html="applyMarks(value)"></div>
   </div>
   <textarea class="textarea" m:id="textarea" m:model="value" m:on:paste="onPaste" m:on:dragover="onDragover" m:on:drop="onDrop"
-    m:on:scroll="onScroll" m:on:input="onInput" m:on:compositionStart="onCompositionStart" m:on:compositionEnd="onCompositionEnd"></textarea>
+    m:on:scroll="onScroll()" m:on:input="onInput" m:on:compositionStart="onCompositionStart" m:on:compositionEnd="onCompositionEnd"></textarea>
 </div>

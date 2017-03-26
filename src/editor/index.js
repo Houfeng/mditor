@@ -2,6 +2,7 @@ const mokit = require('mokit');
 const EventEmitter = mokit.EventEmitter;
 const utils = require('ntils');
 const Stack = require('./dostack');
+const commands = require('./commands');
 
 require('./index.less');
 
@@ -21,22 +22,18 @@ module.exports = new mokit.Component({
 
   onReady() {
     this.stack = new Stack();
-    this.mditor.removeCommand('undo');
-    this.mditor.addCommand({
-      name: 'undo',
-      key: '{cmd}+z',
-      handler: this.undo.bind(this, null)
-    });
-    this.mditor.removeCommand('redo');
-    this.mditor.addCommand({
-      name: 'redo',
-      key: '{cmd}+shift+z',
-      handler: this.redo.bind(this)
-    });
     setTimeout(() => {
       this.textareaEmitter = new EventEmitter(this.textarea);
       this.stack.init(this.getValue());
     }, 100);
+    this._bindCommands();
+  },
+
+  _bindCommands() {
+    commands.forEach(item => {
+      this.mditor.removeCommand(item.name);
+      this.mditor.addCommand(item);
+    });
   },
 
   onCompositionStart() {
@@ -108,16 +105,16 @@ module.exports = new mokit.Component({
     this.$emit('scroll', event);
   },
 
-  syncScroll() {
-    this.backdrop.scrollTop = this.textarea.scrollTop;
-    this.backdrop.scrollLeft = this.textarea.scrollLeft;
+  syncScroll(disTwice) {
+    this.marks.scrollTop = this.textarea.scrollTop;
+    this.marks.scrollLeft = this.textarea.scrollLeft;
+    if (disTwice) return;
     setTimeout(() => {
-      this.backdrop.scrollTop = this.textarea.scrollTop;
-      this.backdrop.scrollLeft = this.textarea.scrollLeft;
+      this.syncScroll(true);
     }, 0);
   },
 
-  applyHighlights(text) {
+  applyMarks(text) {
     if (!text || !this.markExp) return;
     text = text
       .replace(/\n$/g, '\n\n')
@@ -130,7 +127,7 @@ module.exports = new mokit.Component({
   },
 
   activeMark(index) {
-    let marks = [].slice.call(this.backdrop.querySelectorAll('mark'));
+    let marks = [].slice.call(this.marks.querySelectorAll('mark'));
     if (marks.length < 1) return;
     this.activeMarkIndex = utils.isNull(this.activeMarkIndex) ?
       -1 : this.activeMarkIndex;
@@ -152,7 +149,7 @@ module.exports = new mokit.Component({
 
   scrollToMark(mark) {
     // mark.scrollIntoView();
-    // this.textarea.scrollTop = this.backdrop.scrollTop;
+    // this.textarea.scrollTop = this.marks.scrollTop;
     // this.textarea.scrollTop -= 20;
     this.textarea.scrollTop = mark.offsetTop - 20;
   },

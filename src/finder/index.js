@@ -1,12 +1,9 @@
 const mokit = require('mokit');
+const utils = require('ntils');
 
 require('./index.less');
 
 const CHECK_REGEXP = /^\/[\s\S]+\/(i|g|m)*$/;
-
-RegExp.escape = function (string) {
-  return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
 
 const Finder = new mokit.Component({
   template: require('./index.html'),
@@ -46,6 +43,7 @@ const Finder = new mokit.Component({
         this.findBox.focus();
       }, 200);
     }
+    this.mditor.editor.syncScroll();
   },
   watch: {
     findWord() {
@@ -68,7 +66,7 @@ const Finder = new mokit.Component({
         return this.parseRegexp(text, true);
       }
     } else {
-      return new RegExp(RegExp.escape(text), 'gm');
+      return new RegExp(utils.escapeRegExp(text), 'gm');
     }
   },
   find() {

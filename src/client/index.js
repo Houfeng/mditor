@@ -5,7 +5,6 @@ const Viewer = require('../viewer');
 const Finder = require('../finder');
 const Shortcut = require('./shortcut');
 const Parser = require('../common/parser');
-const marked = require('marked');
 
 require('font-awesome/css/font-awesome.css');
 require('github-markdown-css/github-markdown.css');
@@ -22,7 +21,6 @@ const Mditor = new mokit.Component({
     this.INDENT = '\t';
     this.shortcut = new Shortcut(this);
     this.Parser = Parser;
-    this.marked = marked;
     this.parser = new Parser(this);
   },
 
@@ -178,6 +176,5 @@ Mditor.fromTextarea = function (textarea) {
 };
 
 Mditor.Parser = Parser;
-Mditor.marked = marked;
 
 module.exports = window.Mditor = Mditor;

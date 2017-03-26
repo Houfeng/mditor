@@ -66,6 +66,7 @@ const Parser = function (options) {
 
 Parser.highlights = {};
 Parser.marked = marked;
+Parser.Prism = Prism;
 
 //使标题解析 # 号可以无空格
 marked.Lexer.rules.gfm.heading = marked.Lexer.rules.heading;
