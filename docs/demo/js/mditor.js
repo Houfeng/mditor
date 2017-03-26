@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.6
+ * Mditor embed version 1.1.7
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -53,19 +53,18 @@
 	var mokit = __webpack_require__(1);
 	var Toolbar = __webpack_require__(40);
 	var Editor = __webpack_require__(45);
-	var Viewer = __webpack_require__(51);
-	var Finder = __webpack_require__(54);
-	var Shortcut = __webpack_require__(57);
-	var Parser = __webpack_require__(59);
-	var marked = __webpack_require__(60);
+	var Viewer = __webpack_require__(52);
+	var Finder = __webpack_require__(55);
+	var Shortcut = __webpack_require__(58);
+	var Parser = __webpack_require__(60);
 	
-	__webpack_require__(109);
-	__webpack_require__(116);
+	__webpack_require__(110);
 	__webpack_require__(117);
 	__webpack_require__(118);
+	__webpack_require__(119);
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(119),
+	  template: __webpack_require__(120),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -74,7 +73,6 @@
 	    this.INDENT = '\t';
 	    this.shortcut = new Shortcut(this);
 	    this.Parser = Parser;
-	    this.marked = marked;
 	    this.parser = new Parser(this);
 	  },
 	  /*istanbul ignore next*/onReady: function onReady() {
@@ -218,7 +216,6 @@
 	};
 	
 	Mditor.Parser = Parser;
-	Mditor.marked = marked;
 	
 	module.exports = window.Mditor = Mditor;
 
@@ -3742,7 +3739,7 @@
 	}, {
 	  name: 'header',
 	  title: '标题',
-	  key: 'shift+alt+h',
+	  key: 'shift+alt+1',
 	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('# ');
 	  }
@@ -3837,7 +3834,7 @@
 	  name: 'line',
 	  title: '分隔线',
 	  icon: 'minus',
-	  key: 'shift+alt+n',
+	  key: 'shift+alt+h',
 	  /*istanbul ignore next*/handler: function handler() {
 	    this.editor.wrapSelectText('----' + this.EOL);
 	  }
@@ -3929,8 +3926,9 @@
 	var EventEmitter = mokit.EventEmitter;
 	var utils = __webpack_require__(46);
 	var Stack = __webpack_require__(47);
+	var commands = __webpack_require__(49);
 	
-	__webpack_require__(49);
+	__webpack_require__(50);
 	
 	var ua = window.navigator.userAgent.toLowerCase();
 	var isIE = !!ua.match(/msie|trident\/7|edge/);
@@ -3938,7 +3936,7 @@
 	var isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
 	
 	module.exports = new mokit.Component({
-	  template: __webpack_require__(50),
+	  template: __webpack_require__(51),
 	
 	  props: {
 	    mditor: null,
@@ -3950,22 +3948,19 @@
 	    /*istanbul ignore next*/var _this = this;
 	
 	    this.stack = new Stack();
-	    this.mditor.removeCommand('undo');
-	    this.mditor.addCommand({
-	      name: 'undo',
-	      key: '{cmd}+z',
-	      handler: this.undo.bind(this, null)
-	    });
-	    this.mditor.removeCommand('redo');
-	    this.mditor.addCommand({
-	      name: 'redo',
-	      key: '{cmd}+shift+z',
-	      handler: this.redo.bind(this)
-	    });
 	    setTimeout(function () {
 	      /*istanbul ignore next*/_this.textareaEmitter = new EventEmitter( /*istanbul ignore next*/_this.textarea);
 	      /*istanbul ignore next*/_this.stack.init( /*istanbul ignore next*/_this.getValue());
 	    }, 100);
+	    this._bindCommands();
+	  },
+	  /*istanbul ignore next*/_bindCommands: function _bindCommands() {
+	    /*istanbul ignore next*/var _this2 = this;
+	
+	    commands.forEach(function (item) {
+	      /*istanbul ignore next*/_this2.mditor.removeCommand(item.name);
+	      /*istanbul ignore next*/_this2.mditor.addCommand(item);
+	    });
 	  },
 	  /*istanbul ignore next*/onCompositionStart: function onCompositionStart() {
 	    this._compositionLock = true;
@@ -3984,7 +3979,7 @@
 	    this.textarea.focus();
 	  },
 	  /*istanbul ignore next*/onInput: function onInput() {
-	    /*istanbul ignore next*/var _this2 = this;
+	    /*istanbul ignore next*/var _this3 = this;
 	
 	    this.$emit('input');
 	    if (this._compositionLock) return;
@@ -3993,9 +3988,9 @@
 	      this._changedTimer = null;
 	    }
 	    this._changedTimer = setTimeout(function () {
-	      if (! /*istanbul ignore next*/_this2._changedTimer) return;
-	      /*istanbul ignore next*/_this2.stack.change( /*istanbul ignore next*/_this2.getValue());
-	      /*istanbul ignore next*/_this2.$emit('changed');
+	      if (! /*istanbul ignore next*/_this3._changedTimer) return;
+	      /*istanbul ignore next*/_this3.stack.change( /*istanbul ignore next*/_this3.getValue());
+	      /*istanbul ignore next*/_this3.$emit('changed');
 	    }, 600);
 	  },
 	  /*istanbul ignore next*/undo: function undo() {
@@ -4029,17 +4024,17 @@
 	    this.syncScroll();
 	    this.$emit('scroll', event);
 	  },
-	  /*istanbul ignore next*/syncScroll: function syncScroll() {
-	    /*istanbul ignore next*/var _this3 = this;
+	  /*istanbul ignore next*/syncScroll: function syncScroll(disTwice) {
+	    /*istanbul ignore next*/var _this4 = this;
 	
-	    this.backdrop.scrollTop = this.textarea.scrollTop;
-	    this.backdrop.scrollLeft = this.textarea.scrollLeft;
+	    this.marks.scrollTop = this.textarea.scrollTop;
+	    this.marks.scrollLeft = this.textarea.scrollLeft;
+	    if (disTwice) return;
 	    setTimeout(function () {
-	      /*istanbul ignore next*/_this3.backdrop.scrollTop = /*istanbul ignore next*/_this3.textarea.scrollTop;
-	      /*istanbul ignore next*/_this3.backdrop.scrollLeft = /*istanbul ignore next*/_this3.textarea.scrollLeft;
+	      /*istanbul ignore next*/_this4.syncScroll(true);
 	    }, 0);
 	  },
-	  /*istanbul ignore next*/applyHighlights: function applyHighlights(text) {
+	  /*istanbul ignore next*/applyMarks: function applyMarks(text) {
 	    if (!text || !this.markExp) return;
 	    text = text.replace(/\n$/g, '\n\n').replace(this.markExp, '<mark>$&</mark>');
 	    if (isIE) {
@@ -4049,7 +4044,7 @@
 	    return text;
 	  },
 	  /*istanbul ignore next*/activeMark: function activeMark(index) {
-	    var marks = [].slice.call(this.backdrop.querySelectorAll('mark'));
+	    var marks = [].slice.call(this.marks.querySelectorAll('mark'));
 	    if (marks.length < 1) return;
 	    this.activeMarkIndex = utils.isNull(this.activeMarkIndex) ? -1 : this.activeMarkIndex;
 	    if (utils.isNull(index)) {
@@ -4069,7 +4064,7 @@
 	  },
 	  /*istanbul ignore next*/scrollToMark: function scrollToMark(mark) {
 	    // mark.scrollIntoView();
-	    // this.textarea.scrollTop = this.backdrop.scrollTop;
+	    // this.textarea.scrollTop = this.marks.scrollTop;
 	    // this.textarea.scrollTop -= 20;
 	    this.textarea.scrollTop = mark.offsetTop - 20;
 	  },
@@ -4140,12 +4135,12 @@
 	    return value.substring(start, end).lastIndexOf(char);
 	  },
 	  /*istanbul ignore next*/getBeforeWord: function getBeforeWord() {
-	    /*istanbul ignore next*/var _this4 = this;
+	    /*istanbul ignore next*/var _this5 = this;
 	
 	    var chars = [' ', '\t', this.mditor.EOL];
 	    var start = 0;
 	    chars.forEach(function (char) {
-	      var index = /*istanbul ignore next*/_this4.getBeforeFirstCharIndex(char);
+	      var index = /*istanbul ignore next*/_this5.getBeforeFirstCharIndex(char);
 	      if (index + char.length > start) {
 	        start = index + char.length;
 	      }
@@ -4174,7 +4169,7 @@
 	    this.setSelectRange(start, range.end);
 	  },
 	  /*istanbul ignore next*/addIndent: function addIndent() {
-	    /*istanbul ignore next*/var _this5 = this;
+	    /*istanbul ignore next*/var _this6 = this;
 	
 	    var selectText = this.getSelectText();
 	    if (selectText.length < 1) {
@@ -4185,7 +4180,7 @@
 	    var buffer = [];
 	    var lineCount = textArray.length - 1;
 	    textArray.forEach(function (line, index) {
-	      line = line.trim() !== '' ? /*istanbul ignore next*/_this5.mditor.INDENT + line : line;
+	      line = line.trim() !== '' ? /*istanbul ignore next*/_this6.mditor.INDENT + line : line;
 	      if (index < lineCount || line.trim() !== '') {
 	        buffer.push(line);
 	      }
@@ -4193,7 +4188,7 @@
 	    this.setSelectText(buffer.join(this.mditor.EOL));
 	  },
 	  /*istanbul ignore next*/removeIndent: function removeIndent() {
-	    /*istanbul ignore next*/var _this6 = this;
+	    /*istanbul ignore next*/var _this7 = this;
 	
 	    var indentRegExp = new RegExp('^' + this.mditor.INDENT);
 	    var selectText = this.getSelectText();
@@ -4209,7 +4204,7 @@
 	    var buffer = [];
 	    textArray.forEach(function (line) {
 	      if (indentRegExp.test(line)) {
-	        line = line.replace( /*istanbul ignore next*/_this6.mditor.INDENT, '');
+	        line = line.replace( /*istanbul ignore next*/_this7.mditor.INDENT, '');
 	      }
 	      buffer.push(line);
 	    });
@@ -4857,6 +4852,13 @@
 	  };
 	
 	  /**
+	   * 编码正则字符串
+	   */
+	  ntils.escapeRegExp = function (str) {
+	    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	  };
+	
+	  /**
 	   * 解析字符串为 dom 
 	   * @param {string} str 字符串
 	   * @returns {HTMLNode} 解析后的 DOM 
@@ -4998,26 +5000,70 @@
 /* 49 */
 /***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
+	/*istanbul ignore next*/'use strict';
+	
+	module.exports = [{
+	  name: 'undo',
+	  key: '{cmd}+z',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.editor.undo();
+	  }
+	}, {
+	  name: 'redo',
+	  key: '{cmd}+shift+z',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.editor.redo();
+	  }
+	}, {
+	  name: 'h2',
+	  key: 'shift+alt+2',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.editor.wrapSelectText('## ');
+	  }
+	}, {
+	  name: 'h3',
+	  key: 'shift+alt+3',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.editor.wrapSelectText('### ');
+	  }
+	}, {
+	  name: 'h4',
+	  key: 'shift+alt+4',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.editor.wrapSelectText('#### ');
+	  }
+	}, {
+	  name: 'h5',
+	  key: 'shift+alt+5',
+	  /*istanbul ignore next*/handler: function handler() {
+	    this.editor.wrapSelectText('##### ');
+	  }
+	}];
 
 /***/ },
 /* 50 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"editor\">\n  <div class=\"backdrop\" m:id=\"backdrop\">\n    <div class=\"highlight\" m:html=\"applyHighlights(value)\"></div>\n  </div>\n  <textarea class=\"textarea\" m:id=\"textarea\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\"\n    m:on:scroll=\"onScroll\" m:on:input=\"onInput\" m:on:compositionStart=\"onCompositionStart\" m:on:compositionEnd=\"onCompositionEnd\"></textarea>\n</div>"
+	// removed by extract-text-webpack-plugin
 
 /***/ },
 /* 51 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"editor\">\n  <div class=\"backdrop\" m:id=\"marks\">\n    <div class=\"inner\" m:html=\"applyMarks(value)\"></div>\n  </div>\n  <textarea class=\"textarea\" m:id=\"textarea\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\"\n    m:on:scroll=\"onScroll()\" m:on:input=\"onInput\" m:on:compositionStart=\"onCompositionStart\" m:on:compositionEnd=\"onCompositionEnd\"></textarea>\n</div>"
+
+/***/ },
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
 	
-	__webpack_require__(52);
+	__webpack_require__(53);
 	
 	var Viewer = new mokit.Component({
-	  template: __webpack_require__(53),
+	  template: __webpack_require__(54),
 	
 	  /*istanbul ignore next*/data: function data() {
 	    return {
@@ -5057,35 +5103,32 @@
 	module.exports = Viewer;
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\n  <div m:show=\"html\" class=\"markdown-body\" m:html=\"html\"></div>\n  <div m:show=\"!html\" class=\"alert\" m:html=\"alert\"></div>\n</div>"
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
+	var utils = __webpack_require__(46);
 	
-	__webpack_require__(55);
+	__webpack_require__(56);
 	
 	var CHECK_REGEXP = /^\/[\s\S]+\/(i|g|m)*$/;
 	
-	RegExp.escape = function (string) {
-	  return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-	};
-	
 	var Finder = new mokit.Component({
-	  template: __webpack_require__(56),
+	  template: __webpack_require__(57),
 	  props: {
 	    mditor: null,
 	    active: false,
@@ -5124,6 +5167,7 @@
 	        /*istanbul ignore next*/_this.findBox.focus();
 	      }, 200);
 	    }
+	    this.mditor.editor.syncScroll();
 	  },
 	
 	  watch: {
@@ -5149,7 +5193,7 @@
 	        return this.parseRegexp(text, true);
 	      }
 	    } else {
-	      return new RegExp(RegExp.escape(text), 'gm');
+	      return new RegExp(utils.escapeRegExp(text), 'gm');
 	    }
 	  },
 	  /*istanbul ignore next*/find: function find() {
@@ -5177,24 +5221,24 @@
 	module.exports = Finder;
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"回车查找，ESC 关闭\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"回车替换，ESC 关闭\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var shortcuts = __webpack_require__(58);
+	var shortcuts = __webpack_require__(59);
 	var utils = __webpack_require__(46);
 	
 	shortcuts.filter = function (event) {
@@ -5241,7 +5285,7 @@
 	};
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (global) {
@@ -5586,16 +5630,15 @@
 	})(window);
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var marked = __webpack_require__(60);
-	var Prism = __webpack_require__(61);
+	var marked = __webpack_require__(61);
+	var Prism = __webpack_require__(62);
 	
 	//language  
-	__webpack_require__(62);
 	__webpack_require__(63);
 	__webpack_require__(64);
 	__webpack_require__(65);
@@ -5642,12 +5685,17 @@
 	__webpack_require__(106);
 	__webpack_require__(107);
 	__webpack_require__(108);
+	__webpack_require__(109);
 	
 	//alias
 	Prism.languages.js = Prism.languages.javascript;
 	Prism.languages['c#'] = Prism.languages.csharp;
+	Prism.languages['f#'] = Prism.languages.fsharp;
 	Prism.languages.sh = Prism.languages.bash;
 	Prism.languages.md = Prism.languages.markdown;
+	Prism.languages.py = Prism.languages.python;
+	Prism.languages.yml = Prism.languages.yaml;
+	Prism.languages.rb = Prism.languages.ruby;
 	
 	/**
 	 * 定义解析类型
@@ -5659,6 +5707,7 @@
 	
 	Parser.highlights = {};
 	Parser.marked = marked;
+	Parser.Prism = Prism;
 	
 	//使标题解析 # 号可以无空格
 	marked.Lexer.rules.gfm.heading = marked.Lexer.rules.heading;
@@ -5698,7 +5747,7 @@
 	module.exports = Parser;
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -6991,7 +7040,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -7793,7 +7842,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports) {
 
 	Prism.languages.java = Prism.languages.extend('clike', {
@@ -7815,7 +7864,7 @@
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports) {
 
 	Prism.languages.csharp = Prism.languages.extend('clike', {
@@ -7853,7 +7902,7 @@
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports) {
 
 	/**
@@ -7970,7 +8019,7 @@
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports) {
 
 	Prism.languages.python= {
@@ -8003,7 +8052,7 @@
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports) {
 
 	Prism.languages.json = {
@@ -8020,7 +8069,7 @@
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8223,13 +8272,13 @@
 	}(Prism));
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports) {
 
 	Prism.languages.yaml={scalar:{pattern:/([\-:]\s*(![^\s]+)?[ \t]*[|>])[ \t]*(?:((?:\r?\n|\r)[ \t]+)[^\r\n]+(?:\3[^\r\n]+)*)/,lookbehind:!0,alias:"string"},comment:/#.*/,key:{pattern:/(\s*(?:^|[:\-,[{\r\n?])[ \t]*(![^\s]+)?[ \t]*)[^\r\n{[\]},#\s]+?(?=\s*:\s)/,lookbehind:!0,alias:"atrule"},directive:{pattern:/(^[ \t]*)%.+/m,lookbehind:!0,alias:"important"},datetime:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(\d{4}-\d\d?-\d\d?([tT]|[ \t]+)\d\d?:\d{2}:\d{2}(\.\d*)?[ \t]*(Z|[-+]\d\d?(:\d{2})?)?|\d{4}-\d{2}-\d{2}|\d\d?:\d{2}(:\d{2}(\.\d*)?)?)(?=[ \t]*($|,|]|}))/m,lookbehind:!0,alias:"number"},"boolean":{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(true|false)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},"null":{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(null|~)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},string:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')(?=[ \t]*($|,|]|}))/m,lookbehind:!0},number:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)[+\-]?(0x[\da-f]+|0o[0-7]+|(\d+\.?\d*|\.?\d+)(e[\+\-]?\d+)?|\.inf|\.nan)[ \t]*(?=$|,|]|})/im,lookbehind:!0},tag:/![^\s]+/,important:/[&*][\w]+/,punctuation:/---|[:[\]{}\-,|>?]|\.\.\./};
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports) {
 
 	Prism.languages.perl = {
@@ -8375,7 +8424,7 @@
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports) {
 
 	Prism.languages.go = Prism.languages.extend('clike', {
@@ -8390,7 +8439,7 @@
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8476,7 +8525,7 @@
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports) {
 
 	Prism.languages.fsharp = Prism.languages.extend('clike', {
@@ -8515,7 +8564,7 @@
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports) {
 
 	Prism.languages.typescript = Prism.languages.extend('javascript', {
@@ -8525,7 +8574,7 @@
 	Prism.languages.ts = Prism.languages.typescript;
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports) {
 
 	(function (Prism) {
@@ -8632,7 +8681,7 @@
 	}(Prism));
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports) {
 
 	/* FIXME :
@@ -8698,7 +8747,7 @@
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8776,7 +8825,7 @@
 	}(Prism));
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8865,7 +8914,7 @@
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports) {
 
 	Prism.languages.applescript = {
@@ -8890,7 +8939,7 @@
 	};
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports) {
 
 	Prism.languages.actionscript = Prism.languages.extend('javascript',  {
@@ -8912,7 +8961,7 @@
 	}
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports) {
 
 	Prism.languages.aspnet = Prism.languages.extend('markup', {
@@ -8953,7 +9002,7 @@
 	});
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports) {
 
 	Prism.languages.basic = {
@@ -8972,7 +9021,7 @@
 	};
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports) {
 
 	Prism.languages.c = Prism.languages.extend('clike', {
@@ -9011,7 +9060,7 @@
 
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports) {
 
 	// Based on Free Pascal
@@ -9066,7 +9115,7 @@
 	};
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports) {
 
 	Prism.languages.vim = {
@@ -9081,7 +9130,7 @@
 	};
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports) {
 
 	// issues: nested multiline comments
@@ -9111,7 +9160,7 @@
 	Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.util.clone(Prism.languages.swift);
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports) {
 
 	Prism.languages.objectivec = Prism.languages.extend('c', {
@@ -9122,7 +9171,7 @@
 
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports) {
 
 	Prism.languages.sql= {
@@ -9144,7 +9193,7 @@
 	};
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports) {
 
 	Prism.languages.scheme = {
@@ -9175,7 +9224,7 @@
 	};
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports) {
 
 	/**
@@ -9296,7 +9345,7 @@
 	}(Prism));
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports) {
 
 	/* TODO
@@ -9428,7 +9477,7 @@
 	}(Prism));
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports) {
 
 	Prism.languages.smalltalk = {
@@ -9464,7 +9513,7 @@
 	};
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports) {
 
 	/* TODO
@@ -9522,7 +9571,7 @@
 	};
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports) {
 
 	Prism.languages.r = {
@@ -9546,7 +9595,7 @@
 	};
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports) {
 
 	Prism.languages.d = Prism.languages.extend('clike', {
@@ -9615,7 +9664,7 @@
 	});
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports) {
 
 	Prism.languages.dart = Prism.languages.extend('clike', {
@@ -9638,7 +9687,7 @@
 	});
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -9734,7 +9783,7 @@
 	}(Prism));
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports) {
 
 	(function (Prism) {
@@ -9838,7 +9887,7 @@
 	}(Prism));
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports) {
 
 	Prism.languages.cpp = Prism.languages.extend('c', {
@@ -9855,7 +9904,7 @@
 	});
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports) {
 
 	Prism.languages.lua = {
@@ -9880,7 +9929,7 @@
 	};
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports) {
 
 	Prism.languages.livescript = {
@@ -10003,7 +10052,7 @@
 	Prism.languages.livescript['interpolated-string'].inside['interpolation'].inside.rest = Prism.languages.livescript;
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -10070,7 +10119,7 @@
 
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports) {
 
 	Prism.languages.groovy = Prism.languages.extend('clike', {
@@ -10141,7 +10190,7 @@
 
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	Prism.languages.graphql = {
@@ -10170,7 +10219,7 @@
 	};
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports) {
 
 	Prism.languages.nginx = Prism.languages.extend('clike', {
@@ -10186,7 +10235,7 @@
 	});
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports) {
 
 	Prism.languages.erlang = {
@@ -10232,7 +10281,7 @@
 	};
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	Prism.languages.powershell = {
@@ -10290,7 +10339,7 @@
 
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports) {
 
 	Prism.languages.makefile = {
@@ -10326,7 +10375,7 @@
 	};
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports) {
 
 	Prism.languages.markdown = Prism.languages.extend('markup', {});
@@ -10451,24 +10500,18 @@
 	Prism.languages.markdown['italic'].inside['bold'] = Prism.util.clone(Prism.languages.markdown['bold']);
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 110 */,
 /* 111 */,
 /* 112 */,
 /* 113 */,
 /* 114 */,
 /* 115 */,
-/* 116 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
+/* 116 */,
 /* 117 */
 /***/ function(module, exports) {
 
@@ -10482,6 +10525,12 @@
 
 /***/ },
 /* 119 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 120 */
 /***/ function(module, exports) {
 
 	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"

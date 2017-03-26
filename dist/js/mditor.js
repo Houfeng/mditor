@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.6
+ * Mditor embed version 1.1.7
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5690,8 +5690,12 @@
 	//alias
 	Prism.languages.js = Prism.languages.javascript;
 	Prism.languages['c#'] = Prism.languages.csharp;
+	Prism.languages['f#'] = Prism.languages.fsharp;
 	Prism.languages.sh = Prism.languages.bash;
 	Prism.languages.md = Prism.languages.markdown;
+	Prism.languages.py = Prism.languages.python;
+	Prism.languages.yml = Prism.languages.yaml;
+	Prism.languages.rb = Prism.languages.ruby;
 	
 	/**
 	 * 定义解析类型
