@@ -75,6 +75,7 @@ const Mditor = new mokit.Component({
 
   onChanged() {
     this.$emit('changed');
+    this.syncScroll();
   },
 
   onInput() {

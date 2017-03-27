@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.8
+ * Mditor embed version 1.1.9
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -126,6 +126,7 @@
 	  },
 	  /*istanbul ignore next*/onChanged: function onChanged() {
 	    this.$emit('changed');
+	    this.syncScroll();
 	  },
 	  /*istanbul ignore next*/onInput: function onInput() {
 	    this.$emit('input');
@@ -4100,6 +4101,8 @@
 	    return box.value.substring(range.start, range.end);
 	  },
 	  /*istanbul ignore next*/setSelectText: function setSelectText(text) {
+	    /*istanbul ignore next*/var _this5 = this;
+	
 	    var box = this.getActiveElement();
 	    var range = this.getSelectRange();
 	    box.setRangeText(text);
@@ -4108,6 +4111,10 @@
 	    }
 	    this.value = this.getValue();
 	    this.onInput();
+	    setTimeout(function () {
+	      /*istanbul ignore next*/_this5.blur();
+	      /*istanbul ignore next*/_this5.focus();
+	    }, 0);
 	  },
 	  /*istanbul ignore next*/wrapSelectText: function wrapSelectText(before, after) {
 	    before = before !== null && before !== undefined ? before : '';
@@ -4140,12 +4147,12 @@
 	    return value.substring(start, end).lastIndexOf(char);
 	  },
 	  /*istanbul ignore next*/getBeforeWord: function getBeforeWord() {
-	    /*istanbul ignore next*/var _this5 = this;
+	    /*istanbul ignore next*/var _this6 = this;
 	
 	    var chars = [' ', '\t', this.mditor.EOL];
 	    var start = 0;
 	    chars.forEach(function (char) {
-	      var index = /*istanbul ignore next*/_this5.getBeforeFirstCharIndex(char);
+	      var index = /*istanbul ignore next*/_this6.getBeforeFirstCharIndex(char);
 	      if (index + char.length > start) {
 	        start = index + char.length;
 	      }
@@ -4174,7 +4181,7 @@
 	    this.setSelectRange(start, range.end);
 	  },
 	  /*istanbul ignore next*/addIndent: function addIndent() {
-	    /*istanbul ignore next*/var _this6 = this;
+	    /*istanbul ignore next*/var _this7 = this;
 	
 	    var selectText = this.getSelectText();
 	    if (selectText.length < 1) {
@@ -4185,7 +4192,7 @@
 	    var buffer = [];
 	    var lineCount = textArray.length - 1;
 	    textArray.forEach(function (line, index) {
-	      line = line.trim() !== '' ? /*istanbul ignore next*/_this6.mditor.INDENT + line : line;
+	      line = line.trim() !== '' ? /*istanbul ignore next*/_this7.mditor.INDENT + line : line;
 	      if (index < lineCount || line.trim() !== '') {
 	        buffer.push(line);
 	      }
@@ -4193,7 +4200,7 @@
 	    this.setSelectText(buffer.join(this.mditor.EOL));
 	  },
 	  /*istanbul ignore next*/removeIndent: function removeIndent() {
-	    /*istanbul ignore next*/var _this7 = this;
+	    /*istanbul ignore next*/var _this8 = this;
 	
 	    var indentRegExp = new RegExp('^' + this.mditor.INDENT);
 	    var selectText = this.getSelectText();
@@ -4209,7 +4216,7 @@
 	    var buffer = [];
 	    textArray.forEach(function (line) {
 	      if (indentRegExp.test(line)) {
-	        line = line.replace( /*istanbul ignore next*/_this7.mditor.INDENT, '');
+	        line = line.replace( /*istanbul ignore next*/_this8.mditor.INDENT, '');
 	      }
 	      buffer.push(line);
 	    });
@@ -10539,7 +10546,7 @@
 /* 121 */
 /***/ function(module, exports) {
 
-	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\" m:on:paste=\"syncScroll\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);

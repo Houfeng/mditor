@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.8
+ * Mditor embed version 1.1.9
  * Homepage: http://mditor.com
  */
 .mditor .toolbar {
@@ -65,7 +65,7 @@
 }
 .mditor .editor .textarea,
 .mditor .editor .backdrop .inner {
-  padding: 10px 12px;
+  padding: 6px 12px;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -101,7 +101,7 @@
   resize: none;
   background-color: transparent;
   margin: 0px;
-  padding: 10px 12px;
+  padding: 10px 12px 40px 12px;
   color: #333;
   word-break: break-all;
   word-wrap: break-word;

@@ -195,6 +195,10 @@ module.exports = new mokit.Component({
     }
     this.value = this.getValue();
     this.onInput();
+    setTimeout(() => {
+      this.blur();
+      this.focus();
+    }, 0);
   },
 
   wrapSelectText(before, after) {
