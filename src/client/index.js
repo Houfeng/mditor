@@ -84,7 +84,7 @@ const Mditor = new mokit.Component({
 
   onHeadDblClick(event) {
     if (event.target.tagName == 'I') return;
-    this.$emit('headDblClick');
+    this.$emit('head-dblclick');
   },
 
   _keepIndent(event) {

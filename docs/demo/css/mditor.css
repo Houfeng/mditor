@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.9
+ * Mditor embed version 1.1.10
  * Homepage: http://mditor.com
  */
 .mditor .toolbar {
@@ -3418,7 +3418,7 @@ pre[class*="language-"] {
 .mditor .backdrop,
 .mditor .viewer {
   -webkit-font-smoothing: antialiased;
-  font: 16px/1.8 'RobotoMono', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', sans-serif;
+  font: 16px/1.6 'RobotoMono', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', sans-serif;
 }
 
 /*# sourceMappingURL=mditor.css.map*/

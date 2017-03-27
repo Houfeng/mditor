@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.9
+ * Mditor embed version 1.1.10
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -133,7 +133,7 @@
 	  },
 	  /*istanbul ignore next*/onHeadDblClick: function onHeadDblClick(event) {
 	    if (event.target.tagName == 'I') return;
-	    this.$emit('headDblClick');
+	    this.$emit('head-dblclick');
 	  },
 	  /*istanbul ignore next*/_keepIndent: function _keepIndent(event) {
 	    var text = this.editor.getBeforeTextInLine();
