@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.10
+ * Mditor embed version 1.1.11
  * Homepage: http://mditor.com
  */
 .mditor .toolbar {
@@ -65,7 +65,7 @@
 }
 .mditor .editor .textarea,
 .mditor .editor .backdrop .inner {
-  padding: 6px 12px;
+  padding: 8px 12px;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -3418,7 +3418,7 @@ pre[class*="language-"] {
 .mditor .backdrop,
 .mditor .viewer {
   -webkit-font-smoothing: antialiased;
-  font: 16px/1.6 'RobotoMono', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', sans-serif;
+  font: 16px/1.6 'RobotoMono', 'PingFang SC', 'Lantinghei SC', 'Helvetica Neue', Helvetica, Arial, 'Microsoft YaHei', '\\5FAE\8F6F\96C5\9ED1', 'STHeitiSC-Light', 'simsun', '\\5B8B\4F53', 'WenQuanYi Zen Hei', 'WenQuanYi Micro Hei', sans-serif;
 }
 
 /*# sourceMappingURL=mditor.css.map*/
