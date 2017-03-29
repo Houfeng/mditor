@@ -110,7 +110,19 @@ module.exports = [{
   title: '链接',
   key: 'shift+alt+l',
   handler() {
-    this.editor.wrapSelectText('[text](', ')');
+    let text = this.editor.getSelectText();
+    if (!text || /^(https:|http:|ftp:|file:|mailto:|\/|\.)/i.test(text)) {
+      this.editor.wrapSelectText('[link](', ')');
+      if (!text) return;
+      let range = this.editor.getSelectRange();
+      let start = range.start - 6;
+      this.editor.setSelectRange(start, start + 4);
+    } else {
+      this.editor.wrapSelectText('[', ']()');
+      let range = this.editor.getSelectRange();
+      let index = range.end + 2;
+      this.editor.setSelectRange(index, index);
+    }
   }
 }, {
   name: 'table',

@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.1.11
+ * Mditor embed version 1.1.12
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -63,6 +63,8 @@
 	__webpack_require__(118);
 	__webpack_require__(119);
 	
+	var HIDDEN_CLASS_NAME = 'mditor-hidden';
+	
 	var Mditor = new mokit.Component({
 	  template: __webpack_require__(121),
 	
@@ -70,7 +72,7 @@
 	    this.PLATFORM = navigator.platform.toLowerCase();
 	    this.EOL = this.PLATFORM == 'win32' ? '\r\n' : '\n';
 	    this.CMD = this.PLATFORM.indexOf('mac') > -1 ? 'command' : 'ctrl';
-	    this.INDENT = '\t';
+	    this.INDENT = '  ';
 	    this.shortcut = new Shortcut(this);
 	    this.Parser = Parser;
 	    this.parser = new Parser(this);
@@ -210,13 +212,24 @@
 	});
 	
 	Mditor.fromTextarea = function (textarea) {
-	  textarea.style.display = 'none';
+	  textarea.classList.add(HIDDEN_CLASS_NAME);
 	  var mditor = new Mditor();
 	  mditor.value = textarea.value;
 	  mditor.$watch('value', function () {
 	    textarea.value = mditor.value;
 	  });
 	  mditor.$mount(textarea);
+	  mditor.switchTextarea = function () {
+	    if (textarea.classList.contains(HIDDEN_CLASS_NAME)) {
+	      textarea.value = mditor.value;
+	      mditor.$element.classList.add(HIDDEN_CLASS_NAME);
+	      textarea.classList.remove(HIDDEN_CLASS_NAME);
+	    } else {
+	      mditor.value = textarea.value;
+	      textarea.classList.add(HIDDEN_CLASS_NAME);
+	      mditor.$element.classList.remove(HIDDEN_CLASS_NAME);
+	    }
+	  };
 	  return mditor;
 	};
 	
@@ -3826,7 +3839,19 @@
 	  title: '链接',
 	  key: 'shift+alt+l',
 	  /*istanbul ignore next*/handler: function handler() {
-	    this.editor.wrapSelectText('[text](', ')');
+	    var text = this.editor.getSelectText();
+	    if (!text || /^(https:|http:|ftp:|file:|mailto:|\/|\.)/i.test(text)) {
+	      this.editor.wrapSelectText('[link](', ')');
+	      if (!text) return;
+	      var range = this.editor.getSelectRange();
+	      var start = range.start - 6;
+	      this.editor.setSelectRange(start, start + 4);
+	    } else {
+	      this.editor.wrapSelectText('[', ']()');
+	      var _range = this.editor.getSelectRange();
+	      var index = _range.end + 2;
+	      this.editor.setSelectRange(index, index);
+	    }
 	  }
 	}, {
 	  name: 'table',
@@ -3956,7 +3981,9 @@
 	    this.stack = new Stack();
 	    setTimeout(function () {
 	      /*istanbul ignore next*/_this.textareaEmitter = new EventEmitter( /*istanbul ignore next*/_this.textarea);
-	      /*istanbul ignore next*/_this.stack.init( /*istanbul ignore next*/_this.getValue());
+	      /*istanbul ignore next*/_this.stack.init({
+	        value: /*istanbul ignore next*/_this.getValue()
+	      });
 	    }, 100);
 	    this._bindCommands();
 	  },
@@ -3972,7 +3999,13 @@
 	    this._compositionLock = true;
 	  },
 	  /*istanbul ignore next*/onCompositionEnd: function onCompositionEnd() {
+	    /*istanbul ignore next*/var _this3 = this;
+	
 	    this._compositionLock = false;
+	    setTimeout(function () /*istanbul ignore next*/{
+	      return (/*istanbul ignore next*/_this3.onInput()
+	      );
+	    }, 300);
 	    /**
 	     * 在输入中文时，输入法「候选词面板」位置会发生定位错误
 	     * 经过反复尝试发现了「规律」，第一次「侯选词」上屏后才会位置错误
@@ -3985,29 +4018,50 @@
 	    this.textarea.focus();
 	  },
 	  /*istanbul ignore next*/onInput: function onInput() {
-	    /*istanbul ignore next*/var _this3 = this;
+	    /*istanbul ignore next*/var _this4 = this;
 	
 	    this.$emit('input');
-	    if (this._compositionLock) return;
 	    if (this._changedTimer) {
 	      clearTimeout(this._changedTimer);
 	      this._changedTimer = null;
 	    }
+	    if (this._compositionLock) return;
 	    this._changedTimer = setTimeout(function () {
-	      if (! /*istanbul ignore next*/_this3._changedTimer) return;
-	      /*istanbul ignore next*/_this3.stack.change( /*istanbul ignore next*/_this3.getValue());
-	      /*istanbul ignore next*/_this3.$emit('changed');
-	    }, 600);
+	      if (! /*istanbul ignore next*/_this4._changedTimer) return;
+	      /*istanbul ignore next*/_this4.stack.push({
+	        value: /*istanbul ignore next*/_this4.getValue(),
+	        range: /*istanbul ignore next*/_this4.getSelectRange()
+	      });
+	      /*istanbul ignore next*/_this4.$emit('changed');
+	    }, 300);
 	  },
 	  /*istanbul ignore next*/undo: function undo() {
-	    var value = this.stack.undo();
-	    if (utils.isNull(value)) return;
-	    this.value = value;
+	    /*istanbul ignore next*/var _this5 = this;
+	
+	    var last = this.stack.last();
+	    var item = this.stack.undo();
+	    if (utils.isNull(item) || utils.isNull(item.value)) return;
+	    var valGap = last.value.length - item.value.length;
+	    this.value = item.value;
+	    if (last.range) {
+	      setTimeout(function () {
+	        var start = last.range.start - valGap;
+	        var end = last.range.end - valGap;
+	        /*istanbul ignore next*/_this5.setSelectRange(start, end);
+	      });
+	    }
 	  },
 	  /*istanbul ignore next*/redo: function redo() {
-	    var value = this.stack.redo();
-	    if (utils.isNull(value)) return;
-	    this.value = value;
+	    /*istanbul ignore next*/var _this6 = this;
+	
+	    var item = this.stack.redo();
+	    if (utils.isNull(item) || utils.isNull(item.value)) return;
+	    this.value = item.value;
+	    if (item.range) {
+	      setTimeout(function () {
+	        /*istanbul ignore next*/_this6.setSelectRange(item.range.start, item.range.end);
+	      });
+	    }
 	  },
 	  /*istanbul ignore next*/onPaste: function onPaste(event) {
 	    this.$emit('paste', event);
@@ -4031,13 +4085,13 @@
 	    this.$emit('scroll', event);
 	  },
 	  /*istanbul ignore next*/syncScroll: function syncScroll(disTwice) {
-	    /*istanbul ignore next*/var _this4 = this;
+	    /*istanbul ignore next*/var _this7 = this;
 	
 	    this.marks.scrollTop = this.textarea.scrollTop;
 	    this.marks.scrollLeft = this.textarea.scrollLeft;
 	    if (disTwice) return;
 	    setTimeout(function () {
-	      /*istanbul ignore next*/_this4.syncScroll(true);
+	      /*istanbul ignore next*/_this7.syncScroll(true);
 	    }, 0);
 	  },
 	  /*istanbul ignore next*/applyMarks: function applyMarks(text) {
@@ -4101,7 +4155,7 @@
 	    return box.value.substring(range.start, range.end);
 	  },
 	  /*istanbul ignore next*/setSelectText: function setSelectText(text) {
-	    /*istanbul ignore next*/var _this5 = this;
+	    /*istanbul ignore next*/var _this8 = this;
 	
 	    var box = this.getActiveElement();
 	    var range = this.getSelectRange();
@@ -4112,8 +4166,8 @@
 	    this.value = this.getValue();
 	    this.onInput();
 	    setTimeout(function () {
-	      /*istanbul ignore next*/_this5.blur();
-	      /*istanbul ignore next*/_this5.focus();
+	      /*istanbul ignore next*/_this8.blur();
+	      /*istanbul ignore next*/_this8.focus();
 	    }, 0);
 	  },
 	  /*istanbul ignore next*/wrapSelectText: function wrapSelectText(before, after) {
@@ -4147,12 +4201,12 @@
 	    return value.substring(start, end).lastIndexOf(char);
 	  },
 	  /*istanbul ignore next*/getBeforeWord: function getBeforeWord() {
-	    /*istanbul ignore next*/var _this6 = this;
+	    /*istanbul ignore next*/var _this9 = this;
 	
 	    var chars = [' ', '\t', this.mditor.EOL];
 	    var start = 0;
 	    chars.forEach(function (char) {
-	      var index = /*istanbul ignore next*/_this6.getBeforeFirstCharIndex(char);
+	      var index = /*istanbul ignore next*/_this9.getBeforeFirstCharIndex(char);
 	      if (index + char.length > start) {
 	        start = index + char.length;
 	      }
@@ -4181,7 +4235,7 @@
 	    this.setSelectRange(start, range.end);
 	  },
 	  /*istanbul ignore next*/addIndent: function addIndent() {
-	    /*istanbul ignore next*/var _this7 = this;
+	    /*istanbul ignore next*/var _this10 = this;
 	
 	    var selectText = this.getSelectText();
 	    if (selectText.length < 1) {
@@ -4192,7 +4246,7 @@
 	    var buffer = [];
 	    var lineCount = textArray.length - 1;
 	    textArray.forEach(function (line, index) {
-	      line = line.trim() !== '' ? /*istanbul ignore next*/_this7.mditor.INDENT + line : line;
+	      line = line.trim() !== '' ? /*istanbul ignore next*/_this10.mditor.INDENT + line : line;
 	      if (index < lineCount || line.trim() !== '') {
 	        buffer.push(line);
 	      }
@@ -4200,7 +4254,7 @@
 	    this.setSelectText(buffer.join(this.mditor.EOL));
 	  },
 	  /*istanbul ignore next*/removeIndent: function removeIndent() {
-	    /*istanbul ignore next*/var _this8 = this;
+	    /*istanbul ignore next*/var _this11 = this;
 	
 	    var indentRegExp = new RegExp('^' + this.mditor.INDENT);
 	    var selectText = this.getSelectText();
@@ -4216,7 +4270,7 @@
 	    var buffer = [];
 	    textArray.forEach(function (line) {
 	      if (indentRegExp.test(line)) {
-	        line = line.replace( /*istanbul ignore next*/_this8.mditor.INDENT, '');
+	        line = line.replace( /*istanbul ignore next*/_this11.mditor.INDENT, '');
 	      }
 	      buffer.push(line);
 	    });
@@ -4898,33 +4952,35 @@
 	var utils = __webpack_require__(46);
 	
 	var Stack = new Class({
-	  /*istanbul ignore next*/constructor: function constructor(value) {
-	    this.init(value);
+	  /*istanbul ignore next*/constructor: function constructor(item) {
+	    this.init(item);
 	  },
-	  /*istanbul ignore next*/init: function init(value) {
-	    this.undoList = [value || ''];
+	  /*istanbul ignore next*/init: function init(item) {
+	    this.undoList = [item || {
+	      value: null
+	    }];
 	    this.redoList = [];
 	  },
-	  /*istanbul ignore next*/change: function change(value) {
-	    if (this.last() === value) return;
-	    this.undoList.push(value);
+	  /*istanbul ignore next*/push: function push(item) {
+	    if (this.last() === item) return;
+	    this.undoList.push(item);
 	  },
 	  /*istanbul ignore next*/last: function last() {
 	    return this.undoList[this.undoList.length - 1];
 	  },
 	  /*istanbul ignore next*/undo: function undo() {
 	    if (this.undoList.length > 1) {
-	      var value = this.undoList.pop();
-	      if (utils.isNull(value)) return;
-	      this.redoList.push(value);
+	      var item = this.undoList.pop();
+	      if (utils.isNull(item) || utils.isNull(item.value)) return;
+	      this.redoList.push(item);
 	    }
 	    return this.last();
 	  },
 	  /*istanbul ignore next*/redo: function redo() {
-	    var value = this.redoList.pop();
-	    if (utils.isNull(value)) return;
-	    this.undoList.push(value);
-	    return value;
+	    var item = this.redoList.pop();
+	    if (utils.isNull(item) || utils.isNull(item.value)) return;
+	    this.undoList.push(item);
+	    return item;
 	  }
 	});
 	

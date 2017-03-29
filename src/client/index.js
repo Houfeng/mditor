@@ -11,6 +11,8 @@ require('github-markdown-css/github-markdown.css');
 require('prismjs/themes/prism.css');
 require('./index.less');
 
+const HIDDEN_CLASS_NAME = 'mditor-hidden';
+
 const Mditor = new mokit.Component({
   template: require('./index.html'),
 
@@ -18,7 +20,7 @@ const Mditor = new mokit.Component({
     this.PLATFORM = navigator.platform.toLowerCase();
     this.EOL = this.PLATFORM == 'win32' ? '\r\n' : '\n';
     this.CMD = this.PLATFORM.indexOf('mac') > -1 ? 'command' : 'ctrl';
-    this.INDENT = '\t';
+    this.INDENT = '  ';
     this.shortcut = new Shortcut(this);
     this.Parser = Parser;
     this.parser = new Parser(this);
@@ -171,13 +173,24 @@ const Mditor = new mokit.Component({
 });
 
 Mditor.fromTextarea = function (textarea) {
-  textarea.style.display = 'none';
+  textarea.classList.add(HIDDEN_CLASS_NAME);
   let mditor = new Mditor();
   mditor.value = textarea.value;
   mditor.$watch('value', () => {
     textarea.value = mditor.value;
   });
   mditor.$mount(textarea);
+  mditor.switchTextarea = function () {
+    if (textarea.classList.contains(HIDDEN_CLASS_NAME)) {
+      textarea.value = mditor.value;
+      mditor.$element.classList.add(HIDDEN_CLASS_NAME);
+      textarea.classList.remove(HIDDEN_CLASS_NAME);
+    } else {
+      mditor.value = textarea.value;
+      textarea.classList.add(HIDDEN_CLASS_NAME);
+      mditor.$element.classList.remove(HIDDEN_CLASS_NAME);
+    }
+  };
   return mditor;
 };
 

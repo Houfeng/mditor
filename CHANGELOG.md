@@ -1,3 +1,10 @@
+## 1.1.12
+1. 改进 undo/redo 功能
+2. 新增 head-dblclick 事件
+3. 改进插入「链接」的逻辑
+4. Tab 改为默认 2 个空格
+5. 新增 switchTextarea 方法，通过 fromTextarea 创建的实例可通过此方法切换为普通文本框
+
 ## 1.1.5
 1. 新增查找替换功能
 2. 改进 undo/redo 处理

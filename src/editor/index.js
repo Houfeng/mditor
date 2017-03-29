@@ -1,7 +1,7 @@
 const mokit = require('mokit');
 const EventEmitter = mokit.EventEmitter;
 const utils = require('ntils');
-const Stack = require('./dostack');
+const Stack = require('./stack');
 const commands = require('./commands');
 
 require('./index.less');
@@ -24,7 +24,9 @@ module.exports = new mokit.Component({
     this.stack = new Stack();
     setTimeout(() => {
       this.textareaEmitter = new EventEmitter(this.textarea);
-      this.stack.init(this.getValue());
+      this.stack.init({
+        value: this.getValue()
+      });
     }, 100);
     this._bindCommands();
   },
@@ -41,6 +43,7 @@ module.exports = new mokit.Component({
   },
   onCompositionEnd() {
     this._compositionLock = false;
+    setTimeout(() => this.onInput(), 300);
     /**
      * 在输入中文时，输入法「候选词面板」位置会发生定位错误
      * 经过反复尝试发现了「规律」，第一次「侯选词」上屏后才会位置错误
@@ -54,28 +57,45 @@ module.exports = new mokit.Component({
   },
   onInput() {
     this.$emit('input');
-    if (this._compositionLock) return;
     if (this._changedTimer) {
       clearTimeout(this._changedTimer);
       this._changedTimer = null;
     }
+    if (this._compositionLock) return;
     this._changedTimer = setTimeout(() => {
       if (!this._changedTimer) return;
-      this.stack.change(this.getValue());
+      this.stack.push({
+        value: this.getValue(),
+        range: this.getSelectRange()
+      });
       this.$emit('changed');
-    }, 600);
+    }, 300);
   },
 
   undo() {
-    let value = this.stack.undo();
-    if (utils.isNull(value)) return;
-    this.value = value;
+    let last = this.stack.last();
+    let item = this.stack.undo();
+    if (utils.isNull(item) || utils.isNull(item.value)) return;
+    let valGap = last.value.length - item.value.length;
+    this.value = item.value;
+    if (last.range) {
+      setTimeout(() => {
+        let start = last.range.start - valGap;
+        let end = last.range.end - valGap;
+        this.setSelectRange(start, end);
+      });
+    }
   },
 
   redo() {
-    let value = this.stack.redo();
-    if (utils.isNull(value)) return;
-    this.value = value;
+    let item = this.stack.redo();
+    if (utils.isNull(item) || utils.isNull(item.value)) return;
+    this.value = item.value;
+    if (item.range) {
+      setTimeout(() => {
+        this.setSelectRange(item.range.start, item.range.end);
+      });
+    }
   },
 
   onPaste(event) {
