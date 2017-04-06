@@ -176,7 +176,7 @@ module.exports = [{
   }
 }, {
   name: 'togglePreview',
-  title: 'preview',
+  title: '预览',
   icon: 'desktop',
   key: 'shift+alt+v',
   control: true,
@@ -195,7 +195,7 @@ module.exports = [{
   }
 }, {
   name: 'toggleSplit',
-  title: '预览',
+  title: '分屏',
   icon: 'columns',
   key: 'shift+alt+s',
   control: true,

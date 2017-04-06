@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.2.2
+ * Mditor embed version 1.2.3
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -3899,7 +3899,7 @@
 	  }
 	}, {
 	  name: 'togglePreview',
-	  title: 'preview',
+	  title: '预览',
 	  icon: 'desktop',
 	  key: 'shift+alt+v',
 	  control: true,
@@ -3918,7 +3918,7 @@
 	  }
 	}, {
 	  name: 'toggleSplit',
-	  title: '预览',
+	  title: '分屏',
 	  icon: 'columns',
 	  key: 'shift+alt+s',
 	  control: true,
@@ -3945,7 +3945,7 @@
 /* 44 */
 /***/ function(module, exports) {
 
-	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || ''}} {{item.key}}\"></i>\n</ul>"
+	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
 
 /***/ },
 /* 45 */
