@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.2.1
+ * Mditor embed version 1.2.2
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -3945,7 +3945,7 @@
 /* 44 */
 /***/ function(module, exports) {
 
-	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
+	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || ''}} {{item.key}}\"></i>\n</ul>"
 
 /***/ },
 /* 45 */
@@ -5298,7 +5298,7 @@
 /* 57 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"回车查找，esc 关闭\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"回车替换，esc 关闭\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
+	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"Find\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"Replace\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
 
 /***/ },
 /* 58 */

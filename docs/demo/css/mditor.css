@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.2.1
+ * Mditor embed version 1.2.2
  * Homepage: http://mditor.com
  */
 .mditor .toolbar {
@@ -156,6 +156,9 @@
   padding: 5px;
   outline: 0;
   color: #888;
+}
+.mditor .body .finder i.fa:hover {
+  color: #555;
 }
 .mditor .body .finder.active {
   display: block;
