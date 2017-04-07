@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.2.4
+ * Mditor embed version 1.2.5
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -126,20 +126,20 @@
 	    var viewerScrollTop = editorScrollTop * (viewerScrollHeight - offsetHeight) / (editorScrollHeight - offsetHeight);
 	    this.viewer.$element.scrollTop = viewerScrollTop;
 	  },
-	  /*istanbul ignore next*/onChanged: function onChanged() {
-	    this.$emit('changed');
+	  /*istanbul ignore next*/onChanged: function onChanged(event) {
+	    this.$emit('changed', event);
 	    this.syncScroll();
 	  },
-	  /*istanbul ignore next*/onInput: function onInput() {
-	    this.$emit('input');
+	  /*istanbul ignore next*/onInput: function onInput(event) {
+	    this.$emit('input', event);
 	  },
-	  /*istanbul ignore next*/onPaste: function onPaste() {
-	    this.$emit('paste');
+	  /*istanbul ignore next*/onPaste: function onPaste(event) {
+	    this.$emit('paste', event);
 	    this.syncScroll();
 	  },
 	  /*istanbul ignore next*/onHeadDblClick: function onHeadDblClick(event) {
 	    if (event.target.tagName == 'I') return;
-	    this.$emit('head-dblclick');
+	    this.$emit('head-dblclick', event);
 	  },
 	  /*istanbul ignore next*/_keepIndent: function _keepIndent(event) {
 	    var text = this.editor.getBeforeTextInLine();

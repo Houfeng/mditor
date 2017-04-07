@@ -75,23 +75,23 @@ const Mditor = new mokit.Component({
     this.viewer.$element.scrollTop = viewerScrollTop;
   },
 
-  onChanged() {
-    this.$emit('changed');
+  onChanged(event) {
+    this.$emit('changed', event);
     this.syncScroll();
   },
 
-  onInput() {
-    this.$emit('input');
+  onInput(event) {
+    this.$emit('input', event);
   },
 
-  onPaste() {
-    this.$emit('paste');
+  onPaste(event) {
+    this.$emit('paste', event);
     this.syncScroll();
   },
 
   onHeadDblClick(event) {
     if (event.target.tagName == 'I') return;
-    this.$emit('head-dblclick');
+    this.$emit('head-dblclick', event);
   },
 
   _keepIndent(event) {
