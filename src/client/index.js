@@ -84,6 +84,11 @@ const Mditor = new mokit.Component({
     this.$emit('input');
   },
 
+  onPaste() {
+    this.$emit('paste');
+    this.syncScroll();
+  },
+
   onHeadDblClick(event) {
     if (event.target.tagName == 'I') return;
     this.$emit('head-dblclick');

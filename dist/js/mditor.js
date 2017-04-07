@@ -133,6 +133,10 @@
 	  /*istanbul ignore next*/onInput: function onInput() {
 	    this.$emit('input');
 	  },
+	  /*istanbul ignore next*/onPaste: function onPaste() {
+	    this.$emit('paste');
+	    this.syncScroll();
+	  },
 	  /*istanbul ignore next*/onHeadDblClick: function onHeadDblClick(event) {
 	    if (event.target.tagName == 'I') return;
 	    this.$emit('head-dblclick');
@@ -10602,7 +10606,7 @@
 /* 121 */
 /***/ function(module, exports) {
 
-	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\" m:on:paste=\"syncScroll\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
+	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\" m:on:paste=\"onPaste\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
 
 /***/ }
 /******/ ]);
