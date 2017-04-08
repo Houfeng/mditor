@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.2.5
+ * Mditor embed version 1.2.6
  * Homepage: http://mditor.com
  */
 .mditor .toolbar {
@@ -118,6 +118,13 @@
 }
 .mditor .viewer .markdown-body table {
   display: table;
+}
+.mditor .viewer .markdown-body hr {
+  height: 2px;
+  padding: 0;
+  margin: 24px 0;
+  background-color: #eaecef;
+  border: 0;
 }
 .mditor .viewer .alert {
   color: #ddd;
