@@ -113,3 +113,25 @@
 .mditor-hidden {
 	display: none;
 }
+
+.markdown-body {
+	&>ul {
+		list-style-type: initial;
+	}
+	&>ol {
+		list-style-type: decimal;
+	}
+	table {
+		display: table;
+	}
+	hr {
+		height: 2px;
+		padding: 0;
+		margin: 24px 0;
+		background-color: #eaecef;
+		border: 0;
+	}
+	img {
+		background-color: rgba(255, 255, 255, .1);
+	}
+}

@@ -1,7 +1,7 @@
 {
   "name": "mditor",
   "displayName": "Mditor embed",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./src/server/index.js",
   "repository": {
@@ -84,9 +84,6 @@
     "karma-webpack": "1.8.0",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
-    "mokit-router": "^1.0.6",
-    "mokit-touch": "^1.0.1",
-    "mokit-transition": "^1.0.1",
     "nokit-filter-proxy": "0.0.8",
     "nokitjs": "^1.26.3",
     "phantomjs-prebuilt": "^2.1.13",

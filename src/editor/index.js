@@ -27,7 +27,7 @@ module.exports = new mokit.Component({
       this.stack.init({
         value: this.getValue()
       });
-    }, 100);
+    }, 300);
     this._bindCommands();
   },
 

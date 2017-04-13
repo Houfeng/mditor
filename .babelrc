@@ -4,7 +4,7 @@
     "stage-3"
   ],
   "plugins": [
-    //"transform-runtime"
+    "transform-runtime"
   ],
   "auxiliaryCommentBefore": "istanbul ignore next"
 }
