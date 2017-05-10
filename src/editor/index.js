@@ -8,8 +8,8 @@ require('./index.less');
 
 const ua = window.navigator.userAgent.toLowerCase();
 const isIE = !!ua.match(/msie|trident\/7|edge/);
-const isWinPhone = ua.indexOf('windows phone') !== -1;
-const isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
+//const isWinPhone = ua.indexOf('windows phone') !== -1;
+//const isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
 
 module.exports = new mokit.Component({
   template: require('./index.html'),

@@ -1,9 +1,9 @@
 {
   "name": "mditor",
   "displayName": "Mditor embed",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
-  "main": "./src/server/index.js",
+  "main": "./lib/server/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/houfeng/mditor.git"
@@ -19,7 +19,7 @@
     "stop": "./bin/stop.sh",
     "restart": "./bin/restart.sh",
     "clear": "./bin/clear.sh",
-    "lint": "eslint ./lib",
+    "lint": "eslint ./src",
     "build": "./bin/build.sh",
     "watch": "./bin/watch.sh",
     "dev": "./bin/watch.sh",
@@ -41,8 +41,8 @@
     "font-awesome": "^4.7.0",
     "github-markdown-css": "^2.4.1",
     "marked": "^0.3.6",
-    "mokit": "^3.0.15",
-    "ntils": "^2.0.15",
+    "mokit": "^3.1.1",
+    "ntils": "^2.1.0",
     "prismjs": "^1.6.0",
     "shortcut-key": "^1.0.0"
   },
@@ -51,6 +51,7 @@
     "port": 8008
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",

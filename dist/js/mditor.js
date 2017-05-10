@@ -51,22 +51,22 @@
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
-	var Toolbar = __webpack_require__(83);
-	var Editor = __webpack_require__(88);
-	var Viewer = __webpack_require__(93);
-	var Finder = __webpack_require__(96);
-	var Shortcut = __webpack_require__(99);
-	var Parser = __webpack_require__(101);
+	var Toolbar = __webpack_require__(84);
+	var Editor = __webpack_require__(89);
+	var Viewer = __webpack_require__(94);
+	var Finder = __webpack_require__(97);
+	var Shortcut = __webpack_require__(100);
+	var Parser = __webpack_require__(102);
 	
-	__webpack_require__(151);
-	__webpack_require__(158);
+	__webpack_require__(152);
 	__webpack_require__(159);
 	__webpack_require__(160);
+	__webpack_require__(161);
 	
 	var HIDDEN_CLASS_NAME = 'mditor-hidden';
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(162),
+	  template: __webpack_require__(163),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -250,11 +250,11 @@
 	var info = __webpack_require__(2);
 	var utils = __webpack_require__(3);
 	var Class = __webpack_require__(4);
-	var Watcher = __webpack_require__(5);
-	var Observer = __webpack_require__(6);
-	var Template = __webpack_require__(51);
-	var Component = __webpack_require__(78);
-	var EventEmitter = __webpack_require__(50);
+	var Watcher = __webpack_require__(6);
+	var Observer = __webpack_require__(7);
+	var Template = __webpack_require__(52);
+	var Component = __webpack_require__(79);
+	var EventEmitter = __webpack_require__(51);
 	
 	//持载模板相关对象
 	utils.copy(Template, Component);
@@ -287,11 +287,748 @@
 
 	module.exports = {
 		"name": "mokit",
-		"version": "3.0.15"
+		"version": "3.1.1"
 	};
 
 /***/ },
 /* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	(function (ntils) {
+	
+	  /**
+	   * 空函数
+	   */
+	  ntils.noop = function () { };
+	
+	  /**
+	   * 验证一个对象是否为NULL
+	   * @method isNull
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isNull = function (obj) {
+	    return obj === null || typeof obj === "undefined";
+	  };
+	
+	  /**
+	   * 除去字符串两端的空格
+	   * @method trim
+	   * @param  {String} str 源字符串
+	   * @return {String}     结果字符串
+	   * @static
+	   */
+	  ntils.trim = function (str) {
+	    if (this.isNull(str)) return str;
+	    if (str.trim) {
+	      return str.trim();
+	    } else {
+	      return str.replace(/(^[\\s]*)|([\\s]*$)/g, "");
+	    }
+	  };
+	
+	  /**
+	   * 替换所有
+	   * @method replace
+	   * @param {String} str 源字符串
+	   * @param {String} str1 要替换的字符串
+	   * @param {String} str2 替换为的字符串
+	   * @static
+	   */
+	  ntils.replace = function (str, str1, str2) {
+	    if (this.isNull(str)) return str;
+	    return str.replace(new RegExp(str1, 'g'), str2);
+	  };
+	
+	  /**
+	   * 从字符串开头匹配
+	   * @method startWith
+	   * @param {String} str1 源字符串
+	   * @param {String} str2 要匹配的字符串
+	   * @return {Boolean} 匹配结果
+	   * @static
+	   */
+	  ntils.startWith = function (str1, str2) {
+	    if (this.isNull(str1) || this.isNull(str2)) return false;
+	    return str1.indexOf(str2) === 0;
+	  };
+	
+	  /**
+	   * 是否包含
+	   * @method contains
+	   * @param {String} str1 源字符串
+	   * @param {String} str2 检查包括字符串
+	   * @return {Boolean} 结果
+	   * @static
+	   */
+	  ntils.contains = function (str1, str2) {
+	    var self = this;
+	    if (this.isNull(str1) || this.isNull(str2)) return false;
+	    return str1.indexOf(str2) > -1;
+	  };
+	
+	  /**
+	   * 从字符串结束匹配
+	   * @method endWidth
+	   * @param {String} str1 源字符串
+	   * @param {String} str2 匹配字符串
+	   * @return {Boolean} 匹配结果
+	   * @static
+	   */
+	  ntils.endWith = function (str1, str2) {
+	    if (this.isNull(str1) || this.isNull(str2)) return false;
+	    return str1.indexOf(str2) === (str1.length - str2.length);
+	  };
+	
+	  /**
+	   * 是否包含属性
+	   * @method hasProperty
+	   * @param  {Object}  obj  对象
+	   * @param  {String}  name 属性名
+	   * @return {Boolean}      结果
+	   * @static
+	   */
+	  ntils.has = ntils.hasProperty = function (obj, name) {
+	    if (this.isNull(obj) || this.isNull(name)) return false;
+	    return (name in obj) || (obj.hasOwnProperty(name));
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Function
+	   * @method isFunction
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isFunction = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === "function";
+	  };
+	
+	  /**
+	   * 验证一个对象是否为String
+	   * @method isString
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isString = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === 'string' || obj instanceof String;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Number
+	   * @method isNumber
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isNumber = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === 'number' || obj instanceof Number;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Boolean
+	   * @method isBoolean
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isBoolean = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === 'boolean' || obj instanceof Boolean;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为HTML Element
+	   * @method isElement
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isElement = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    if (window.Element) {
+	      return obj instanceof Element;
+	    } else {
+	      return (obj.tagName && obj.nodeType && obj.nodeName && obj.attributes && obj.ownerDocument);
+	    }
+	  };
+	
+	  /**
+	   * 验证一个对象是否为HTML Text Element
+	   * @method isText
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isText = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return obj instanceof Text;
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Object
+	   * @method isObject
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isObject = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    return typeof obj === "object";
+	  };
+	
+	  /**
+	   * 验证一个对象是否为Array或伪Array
+	   * @method isArray
+	   * @param  {Object}  obj 要验证的对象
+	   * @return {Boolean}     结果
+	   * @static
+	   */
+	  ntils.isArray = function (obj) {
+	    if (this.isNull(obj)) return false;
+	    var v1 = Object.prototype.toString.call(obj) === '[object Array]';
+	    var v2 = obj instanceof Array;
+	    var v3 = !this.isString(obj) && this.isNumber(obj.length) && this.isFunction(obj.splice);
+	    var v4 = !this.isString(obj) && this.isNumber(obj.length) && obj[0];
+	    return v1 || v2 || v3 || v4;
+	  };
+	
+	  /**
+	   * 验证是不是一个日期对象
+	   * @method isDate
+	   * @param {Object} val   要检查的对象
+	   * @return {Boolean}           结果
+	   * @static
+	   */
+	  ntils.isDate = function (val) {
+	    if (this.isNull(val)) return false;
+	    return val instanceof Date;
+	  };
+	
+	  /**
+	   * 验证是不是一个正则对象
+	   * @method isDate
+	   * @param {Object} val   要检查的对象
+	   * @return {Boolean}           结果
+	   * @static
+	   */
+	  ntils.isRegexp = function (val) {
+	    return val instanceof RegExp;
+	  };
+	
+	  /**
+	   * 转换为数组
+	   * @method toArray
+	   * @param {Array|Object} array 伪数组
+	   * @return {Array} 转换结果数组
+	   * @static
+	   */
+	  ntils.toArray = function (array) {
+	    if (this.isNull(array)) return [];
+	    return Array.prototype.slice.call(array);
+	  };
+	
+	  /**
+	   * 转为日期格式
+	   * @method toDate
+	   * @param {Number|String} val 日期字符串或整型数值
+	   * @return {Date} 日期对象
+	   * @static
+	   */
+	  ntils.toDate = function (val) {
+	    var self = this;
+	    if (self.isNumber(val))
+	      return new Date(val);
+	    else if (self.isString(val))
+	      return new Date(self.replace(self.replace(val, '-', '/'), 'T', ' '));
+	    else if (self.isDate(val))
+	      return val;
+	    else
+	      return null;
+	  };
+	
+	  /**
+	   * 遍历一个对像或数组
+	   * @method each
+	   * @param  {Object or Array}   obj  要遍历的数组或对象
+	   * @param  {Function} fn            处理函数
+	   * @return {void}                   无返回值
+	   * @static
+	   */
+	  ntils.each = function (list, handler, scope) {
+	    if (this.isNull(list) || this.isNull(handler)) return;
+	    if (this.isArray(list)) {
+	      var listLength = list.length;
+	      for (var i = 0; i < listLength; i++) {
+	        var rs = handler.call(scope || list[i], i, list[i]);
+	        if (!this.isNull(rs)) return rs;
+	      }
+	    } else {
+	      for (var key in list) {
+	        var rs = handler.call(scope || list[key], key, list[key]);
+	        if (!this.isNull(rs)) return rs;
+	      }
+	    }
+	  };
+	
+	  /**
+	   * 格式化日期
+	   * @method formatDate
+	   * @param {Date|String|Number} date 日期
+	   * @param {String} format 格式化字符串
+	   * @param {object} dict 反译字典
+	   * @return {String} 格式化结果
+	   * @static
+	   */
+	  ntils.formatDate = function (date, format, dict) {
+	    if (this.isNull(format) || this.isNull(date)) return date;
+	    date = this.toDate(date);
+	    dict = dict || {};
+	    var placeholder = {
+	      "M+": date.getMonth() + 1, //month
+	      "d+": date.getDate(), //day
+	      "h+": date.getHours(), //hour
+	      "m+": date.getMinutes(), //minute
+	      "s+": date.getSeconds(), //second
+	      "w+": date.getDay(), //week
+	      "q+": Math.floor((date.getMonth() + 3) / 3), //quarter
+	      "S": date.getMilliseconds() //millisecond
+	    }
+	    if (/(y+)/.test(format)) {
+	      format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+	    }
+	    for (var key in placeholder) {
+	      if (new RegExp("(" + key + ")").test(format)) {
+	        var value = placeholder[key];
+	        value = dict[value] || value;
+	        format = format.replace(RegExp.$1, RegExp.$1.length == 1
+	          ? value : ("00" + value).substr(("" + value).length));
+	      }
+	    }
+	    return format;
+	  };
+	
+	  /**
+	   * 拷贝对象
+	   * @method copy
+	   * @param {Object} src 源对象
+	   * @param {Object} dst 目标对象
+	   * @static
+	   */
+	  ntils.copy = function (src, dst, igonres) {
+	    dst = dst || (this.isArray(src) ? [] : {});
+	    this.each(src, function (key) {
+	      if (igonres && igonres.indexOf(key) > -1) return;
+	      delete dst[key];
+	      if (Object.getOwnPropertyDescriptor) {
+	        try {
+	          Object.defineProperty(dst, key, Object.getOwnPropertyDescriptor(src, key));
+	        } catch (ex) {
+	          dst[key] = src[key];
+	        }
+	      } else {
+	        dst[key] = src[key];
+	      }
+	    })
+	    return dst;
+	  };
+	
+	  /**
+	   * 深度克隆对象
+	   * @method clone
+	   * @param {Object} src 源对象
+	   * @return {Object} 新对象
+	   * @static
+	   */
+	  ntils.clone = function (src, igonres) {
+	    if (this.isNull(src) ||
+	      this.isString(src) ||
+	      this.isNumber(src) ||
+	      this.isBoolean(src) ||
+	      this.isDate(src)) {
+	      return src;
+	    }
+	    var objClone = src;
+	    try {
+	      objClone = new src.constructor();
+	    } catch (ex) { }
+	    this.each(src, function (key, value) {
+	      if (objClone[key] != value && !this.contains(igonres, key)) {
+	        if (this.isObject(value)) {
+	          objClone[key] = this.clone(value, igonres);
+	        } else {
+	          objClone[key] = value;
+	        }
+	      }
+	    }, this);
+	    ['toString', 'valueOf'].forEach(function (key) {
+	      if (this.contains(igonres, key)) return;
+	      this.defineFreezeProp(objClone, key, src[key]);
+	    }, this);
+	    return objClone;
+	  };
+	
+	  /**
+	   * 合并对象
+	   * @method mix
+	   * @return 合并后的对象
+	   * @param {Object} dst 目标对象
+	   * @param {Object} src 源对象
+	   * @param {Array} igonres 忽略的属性名,
+	   * @param {Number} mode 模式
+	   */
+	  ntils.mix = function (dst, src, igonres, mode) {
+	    //根据模式来判断，默认是Obj to Obj的  
+	    if (mode) {
+	      switch (mode) {
+	        case 1: // proto to proto  
+	          return ntils.mix(dst.prototype, src.prototype, igonres, 0);
+	        case 2: // object to object and proto to proto  
+	          ntils.mix(dst.prototype, src.prototype, igonres, 0);
+	          break; // pass through  
+	        case 3: // proto to static  
+	          return ntils.mix(dst, src.prototype, igonres, 0);
+	        case 4: // static to proto  
+	          return ntils.mix(dst.prototype, src, igonres, 0);
+	        default: // object to object is what happens below  
+	      }
+	    }
+	    //---
+	    src = src || {};
+	    dst = dst || (this.isArray(src) ? [] : {});
+	    this.keys(src).forEach(function (key) {
+	      if (this.contains(igonres, key)) return;
+	      if (this.isObject(src[key]) &&
+	        (src[key].constructor == Object ||
+	          src[key].constructor == Array ||
+	          src[key].constructor == null)) {
+	        dst[key] = ntils.mix(dst[key], src[key], igonres, 0);
+	      } else {
+	        dst[key] = src[key];
+	      }
+	    }, this);
+	    return dst;
+	  };
+	
+	  /**
+	   * 定义不可遍历的属性
+	   **/
+	  ntils.defineFreezeProp = function (obj, name, value) {
+	    try {
+	      Object.defineProperty(obj, name, {
+	        value: value,
+	        enumerable: false,
+	        configurable: true, //能不能重写定义
+	        writable: false //能不能用「赋值」运算更改
+	      });
+	    } catch (err) {
+	      obj[name] = value;
+	    }
+	  };
+	
+	  /**
+	   * 获取所有 key 
+	   */
+	  ntils.keys = function (obj) {
+	    if (Object.keys) return Object.keys(obj);
+	    var keys = [];
+	    this.each(obj, function (key) {
+	      keys.push(key);
+	    });
+	    return keys;
+	  };
+	
+	  /**
+	   * 创建一个对象
+	   */
+	  ntils.create = function (proto, props) {
+	    if (Object.create) return Object.create(proto, props);
+	    var Cotr = function () { };
+	    Cotr.prototype = proto;
+	    var obj = new Cotr();
+	    if (props) this.copy(props, obj);
+	    return obj;
+	  };
+	
+	  /**
+	   * 设置 proto
+	   * 在不支持 setPrototypeOf 也不支持 __proto__ 的浏览器
+	   * 中，会采用 copy 方式
+	   */
+	  ntils.setPrototypeOf = function (obj, proto) {
+	    if (Object.setPrototypeOf) {
+	      return Object.setPrototypeOf(obj, proto || this.create(null));
+	    } else {
+	      if (!('__proto__' in Object)) this.copy(proto, obj);
+	      obj.__proto__ = proto;
+	    }
+	  };
+	
+	  /**
+	   * 获取 proto
+	   */
+	  ntils.getPrototypeOf = function (obj) {
+	    if (obj.__proto__) return obj.__proto__;
+	    if (Object.getPrototypeOf) return Object.getPrototypeOf(obj);
+	    if (obj.constructor) return obj.constructor.prototype;
+	  };
+	
+	  /**
+	   * 是否深度相等
+	   */
+	  ntils.deepEqual = function (a, b) {
+	    if (a === b) return true;
+	    if (!this.isObject(a) || !this.isObject(b)) return false;
+	    var aKeys = this.keys(a);
+	    var bKeys = this.keys(b);
+	    if (aKeys.length !== bKeys.length) return false;
+	    var allKeys = aKeys.concat(bKeys);
+	    var checkedMap = this.create(null);
+	    var result = true;
+	    this.each(allKeys, function (i, key) {
+	      if (checkedMap[key]) return;
+	      if (!this.deepEqual(a[key], b[key])) result = false;
+	      checkedMap[key] = true;
+	    }, this);
+	    return result;
+	  };
+	
+	  /**
+	   * 从一个数值循环到别一个数
+	   * @param {number} fromNum 开始数值
+	   * @param {Number} toNum 结束数值
+	   * @param {Number} step 步长值
+	   * @param {function} handler 执行函数
+	   * @returns {void} 无返回
+	   */
+	  ntils.fromTo = function (fromNum, toNum, step, handler) {
+	    if (!handler) handler = [step, step = handler][0];
+	    step = Math.abs(step || 1);
+	    if (fromNum < toNum) {
+	      for (var i = fromNum; i <= toNum; i += step) handler(i);
+	    } else {
+	      for (var i = fromNum; i >= toNum; i -= step) handler(i);
+	    }
+	  };
+	
+	  /**
+	   * 生成一个Guid
+	   * @method newGuid
+	   * @return {String} GUID字符串
+	   * @static
+	   */
+	  ntils.newGuid = function () {
+	    var S4 = function () {
+	      return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+	    };
+	    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+	  };
+	
+	  /**
+	   * 对象变换
+	   **/
+	  ntils.map = function (list, fn) {
+	    var buffer = this.isArray(list) ? [] : {};
+	    this.each(list, function (name, value) {
+	      buffer[name] = fn(name, value);
+	    });
+	    return buffer;
+	  };
+	
+	  /**
+	   * 通过路径设置属性值
+	   */
+	  ntils.setByPath = function (obj, path, value) {
+	    if (this.isNull(obj) || this.isNull(path) || path === '') {
+	      return;
+	    }
+	    if (!this.isArray(path)) {
+	      path = path.replace(/\[/, '.').replace(/\]/, '.').split('.');
+	    }
+	    this.each(path, function (index, name) {
+	      if (this.isNull(name) || name.length < 1) return;
+	      if (index === path.length - 1) {
+	        obj[name] = value;
+	      } else {
+	        obj[name] = obj[name] || {};
+	        obj = obj[name];
+	      }
+	    }, this);
+	  };
+	
+	  /**
+	   * 通过路径获取属性值
+	   */
+	  ntils.getByPath = function (obj, path) {
+	    if (this.isNull(obj) || this.isNull(path) || path === '') {
+	      return obj;
+	    }
+	    if (!this.isArray(path)) {
+	      path = path.replace(/\[/, '.').replace(/\]/, '.').split('.');
+	    }
+	    this.each(path, function (index, name) {
+	      if (this.isNull(name) || name.length < 1) return;
+	      if (!this.isNull(obj)) obj = obj[name];
+	    }, this);
+	    return obj;
+	  };
+	
+	  /**
+	   * 数组去重
+	   **/
+	  ntils.unique = function (array) {
+	    if (this.isNull(array)) return array;
+	    var newArray = [];
+	    this.each(array, function (i, value) {
+	      if (newArray.indexOf(value) > -1) return;
+	      newArray.push(value);
+	    });
+	    return newArray;
+	  };
+	
+	  /**
+	   * 解析 function 的参数列表
+	   **/
+	  ntils.getFunctionArgumentNames = function (fn) {
+	    if (!fn) return [];
+	    var src = fn.toString();
+	    var parts = src.split(')')[0].split('=>')[0].split('(');
+	    return (parts[1] || parts[0]).split(',').map(function (name) {
+	      return name.trim();
+	    }).filter(function (name) {
+	      return name != 'function';
+	    });
+	  };
+	
+	  /**
+	   * 缩短字符串
+	   */
+	  ntils.short = function (str, maxLength) {
+	    if (!str) return str;
+	    maxLength = maxLength || 40;
+	    var strLength = str.length;
+	    var trimLength = maxLength / 2;
+	    return strLength > maxLength ? str.substr(0, trimLength) + '...' + str.substr(strLength - trimLength) : str;
+	  };
+	
+	  /**
+	   * 首字母大写
+	   */
+	  ntils.firstUpper = function (str) {
+	    if (this.isNull(str)) return;
+	    return str.substring(0,1).toUpperCase()+str.substring(1);
+	  };
+	
+	  /**
+	   * 编码正则字符串
+	   */
+	  ntils.escapeRegExp = function (str) {
+	    return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	  };
+	
+	  /**
+	   * 解析字符串为 dom 
+	   * @param {string} str 字符串
+	   * @returns {HTMLNode} 解析后的 DOM 
+	   */
+	  ntils.parseDom = function (str) {
+	    this._PDD_ = this._PDD_ || document.createElement('div');
+	    this._PDD_.innerHTML = ntils.trim(str);
+	    var firstNode = this._PDD_.childNodes[0];
+	    //先 clone 一份再通过 innerHTML 清空
+	    //否则 IE9 下，清空时会导出返回的 DOM 没有子结点
+	    if (firstNode) firstNode = firstNode.cloneNode(true);
+	    this._PDD_.innerHTML = '';
+	    return firstNode;
+	  };
+	
+	})(( false) ? (window.ntils = {}) : exports);
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	const utils = __webpack_require__(5);
+	
+	function ClassFactory(options) {
+	  //处理 options
+	  options = options || utils.create(null);
+	  options.$name = options.$name || 'Class';
+	  options.$extends = options.$extends || ClassFactory;
+	  options.$static = options.$static || utils.create(null);
+	  //处理父类 prototype
+	  var superPrototype = utils.isFunction(options.$extends) ?
+	    options.$extends.prototype : options.$extends;
+	  //定义新类
+	  var Class = function () {
+	    //处理 super
+	    if (!this.$super) {
+	      utils.defineFreezeProp(this, '$super', function () {
+	        if (this._super_called_) return this._super_ret_;
+	        this._super_called_ = true;
+	        if (utils.isFunction(options.$extends)) {
+	          this._super_ret_ = options.$extends.apply(this, arguments);
+	          //这几行确保可继承于数组
+	          if (this._super_ret_) {
+	            var proto = utils.getPrototypeOf(this);
+	            utils.setPrototypeOf(proto, this._super_ret_);
+	          }
+	        } else {
+	          this._super_ret_ = options.$extends;
+	        }
+	        return this._super_ret_;
+	      });
+	      for (var name in superPrototype) {
+	        var value = superPrototype[name];
+	        if (utils.isFunction(value)) {
+	          this.$super[name] = value.bind(this);
+	        } else {
+	          this.$super[name] = value;
+	        }
+	      }
+	    }
+	    //调用构造
+	    if (utils.isFunction(options.constructor) &&
+	      options.constructor !== Object) {
+	      return options.constructor.apply(this, arguments);
+	    } else {
+	      //如果没有实现 constructor 则调用父类构造
+	      this.$super.apply(this, arguments);
+	    }
+	  };
+	  //处理 prototype
+	  Class.prototype = utils.create(superPrototype);
+	  utils.copy(options, Class.prototype);
+	  utils.defineFreezeProp(Class.prototype, '$class', Class);
+	  //处理静态成员
+	  utils.copy(options.$static, Class);
+	  if (utils.isFunction(options.$extends)) {
+	    utils.setPrototypeOf(Class, options.$extends);
+	  }
+	  if (!options.$extends.$extend) {
+	    utils.copy(ClassFactory, Class);
+	  }
+	  utils.defineFreezeProp(Class, '$super', options.$extends);
+	  //--
+	  return Class;
+	}
+	
+	//定义扩展方法
+	ClassFactory.$extend = function (options) {
+	  options.$extends = this;
+	  return new ClassFactory(options);
+	};
+	
+	ClassFactory.Class = ClassFactory;
+	module.exports = ClassFactory;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (ntils) {
@@ -951,85 +1688,7 @@
 	})(( false) ? (window.ntils = {}) : exports);
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	const utils = __webpack_require__(3);
-	
-	function ClassFactory(options) {
-	  //处理 options
-	  options = options || utils.create(null);
-	  options.$name = options.$name || 'Class';
-	  options.$extends = options.$extends || ClassFactory;
-	  options.$static = options.$static || utils.create(null);
-	  //处理父类 prototype
-	  var superPrototype = utils.isFunction(options.$extends) ?
-	    options.$extends.prototype : options.$extends;
-	  //定义新类
-	  var Class = function () {
-	    //处理 super
-	    if (!this.$super) {
-	      utils.defineFreezeProp(this, '$super', function () {
-	        if (this._super_called_) return this._super_ret_;
-	        this._super_called_ = true;
-	        if (utils.isFunction(options.$extends)) {
-	          this._super_ret_ = options.$extends.apply(this, arguments);
-	          //这几行确保可继承于数组
-	          if (this._super_ret_) {
-	            var proto = utils.getPrototypeOf(this);
-	            utils.setPrototypeOf(proto, this._super_ret_);
-	          }
-	        } else {
-	          this._super_ret_ = options.$extends;
-	        }
-	        return this._super_ret_;
-	      });
-	      for (var name in superPrototype) {
-	        var value = superPrototype[name];
-	        if (utils.isFunction(value)) {
-	          this.$super[name] = value.bind(this);
-	        } else {
-	          this.$super[name] = value;
-	        }
-	      }
-	    }
-	    //调用构造
-	    if (utils.isFunction(options.constructor) &&
-	      options.constructor !== Object) {
-	      return options.constructor.apply(this, arguments);
-	    } else {
-	      //如果没有实现 constructor 则调用父类构造
-	      this.$super.apply(this, arguments);
-	    }
-	  };
-	  //处理 prototype
-	  Class.prototype = utils.create(superPrototype);
-	  utils.copy(options, Class.prototype);
-	  utils.defineFreezeProp(Class.prototype, '$class', Class);
-	  //处理静态成员
-	  utils.copy(options.$static, Class);
-	  if (utils.isFunction(options.$extends)) {
-	    utils.setPrototypeOf(Class, options.$extends);
-	  }
-	  if (!options.$extends.$extend) {
-	    utils.copy(ClassFactory, Class);
-	  }
-	  utils.defineFreezeProp(Class, '$super', options.$extends);
-	  //--
-	  return Class;
-	}
-	
-	//定义扩展方法
-	ClassFactory.$extend = function (options) {
-	  options.$extends = this;
-	  return new ClassFactory(options);
-	};
-	
-	ClassFactory.Class = ClassFactory;
-	module.exports = ClassFactory;
-
-/***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -1077,20 +1736,20 @@
 	module.exports = Watcher;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var _keys = __webpack_require__(7);
+	/*istanbul ignore next*/var _keys = __webpack_require__(8);
 	
 	var _keys2 = _interopRequireDefault(_keys);
 	
-	var _getOwnPropertyDescriptor = __webpack_require__(42);
+	var _getOwnPropertyDescriptor = __webpack_require__(43);
 	
 	var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
 	
-	var _defineProperty = __webpack_require__(47);
+	var _defineProperty = __webpack_require__(48);
 	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 	
@@ -1098,7 +1757,7 @@
 	
 	var Class = __webpack_require__(4);
 	var utils = __webpack_require__(3);
-	var EventEmitter = __webpack_require__(50);
+	var EventEmitter = __webpack_require__(51);
 	
 	var OBSERVER_PROP_NAME = '_observer_';
 	var CHANGE_EVENT_NAME = 'change';
@@ -1377,44 +2036,44 @@
 	module.exports = Observer;
 
 /***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(8), __esModule: true };
-
-/***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(9);
-	module.exports = __webpack_require__(29).Object.keys;
+	module.exports = { "default": __webpack_require__(9), __esModule: true };
 
 /***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(10);
+	module.exports = __webpack_require__(30).Object.keys;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(10)
-	  , $keys    = __webpack_require__(12);
+	var toObject = __webpack_require__(11)
+	  , $keys    = __webpack_require__(13);
 	
-	__webpack_require__(27)('keys', function(){
+	__webpack_require__(28)('keys', function(){
 	  return function keys(it){
 	    return $keys(toObject(it));
 	  };
 	});
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(11);
+	var defined = __webpack_require__(12);
 	module.exports = function(it){
 	  return Object(defined(it));
 	};
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	// 7.2.1 RequireObjectCoercible(argument)
@@ -1424,25 +2083,25 @@
 	};
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys       = __webpack_require__(13)
-	  , enumBugKeys = __webpack_require__(26);
+	var $keys       = __webpack_require__(14)
+	  , enumBugKeys = __webpack_require__(27);
 	
 	module.exports = Object.keys || function keys(O){
 	  return $keys(O, enumBugKeys);
 	};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var has          = __webpack_require__(14)
-	  , toIObject    = __webpack_require__(15)
-	  , arrayIndexOf = __webpack_require__(18)(false)
-	  , IE_PROTO     = __webpack_require__(22)('IE_PROTO');
+	var has          = __webpack_require__(15)
+	  , toIObject    = __webpack_require__(16)
+	  , arrayIndexOf = __webpack_require__(19)(false)
+	  , IE_PROTO     = __webpack_require__(23)('IE_PROTO');
 	
 	module.exports = function(object, names){
 	  var O      = toIObject(object)
@@ -1458,7 +2117,7 @@
 	};
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
@@ -1467,28 +2126,28 @@
 	};
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(16)
-	  , defined = __webpack_require__(11);
+	var IObject = __webpack_require__(17)
+	  , defined = __webpack_require__(12);
 	module.exports = function(it){
 	  return IObject(defined(it));
 	};
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(17);
+	var cof = __webpack_require__(18);
 	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
 	  return cof(it) == 'String' ? it.split('') : Object(it);
 	};
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -1498,14 +2157,14 @@
 	};
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// false -> Array#indexOf
 	// true  -> Array#includes
-	var toIObject = __webpack_require__(15)
-	  , toLength  = __webpack_require__(19)
-	  , toIndex   = __webpack_require__(21);
+	var toIObject = __webpack_require__(16)
+	  , toLength  = __webpack_require__(20)
+	  , toIndex   = __webpack_require__(22);
 	module.exports = function(IS_INCLUDES){
 	  return function($this, el, fromIndex){
 	    var O      = toIObject($this)
@@ -1524,18 +2183,18 @@
 	};
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(20)
+	var toInteger = __webpack_require__(21)
 	  , min       = Math.min;
 	module.exports = function(it){
 	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 	};
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	// 7.1.4 ToInteger
@@ -1546,10 +2205,10 @@
 	};
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(20)
+	var toInteger = __webpack_require__(21)
 	  , max       = Math.max
 	  , min       = Math.min;
 	module.exports = function(index, length){
@@ -1558,20 +2217,20 @@
 	};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var shared = __webpack_require__(23)('keys')
-	  , uid    = __webpack_require__(25);
+	var shared = __webpack_require__(24)('keys')
+	  , uid    = __webpack_require__(26);
 	module.exports = function(key){
 	  return shared[key] || (shared[key] = uid(key));
 	};
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(24)
+	var global = __webpack_require__(25)
 	  , SHARED = '__core-js_shared__'
 	  , store  = global[SHARED] || (global[SHARED] = {});
 	module.exports = function(key){
@@ -1579,7 +2238,7 @@
 	};
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -1588,7 +2247,7 @@
 	if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	var id = 0
@@ -1598,7 +2257,7 @@
 	};
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
 	// IE 8- don't enum bug keys
@@ -1607,13 +2266,13 @@
 	).split(',');
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(28)
-	  , core    = __webpack_require__(29)
-	  , fails   = __webpack_require__(38);
+	var $export = __webpack_require__(29)
+	  , core    = __webpack_require__(30)
+	  , fails   = __webpack_require__(39);
 	module.exports = function(KEY, exec){
 	  var fn  = (core.Object || {})[KEY] || Object[KEY]
 	    , exp = {};
@@ -1622,13 +2281,13 @@
 	};
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var global    = __webpack_require__(24)
-	  , core      = __webpack_require__(29)
-	  , ctx       = __webpack_require__(30)
-	  , hide      = __webpack_require__(32)
+	var global    = __webpack_require__(25)
+	  , core      = __webpack_require__(30)
+	  , ctx       = __webpack_require__(31)
+	  , hide      = __webpack_require__(33)
 	  , PROTOTYPE = 'prototype';
 	
 	var $export = function(type, name, source){
@@ -1688,18 +2347,18 @@
 	module.exports = $export;
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 	var core = module.exports = {version: '2.4.0'};
 	if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(31);
+	var aFunction = __webpack_require__(32);
 	module.exports = function(fn, that, length){
 	  aFunction(fn);
 	  if(that === undefined)return fn;
@@ -1720,7 +2379,7 @@
 	};
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -1729,12 +2388,12 @@
 	};
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var dP         = __webpack_require__(33)
-	  , createDesc = __webpack_require__(41);
-	module.exports = __webpack_require__(37) ? function(object, key, value){
+	var dP         = __webpack_require__(34)
+	  , createDesc = __webpack_require__(42);
+	module.exports = __webpack_require__(38) ? function(object, key, value){
 	  return dP.f(object, key, createDesc(1, value));
 	} : function(object, key, value){
 	  object[key] = value;
@@ -1742,15 +2401,15 @@
 	};
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var anObject       = __webpack_require__(34)
-	  , IE8_DOM_DEFINE = __webpack_require__(36)
-	  , toPrimitive    = __webpack_require__(40)
+	var anObject       = __webpack_require__(35)
+	  , IE8_DOM_DEFINE = __webpack_require__(37)
+	  , toPrimitive    = __webpack_require__(41)
 	  , dP             = Object.defineProperty;
 	
-	exports.f = __webpack_require__(37) ? Object.defineProperty : function defineProperty(O, P, Attributes){
+	exports.f = __webpack_require__(38) ? Object.defineProperty : function defineProperty(O, P, Attributes){
 	  anObject(O);
 	  P = toPrimitive(P, true);
 	  anObject(Attributes);
@@ -1763,17 +2422,17 @@
 	};
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(35);
+	var isObject = __webpack_require__(36);
 	module.exports = function(it){
 	  if(!isObject(it))throw TypeError(it + ' is not an object!');
 	  return it;
 	};
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
 	module.exports = function(it){
@@ -1781,24 +2440,24 @@
 	};
 
 /***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = !__webpack_require__(37) && !__webpack_require__(38)(function(){
-	  return Object.defineProperty(__webpack_require__(39)('div'), 'a', {get: function(){ return 7; }}).a != 7;
-	});
-
-/***/ },
 /* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(38)(function(){
-	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+	module.exports = !__webpack_require__(38) && !__webpack_require__(39)(function(){
+	  return Object.defineProperty(__webpack_require__(40)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 	});
 
 /***/ },
 /* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(39)(function(){
+	  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+	});
+
+/***/ },
+/* 39 */
 /***/ function(module, exports) {
 
 	module.exports = function(exec){
@@ -1810,11 +2469,11 @@
 	};
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(35)
-	  , document = __webpack_require__(24).document
+	var isObject = __webpack_require__(36)
+	  , document = __webpack_require__(25).document
 	  // in old IE typeof document.createElement is 'object'
 	  , is = isObject(document) && isObject(document.createElement);
 	module.exports = function(it){
@@ -1822,11 +2481,11 @@
 	};
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(35);
+	var isObject = __webpack_require__(36);
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
 	module.exports = function(it, S){
@@ -1839,7 +2498,7 @@
 	};
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = function(bitmap, value){
@@ -1852,48 +2511,48 @@
 	};
 
 /***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(43), __esModule: true };
-
-/***/ },
 /* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(44);
-	var $Object = __webpack_require__(29).Object;
-	module.exports = function getOwnPropertyDescriptor(it, key){
-	  return $Object.getOwnPropertyDescriptor(it, key);
-	};
+	module.exports = { "default": __webpack_require__(44), __esModule: true };
 
 /***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(45);
+	var $Object = __webpack_require__(30).Object;
+	module.exports = function getOwnPropertyDescriptor(it, key){
+	  return $Object.getOwnPropertyDescriptor(it, key);
+	};
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-	var toIObject                 = __webpack_require__(15)
-	  , $getOwnPropertyDescriptor = __webpack_require__(45).f;
+	var toIObject                 = __webpack_require__(16)
+	  , $getOwnPropertyDescriptor = __webpack_require__(46).f;
 	
-	__webpack_require__(27)('getOwnPropertyDescriptor', function(){
+	__webpack_require__(28)('getOwnPropertyDescriptor', function(){
 	  return function getOwnPropertyDescriptor(it, key){
 	    return $getOwnPropertyDescriptor(toIObject(it), key);
 	  };
 	});
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var pIE            = __webpack_require__(46)
-	  , createDesc     = __webpack_require__(41)
-	  , toIObject      = __webpack_require__(15)
-	  , toPrimitive    = __webpack_require__(40)
-	  , has            = __webpack_require__(14)
-	  , IE8_DOM_DEFINE = __webpack_require__(36)
+	var pIE            = __webpack_require__(47)
+	  , createDesc     = __webpack_require__(42)
+	  , toIObject      = __webpack_require__(16)
+	  , toPrimitive    = __webpack_require__(41)
+	  , has            = __webpack_require__(15)
+	  , IE8_DOM_DEFINE = __webpack_require__(37)
 	  , gOPD           = Object.getOwnPropertyDescriptor;
 	
-	exports.f = __webpack_require__(37) ? gOPD : function getOwnPropertyDescriptor(O, P){
+	exports.f = __webpack_require__(38) ? gOPD : function getOwnPropertyDescriptor(O, P){
 	  O = toIObject(O);
 	  P = toPrimitive(P, true);
 	  if(IE8_DOM_DEFINE)try {
@@ -1903,37 +2562,37 @@
 	};
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
 	exports.f = {}.propertyIsEnumerable;
 
 /***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(48), __esModule: true };
-
-/***/ },
 /* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(49);
-	var $Object = __webpack_require__(29).Object;
-	module.exports = function defineProperty(it, key, desc){
-	  return $Object.defineProperty(it, key, desc);
-	};
+	module.exports = { "default": __webpack_require__(49), __esModule: true };
 
 /***/ },
 /* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $export = __webpack_require__(28);
-	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(37), 'Object', {defineProperty: __webpack_require__(33).f});
+	__webpack_require__(50);
+	var $Object = __webpack_require__(30).Object;
+	module.exports = function defineProperty(it, key, desc){
+	  return $Object.defineProperty(it, key, desc);
+	};
 
 /***/ },
 /* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var $export = __webpack_require__(29);
+	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+	$export($export.S + $export.F * !__webpack_require__(38), 'Object', {defineProperty: __webpack_require__(34).f});
+
+/***/ },
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -2118,16 +2777,16 @@
 	module.exports = EventEmitter;
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Compiler = __webpack_require__(52);
-	var Directive = __webpack_require__(53);
-	var Expression = __webpack_require__(54);
-	var Template = __webpack_require__(77);
-	var directives = __webpack_require__(55);
+	var Compiler = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
+	var Expression = __webpack_require__(55);
+	var Template = __webpack_require__(78);
+	var directives = __webpack_require__(56);
 	
 	Template.Template = Template;
 	Template.Compiler = Compiler;
@@ -2138,16 +2797,16 @@
 	module.exports = Template;
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var Class = __webpack_require__(4);
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	var utils = __webpack_require__(3);
-	var Expression = __webpack_require__(54);
-	var commonDirectives = __webpack_require__(55);
+	var Expression = __webpack_require__(55);
+	var commonDirectives = __webpack_require__(56);
 	
 	var DEFAULT_PREFIX = 'm';
 	
@@ -2350,14 +3009,14 @@
 	module.exports = Compiler;
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var Class = __webpack_require__(4);
 	var utils = __webpack_require__(3);
-	var Expression = __webpack_require__(54);
+	var Expression = __webpack_require__(55);
 	
 	/**
 	 * 指令定义工场函数
@@ -2420,7 +3079,7 @@
 	module.exports = Directive;
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -2560,36 +3219,36 @@
 	module.exports = Expression;
 
 /***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*istanbul ignore next*/'use strict';
-	
-	module.exports = {
-	  '#text': __webpack_require__(56),
-	  'each': __webpack_require__(57),
-	  'if': __webpack_require__(59),
-	  'prop': __webpack_require__(60),
-	  'attr': __webpack_require__(61),
-	  'on': __webpack_require__(62),
-	  'html': __webpack_require__(63),
-	  'text': __webpack_require__(64),
-	  'prevent': __webpack_require__(65),
-	  'id': __webpack_require__(66),
-	  'cloak': __webpack_require__(67),
-	  'show': __webpack_require__(68),
-	  'model': __webpack_require__(69),
-	  '*': __webpack_require__(76) //处理所有未知 attr
-	};
-
-/***/ },
 /* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var Expression = __webpack_require__(54);
+	module.exports = {
+	  '#text': __webpack_require__(57),
+	  'each': __webpack_require__(58),
+	  'if': __webpack_require__(60),
+	  'prop': __webpack_require__(61),
+	  'attr': __webpack_require__(62),
+	  'on': __webpack_require__(63),
+	  'html': __webpack_require__(64),
+	  'text': __webpack_require__(65),
+	  'prevent': __webpack_require__(66),
+	  'id': __webpack_require__(67),
+	  'cloak': __webpack_require__(68),
+	  'show': __webpack_require__(69),
+	  'model': __webpack_require__(70),
+	  '*': __webpack_require__(77) //处理所有未知 attr
+	};
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var Directive = __webpack_require__(54);
+	var Expression = __webpack_require__(55);
 	
 	module.exports = new Directive({
 	  type: Directive.TE,
@@ -2615,20 +3274,20 @@
 	});
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var _defineProperty = __webpack_require__(47);
+	/*istanbul ignore next*/var _defineProperty = __webpack_require__(48);
 	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	var utils = __webpack_require__(3);
-	var Scope = __webpack_require__(58);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  level: Directive.LS + 1, //比 if 要高一个权重
@@ -2727,7 +3386,7 @@
 	});
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -2752,12 +3411,12 @@
 	module.exports = Scope;
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  level: Directive.LS,
@@ -2795,12 +3454,12 @@
 	});
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(value) {
@@ -2816,12 +3475,12 @@
 	});
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(value) {
@@ -2835,14 +3494,14 @@
 	});
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  literal: true,
@@ -2878,30 +3537,16 @@
 	});
 
 /***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*istanbul ignore next*/'use strict';
-	
-	var Directive = __webpack_require__(53);
-	
-	module.exports = new Directive({
-	  update: function /*istanbul ignore next*/update(newValue) {
-	    this.node.innerHTML = newValue;
-	  }
-	});
-
-/***/ },
 /* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(newValue) {
-	    this.node.innerText = newValue;
+	    this.node.innerHTML = newValue;
 	  }
 	});
 
@@ -2911,11 +3556,12 @@
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
-	  level: Directive.LP,
-	  final: true
+	  update: function /*istanbul ignore next*/update(newValue) {
+	    this.node.innerText = newValue;
+	  }
 	});
 
 /***/ },
@@ -2924,7 +3570,20 @@
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
+	
+	module.exports = new Directive({
+	  level: Directive.LP,
+	  final: true
+	});
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  literal: true,
@@ -2939,12 +3598,12 @@
 	});
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  level: Directive.LC,
@@ -2958,12 +3617,12 @@
 	});
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(value) {
@@ -2972,17 +3631,17 @@
 	});
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var SelectDirective = __webpack_require__(70);
-	var EditableDirective = __webpack_require__(71);
-	var InputDirective = __webpack_require__(72);
-	var RadioDirective = __webpack_require__(73);
-	var CheckboxDirective = __webpack_require__(74);
-	var PropDirective = __webpack_require__(75);
+	var SelectDirective = __webpack_require__(71);
+	var EditableDirective = __webpack_require__(72);
+	var InputDirective = __webpack_require__(73);
+	var RadioDirective = __webpack_require__(74);
+	var CheckboxDirective = __webpack_require__(75);
+	var PropDirective = __webpack_require__(76);
 	
 	var Directive = function Directive(options) {
 	  var node = options.node;
@@ -3017,14 +3676,14 @@
 	module.exports = Directive;
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  final: true,
@@ -3067,14 +3726,14 @@
 	});
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3107,14 +3766,14 @@
 	});
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3147,14 +3806,14 @@
 	});
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  /**
@@ -3185,14 +3844,14 @@
 	});
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3236,13 +3895,13 @@
 	});
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3278,12 +3937,12 @@
 	});
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	/**
 	 * 通用的 attribute 指令
@@ -3339,15 +3998,15 @@
 	});
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var Class = __webpack_require__(4);
-	var Observer = __webpack_require__(6);
-	var EventEmitter = __webpack_require__(50);
-	var Compiler = __webpack_require__(52);
+	var Observer = __webpack_require__(7);
+	var EventEmitter = __webpack_require__(51);
+	var Compiler = __webpack_require__(53);
 	
 	/**
 	 * 模板类
@@ -3454,14 +4113,14 @@
 	module.exports = Template;
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Component = __webpack_require__(79);
-	var components = __webpack_require__(81);
-	var directives = __webpack_require__(51).directives;
+	var Component = __webpack_require__(80);
+	var components = __webpack_require__(82);
+	var directives = __webpack_require__(52).directives;
 	
 	Component.components = components;
 	Component.Component = Component;
@@ -3479,24 +4138,24 @@
 	module.exports = Component;
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var _defineProperty = __webpack_require__(47);
+	/*istanbul ignore next*/var _defineProperty = __webpack_require__(48);
 	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Class = __webpack_require__(4);
-	var Template = __webpack_require__(51);
-	var Watcher = __webpack_require__(5);
+	var Template = __webpack_require__(52);
+	var Watcher = __webpack_require__(6);
 	var utils = __webpack_require__(3);
-	var EventEmitter = __webpack_require__(50);
-	var Observer = __webpack_require__(6);
-	var ComponentDirective = __webpack_require__(80);
+	var EventEmitter = __webpack_require__(51);
+	var Observer = __webpack_require__(7);
+	var ComponentDirective = __webpack_require__(81);
 	
 	/**
 	 * 组件类
@@ -3562,14 +4221,14 @@
 	      this.$directives = this.$directives || {};
 	      this._importDirectives_(classOpts.directives);
 	      this.$components = this.$components || {};
-	      this._importComponents_(__webpack_require__(81));
+	      this._importComponents_(__webpack_require__(82));
 	      this._importComponents_({
 	        'self': ComponentClass
 	      });
 	      this._importComponents_(classOpts.components);
 	      utils.defineFreezeProp(this, '$children', []);
 	      if (instanceOpts.parent) this.$setParent(instanceOpts.parent);
-	      this.$callHook('onInit', [instanceOpts]);
+	      this.$callHook('init', [instanceOpts]);
 	      Observer.observe(this);
 	      if (classOpts.element) {
 	        this.$mount();
@@ -3664,8 +4323,10 @@
 	     * @returns {void} 无反回
 	     */
 	    $callHook: function /*istanbul ignore next*/$callHook(name, args) {
-	      if (!utils.isFunction(this[name])) return;
-	      this[name].apply(this, args || []);
+	      var hook = this[/*istanbul ignore next*/'on' + utils.firstUpper(name)];
+	      if (!utils.isFunction(hook)) return;
+	      hook.apply(this, args || []);
+	      this.$emit( /*istanbul ignore next*/'$' + name, args);
 	    },
 	
 	    /**
@@ -3817,12 +4478,12 @@
 	    _createElement_: function /*istanbul ignore next*/_createElement_() {
 	      if (this._created_) return;
 	      this._created_ = true;
-	      this.$callHook('onCreate');
+	      this.$callHook('create');
 	      utils.defineFreezeProp(this, '$element', this.element || ComponentClass.$template.cloneNode(true));
 	      if (!this.$element || this.$element.nodeName === '#text') {
 	        throw new Error('Invalid component template');
 	      }
-	      this.$callHook('onCreated');
+	      this.$callHook('created');
 	    },
 	
 	    /**
@@ -3840,7 +4501,7 @@
 	      this._template_.bind(this);
 	      this._template_.on('update', this._onTemplateUpdate_);
 	      this._template_.on('bind', function () {
-	        if (!this.deferReady) this.$callHook('onReady');
+	        if (!this.deferReady) this.$callHook('ready');
 	      }.bind(this));
 	    },
 	
@@ -3853,7 +4514,7 @@
 	    $mount: function /*istanbul ignore next*/$mount(mountNode, append) {
 	      if (this._mounted_) return;
 	      this.$compile();
-	      this.$callHook('onMount');
+	      this.$callHook('mount');
 	      if (mountNode) {
 	        mountNode.$substitute = this.$element;
 	        this.$element._mountNode = mountNode;
@@ -3865,7 +4526,7 @@
 	      }
 	      this._mounted_ = true;
 	      this._removed_ = false;
-	      this.$callHook('onMounted');
+	      this.$callHook('mounted');
 	    },
 	
 	    /**
@@ -3883,13 +4544,13 @@
 	     */
 	    $remove: function /*istanbul ignore next*/$remove() {
 	      if (this._removed_ || !this._mounted_) return;
-	      this.$callHook('onRemove');
+	      this.$callHook('remove');
 	      if (this.$element.parentNode) {
 	        this.$element.parentNode.removeChild(this.$element);
 	      }
 	      this._removed_ = true;
 	      this._mounted_ = false;
-	      this.$callHook('onRemoved');
+	      this.$callHook('removed');
 	    },
 	
 	    /**
@@ -3934,11 +4595,11 @@
 	        var index = this.$parent.$children.indexOf(this);
 	        this.$parent.$children.splice(index, 1);
 	      }
-	      this.$callHook('onDispose');
+	      this.$callHook('dispose');
 	      if (this._compiled_) {
 	        this._template_.unbind();
 	      }
-	      this.$callHook('onDisposed');
+	      this.$callHook('disposed');
 	      for (var key in this) {
 	        delete this[key];
 	      }
@@ -3996,12 +4657,12 @@
 	module.exports = Component;
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Template = __webpack_require__(51);
+	var Template = __webpack_require__(52);
 	var Directive = Template.Directive;
 	
 	/**
@@ -4086,22 +4747,22 @@
 	module.exports = ComponentDirective;
 
 /***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*istanbul ignore next*/'use strict';
-	
-	module.exports = {
-	  View: __webpack_require__(82)
-	};
-
-/***/ },
 /* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Component = __webpack_require__(79);
+	module.exports = {
+	  View: __webpack_require__(83)
+	};
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var Component = __webpack_require__(80);
 	var utils = __webpack_require__(3);
 	
 	/**
@@ -4240,18 +4901,18 @@
 	module.exports = View;
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
-	var items = __webpack_require__(84);
+	var items = __webpack_require__(85);
 	
-	__webpack_require__(85);
+	__webpack_require__(86);
 	
 	var Toolbar = new mokit.Component({
-	  template: __webpack_require__(87),
+	  template: __webpack_require__(88),
 	  props: {
 	    mditor: null
 	  },
@@ -4315,7 +4976,7 @@
 	module.exports = Toolbar;
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports) {
 
 	/*istanbul ignore next*/'use strict';
@@ -4528,20 +5189,20 @@
 	}];
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 86 */,
-/* 87 */
+/* 87 */,
+/* 88 */
 /***/ function(module, exports) {
 
 	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -4549,18 +5210,18 @@
 	var mokit = __webpack_require__(1);
 	var EventEmitter = mokit.EventEmitter;
 	var utils = __webpack_require__(3);
-	var Stack = __webpack_require__(89);
-	var commands = __webpack_require__(90);
+	var Stack = __webpack_require__(90);
+	var commands = __webpack_require__(91);
 	
-	__webpack_require__(91);
+	__webpack_require__(92);
 	
 	var ua = window.navigator.userAgent.toLowerCase();
 	var isIE = !!ua.match(/msie|trident\/7|edge/);
-	var isWinPhone = ua.indexOf('windows phone') !== -1;
-	var isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
+	//const isWinPhone = ua.indexOf('windows phone') !== -1;
+	//const isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
 	
 	module.exports = new mokit.Component({
-	  template: __webpack_require__(92),
+	  template: __webpack_require__(93),
 	
 	  props: {
 	    mditor: null,
@@ -4876,7 +5537,7 @@
 	});
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -4920,7 +5581,7 @@
 	module.exports = Stack;
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports) {
 
 	/*istanbul ignore next*/'use strict';
@@ -4964,29 +5625,29 @@
 	}];
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"editor\">\n  <div class=\"backdrop\" m:id=\"marks\">\n    <div class=\"inner\" m:html=\"applyMarks(value)\"></div>\n  </div>\n  <textarea class=\"textarea\" m:id=\"textarea\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\"\n    m:on:scroll=\"onScroll()\" m:on:input=\"onInput\" m:on:compositionStart=\"onCompositionStart\" m:on:compositionEnd=\"onCompositionEnd\"></textarea>\n</div>"
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
 	
-	__webpack_require__(94);
+	__webpack_require__(95);
 	
 	var Viewer = new mokit.Component({
-	  template: __webpack_require__(95),
+	  template: __webpack_require__(96),
 	
 	  /*istanbul ignore next*/data: function data() {
 	    return {
@@ -5026,19 +5687,19 @@
 	module.exports = Viewer;
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\n  <div m:show=\"html\" class=\"markdown-body\" m:html=\"html\"></div>\n  <div m:show=\"!html\" class=\"alert\" m:html=\"alert\"></div>\n</div>"
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -5046,12 +5707,12 @@
 	var mokit = __webpack_require__(1);
 	var utils = __webpack_require__(3);
 	
-	__webpack_require__(97);
+	__webpack_require__(98);
 	
 	var CHECK_REGEXP = /^\/[\s\S]+\/(i|g|m)*$/;
 	
 	var Finder = new mokit.Component({
-	  template: __webpack_require__(98),
+	  template: __webpack_require__(99),
 	  props: {
 	    mditor: null,
 	    active: false,
@@ -5144,24 +5805,24 @@
 	module.exports = Finder;
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"Find\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"Replace\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var shortcuts = __webpack_require__(100);
+	var shortcuts = __webpack_require__(101);
 	var utils = __webpack_require__(3);
 	
 	shortcuts.filter = function (event) {
@@ -5208,7 +5869,7 @@
 	};
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (global) {
@@ -5553,16 +6214,15 @@
 	})(window);
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var marked = __webpack_require__(102);
-	var Prism = __webpack_require__(103);
+	var marked = __webpack_require__(103);
+	var Prism = __webpack_require__(104);
 	
-	//language  
-	__webpack_require__(104);
+	//language
 	__webpack_require__(105);
 	__webpack_require__(106);
 	__webpack_require__(107);
@@ -5609,6 +6269,7 @@
 	__webpack_require__(148);
 	__webpack_require__(149);
 	__webpack_require__(150);
+	__webpack_require__(151);
 	
 	//alias
 	Prism.languages.js = Prism.languages.javascript;
@@ -5620,12 +6281,9 @@
 	Prism.languages.yml = Prism.languages.yaml;
 	Prism.languages.rb = Prism.languages.ruby;
 	
-	/**
-	 * 定义解析类型
-	 **/
 	var Parser = function Parser(options) {
-		options = options || {};
-		this.options = options;
+	  options = options || {};
+	  this.options = options;
 	};
 	
 	Parser.highlights = {};
@@ -5638,39 +6296,34 @@
 	
 	var renderer = new marked.Renderer();
 	marked.setOptions({
-		renderer: renderer,
-		gfm: true,
-		tables: true,
-		breaks: true, //可行尾不加两空格直接换行
-		pedantic: false,
-		sanitize: false,
-		smartLists: true,
-		smartypants: false,
-		mangle: false,
-		highlight: function /*istanbul ignore next*/highlight(code, lang, callback) {
-			if (Parser.highlights[lang]) {
-				var result = Parser.highlights[lang].parse(code, lang, callback);
-				if (!callback) return result;
-			} else if (Prism.languages[lang]) {
-				var _result = Prism.highlight(code, Prism.languages[lang]);
-				if (callback) callback(null, _result);else return _result;
-			} else {
-				if (callback) callback(null, code);else return code;
-			}
-		}
+	  renderer: renderer, gfm: true, tables: true, breaks: true, //可行尾不加两空格直接换行
+	  pedantic: false,
+	  sanitize: false,
+	  smartLists: true,
+	  smartypants: false,
+	  mangle: false,
+	  highlight: function /*istanbul ignore next*/highlight(code, lang, callback) {
+	    if (Parser.highlights[lang]) {
+	      var result = Parser.highlights[lang].parse(code, lang, callback);
+	      if (!callback) return result;
+	    } else if (Prism.languages[lang]) {
+	      var _result = Prism.highlight(code, Prism.languages[lang]);
+	      if (callback) return callback(null, _result);else return _result;
+	    } else {
+	      if (callback) //eslint-disable-line
+	        return callback(null, code);else return code;
+	    }
+	  }
 	});
 	
-	/**
-	 * 解析方法
-	 **/
 	Parser.prototype.parse = function (mdText, callback) {
-		return marked(mdText, callback);
+	  return marked(mdText, callback);
 	};
 	
 	module.exports = Parser;
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -6963,7 +7616,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -7765,7 +8418,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports) {
 
 	Prism.languages.java = Prism.languages.extend('clike', {
@@ -7787,7 +8440,7 @@
 
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports) {
 
 	Prism.languages.csharp = Prism.languages.extend('clike', {
@@ -7825,7 +8478,7 @@
 
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	/**
@@ -7942,7 +8595,7 @@
 
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports) {
 
 	Prism.languages.python= {
@@ -7975,7 +8628,7 @@
 
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports) {
 
 	Prism.languages.json = {
@@ -7992,7 +8645,7 @@
 
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8195,13 +8848,13 @@
 	}(Prism));
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports) {
 
 	Prism.languages.yaml={scalar:{pattern:/([\-:]\s*(![^\s]+)?[ \t]*[|>])[ \t]*(?:((?:\r?\n|\r)[ \t]+)[^\r\n]+(?:\3[^\r\n]+)*)/,lookbehind:!0,alias:"string"},comment:/#.*/,key:{pattern:/(\s*(?:^|[:\-,[{\r\n?])[ \t]*(![^\s]+)?[ \t]*)[^\r\n{[\]},#\s]+?(?=\s*:\s)/,lookbehind:!0,alias:"atrule"},directive:{pattern:/(^[ \t]*)%.+/m,lookbehind:!0,alias:"important"},datetime:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(\d{4}-\d\d?-\d\d?([tT]|[ \t]+)\d\d?:\d{2}:\d{2}(\.\d*)?[ \t]*(Z|[-+]\d\d?(:\d{2})?)?|\d{4}-\d{2}-\d{2}|\d\d?:\d{2}(:\d{2}(\.\d*)?)?)(?=[ \t]*($|,|]|}))/m,lookbehind:!0,alias:"number"},"boolean":{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(true|false)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},"null":{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(null|~)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},string:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')(?=[ \t]*($|,|]|}))/m,lookbehind:!0},number:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)[+\-]?(0x[\da-f]+|0o[0-7]+|(\d+\.?\d*|\.?\d+)(e[\+\-]?\d+)?|\.inf|\.nan)[ \t]*(?=$|,|]|})/im,lookbehind:!0},tag:/![^\s]+/,important:/[&*][\w]+/,punctuation:/---|[:[\]{}\-,|>?]|\.\.\./};
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports) {
 
 	Prism.languages.perl = {
@@ -8347,7 +9000,7 @@
 
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports) {
 
 	Prism.languages.go = Prism.languages.extend('clike', {
@@ -8362,7 +9015,7 @@
 
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8448,7 +9101,7 @@
 
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports) {
 
 	Prism.languages.fsharp = Prism.languages.extend('clike', {
@@ -8487,7 +9140,7 @@
 
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports) {
 
 	Prism.languages.typescript = Prism.languages.extend('javascript', {
@@ -8497,7 +9150,7 @@
 	Prism.languages.ts = Prism.languages.typescript;
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports) {
 
 	(function (Prism) {
@@ -8604,7 +9257,7 @@
 	}(Prism));
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports) {
 
 	/* FIXME :
@@ -8670,7 +9323,7 @@
 
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8748,7 +9401,7 @@
 	}(Prism));
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -8837,7 +9490,7 @@
 
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports) {
 
 	Prism.languages.applescript = {
@@ -8862,7 +9515,7 @@
 	};
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports) {
 
 	Prism.languages.actionscript = Prism.languages.extend('javascript',  {
@@ -8884,7 +9537,7 @@
 	}
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports) {
 
 	Prism.languages.aspnet = Prism.languages.extend('markup', {
@@ -8925,7 +9578,7 @@
 	});
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports) {
 
 	Prism.languages.basic = {
@@ -8944,7 +9597,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports) {
 
 	Prism.languages.c = Prism.languages.extend('clike', {
@@ -8983,7 +9636,7 @@
 
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports) {
 
 	// Based on Free Pascal
@@ -9038,7 +9691,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports) {
 
 	Prism.languages.vim = {
@@ -9053,7 +9706,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports) {
 
 	// issues: nested multiline comments
@@ -9083,7 +9736,7 @@
 	Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.util.clone(Prism.languages.swift);
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports) {
 
 	Prism.languages.objectivec = Prism.languages.extend('c', {
@@ -9094,7 +9747,7 @@
 
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports) {
 
 	Prism.languages.sql= {
@@ -9116,7 +9769,7 @@
 	};
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports) {
 
 	Prism.languages.scheme = {
@@ -9147,7 +9800,7 @@
 	};
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports) {
 
 	/**
@@ -9268,7 +9921,7 @@
 	}(Prism));
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports) {
 
 	/* TODO
@@ -9400,7 +10053,7 @@
 	}(Prism));
 
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports) {
 
 	Prism.languages.smalltalk = {
@@ -9436,7 +10089,7 @@
 	};
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports) {
 
 	/* TODO
@@ -9494,7 +10147,7 @@
 	};
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports) {
 
 	Prism.languages.r = {
@@ -9518,7 +10171,7 @@
 	};
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports) {
 
 	Prism.languages.d = Prism.languages.extend('clike', {
@@ -9587,7 +10240,7 @@
 	});
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports) {
 
 	Prism.languages.dart = Prism.languages.extend('clike', {
@@ -9610,7 +10263,7 @@
 	});
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -9706,7 +10359,7 @@
 	}(Prism));
 
 /***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports) {
 
 	(function (Prism) {
@@ -9810,7 +10463,7 @@
 	}(Prism));
 
 /***/ },
-/* 140 */
+/* 141 */
 /***/ function(module, exports) {
 
 	Prism.languages.cpp = Prism.languages.extend('c', {
@@ -9827,7 +10480,7 @@
 	});
 
 /***/ },
-/* 141 */
+/* 142 */
 /***/ function(module, exports) {
 
 	Prism.languages.lua = {
@@ -9852,7 +10505,7 @@
 	};
 
 /***/ },
-/* 142 */
+/* 143 */
 /***/ function(module, exports) {
 
 	Prism.languages.livescript = {
@@ -9975,7 +10628,7 @@
 	Prism.languages.livescript['interpolated-string'].inside['interpolation'].inside.rest = Prism.languages.livescript;
 
 /***/ },
-/* 143 */
+/* 144 */
 /***/ function(module, exports) {
 
 	(function(Prism) {
@@ -10042,7 +10695,7 @@
 
 
 /***/ },
-/* 144 */
+/* 145 */
 /***/ function(module, exports) {
 
 	Prism.languages.groovy = Prism.languages.extend('clike', {
@@ -10113,7 +10766,7 @@
 
 
 /***/ },
-/* 145 */
+/* 146 */
 /***/ function(module, exports) {
 
 	Prism.languages.graphql = {
@@ -10142,7 +10795,7 @@
 	};
 
 /***/ },
-/* 146 */
+/* 147 */
 /***/ function(module, exports) {
 
 	Prism.languages.nginx = Prism.languages.extend('clike', {
@@ -10158,7 +10811,7 @@
 	});
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports) {
 
 	Prism.languages.erlang = {
@@ -10204,7 +10857,7 @@
 	};
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports) {
 
 	Prism.languages.powershell = {
@@ -10262,7 +10915,7 @@
 
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports) {
 
 	Prism.languages.makefile = {
@@ -10298,7 +10951,7 @@
 	};
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports) {
 
 	Prism.languages.markdown = Prism.languages.extend('markup', {});
@@ -10423,24 +11076,18 @@
 	Prism.languages.markdown['italic'].inside['bold'] = Prism.util.clone(Prism.languages.markdown['bold']);
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 152 */,
 /* 153 */,
 /* 154 */,
 /* 155 */,
 /* 156 */,
 /* 157 */,
-/* 158 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
+/* 158 */,
 /* 159 */
 /***/ function(module, exports) {
 
@@ -10453,8 +11100,14 @@
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 161 */,
-/* 162 */
+/* 161 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 162 */,
+/* 163 */
 /***/ function(module, exports) {
 
 	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\" m:on:paste=\"onPaste\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
