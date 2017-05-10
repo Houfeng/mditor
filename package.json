@@ -1,7 +1,7 @@
 {
   "name": "mditor",
   "displayName": "Mditor embed",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器",
   "main": "./lib/server/index.js",
   "repository": {
@@ -41,7 +41,7 @@
     "font-awesome": "^4.7.0",
     "github-markdown-css": "^2.4.1",
     "marked": "^0.3.6",
-    "mokit": "^3.1.1",
+    "mokit": "^3.1.2",
     "ntils": "^2.1.0",
     "prismjs": "^1.6.0",
     "shortcut-key": "^1.0.0"
