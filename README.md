@@ -111,7 +111,7 @@ btn.key = 'ctrl+d'; //设置按钮快捷建
 ##### 文本编辑 API
 
 ```js
-//编辑器相关 AIP 在 mditor.editor 对象上
+//编辑器相关 API 在 mditor.editor 对象上
 
 //在光标前插入文本
 mditor.editor.insertBeforeText('文本');
