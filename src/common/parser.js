@@ -7,7 +7,6 @@ require('prismjs/components/prism-csharp');
 require('prismjs/components/prism-php');
 require('prismjs/components/prism-python');
 require('prismjs/components/prism-json');
-require('prismjs/components/prism-jade');
 require('prismjs/components/prism-yaml.min');
 require('prismjs/components/prism-perl');
 require('prismjs/components/prism-go');
