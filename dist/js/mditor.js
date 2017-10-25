@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.2.9
+ * Mditor embed version 1.3.0
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -6295,6 +6295,7 @@
 	marked.Lexer.rules.tables.heading = marked.Lexer.rules.heading;
 	
 	var renderer = new marked.Renderer();
+	Parser.renderer = renderer;
 	marked.setOptions({
 	  renderer: renderer, gfm: true, tables: true, breaks: true, //可行尾不加两空格直接换行
 	  pedantic: false,
