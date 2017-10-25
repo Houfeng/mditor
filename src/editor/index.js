@@ -52,8 +52,8 @@ module.exports = new mokit.Component({
      * https://github.com/electron/electron/issues/8894
      * https://github.com/electron/electron/issues/4539
      */
-    this.textarea.blur();
-    this.textarea.focus();
+    // this.textarea.blur();
+    // this.textarea.focus();
   },
   onInput() {
     this.$emit('input');

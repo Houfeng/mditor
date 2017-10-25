@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.3.0
+ * Mditor embed version 1.3.1
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5268,8 +5268,8 @@
 	     * https://github.com/electron/electron/issues/8894
 	     * https://github.com/electron/electron/issues/4539
 	     */
-	    this.textarea.blur();
-	    this.textarea.focus();
+	    // this.textarea.blur();
+	    // this.textarea.focus();
 	  },
 	  /*istanbul ignore next*/onInput: function onInput() {
 	    /*istanbul ignore next*/var _this4 = this;
