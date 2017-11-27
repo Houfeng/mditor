@@ -1,5 +1,5 @@
 /*!
- * Mditor embed version 1.3.2
+ * Mditor embed version 1.3.3
  * Homepage: http://mditor.com
  */
 /******/ (function(modules) { // webpackBootstrap
@@ -5109,8 +5109,12 @@
 	        /*istanbul ignore next*/var _this = this;
 	
 	        this._value = value;
-	        this.mditor.parser.parse(this._value, function (err, result) {
-	          /*istanbul ignore next*/_this.html = result || err;
+	        var beforeEvent = { value: this._value };
+	        this.$emit('beforeRender', beforeEvent);
+	        this.mditor.parser.parse(beforeEvent.value, function (err, result) {
+	          var afterEvent = { value: result || err };
+	          /*istanbul ignore next*/_this.$emit('afterRender', afterEvent);
+	          /*istanbul ignore next*/_this.html = afterEvent.value;
 	        });
 	      }
 	    }

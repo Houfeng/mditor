@@ -20,8 +20,12 @@ const Viewer = new mokit.Component({
       },
       set(value) {
         this._value = value;
-        this.mditor.parser.parse(this._value, (err, result) => {
-          this.html = result || err;
+        let beforeEvent = { value: this._value };
+        this.$emit('beforeRender', beforeEvent);
+        this.mditor.parser.parse(beforeEvent.value, (err, result) => {
+          let afterEvent = { value: result || err };
+          this.$emit('afterRender', afterEvent);
+          this.html = afterEvent.value;
         });
       }
     }
