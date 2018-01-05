@@ -154,6 +154,45 @@ module.exports = [{
     this.editor.wrapSelectText('![alt](', ')');
   }
 }, {
+  name: 'baseimg',
+  title: 'base64图片',
+  icon: 'file-photo-o',
+  key: 'shift+alt+k',
+  handler() {
+    var _this = this
+    // 创建元素用来选择图片
+    var container = document.createElement('div')
+    container.id = "iDiv"
+    container.style = 'display:none'
+    container.innerHTML = '<input type="file" accept="image/*" id="iFile" />'
+    // 将创建的元素追加到body
+    document.body.appendChild(container)
+
+    var filereader = new FileReader()
+    // 获取页面上刚追加的文件选择控件
+    var fileEle = document.getElementById('iFile')
+    // 监听change方法
+    fileEle.onchange = function (e) {
+      var file = e.target.files[0]
+      filereader.onload = function () {
+        // 获取读取到的base64字符串
+        var base64Str = this.result
+
+        //this 指向当前 mditor 实例
+        _this.editor.insertBeforeText('![](' + base64Str + ')');
+        // 获取base64格式之后，把容器删除
+        document.body.removeChild(container)
+      }
+      // 如果没有选择对应的文件，则返回。不再进行后续逻辑的处理
+      if (!file) return
+      filereader.readAsDataURL(file)
+    }
+    // 模拟点击事件
+    fileEle.click()
+
+    // this.editor.wrapSelectText('![alt](', ')');
+  }
+}, {
   name: 'help',
   title: '帮助',
   icon: 'question',
