@@ -189,8 +189,6 @@ module.exports = [{
     }
     // 模拟点击事件
     fileEle.click()
-
-    // this.editor.wrapSelectText('![alt](', ')');
   }
 }, {
   name: 'help',
