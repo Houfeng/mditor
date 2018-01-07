@@ -51,22 +51,22 @@
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
-	var Toolbar = __webpack_require__(84);
-	var Editor = __webpack_require__(89);
-	var Viewer = __webpack_require__(94);
-	var Finder = __webpack_require__(97);
-	var Shortcut = __webpack_require__(100);
-	var Parser = __webpack_require__(102);
+	var Toolbar = __webpack_require__(85);
+	var Editor = __webpack_require__(90);
+	var Viewer = __webpack_require__(95);
+	var Finder = __webpack_require__(98);
+	var Shortcut = __webpack_require__(101);
+	var Parser = __webpack_require__(103);
 	
-	__webpack_require__(151);
-	__webpack_require__(158);
+	__webpack_require__(152);
 	__webpack_require__(159);
 	__webpack_require__(160);
+	__webpack_require__(161);
 	
 	var HIDDEN_CLASS_NAME = 'mditor-hidden';
 	
 	var Mditor = new mokit.Component({
-	  template: __webpack_require__(162),
+	  template: __webpack_require__(163),
 	
 	  /*istanbul ignore next*/onInit: function onInit() {
 	    this.PLATFORM = navigator.platform.toLowerCase();
@@ -250,11 +250,11 @@
 	var info = __webpack_require__(2);
 	var utils = __webpack_require__(3);
 	var Class = __webpack_require__(4);
-	var Watcher = __webpack_require__(5);
-	var Observer = __webpack_require__(6);
-	var Template = __webpack_require__(51);
-	var Component = __webpack_require__(79);
-	var EventEmitter = __webpack_require__(50);
+	var Watcher = __webpack_require__(6);
+	var Observer = __webpack_require__(7);
+	var Template = __webpack_require__(52);
+	var Component = __webpack_require__(80);
+	var EventEmitter = __webpack_require__(51);
 	
 	//持载模板相关对象
 	utils.copy(Template, Component);
@@ -951,7 +951,7 @@
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	const utils = __webpack_require__(3);
+	const utils = __webpack_require__(5);
 	
 	function ClassFactory(options) {
 	  //处理 options
@@ -966,7 +966,7 @@
 	  var Class = function () {
 	    //处理 super
 	    if (!this.$super) {
-	      utils.defineFreezeProp(this, '$super', function () {
+	      utils.final(this, '$super', function () {
 	        if (this._super_called_) return this._super_ret_;
 	        this._super_called_ = true;
 	        if (utils.isFunction(options.$extends)) {
@@ -1002,7 +1002,7 @@
 	  //处理 prototype
 	  Class.prototype = utils.create(superPrototype);
 	  utils.copy(options, Class.prototype);
-	  utils.defineFreezeProp(Class.prototype, '$class', Class);
+	  utils.final(Class.prototype, '$class', Class);
 	  //处理静态成员
 	  utils.copy(options.$static, Class);
 	  if (utils.isFunction(options.$extends)) {
@@ -1011,7 +1011,7 @@
 	  if (!options.$extends.$extend) {
 	    utils.copy(ClassFactory, Class);
 	  }
-	  utils.defineFreezeProp(Class, '$super', options.$extends);
+	  utils.final(Class, '$super', options.$extends);
 	  //--
 	  return Class;
 	}
@@ -1027,6 +1027,815 @@
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, '__esModule', { value: true });
+	
+	/**
+	 * 空函数
+	 */
+	function noop() { }
+	
+	function toString(obj) {
+	  return Object.prototype.toString.call(obj);
+	}
+	
+	function getType(obj) {
+	  var str = toString(obj);
+	  return (/^\[object (.+)\]$/i.exec(str))[1];
+	}
+	
+	/**
+	 * 验证一个对象是否为NULL
+	 * @method isNull
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isNull(obj) {
+	  return obj === undefined || obj === null;
+	}
+	
+	/**
+	 * 除去字符串两端的空格
+	 * @method trim
+	 * @param  {String} str 源字符串
+	 * @return {String}     结果字符串
+	 * @static
+	 */
+	function trim(str) {
+	  if (isNull(str)) return str;
+	  if (str.trim) {
+	    return str.trim();
+	  } else {
+	    return str.replace(/(^[\\s]*)|([\\s]*$)/g, "");
+	  }
+	}
+	
+	/**
+	 * 替换所有
+	 * @method replace
+	 * @param {String} str 源字符串
+	 * @param {String} str1 要替换的字符串
+	 * @param {String} str2 替换为的字符串
+	 * @static
+	 */
+	function replace(str, str1, str2) {
+	  if (isNull(str)) return str;
+	  return str.replace(new RegExp(str1, 'g'), str2);
+	}
+	
+	/**
+	 * 从字符串开头匹配
+	 * @method startWith
+	 * @param {String} str1 源字符串
+	 * @param {String} str2 要匹配的字符串
+	 * @return {Boolean} 匹配结果
+	 * @static
+	 */
+	function startWith(str1, str2) {
+	  if (isNull(str1) || isNull(str2)) return false;
+	  return str1.indexOf(str2) === 0;
+	}
+	
+	/**
+	 * 是否包含
+	 * @method contains
+	 * @param {String} str1 源字符串
+	 * @param {String} str2 检查包括字符串
+	 * @return {Boolean} 结果
+	 * @static
+	 */
+	function contains(str1, str2) {
+	  if (isNull(str1) || isNull(str2)) return false;
+	  return str1.indexOf(str2) > -1;
+	}
+	
+	/**
+	 * 从字符串结束匹配
+	 * @method endWidth
+	 * @param {String} str1 源字符串
+	 * @param {String} str2 匹配字符串
+	 * @return {Boolean} 匹配结果
+	 * @static
+	 */
+	function endWith(str1, str2) {
+	  if (isNull(str1) || isNull(str2)) return false;
+	  return str1.indexOf(str2) === (str1.length - str2.length);
+	}
+	
+	/**
+	 * 是否包含属性
+	 * @method hasProperty
+	 * @param  {Object}  obj  对象
+	 * @param  {String}  name 属性名
+	 * @return {Boolean}      结果
+	 * @static
+	 */
+	function has(obj, name) {
+	  if (isNull(obj) || isNull(name)) return false;
+	  return (name in obj) || (obj.hasOwnProperty(name));
+	}
+	var hasProperty = has;
+	
+	/**
+	 * 验证一个对象是否为Function
+	 * @method isFunction
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isFunction(obj) {
+	  if (isNull(obj)) return false;
+	  return typeof obj === "function";
+	}
+	
+	/**
+	 * 验证一个对象是否为 AsyncFunction
+	 * @method isAsyncFunction
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isAsyncFunction(obj) {
+	  if (isNull(obj)) return false;
+	  return getType(obj) === "AsyncFunction";
+	}
+	
+	/**
+	 * 验证一个对象是否为 GeneratorFunction
+	 * @method isGeneratorFunction
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isGeneratorFunction(obj) {
+	  if (isNull(obj)) return false;
+	  return getType(obj) === "GeneratorFunction";
+	}
+	
+	
+	/**
+	 * 验证一个对象是否为String
+	 * @method isString
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isString(obj) {
+	  if (isNull(obj)) return false;
+	  return getType(obj) === 'String';
+	}
+	
+	/**
+	 * 验证一个对象是否为Number
+	 * @method isNumber
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isNumber(obj) {
+	  if (isNull(obj)) return false;
+	  return getType(obj) === 'Number';
+	}
+	
+	/**
+	 * 验证一个对象是否为Boolean
+	 * @method isBoolean
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isBoolean(obj) {
+	  if (isNull(obj)) return false;
+	  return getType(obj) === 'Boolean';
+	}
+	
+	/**
+	 * 验证一个对象是否为HTML Element
+	 * @method isElement
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isElement(obj) {
+	  if (isNull(obj)) return false;
+	  if (win.Element) {
+	    return obj instanceof Element;
+	  } else {
+	    return (obj.tagName && obj.nodeType &&
+	      obj.nodeName && obj.attributes &&
+	      obj.ownerDocument);
+	  }
+	}
+	
+	/**
+	 * 验证一个对象是否为HTML Text Element
+	 * @method isText
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isText(obj) {
+	  if (isNull(obj)) return false;
+	  return obj instanceof Text;
+	}
+	
+	/**
+	 * 验证一个对象是否为Object
+	 * @method isObject
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isObject(obj) {
+	  if (isNull(obj)) return false;
+	  var type = getType(obj);
+	  return type === 'Object' || type === 'Array';
+	}
+	
+	/**
+	 * 验证一个对象是否为Array或伪Array
+	 * @method isArray
+	 * @param  {Object}  obj 要验证的对象
+	 * @return {Boolean}     结果
+	 * @static
+	 */
+	function isArray(obj) {
+	  if (isNull(obj)) return false;
+	  var v1 = getType(obj) === 'Array';
+	  var v2 = obj instanceof Array;
+	  var v3 = !isString(obj) && isNumber(obj.length) && isFunction(obj.splice);
+	  var v4 = !isString(obj) && isNumber(obj.length) && obj[0];
+	  return v1 || v2 || v3 || v4;
+	}
+	
+	/**
+	 * 验证是不是一个日期对象
+	 * @method isDate
+	 * @param {Object} val   要检查的对象
+	 * @return {Boolean}           结果
+	 * @static
+	 */
+	function isDate(val) {
+	  if (isNull(val)) return false;
+	  return val instanceof Date;
+	}
+	
+	/**
+	 * 验证是不是一个正则对象
+	 * @method isDate
+	 * @param {Object} val   要检查的对象
+	 * @return {Boolean}           结果
+	 * @static
+	 */
+	function isRegexp(val) {
+	  return val instanceof RegExp;
+	}
+	
+	/**
+	 * 转换为数组
+	 * @method toArray
+	 * @param {Array|Object} array 伪数组
+	 * @return {Array} 转换结果数组
+	 * @static
+	 */
+	function toArray(array) {
+	  if (isNull(array)) return [];
+	  return Array.prototype.slice.call(array);
+	}
+	
+	/**
+	 * 转为日期格式
+	 * @method toDate
+	 * @param {Number|String} val 日期字符串或整型数值
+	 * @return {Date} 日期对象
+	 * @static
+	 */
+	function toDate(val) {
+	  if (isNumber(val))
+	    return new Date(val);
+	  else if (isString(val))
+	    return new Date(replace(replace(val, '-', '/'), 'T', ' '));
+	  else if (isDate(val))
+	    return val;
+	  else
+	    return null;
+	}
+	
+	/**
+	 * 遍历一个对像或数组
+	 * @method each
+	 * @param  {Object or Array}   obj  要遍历的数组或对象
+	 * @param  {Function} fn            处理函数
+	 * @return {void}                   无返回值
+	 * @static
+	 */
+	function each(list, handler, scope) {
+	  if (isNull(list) || isNull(handler)) return;
+	  if (isArray(list)) {
+	    var listLength = list.length;
+	    for (var i = 0; i < listLength; i++) {
+	      var rs = handler.call(scope || list[i], i, list[i]);
+	      if (!isNull(rs)) return rs;
+	    }
+	  } else {
+	    for (var key in list) {
+	      var rs = handler.call(scope || list[key], key, list[key]);
+	      if (!isNull(rs)) return rs;
+	    }
+	  }
+	}
+	
+	/**
+	 * 格式化日期
+	 * @method formatDate
+	 * @param {Date|String|Number} date 日期
+	 * @param {String} format 格式化字符串
+	 * @param {object} dict 反译字典
+	 * @return {String} 格式化结果
+	 * @static
+	 */
+	function formatDate(date, format, dict) {
+	  if (isNull(format) || isNull(date)) return date;
+	  date = toDate(date);
+	  dict = dict || {};
+	  var placeholder = {
+	    "M+": date.getMonth() + 1, //month
+	    "d+": date.getDate(), //day
+	    "h+": date.getHours(), //hour
+	    "m+": date.getMinutes(), //minute
+	    "s+": date.getSeconds(), //second
+	    "w+": date.getDay(), //week
+	    "q+": Math.floor((date.getMonth() + 3) / 3), //quarter
+	    "S": date.getMilliseconds() //millisecond
+	  };
+	  if (/(y+)/.test(format)) {
+	    format = format.replace(
+	      RegExp.$1,
+	      (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+	    );
+	  }
+	  for (var key in placeholder) {
+	    if (new RegExp("(" + key + ")").test(format)) {
+	      var value = placeholder[key];
+	      value = dict[value] || value;
+	      format = format.replace(RegExp.$1, RegExp.$1.length == 1
+	        ? value : ("00" + value).substr(("" + value).length));
+	    }
+	  }
+	  return format;
+	}
+	
+	/**
+	 * 拷贝对象
+	 * @method copy
+	 * @param {Object} src 源对象
+	 * @param {Object} dst 目标对象
+	 * @static
+	 */
+	function copy(src, dst, igonres) {
+	  dst = dst || (isArray(src) ? [] : {});
+	  each(src, function (key) {
+	    if (igonres && igonres.indexOf(key) > -1) return;
+	    delete dst[key];
+	    if (Object.getOwnPropertyDescriptor) {
+	      try {
+	        Object.defineProperty(dst, key,
+	          Object.getOwnPropertyDescriptor(src, key));
+	      } catch (ex) {
+	        dst[key] = src[key];
+	      }
+	    } else {
+	      dst[key] = src[key];
+	    }
+	  });
+	  return dst;
+	}
+	
+	/**
+	 * 深度克隆对象
+	 * @method clone
+	 * @param {Object} src 源对象
+	 * @return {Object} 新对象
+	 * @static
+	 */
+	function clone(src, igonres) {
+	  if (isNull(src) ||
+	    isString(src) ||
+	    isNumber(src) ||
+	    isBoolean(src) ||
+	    isDate(src)) {
+	    return src;
+	  }
+	  var objClone = src;
+	  try {
+	    objClone = new src.constructor();
+	  } catch (ex) { }
+	  each(src, function (key, value) {
+	    if (objClone[key] != value && !contains(igonres, key)) {
+	      if (isObject(value)) {
+	        objClone[key] = clone(value, igonres);
+	      } else {
+	        objClone[key] = value;
+	      }
+	    }
+	  });
+	  ['toString', 'valueOf'].forEach(function (key) {
+	    if (contains(igonres, key)) return;
+	    final(objClone, key, src[key]);
+	  });
+	  return objClone;
+	}
+	
+	/**
+	 * 合并对象
+	 * @method mix
+	 * @return 合并后的对象
+	 * @param {Object} dst 目标对象
+	 * @param {Object} src 源对象
+	 * @param {Array} igonres 忽略的属性名,
+	 * @param {Number} mode 模式
+	 */
+	function mix(dst, src, igonres, mode, igonreNull) {
+	  //根据模式来判断，默认是Obj to Obj的  
+	  if (mode) {
+	    switch (mode) {
+	      case 1: // proto to proto  
+	        return mix(dst.prototype, src.prototype, igonres, 0);
+	      case 2: // object to object and proto to proto  
+	        mix(dst.prototype, src.prototype, igonres, 0);
+	        break; // pass through  
+	      case 3: // proto to static  
+	        return mix(dst, src.prototype, igonres, 0);
+	      case 4: // static to proto  
+	        return mix(dst.prototype, src, igonres, 0);
+	      default: // object to object is what happens below  
+	    }
+	  }
+	  //---
+	  src = src || {};
+	  dst = dst || (isArray(src) ? [] : {});
+	  keys(src).forEach(function (key) {
+	    if (contains(igonres, key)) return;
+	    if (igonreNull && isNull(src[key])) return;
+	    if (isObject(src[key]) &&
+	      (src[key].constructor == Object ||
+	        src[key].constructor == Array ||
+	        src[key].constructor == null)) {
+	      dst[key] = mix(dst[key], src[key], igonres, 0, igonreNull);
+	    } else {
+	      dst[key] = src[key];
+	    }
+	  });
+	  return dst;
+	}
+	
+	/**
+	 * 定义不可遍历的属性
+	 **/
+	function final(obj, name, value) {
+	  if (arguments.length < 1) throw new Error('Parameter missing');
+	  if (arguments.length < 2) {
+	    return each(obj, function (name, value) {
+	      final(obj, name, value);
+	    });
+	  }
+	  if (arguments.length < 3) return final(obj, name, obj[name]);
+	  try {
+	    Object.defineProperty(obj, name, {
+	      get: function () {
+	        return value;
+	      },
+	      set: function () {
+	        throw new Error('Cannot assign to final property:' + name);
+	      },
+	      enumerable: false, //不能枚举
+	      configurable: false, //不能重写定义
+	    });
+	  } catch (err) {
+	    obj[name] = value;
+	  }
+	}
+	
+	/**
+	 * 获取所有 key 
+	 */
+	function keys(obj) {
+	  if (Object.keys) return Object.keys(obj);
+	  var keys = [];
+	  each(obj, function (key) {
+	    keys.push(key);
+	  });
+	  return keys;
+	}
+	
+	/**
+	 * 创建一个对象
+	 */
+	function create(proto, props) {
+	  if (Object.create) return Object.create(proto, props);
+	  function Cotr() { }
+	  Cotr.prototype = proto;
+	  var obj = new Cotr();
+	  if (props) copy(props, obj);
+	  return obj;
+	}
+	
+	/**
+	 * 设置 proto
+	 * 在不支持 setPrototypeOf 也不支持 __proto__ 的浏览器
+	 * 中，会采用 copy 方式
+	 */
+	function setPrototypeOf(obj, proto) {
+	  if (Object.setPrototypeOf) {
+	    return Object.setPrototypeOf(obj, proto || create(null));
+	  } else {
+	    if (!('__proto__' in Object)) copy(proto, obj);
+	    obj.__proto__ = proto;
+	  }
+	}
+	
+	/**
+	 * 获取 proto
+	 */
+	function getPrototypeOf(obj) {
+	  if (obj.__proto__) return obj.__proto__;
+	  if (Object.getPrototypeOf) return Object.getPrototypeOf(obj);
+	  if (obj.constructor) return obj.constructor.prototype;
+	}
+	
+	/**
+	 * 是否深度相等
+	 */
+	function deepEqual(a, b) {
+	  if (a === b) return true;
+	  if (!isObject(a) || !isObject(b)) return false;
+	  var aKeys = keys(a);
+	  var bKeys = keys(b);
+	  if (aKeys.length !== bKeys.length) return false;
+	  var allKeys = aKeys.concat(bKeys);
+	  var checkedMap = create(null);
+	  var result = true;
+	  each(allKeys, function (i, key) {
+	    if (checkedMap[key]) return;
+	    if (!deepEqual(a[key], b[key])) result = false;
+	    checkedMap[key] = true;
+	  });
+	  return result;
+	}
+	
+	/**
+	 * 从一个数值循环到别一个数
+	 * @param {number} fromNum 开始数值
+	 * @param {Number} toNum 结束数值
+	 * @param {Number} step 步长值
+	 * @param {function} handler 执行函数
+	 * @returns {void} 无返回
+	 */
+	function fromTo(fromNum, toNum, step, handler) {
+	  if (!handler) handler = [step, step = handler][0];
+	  step = Math.abs(step || 1);
+	  if (fromNum < toNum) {
+	    for (var i = fromNum; i <= toNum; i += step) handler(i);
+	  } else {
+	    for (var i = fromNum; i >= toNum; i -= step) handler(i);
+	  }
+	}
+	
+	/**
+	 * 生成一个Guid
+	 * @method newGuid
+	 * @return {String} GUID字符串
+	 * @static
+	 */
+	function newGuid() {
+	  function s4() {
+	    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+	  }
+	  return (s4() + s4() + "-" + s4() + "-" + s4() + "-" +
+	    s4() + "-" + s4() + s4() + s4());
+	}
+	
+	/**
+	 * 对象变换
+	 **/
+	function map(list, fn) {
+	  var buffer = isArray(list) ? [] : {};
+	  each(list, function (name, value) {
+	    buffer[name] = fn(name, value);
+	  });
+	  return buffer;
+	}
+	
+	/**
+	 * 通过路径设置属性值
+	 */
+	function setByPath(obj, path, value) {
+	  if (isNull(obj) || isNull(path) || path === '') {
+	    return;
+	  }
+	  if (!isArray(path)) {
+	    path = path.replace(/\[/, '.').replace(/\]/, '.').split('.');
+	  }
+	  each(path, function (index, name) {
+	    if (isNull(name) || name.length < 1) return;
+	    if (index === path.length - 1) {
+	      obj[name] = value;
+	    } else {
+	      obj[name] = obj[name] || {};
+	      obj = obj[name];
+	    }
+	  });
+	}
+	
+	/**
+	 * 通过路径获取属性值
+	 */
+	function getByPath(obj, path) {
+	  if (isNull(obj) || isNull(path) || path === '') {
+	    return obj;
+	  }
+	  if (!isArray(path)) {
+	    path = path.replace(/\[/, '.').replace(/\]/, '.').split('.');
+	  }
+	  each(path, function (index, name) {
+	    if (isNull(name) || name.length < 1) return;
+	    if (!isNull(obj)) obj = obj[name];
+	  });
+	  return obj;
+	}
+	
+	/**
+	 * 数组去重
+	 **/
+	function unique(array) {
+	  if (isNull(array)) return array;
+	  var newArray = [];
+	  each(array, function (i, value) {
+	    if (newArray.indexOf(value) > -1) return;
+	    newArray.push(value);
+	  });
+	  return newArray;
+	}
+	
+	/**
+	 * 解析 function 的参数列表
+	 **/
+	function getFunctionArgumentNames(fn) {
+	  if (!fn) return [];
+	  var src = fn.toString();
+	  var parts = src.split(')')[0].split('=>')[0].split('(');
+	  return (parts[1] || parts[0]).split(',').map(function (name) {
+	    return trim(name);
+	  }).filter(function (name) {
+	    return name != 'function';
+	  });
+	}
+	
+	/**
+	 * 缩短字符串
+	 */
+	function short(str, maxLength) {
+	  if (!str) return str;
+	  maxLength = maxLength || 40;
+	  var strLength = str.length;
+	  var trimLength = maxLength / 2;
+	  return strLength > maxLength ?
+	    str.substr(0, trimLength) + '...' + str.substr(strLength - trimLength) :
+	    str;
+	}
+	
+	/**
+	 * 首字母大写
+	 */
+	function firstUpper(str) {
+	  if (!isString(str)) return '';
+	  return str.substring(0, 1).toUpperCase() + str.substring(1);
+	}
+	
+	/**
+	 * 编码正则字符串
+	 */
+	function escapeRegExp(str) {
+	  if (!isString(str)) return '';
+	  return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	}
+	
+	/**
+	  * 将字符串转成「驼峰」式
+	  * @param {string} str 原始字符串
+	  * @param {number} mode 1 大驼峰，0 小驼峰
+	  * @return {string} 转换后的字符串
+	  */
+	function toCamelCase(str, mode) {
+	  if (!isString(str)) return '';
+	  if (str) {
+	    str = str.replace(/\-[a-z0-9]/g, function ($1) {
+	      return $1.slice(1).toUpperCase()
+	    });
+	    str = str.replace(/^[a-z]/i, function ($1) {
+	      return mode ? $1.toUpperCase() : $1.toLowerCase();
+	    });
+	  }
+	  return str;
+	}
+	
+	/**
+	 * 将字符串转成分隔形式
+	 * @param {string} str 原始字符串
+	 * @return {string} 转换后的字符串
+	 */
+	function toSplitCase(str) {
+	  if (!isString(str)) return '';
+	  if (str) {
+	    str = str.replace(/([A-Z])/g, '-$1');
+	    if (str[0] == '-') str = str.slice(1);
+	  }
+	  return str.toLowerCase();
+	}
+	
+	function htmlPrefilter(html) {
+	  var rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi;
+	  return html.replace(rxhtmlTag, "<$1></$2>");
+	}
+	
+	/**
+	 * 解析字符串为 dom 
+	 * @param {string} str 字符串
+	 * @returns {HTMLNode} 解析后的 DOM 
+	 */
+	function parseHTML(str) {
+	  str = str || ' ';
+	  var parent = document.createElement('div');
+	  parent.innerHTML = htmlPrefilter(trim(str));
+	  var childNodes = toArray(parent.childNodes);
+	  //先 clone 一份再通过 innerHTML 清空
+	  //否则 IE9 下，清空时会导不通过返回的 DOM 没有子结点
+	  // if (firstNode) firstNode = firstNode.cloneNode(true);
+	  // win._NPH_.innerHTML = '';
+	  each(childNodes, function (index, childNode) {
+	    parent.removeChild(childNode);
+	  });
+	  return childNodes;
+	}
+	
+	exports.noop = noop;
+	exports.toString = toString;
+	exports.getType = getType;
+	exports.isNull = isNull;
+	exports.trim = trim;
+	exports.replace = replace;
+	exports.startWith = startWith;
+	exports.contains = contains;
+	exports.endWith = endWith;
+	exports.has = has;
+	exports.hasProperty = hasProperty;
+	exports.isFunction = isFunction;
+	exports.isAsyncFunction = isAsyncFunction;
+	exports.isGeneratorFunction = isGeneratorFunction;
+	exports.isString = isString;
+	exports.isNumber = isNumber;
+	exports.isBoolean = isBoolean;
+	exports.isElement = isElement;
+	exports.isText = isText;
+	exports.isObject = isObject;
+	exports.isArray = isArray;
+	exports.isDate = isDate;
+	exports.isRegexp = isRegexp;
+	exports.toArray = toArray;
+	exports.toDate = toDate;
+	exports.each = each;
+	exports.formatDate = formatDate;
+	exports.copy = copy;
+	exports.clone = clone;
+	exports.mix = mix;
+	exports.final = final;
+	exports.keys = keys;
+	exports.create = create;
+	exports.setPrototypeOf = setPrototypeOf;
+	exports.getPrototypeOf = getPrototypeOf;
+	exports.deepEqual = deepEqual;
+	exports.fromTo = fromTo;
+	exports.newGuid = newGuid;
+	exports.map = map;
+	exports.setByPath = setByPath;
+	exports.getByPath = getByPath;
+	exports.unique = unique;
+	exports.getFunctionArgumentNames = getFunctionArgumentNames;
+	exports.short = short;
+	exports.firstUpper = firstUpper;
+	exports.escapeRegExp = escapeRegExp;
+	exports.toCamelCase = toCamelCase;
+	exports.toSplitCase = toSplitCase;
+	exports.htmlPrefilter = htmlPrefilter;
+	exports.parseHTML = parseHTML;
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -1074,20 +1883,20 @@
 	module.exports = Watcher;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	/*istanbul ignore next*/var _keys = __webpack_require__(7);
+	/*istanbul ignore next*/var _keys = __webpack_require__(8);
 	
 	var _keys2 = _interopRequireDefault(_keys);
 	
-	var _getOwnPropertyDescriptor = __webpack_require__(42);
+	var _getOwnPropertyDescriptor = __webpack_require__(43);
 	
 	var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
 	
-	var _defineProperty = __webpack_require__(47);
+	var _defineProperty = __webpack_require__(48);
 	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 	
@@ -1095,7 +1904,7 @@
 	
 	var Class = __webpack_require__(4);
 	var utils = __webpack_require__(3);
-	var EventEmitter = __webpack_require__(50);
+	var EventEmitter = __webpack_require__(51);
 	
 	var OBSERVER_PROP_NAME = '_observer_';
 	var CHANGE_EVENT_NAME = 'change';
@@ -1374,28 +2183,28 @@
 	module.exports = Observer;
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(8), __esModule: true };
-
-/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(9);
-	module.exports = __webpack_require__(29).Object.keys;
-
+	module.exports = { "default": __webpack_require__(9), __esModule: true };
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	__webpack_require__(10);
+	module.exports = __webpack_require__(30).Object.keys;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	// 19.1.2.14 Object.keys(O)
-	var toObject = __webpack_require__(10);
-	var $keys = __webpack_require__(12);
+	var toObject = __webpack_require__(11);
+	var $keys = __webpack_require__(13);
 	
-	__webpack_require__(27)('keys', function () {
+	__webpack_require__(28)('keys', function () {
 	  return function keys(it) {
 	    return $keys(toObject(it));
 	  };
@@ -1403,18 +2212,18 @@
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.13 ToObject(argument)
-	var defined = __webpack_require__(11);
+	var defined = __webpack_require__(12);
 	module.exports = function (it) {
 	  return Object(defined(it));
 	};
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	// 7.2.1 RequireObjectCoercible(argument)
@@ -1425,12 +2234,12 @@
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-	var $keys = __webpack_require__(13);
-	var enumBugKeys = __webpack_require__(26);
+	var $keys = __webpack_require__(14);
+	var enumBugKeys = __webpack_require__(27);
 	
 	module.exports = Object.keys || function keys(O) {
 	  return $keys(O, enumBugKeys);
@@ -1438,13 +2247,13 @@
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var has = __webpack_require__(14);
-	var toIObject = __webpack_require__(15);
-	var arrayIndexOf = __webpack_require__(18)(false);
-	var IE_PROTO = __webpack_require__(22)('IE_PROTO');
+	var has = __webpack_require__(15);
+	var toIObject = __webpack_require__(16);
+	var arrayIndexOf = __webpack_require__(19)(false);
+	var IE_PROTO = __webpack_require__(23)('IE_PROTO');
 	
 	module.exports = function (object, names) {
 	  var O = toIObject(object);
@@ -1461,7 +2270,7 @@
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
@@ -1471,23 +2280,23 @@
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// to indexed object, toObject with fallback for non-array-like ES3 strings
-	var IObject = __webpack_require__(16);
-	var defined = __webpack_require__(11);
+	var IObject = __webpack_require__(17);
+	var defined = __webpack_require__(12);
 	module.exports = function (it) {
 	  return IObject(defined(it));
 	};
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
-	var cof = __webpack_require__(17);
+	var cof = __webpack_require__(18);
 	// eslint-disable-next-line no-prototype-builtins
 	module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 	  return cof(it) == 'String' ? it.split('') : Object(it);
@@ -1495,7 +2304,7 @@
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	var toString = {}.toString;
@@ -1506,14 +2315,14 @@
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// false -> Array#indexOf
 	// true  -> Array#includes
-	var toIObject = __webpack_require__(15);
-	var toLength = __webpack_require__(19);
-	var toAbsoluteIndex = __webpack_require__(21);
+	var toIObject = __webpack_require__(16);
+	var toLength = __webpack_require__(20);
+	var toAbsoluteIndex = __webpack_require__(22);
 	module.exports = function (IS_INCLUDES) {
 	  return function ($this, el, fromIndex) {
 	    var O = toIObject($this);
@@ -1535,11 +2344,11 @@
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.15 ToLength
-	var toInteger = __webpack_require__(20);
+	var toInteger = __webpack_require__(21);
 	var min = Math.min;
 	module.exports = function (it) {
 	  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -1547,7 +2356,7 @@
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 	// 7.1.4 ToInteger
@@ -1559,10 +2368,10 @@
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var toInteger = __webpack_require__(20);
+	var toInteger = __webpack_require__(21);
 	var max = Math.max;
 	var min = Math.min;
 	module.exports = function (index, length) {
@@ -1572,21 +2381,21 @@
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var shared = __webpack_require__(23)('keys');
-	var uid = __webpack_require__(25);
+	var shared = __webpack_require__(24)('keys');
+	var uid = __webpack_require__(26);
 	module.exports = function (key) {
 	  return shared[key] || (shared[key] = uid(key));
 	};
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(24);
+	var global = __webpack_require__(25);
 	var SHARED = '__core-js_shared__';
 	var store = global[SHARED] || (global[SHARED] = {});
 	module.exports = function (key) {
@@ -1595,7 +2404,7 @@
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -1607,7 +2416,7 @@
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 	var id = 0;
@@ -1618,7 +2427,7 @@
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	// IE 8- don't enum bug keys
@@ -1628,13 +2437,13 @@
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// most Object methods by ES6 should accept primitives
-	var $export = __webpack_require__(28);
-	var core = __webpack_require__(29);
-	var fails = __webpack_require__(38);
+	var $export = __webpack_require__(29);
+	var core = __webpack_require__(30);
+	var fails = __webpack_require__(39);
 	module.exports = function (KEY, exec) {
 	  var fn = (core.Object || {})[KEY] || Object[KEY];
 	  var exp = {};
@@ -1644,13 +2453,13 @@
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(24);
-	var core = __webpack_require__(29);
-	var ctx = __webpack_require__(30);
-	var hide = __webpack_require__(32);
+	var global = __webpack_require__(25);
+	var core = __webpack_require__(30);
+	var ctx = __webpack_require__(31);
+	var hide = __webpack_require__(33);
 	var PROTOTYPE = 'prototype';
 	
 	var $export = function (type, name, source) {
@@ -1711,19 +2520,19 @@
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
-	var core = module.exports = { version: '2.5.1' };
+	var core = module.exports = { version: '2.5.3' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(31);
+	var aFunction = __webpack_require__(32);
 	module.exports = function (fn, that, length) {
 	  aFunction(fn);
 	  if (that === undefined) return fn;
@@ -1745,7 +2554,7 @@
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 	module.exports = function (it) {
@@ -1755,12 +2564,12 @@
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var dP = __webpack_require__(33);
-	var createDesc = __webpack_require__(41);
-	module.exports = __webpack_require__(37) ? function (object, key, value) {
+	var dP = __webpack_require__(34);
+	var createDesc = __webpack_require__(42);
+	module.exports = __webpack_require__(38) ? function (object, key, value) {
 	  return dP.f(object, key, createDesc(1, value));
 	} : function (object, key, value) {
 	  object[key] = value;
@@ -1769,15 +2578,15 @@
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var anObject = __webpack_require__(34);
-	var IE8_DOM_DEFINE = __webpack_require__(36);
-	var toPrimitive = __webpack_require__(40);
+	var anObject = __webpack_require__(35);
+	var IE8_DOM_DEFINE = __webpack_require__(37);
+	var toPrimitive = __webpack_require__(41);
 	var dP = Object.defineProperty;
 	
-	exports.f = __webpack_require__(37) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+	exports.f = __webpack_require__(38) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
 	  anObject(O);
 	  P = toPrimitive(P, true);
 	  anObject(Attributes);
@@ -1791,10 +2600,10 @@
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(35);
+	var isObject = __webpack_require__(36);
 	module.exports = function (it) {
 	  if (!isObject(it)) throw TypeError(it + ' is not an object!');
 	  return it;
@@ -1802,7 +2611,7 @@
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	module.exports = function (it) {
@@ -1811,26 +2620,26 @@
 
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = !__webpack_require__(37) && !__webpack_require__(38)(function () {
-	  return Object.defineProperty(__webpack_require__(39)('div'), 'a', { get: function () { return 7; } }).a != 7;
-	});
-
-
-/***/ }),
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(38)(function () {
-	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+	module.exports = !__webpack_require__(38) && !__webpack_require__(39)(function () {
+	  return Object.defineProperty(__webpack_require__(40)('div'), 'a', { get: function () { return 7; } }).a != 7;
 	});
 
 
 /***/ }),
 /* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// Thank's IE8 for his funny defineProperty
+	module.exports = !__webpack_require__(39)(function () {
+	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+	});
+
+
+/***/ }),
+/* 39 */
 /***/ (function(module, exports) {
 
 	module.exports = function (exec) {
@@ -1843,11 +2652,11 @@
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(35);
-	var document = __webpack_require__(24).document;
+	var isObject = __webpack_require__(36);
+	var document = __webpack_require__(25).document;
 	// typeof document.createElement is 'object' in old IE
 	var is = isObject(document) && isObject(document.createElement);
 	module.exports = function (it) {
@@ -1856,11 +2665,11 @@
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(35);
+	var isObject = __webpack_require__(36);
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
 	module.exports = function (it, S) {
@@ -1874,7 +2683,7 @@
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 	module.exports = function (bitmap, value) {
@@ -1888,31 +2697,31 @@
 
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(43), __esModule: true };
-
-/***/ }),
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(44);
-	var $Object = __webpack_require__(29).Object;
+	module.exports = { "default": __webpack_require__(44), __esModule: true };
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(45);
+	var $Object = __webpack_require__(30).Object;
 	module.exports = function getOwnPropertyDescriptor(it, key) {
 	  return $Object.getOwnPropertyDescriptor(it, key);
 	};
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-	var toIObject = __webpack_require__(15);
-	var $getOwnPropertyDescriptor = __webpack_require__(45).f;
+	var toIObject = __webpack_require__(16);
+	var $getOwnPropertyDescriptor = __webpack_require__(46).f;
 	
-	__webpack_require__(27)('getOwnPropertyDescriptor', function () {
+	__webpack_require__(28)('getOwnPropertyDescriptor', function () {
 	  return function getOwnPropertyDescriptor(it, key) {
 	    return $getOwnPropertyDescriptor(toIObject(it), key);
 	  };
@@ -1920,18 +2729,18 @@
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var pIE = __webpack_require__(46);
-	var createDesc = __webpack_require__(41);
-	var toIObject = __webpack_require__(15);
-	var toPrimitive = __webpack_require__(40);
-	var has = __webpack_require__(14);
-	var IE8_DOM_DEFINE = __webpack_require__(36);
+	var pIE = __webpack_require__(47);
+	var createDesc = __webpack_require__(42);
+	var toIObject = __webpack_require__(16);
+	var toPrimitive = __webpack_require__(41);
+	var has = __webpack_require__(15);
+	var IE8_DOM_DEFINE = __webpack_require__(37);
 	var gOPD = Object.getOwnPropertyDescriptor;
 	
-	exports.f = __webpack_require__(37) ? gOPD : function getOwnPropertyDescriptor(O, P) {
+	exports.f = __webpack_require__(38) ? gOPD : function getOwnPropertyDescriptor(O, P) {
 	  O = toIObject(O);
 	  P = toPrimitive(P, true);
 	  if (IE8_DOM_DEFINE) try {
@@ -1942,40 +2751,40 @@
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 	exports.f = {}.propertyIsEnumerable;
 
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(48), __esModule: true };
-
-/***/ }),
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(49);
-	var $Object = __webpack_require__(29).Object;
+	module.exports = { "default": __webpack_require__(49), __esModule: true };
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(50);
+	var $Object = __webpack_require__(30).Object;
 	module.exports = function defineProperty(it, key, desc) {
 	  return $Object.defineProperty(it, key, desc);
 	};
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var $export = __webpack_require__(28);
+	var $export = __webpack_require__(29);
 	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(37), 'Object', { defineProperty: __webpack_require__(33).f });
+	$export($export.S + $export.F * !__webpack_require__(38), 'Object', { defineProperty: __webpack_require__(34).f });
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -2160,16 +2969,16 @@
 	module.exports = EventEmitter;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Compiler = __webpack_require__(52);
-	var Directive = __webpack_require__(53);
-	var Expression = __webpack_require__(54);
-	var Template = __webpack_require__(78);
-	var directives = __webpack_require__(55);
+	var Compiler = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
+	var Expression = __webpack_require__(55);
+	var Template = __webpack_require__(79);
+	var directives = __webpack_require__(56);
 	
 	Template.Template = Template;
 	Template.Compiler = Compiler;
@@ -2180,16 +2989,16 @@
 	module.exports = Template;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var Class = __webpack_require__(4);
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	var utils = __webpack_require__(3);
-	var Expression = __webpack_require__(54);
-	var commonDirectives = __webpack_require__(55);
+	var Expression = __webpack_require__(55);
+	var commonDirectives = __webpack_require__(56);
 	
 	var DEFAULT_PREFIX = 'm';
 	
@@ -2427,14 +3236,14 @@
 	module.exports = Compiler;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var Class = __webpack_require__(4);
 	var utils = __webpack_require__(3);
-	var Expression = __webpack_require__(54);
+	var Expression = __webpack_require__(55);
 	
 	/**
 	 * 指令定义工场函数
@@ -2497,7 +3306,7 @@
 	module.exports = Directive;
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -2637,37 +3446,37 @@
 	module.exports = Expression;
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*istanbul ignore next*/'use strict';
-	
-	module.exports = {
-	  '#text': __webpack_require__(56),
-	  'each': __webpack_require__(57),
-	  'if': __webpack_require__(59),
-	  'prop': __webpack_require__(60),
-	  'attr': __webpack_require__(61),
-	  'on': __webpack_require__(62),
-	  'html': __webpack_require__(63),
-	  'text': __webpack_require__(64),
-	  'prevent': __webpack_require__(65),
-	  'id': __webpack_require__(66),
-	  'cloak': __webpack_require__(67),
-	  'show': __webpack_require__(68),
-	  'model': __webpack_require__(69),
-	  'focus': __webpack_require__(76),
-	  '*': __webpack_require__(77) //处理所有未知 attr
-	};
-
-/***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var Expression = __webpack_require__(54);
+	module.exports = {
+	  '#text': __webpack_require__(57),
+	  'each': __webpack_require__(58),
+	  'if': __webpack_require__(60),
+	  'prop': __webpack_require__(61),
+	  'attr': __webpack_require__(62),
+	  'on': __webpack_require__(63),
+	  'html': __webpack_require__(64),
+	  'text': __webpack_require__(65),
+	  'prevent': __webpack_require__(66),
+	  'id': __webpack_require__(67),
+	  'cloak': __webpack_require__(68),
+	  'show': __webpack_require__(69),
+	  'model': __webpack_require__(70),
+	  'focus': __webpack_require__(77),
+	  '*': __webpack_require__(78) //处理所有未知 attr
+	};
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var Directive = __webpack_require__(54);
+	var Expression = __webpack_require__(55);
 	
 	module.exports = new Directive({
 	  type: Directive.TE,
@@ -2693,20 +3502,20 @@
 	});
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	/*istanbul ignore next*/var _defineProperty = __webpack_require__(47);
+	/*istanbul ignore next*/var _defineProperty = __webpack_require__(48);
 	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	var utils = __webpack_require__(3);
-	var Scope = __webpack_require__(58);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  level: Directive.LS + 1, //比 if 要高一个权重
@@ -2805,7 +3614,7 @@
 	});
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -2830,12 +3639,12 @@
 	module.exports = Scope;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  level: Directive.LS,
@@ -2873,12 +3682,12 @@
 	});
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(value) {
@@ -2894,12 +3703,12 @@
 	});
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(value) {
@@ -2913,14 +3722,14 @@
 	});
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  literal: true,
@@ -2956,30 +3765,16 @@
 	});
 
 /***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*istanbul ignore next*/'use strict';
-	
-	var Directive = __webpack_require__(53);
-	
-	module.exports = new Directive({
-	  update: function /*istanbul ignore next*/update(newValue) {
-	    this.node.innerHTML = newValue;
-	  }
-	});
-
-/***/ }),
 /* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(newValue) {
-	    this.node.innerText = newValue;
+	    this.node.innerHTML = newValue;
 	  }
 	});
 
@@ -2989,11 +3784,12 @@
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
-	  level: Directive.LP,
-	  final: true
+	  update: function /*istanbul ignore next*/update(newValue) {
+	    this.node.innerText = newValue;
+	  }
 	});
 
 /***/ }),
@@ -3002,7 +3798,20 @@
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
+	
+	module.exports = new Directive({
+	  level: Directive.LP,
+	  final: true
+	});
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  literal: true,
@@ -3017,12 +3826,12 @@
 	});
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  level: Directive.LC,
@@ -3036,12 +3845,12 @@
 	});
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  update: function /*istanbul ignore next*/update(value) {
@@ -3050,17 +3859,17 @@
 	});
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var SelectDirective = __webpack_require__(70);
-	var EditableDirective = __webpack_require__(71);
-	var InputDirective = __webpack_require__(72);
-	var RadioDirective = __webpack_require__(73);
-	var CheckboxDirective = __webpack_require__(74);
-	var PropDirective = __webpack_require__(75);
+	var SelectDirective = __webpack_require__(71);
+	var EditableDirective = __webpack_require__(72);
+	var InputDirective = __webpack_require__(73);
+	var RadioDirective = __webpack_require__(74);
+	var CheckboxDirective = __webpack_require__(75);
+	var PropDirective = __webpack_require__(76);
 	
 	var Directive = function Directive(options) {
 	  var node = options.node;
@@ -3095,14 +3904,14 @@
 	module.exports = Directive;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  final: true,
@@ -3145,14 +3954,14 @@
 	});
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3185,14 +3994,14 @@
 	});
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3225,14 +4034,14 @@
 	});
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	  /**
@@ -3263,14 +4072,14 @@
 	});
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var EventEmitter = __webpack_require__(50);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var EventEmitter = __webpack_require__(51);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3314,13 +4123,13 @@
 	});
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
-	var Scope = __webpack_require__(58);
+	var Directive = __webpack_require__(54);
+	var Scope = __webpack_require__(59);
 	
 	module.exports = new Directive({
 	
@@ -3356,12 +4165,12 @@
 	});
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	module.exports = new Directive({
 	  execute: function /*istanbul ignore next*/execute(scope) {
@@ -3375,12 +4184,12 @@
 	});
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Directive = __webpack_require__(53);
+	var Directive = __webpack_require__(54);
 	
 	/**
 	 * 通用的 attribute 指令
@@ -3436,15 +4245,15 @@
 	});
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var Class = __webpack_require__(4);
-	var Observer = __webpack_require__(6);
-	var EventEmitter = __webpack_require__(50);
-	var Compiler = __webpack_require__(52);
+	var Observer = __webpack_require__(7);
+	var EventEmitter = __webpack_require__(51);
+	var Compiler = __webpack_require__(53);
 	
 	/**
 	 * 模板类
@@ -3551,14 +4360,14 @@
 	module.exports = Template;
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Component = __webpack_require__(80);
-	var components = __webpack_require__(82);
-	var directives = __webpack_require__(51).directives;
+	var Component = __webpack_require__(81);
+	var components = __webpack_require__(83);
+	var directives = __webpack_require__(52).directives;
 	
 	Component.components = components;
 	Component.Component = Component;
@@ -3576,24 +4385,24 @@
 	module.exports = Component;
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	/*istanbul ignore next*/var _defineProperty = __webpack_require__(47);
+	/*istanbul ignore next*/var _defineProperty = __webpack_require__(48);
 	
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Class = __webpack_require__(4);
-	var Template = __webpack_require__(51);
-	var Watcher = __webpack_require__(5);
+	var Template = __webpack_require__(52);
+	var Watcher = __webpack_require__(6);
 	var utils = __webpack_require__(3);
-	var EventEmitter = __webpack_require__(50);
-	var Observer = __webpack_require__(6);
-	var ComponentDirective = __webpack_require__(81);
+	var EventEmitter = __webpack_require__(51);
+	var Observer = __webpack_require__(7);
+	var ComponentDirective = __webpack_require__(82);
 	
 	/**
 	 * 组件类
@@ -3659,7 +4468,7 @@
 	      this.$directives = this.$directives || {};
 	      this._importDirectives_(classOpts.directives);
 	      this.$components = this.$components || {};
-	      this._importComponents_(__webpack_require__(82));
+	      this._importComponents_(__webpack_require__(83));
 	      this._importComponents_({
 	        'self': ComponentClass
 	      });
@@ -4099,12 +4908,12 @@
 	module.exports = Component;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Template = __webpack_require__(51);
+	var Template = __webpack_require__(52);
 	var Directive = Template.Directive;
 	
 	/**
@@ -4189,22 +4998,22 @@
 	module.exports = ComponentDirective;
 
 /***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*istanbul ignore next*/'use strict';
-	
-	module.exports = {
-	  View: __webpack_require__(83)
-	};
-
-/***/ }),
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var Component = __webpack_require__(80);
+	module.exports = {
+	  View: __webpack_require__(84)
+	};
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/*istanbul ignore next*/'use strict';
+	
+	var Component = __webpack_require__(81);
 	var utils = __webpack_require__(3);
 	
 	/**
@@ -4343,18 +5152,18 @@
 	module.exports = View;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
-	var items = __webpack_require__(85);
+	var items = __webpack_require__(86);
 	
-	__webpack_require__(86);
+	__webpack_require__(87);
 	
 	var Toolbar = new mokit.Component({
-	  template: __webpack_require__(88),
+	  template: __webpack_require__(89),
 	  props: {
 	    mditor: null
 	  },
@@ -4418,7 +5227,7 @@
 	module.exports = Toolbar;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports) {
 
 	/*istanbul ignore next*/'use strict';
@@ -4573,6 +5382,43 @@
 	    this.editor.wrapSelectText('![alt](', ')');
 	  }
 	}, {
+	  name: 'baseimg',
+	  title: 'base64图片',
+	  icon: 'file-photo-o',
+	  key: 'shift+alt+k',
+	  /*istanbul ignore next*/handler: function handler() {
+	    var _this = this;
+	    // 创建元素用来选择图片
+	    var container = document.createElement('div');
+	    container.id = "iDiv";
+	    container.style = 'display:none';
+	    container.innerHTML = '<input type="file" accept="image/*" id="iFile" />';
+	    // 将创建的元素追加到body
+	    document.body.appendChild(container);
+	
+	    var filereader = new FileReader();
+	    // 获取页面上刚追加的文件选择控件
+	    var fileEle = document.getElementById('iFile');
+	    // 监听change方法
+	    fileEle.onchange = function (e) {
+	      var file = e.target.files[0];
+	      filereader.onload = function () {
+	        // 获取读取到的base64字符串
+	        var base64Str = this.result;
+	
+	        //this 指向当前 mditor 实例
+	        _this.editor.insertBeforeText('![](' + base64Str + ')');
+	        // 获取base64格式之后，把容器删除
+	        document.body.removeChild(container);
+	      };
+	      // 如果没有选择对应的文件，则返回。不再进行后续逻辑的处理
+	      if (!file) return;
+	      filereader.readAsDataURL(file);
+	    };
+	    // 模拟点击事件
+	    fileEle.click();
+	  }
+	}, {
 	  name: 'help',
 	  title: '帮助',
 	  icon: 'question',
@@ -4631,20 +5477,20 @@
 	}];
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 87 */,
-/* 88 */
+/* 88 */,
+/* 89 */
 /***/ (function(module, exports) {
 
-	module.exports = "<ul class=\"toolbar\">\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\n</ul>"
+	module.exports = "<ul class=\"toolbar\">\r\n  <i m:each=\"item of items\" data-cmd=\"{{item.name}}\" m:on:click=\"exec(item.name,$event)\" class=\"item fa fa-{{item.icon || item.name}} {{isActive(item)?'active':''}} {{item.control?'control':''}}\" title=\"{{item.title || item.name}} {{item.key}}\"></i>\r\n</ul>"
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -4652,10 +5498,10 @@
 	var mokit = __webpack_require__(1);
 	var EventEmitter = mokit.EventEmitter;
 	var utils = __webpack_require__(3);
-	var Stack = __webpack_require__(90);
-	var commands = __webpack_require__(91);
+	var Stack = __webpack_require__(91);
+	var commands = __webpack_require__(92);
 	
-	__webpack_require__(92);
+	__webpack_require__(93);
 	
 	var ua = window.navigator.userAgent.toLowerCase();
 	var isIE = !!ua.match(/msie|trident\/7|edge/);
@@ -4663,7 +5509,7 @@
 	//const isIOS = !isWinPhone && !!ua.match(/ipad|iphone|ipod/);
 	
 	module.exports = new mokit.Component({
-	  template: __webpack_require__(93),
+	  template: __webpack_require__(94),
 	
 	  props: {
 	    mditor: null,
@@ -4979,7 +5825,7 @@
 	});
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -5023,7 +5869,7 @@
 	module.exports = Stack;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports) {
 
 	/*istanbul ignore next*/'use strict';
@@ -5067,29 +5913,29 @@
 	}];
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"editor\">\n  <div class=\"backdrop\" m:id=\"marks\">\n    <div class=\"inner\" m:html=\"applyMarks(value)\"></div>\n  </div>\n  <textarea class=\"textarea\" m:id=\"textarea\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\"\n    m:on:scroll=\"onScroll()\" m:on:input=\"onInput\" m:on:compositionStart=\"onCompositionStart\" m:on:compositionEnd=\"onCompositionEnd\"></textarea>\n</div>"
+	module.exports = "<div class=\"editor\">\r\n  <div class=\"backdrop\" m:id=\"marks\">\r\n    <div class=\"inner\" m:html=\"applyMarks(value)\"></div>\r\n  </div>\r\n  <textarea class=\"textarea\" m:id=\"textarea\" m:model=\"value\" m:on:paste=\"onPaste\" m:on:dragover=\"onDragover\" m:on:drop=\"onDrop\"\r\n    m:on:scroll=\"onScroll()\" m:on:input=\"onInput\" m:on:compositionStart=\"onCompositionStart\" m:on:compositionEnd=\"onCompositionEnd\"></textarea>\r\n</div>"
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
 	var mokit = __webpack_require__(1);
 	
-	__webpack_require__(95);
+	__webpack_require__(96);
 	
 	var Viewer = new mokit.Component({
-	  template: __webpack_require__(96),
+	  template: __webpack_require__(97),
 	
 	  /*istanbul ignore next*/data: function data() {
 	    return {
@@ -5133,19 +5979,19 @@
 	module.exports = Viewer;
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\n  <div m:show=\"html\" class=\"markdown-body\" m:html=\"html\"></div>\n  <div m:show=\"!html\" class=\"alert\" m:html=\"alert\"></div>\n</div>"
+	module.exports = "<div class=\"viewer\" m:on:click=\"onClick\">\r\n  <div m:show=\"html\" class=\"markdown-body\" m:html=\"html\"></div>\r\n  <div m:show=\"!html\" class=\"alert\" m:html=\"alert\"></div>\r\n</div>"
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
@@ -5153,12 +5999,12 @@
 	var mokit = __webpack_require__(1);
 	var utils = __webpack_require__(3);
 	
-	__webpack_require__(98);
+	__webpack_require__(99);
 	
 	var CHECK_REGEXP = /^\/[\s\S]+\/(i|g|m)*$/;
 	
 	var Finder = new mokit.Component({
-	  template: __webpack_require__(99),
+	  template: __webpack_require__(100),
 	  props: {
 	    mditor: null,
 	    active: false,
@@ -5251,24 +6097,24 @@
 	module.exports = Finder;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div class=\"finder {{active?'active':''}}\">\n  <div>\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"Find\">\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\n  </div>\n  <div>\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\n      placeholder=\"Replace\">\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\n  </div>\n</div>"
+	module.exports = "<div class=\"finder {{active?'active':''}}\">\r\n  <div>\r\n    <input m:id=\"findBox\" m:model=\"findWord\" m:on:keydown=\"onFindEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\" placeholder=\"Find\">\r\n    <i class=\"fa fa-search\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"find()\"></i>\r\n  </div>\r\n  <div>\r\n    <input m:id=\"replaceBox\" m:model=\"replaceWord\" m:on:keydown=\"onReplaceEnter\" m:on:compositionend=\"onCompositionEnd\" type=\"text\"\r\n      placeholder=\"Replace\">\r\n    <i class=\"fa fa-exchange\" aria-hidden=\"true\" tabindex=\"-1\" m:on:click=\"replace()\"></i>\r\n  </div>\r\n</div>"
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var shortcuts = __webpack_require__(101);
+	var shortcuts = __webpack_require__(102);
 	var utils = __webpack_require__(3);
 	
 	shortcuts.filter = function (event) {
@@ -5315,7 +6161,7 @@
 	};
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	(function (global) {
@@ -5660,16 +6506,15 @@
 	})(window);
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*istanbul ignore next*/'use strict';
 	
-	var marked = __webpack_require__(103);
-	var Prism = __webpack_require__(104);
+	var marked = __webpack_require__(104);
+	var Prism = __webpack_require__(105);
 	
 	//language
-	__webpack_require__(105);
 	__webpack_require__(106);
 	__webpack_require__(107);
 	__webpack_require__(108);
@@ -5715,6 +6560,7 @@
 	__webpack_require__(148);
 	__webpack_require__(149);
 	__webpack_require__(150);
+	__webpack_require__(151);
 	
 	//alias
 	Prism.languages.js = Prism.languages.javascript;
@@ -5769,7 +6615,7 @@
 	module.exports = Parser;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -5811,10 +6657,6 @@
 	  (/bull/g, block.bullet)
 	  ('hr', '\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))')
 	  ('def', '\\n+(?=' + block.def.source + ')')
-	  ();
-	
-	block.blockquote = replace(block.blockquote)
-	  ('def', block.def)
 	  ();
 	
 	block._tag = '(?!(?:'
@@ -6231,7 +7073,7 @@
 	  nolink: /^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,
 	  strong: /^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,
 	  em: /^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
-	  code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
+	  code: /^(`+)([\s\S]*?[^`])\1(?!`)/,
 	  br: /^ {2,}\n(?!\s*$)/,
 	  del: noop,
 	  text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
@@ -6352,9 +7194,11 @@
 	    if (cap = this.rules.autolink.exec(src)) {
 	      src = src.substring(cap[0].length);
 	      if (cap[2] === '@') {
-	        text = cap[1].charAt(6) === ':'
+	        text = escape(
+	          cap[1].charAt(6) === ':'
 	          ? this.mangle(cap[1].substring(7))
-	          : this.mangle(cap[1]);
+	          : this.mangle(cap[1])
+	        );
 	        href = this.mangle('mailto:') + text;
 	      } else {
 	        text = escape(cap[1]);
@@ -6435,7 +7279,7 @@
 	    // code
 	    if (cap = this.rules.code.exec(src)) {
 	      src = src.substring(cap[0].length);
-	      out += this.renderer.codespan(escape(cap[2], true));
+	      out += this.renderer.codespan(escape(cap[2].trim(), true));
 	      continue;
 	    }
 	
@@ -6649,9 +7493,12 @@
 	    } catch (e) {
 	      return '';
 	    }
-	    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0) {
+	    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
 	      return '';
 	    }
+	  }
+	  if (this.options.baseUrl && !originIndependentUrl.test(href)) {
+	    href = resolveUrl(this.options.baseUrl, href);
 	  }
 	  var out = '<a href="' + href + '"';
 	  if (title) {
@@ -6662,6 +7509,9 @@
 	};
 	
 	Renderer.prototype.image = function(href, title, text) {
+	  if (this.options.baseUrl && !originIndependentUrl.test(href)) {
+	    href = resolveUrl(this.options.baseUrl, href);
+	  }
 	  var out = '<img src="' + href + '" alt="' + text + '"';
 	  if (title) {
 	    out += ' title="' + title + '"';
@@ -6868,8 +7718,8 @@
 	}
 	
 	function unescape(html) {
-		// explicitly match decimal, hex, and named HTML entities 
-	  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
+		// explicitly match decimal, hex, and named HTML entities
+	  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, function(_, n) {
 	    n = n.toLowerCase();
 	    if (n === 'colon') return ':';
 	    if (n.charAt(0) === '#') {
@@ -6892,6 +7742,30 @@
 	    return self;
 	  };
 	}
+	
+	function resolveUrl(base, href) {
+	  if (!baseUrls[' ' + base]) {
+	    // we can ignore everything in base after the last slash of its path component,
+	    // but we might need to add _that_
+	    // https://tools.ietf.org/html/rfc3986#section-3
+	    if (/^[^:]+:\/*[^/]*$/.test(base)) {
+	      baseUrls[' ' + base] = base + '/';
+	    } else {
+	      baseUrls[' ' + base] = base.replace(/[^/]*$/, '');
+	    }
+	  }
+	  base = baseUrls[' ' + base];
+	
+	  if (href.slice(0, 2) === '//') {
+	    return base.replace(/:[^]*/, ':') + href;
+	  } else if (href.charAt(0) === '/') {
+	    return base.replace(/(:\/*[^/]*)[^]*/, '$1') + href;
+	  } else {
+	    return base + href;
+	  }
+	}
+	baseUrls = {};
+	originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
 	
 	function noop() {}
 	noop.exec = noop;
@@ -7027,7 +7901,8 @@
 	  smartypants: false,
 	  headerPrefix: '',
 	  renderer: new Renderer,
-	  xhtml: false
+	  xhtml: false,
+	  baseUrl: null
 	};
 	
 	/**
@@ -7062,7 +7937,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {
@@ -7092,6 +7967,7 @@
 	
 	var _ = _self.Prism = {
 		manual: _self.Prism && _self.Prism.manual,
+		disableWorkerMessageHandler: _self.Prism && _self.Prism.disableWorkerMessageHandler,
 		util: {
 			encode: function (tokens) {
 				if (tokens instanceof Token) {
@@ -7226,6 +8102,10 @@
 		plugins: {},
 	
 		highlightAll: function(async, callback) {
+			_.highlightAllUnder(document, async, callback);
+		},
+	
+		highlightAllUnder: function(container, async, callback) {
 			var env = {
 				callback: callback,
 				selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
@@ -7233,7 +8113,7 @@
 	
 			_.hooks.run("before-highlightall", env);
 	
-			var elements = env.elements || document.querySelectorAll(env.selector);
+			var elements = env.elements || container.querySelectorAll(env.selector);
 	
 			for (var i=0, element; element = elements[i++];) {
 				_.highlightElement(element, async === true, env.callback);
@@ -7256,11 +8136,13 @@
 			// Set language on the element, if not present
 			element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
 	
-			// Set language on the parent, for styling
-			parent = element.parentNode;
+			if (element.parentNode) {
+				// Set language on the parent, for styling
+				parent = element.parentNode;
 	
-			if (/pre/i.test(parent.nodeName)) {
-				parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+				if (/pre/i.test(parent.nodeName)) {
+					parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+				}
 			}
 	
 			var code = element.textContent;
@@ -7531,10 +8413,6 @@
 			parent: parent
 		};
 	
-		if (env.type == 'comment') {
-			env.attributes['spellcheck'] = 'true';
-		}
-	
 		if (o.alias) {
 			var aliases = _.util.type(o.alias) === 'Array' ? o.alias : [o.alias];
 			Array.prototype.push.apply(env.classes, aliases);
@@ -7555,18 +8433,21 @@
 			// in Node.js
 			return _self.Prism;
 		}
-	 	// In worker
-		_self.addEventListener('message', function(evt) {
-			var message = JSON.parse(evt.data),
-			    lang = message.language,
-			    code = message.code,
-			    immediateClose = message.immediateClose;
 	
-			_self.postMessage(_.highlight(code, _.languages[lang], lang));
-			if (immediateClose) {
-				_self.close();
-			}
-		}, false);
+		if (!_.disableWorkerMessageHandler) {
+			// In worker
+			_self.addEventListener('message', function (evt) {
+				var message = JSON.parse(evt.data),
+					lang = message.language,
+					code = message.code,
+					immediateClose = message.immediateClose;
+	
+				_self.postMessage(_.highlight(code, _.languages[lang], lang));
+				if (immediateClose) {
+					_self.close();
+				}
+			}, false);
+		}
 	
 		return _self.Prism;
 	}
@@ -7615,7 +8496,7 @@
 		'doctype': /<!DOCTYPE[\s\S]+?>/i,
 		'cdata': /<!\[CDATA\[[\s\S]*?]]>/i,
 		'tag': {
-			pattern: /<\/?(?!\d)[^\s>\/=$<]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\\1|\\?(?!\1)[\s\S])*\1|[^\s'">=]+))?)*\s*\/?>/i,
+			pattern: /<\/?(?!\d)[^\s>\/=$<]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+))?)*\s*\/?>/i,
 			inside: {
 				'tag': {
 					pattern: /^<\/?[^\s>\/]+/i,
@@ -7625,9 +8506,15 @@
 					}
 				},
 				'attr-value': {
-					pattern: /=(?:('|")[\s\S]*?(\1)|[^\s>]+)/i,
+					pattern: /=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+)/i,
 					inside: {
-						'punctuation': /[=>"']/
+						'punctuation': [
+							/^=/,
+							{
+								pattern: /(^|[^\\])["']/,
+								lookbehind: true
+							}
+						]
 					}
 				},
 				'punctuation': /\/?>/,
@@ -7667,19 +8554,19 @@
 	Prism.languages.css = {
 		'comment': /\/\*[\s\S]*?\*\//,
 		'atrule': {
-			pattern: /@[\w-]+?.*?(;|(?=\s*\{))/i,
+			pattern: /@[\w-]+?.*?(?:;|(?=\s*\{))/i,
 			inside: {
 				'rule': /@[\w-]+/
 				// See rest below
 			}
 		},
-		'url': /url\((?:(["'])(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1|.*?)\)/i,
-		'selector': /[^\{\}\s][^\{\};]*?(?=\s*\{)/,
+		'url': /url\((?:(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1|.*?)\)/i,
+		'selector': /[^{}\s][^{};]*?(?=\s*\{)/,
 		'string': {
-			pattern: /("|')(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+			pattern: /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
 			greedy: true
 		},
-		'property': /(\b|\B)[\w-]+(?=\s*:)/i,
+		'property': /[-_a-z\xA0-\uFFFF][-\w\xA0-\uFFFF]*(?=\s*:)/i,
 		'important': /\B!important\b/i,
 		'function': /[-a-z0-9]+(?=\()/i,
 		'punctuation': /[(){};:]/
@@ -7693,13 +8580,14 @@
 				pattern: /(<style[\s\S]*?>)[\s\S]*?(?=<\/style>)/i,
 				lookbehind: true,
 				inside: Prism.languages.css,
-				alias: 'language-css'
+				alias: 'language-css',
+				greedy: true
 			}
 		});
-		
+	
 		Prism.languages.insertBefore('inside', 'attr-value', {
 			'style-attr': {
-				pattern: /\s*style=("|').*?\1/i,
+				pattern: /\s*style=("|')(?:\\[\s\S]|(?!\1)[^\\])*\1/i,
 				inside: {
 					'attr-name': {
 						pattern: /^\s*style/i,
@@ -7732,18 +8620,18 @@
 			}
 		],
 		'string': {
-			pattern: /(["'])(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+			pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
 			greedy: true
 		},
 		'class-name': {
-			pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/i,
+			pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[\w.\\]+/i,
 			lookbehind: true,
 			inside: {
-				punctuation: /(\.|\\)/
+				punctuation: /[.\\]/
 			}
 		},
-		'keyword': /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
-		'boolean': /\b(true|false)\b/,
+		'keyword': /\b(?:if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
+		'boolean': /\b(?:true|false)\b/,
 		'function': /[a-z0-9_]+(?=\()/i,
 		'number': /\b-?(?:0x[\da-f]+|\d*\.?\d+(?:e[+-]?\d+)?)\b/i,
 		'operator': /--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*|\/|~|\^|%/,
@@ -7756,10 +8644,10 @@
 	********************************************** */
 	
 	Prism.languages.javascript = Prism.languages.extend('clike', {
-		'keyword': /\b(as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
-		'number': /\b-?(0[xX][\dA-Fa-f]+|0[bB][01]+|0[oO][0-7]+|\d*\.?\d+([Ee][+-]?\d+)?|NaN|Infinity)\b/,
+		'keyword': /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
+		'number': /\b-?(?:0[xX][\dA-Fa-f]+|0[bB][01]+|0[oO][0-7]+|\d*\.?\d+(?:[Ee][+-]?\d+)?|NaN|Infinity)\b/,
 		// Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
-		'function': /[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(?=\s*\()/i,
+		'function': /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*\()/i,
 		'operator': /-[-=]?|\+[+=]?|!=?=?|<<?=?|>>?>?=?|=(?:==?|>)?|&[&=]?|\|[|=]?|\*\*?=?|\/=?|~|\^=?|%=?|\?|\.{3}/
 	});
 	
@@ -7771,14 +8659,14 @@
 		},
 		// This must be declared before keyword because we use "function" inside the look-forward
 		'function-variable': {
-			pattern: /[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(?=\s*=\s*(?:function\b|(?:\([^()]*\)|[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*)\s*=>))/i,
+			pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=\s*(?:function\b|(?:\([^()]*\)|[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/i,
 			alias: 'function'
 		}
 	});
 	
 	Prism.languages.insertBefore('javascript', 'string', {
 		'template-string': {
-			pattern: /`(?:\\\\|\\?[^\\])*?`/,
+			pattern: /`(?:\\[\s\S]|[^\\`])*`/,
 			greedy: true,
 			inside: {
 				'interpolation': {
@@ -7802,7 +8690,8 @@
 				pattern: /(<script[\s\S]*?>)[\s\S]*?(?=<\/script>)/i,
 				lookbehind: true,
 				inside: Prism.languages.javascript,
-				alias: 'language-javascript'
+				alias: 'language-javascript',
+				greedy: true
 			}
 		});
 	}
@@ -7893,11 +8782,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports) {
 
 	Prism.languages.java = Prism.languages.extend('clike', {
-		'keyword': /\b(abstract|continue|for|new|switch|assert|default|goto|package|synchronized|boolean|do|if|private|this|break|double|implements|protected|throw|byte|else|import|public|throws|case|enum|instanceof|return|transient|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|strictfp|volatile|const|float|native|super|while)\b/,
+		'keyword': /\b(?:abstract|continue|for|new|switch|assert|default|goto|package|synchronized|boolean|do|if|private|this|break|double|implements|protected|throw|byte|else|import|public|throws|case|enum|instanceof|return|transient|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|strictfp|volatile|const|float|native|super|while)\b/,
 		'number': /\b0b[01]+\b|\b0x[\da-f]*\.?[\da-fp\-]+\b|\b\d*\.?\d+(?:e[+-]?\d+)?[df]?\b/i,
 		'operator': {
 			pattern: /(^|[^.])(?:\+[+=]?|-[-=]?|!=?|<<?=?|>>?>?=?|==?|&[&=]?|\|[|=]?|\*=?|\/=?|%=?|\^=?|[?:~])/m,
@@ -7915,22 +8804,22 @@
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports) {
 
 	Prism.languages.csharp = Prism.languages.extend('clike', {
 		'keyword': /\b(abstract|as|async|await|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|do|double|else|enum|event|explicit|extern|false|finally|fixed|float|for|foreach|goto|if|implicit|in|int|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|using|virtual|void|volatile|while|add|alias|ascending|async|await|descending|dynamic|from|get|global|group|into|join|let|orderby|partial|remove|select|set|value|var|where|yield)\b/,
 		'string': [
 			{
-				pattern: /@("|')(\1\1|\\\1|\\?(?!\1)[\s\S])*\1/,
+				pattern: /@("|')(?:\1\1|\\[\s\S]|(?!\1)[^\\])*\1/,
 				greedy: true
 			},
 			{
-				pattern: /("|')(\\?.)*?\1/,
+				pattern: /("|')(?:\\.|(?!\1)[^\\\r\n])*?\1/,
 				greedy: true
 			}
 		],
-		'number': /\b-?(0x[\da-f]+|\d*\.?\d+f?)\b/i
+		'number': /\b-?(?:0x[\da-f]+|\d*\.?\d+f?)\b/i
 	});
 	
 	Prism.languages.insertBefore('csharp', 'keyword', {
@@ -7949,7 +8838,7 @@
 			inside: {
 				// highlight preprocessor directives as keywords
 				'directive': {
-					pattern: /(\s*#)\b(define|elif|else|endif|endregion|error|if|line|pragma|region|undef|warning)\b/,
+					pattern: /(\s*#)\b(?:define|elif|else|endif|endregion|error|if|line|pragma|region|undef|warning)\b/,
 					lookbehind: true,
 					alias: 'keyword'
 				}
@@ -7959,7 +8848,7 @@
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports) {
 
 	/**
@@ -7976,7 +8865,11 @@
 	 */
 	
 	Prism.languages.php = Prism.languages.extend('clike', {
-		'keyword': /\b(and|or|xor|array|as|break|case|cfunction|class|const|continue|declare|default|die|do|else|elseif|enddeclare|endfor|endforeach|endif|endswitch|endwhile|extends|for|foreach|function|include|include_once|global|if|new|return|static|switch|use|require|require_once|var|while|abstract|interface|public|implements|private|protected|parent|throw|null|echo|print|trait|namespace|final|yield|goto|instanceof|finally|try|catch)\b/i,
+		'string': {
+			pattern: /(["'])(?:\\[\s\S]|(?!\1)[^\\])*\1/,
+			greedy: true
+		},
+		'keyword': /\b(?:and|or|xor|array|as|break|case|cfunction|class|const|continue|declare|default|die|do|else|elseif|enddeclare|endfor|endforeach|endif|endswitch|endwhile|extends|for|foreach|function|include|include_once|global|if|new|return|static|switch|use|require|require_once|var|while|abstract|interface|public|implements|private|protected|parent|throw|null|echo|print|trait|namespace|final|yield|goto|instanceof|finally|try|catch)\b/i,
 		'constant': /\b[A-Z0-9_]{2,}\b/,
 		'comment': {
 			pattern: /(^|[^\\])(?:\/\*[\s\S]*?\*\/|\/\/.*)/,
@@ -8080,63 +8973,68 @@
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports) {
 
-	Prism.languages.python= {
-		'triple-quoted-string': {
-			pattern: /"""[\s\S]+?"""|'''[\s\S]+?'''/,
-			alias: 'string'
-		},
+	Prism.languages.python = {
 		'comment': {
 			pattern: /(^|[^\\])#.*/,
 			lookbehind: true
 		},
+		'triple-quoted-string': {
+			pattern: /("""|''')[\s\S]+?\1/,
+			greedy: true,
+			alias: 'string'
+		},
 		'string': {
-			pattern: /("|')(?:\\\\|\\?[^\\\r\n])*?\1/,
+			pattern: /("|')(?:\\.|(?!\1)[^\\\r\n])*\1/,
 			greedy: true
 		},
-		'function' : {
-			pattern: /((?:^|\s)def[ \t]+)[a-zA-Z_][a-zA-Z0-9_]*(?=\()/g,
+		'function': {
+			pattern: /((?:^|\s)def[ \t]+)[a-zA-Z_]\w*(?=\s*\()/g,
 			lookbehind: true
 		},
 		'class-name': {
-			pattern: /(\bclass\s+)[a-z0-9_]+/i,
+			pattern: /(\bclass\s+)\w+/i,
 			lookbehind: true
 		},
-		'keyword' : /\b(?:as|assert|async|await|break|class|continue|def|del|elif|else|except|exec|finally|for|from|global|if|import|in|is|lambda|pass|print|raise|return|try|while|with|yield)\b/,
-		'boolean' : /\b(?:True|False)\b/,
-		'number' : /\b-?(?:0[bo])?(?:(?:\d|0x[\da-f])[\da-f]*\.?\d*|\.\d+)(?:e[+-]?\d+)?j?\b/i,
-		'operator' : /[-+%=]=?|!=|\*\*?=?|\/\/?=?|<[<=>]?|>[=>]?|[&|^~]|\b(?:or|and|not)\b/,
-		'punctuation' : /[{}[\];(),.:]/
+		'keyword': /\b(?:as|assert|async|await|break|class|continue|def|del|elif|else|except|exec|finally|for|from|global|if|import|in|is|lambda|nonlocal|pass|print|raise|return|try|while|with|yield)\b/,
+		'builtin':/\b(?:__import__|abs|all|any|apply|ascii|basestring|bin|bool|buffer|bytearray|bytes|callable|chr|classmethod|cmp|coerce|compile|complex|delattr|dict|dir|divmod|enumerate|eval|execfile|file|filter|float|format|frozenset|getattr|globals|hasattr|hash|help|hex|id|input|int|intern|isinstance|issubclass|iter|len|list|locals|long|map|max|memoryview|min|next|object|oct|open|ord|pow|property|range|raw_input|reduce|reload|repr|reversed|round|set|setattr|slice|sorted|staticmethod|str|sum|super|tuple|type|unichr|unicode|vars|xrange|zip)\b/,
+		'boolean': /\b(?:True|False|None)\b/,
+		'number': /\b-?(?:0[bo])?(?:(?:\d|0x[\da-f])[\da-f]*\.?\d*|\.\d+)(?:e[+-]?\d+)?j?\b/i,
+		'operator': /[-+%=]=?|!=|\*\*?=?|\/\/?=?|<[<=>]?|>[=>]?|[&|^~]|\b(?:or|and|not)\b/,
+		'punctuation': /[{}[\];(),.:]/
 	};
-
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports) {
-
-	Prism.languages.json = {
-		'property': /"(?:\\.|[^\\"])*"(?=\s*:)/ig,
-		'string': /"(?!:)(?:\\.|[^\\"])*"(?!:)/g,
-		'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee][+-]?\d+)?)\b/g,
-		'punctuation': /[{}[\]);,]/g,
-		'operator': /:/g,
-		'boolean': /\b(true|false)\b/gi,
-		'null': /\bnull\b/gi
-	};
-	
-	Prism.languages.jsonp = Prism.languages.json;
 
 
 /***/ }),
 /* 110 */
 /***/ (function(module, exports) {
 
-	Prism.languages.yaml={scalar:{pattern:/([\-:]\s*(![^\s]+)?[ \t]*[|>])[ \t]*(?:((?:\r?\n|\r)[ \t]+)[^\r\n]+(?:\3[^\r\n]+)*)/,lookbehind:!0,alias:"string"},comment:/#.*/,key:{pattern:/(\s*(?:^|[:\-,[{\r\n?])[ \t]*(![^\s]+)?[ \t]*)[^\r\n{[\]},#\s]+?(?=\s*:\s)/,lookbehind:!0,alias:"atrule"},directive:{pattern:/(^[ \t]*)%.+/m,lookbehind:!0,alias:"important"},datetime:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(\d{4}-\d\d?-\d\d?([tT]|[ \t]+)\d\d?:\d{2}:\d{2}(\.\d*)?[ \t]*(Z|[-+]\d\d?(:\d{2})?)?|\d{4}-\d{2}-\d{2}|\d\d?:\d{2}(:\d{2}(\.\d*)?)?)(?=[ \t]*($|,|]|}))/m,lookbehind:!0,alias:"number"},"boolean":{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(true|false)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},"null":{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)(null|~)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},string:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')(?=[ \t]*($|,|]|}))/m,lookbehind:!0,greedy:!0},number:{pattern:/([:\-,[{]\s*(![^\s]+)?[ \t]*)[+\-]?(0x[\da-f]+|0o[0-7]+|(\d+\.?\d*|\.?\d+)(e[\+\-]?\d+)?|\.inf|\.nan)[ \t]*(?=$|,|]|})/im,lookbehind:!0},tag:/![^\s]+/,important:/[&*][\w]+/,punctuation:/---|[:[\]{}\-,|>?]|\.\.\./};
+	Prism.languages.json = {
+		'property': /"(?:\\.|[^\\"\r\n])*"(?=\s*:)/i,
+		'string': {
+			pattern: /"(?:\\.|[^\\"\r\n])*"(?!\s*:)/,
+			greedy: true
+		},
+		'number': /\b-?(?:0x[\dA-Fa-f]+|\d*\.?\d+(?:[Ee][+-]?\d+)?)\b/,
+		'punctuation': /[{}[\]);,]/,
+		'operator': /:/g,
+		'boolean': /\b(?:true|false)\b/i,
+		'null': /\bnull\b/i
+	};
+	
+	Prism.languages.jsonp = Prism.languages.json;
+
 
 /***/ }),
 /* 111 */
+/***/ (function(module, exports) {
+
+	Prism.languages.yaml={scalar:{pattern:/([\-:]\s*(?:![^\s]+)?[ \t]*[|>])[ \t]*(?:((?:\r?\n|\r)[ \t]+)[^\r\n]+(?:\2[^\r\n]+)*)/,lookbehind:!0,alias:"string"},comment:/#.*/,key:{pattern:/(\s*(?:^|[:\-,[{\r\n?])[ \t]*(?:![^\s]+)?[ \t]*)[^\r\n{[\]},#\s]+?(?=\s*:\s)/,lookbehind:!0,alias:"atrule"},directive:{pattern:/(^[ \t]*)%.+/m,lookbehind:!0,alias:"important"},datetime:{pattern:/([:\-,[{]\s*(?:![^\s]+)?[ \t]*)(?:\d{4}-\d\d?-\d\d?(?:[tT]|[ \t]+)\d\d?:\d{2}:\d{2}(?:\.\d*)?[ \t]*(?:Z|[-+]\d\d?(?::\d{2})?)?|\d{4}-\d{2}-\d{2}|\d\d?:\d{2}(?::\d{2}(?:\.\d*)?)?)(?=[ \t]*(?:$|,|]|}))/m,lookbehind:!0,alias:"number"},"boolean":{pattern:/([:\-,[{]\s*(?:![^\s]+)?[ \t]*)(?:true|false)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},"null":{pattern:/([:\-,[{]\s*(?:![^\s]+)?[ \t]*)(?:null|~)[ \t]*(?=$|,|]|})/im,lookbehind:!0,alias:"important"},string:{pattern:/([:\-,[{]\s*(?:![^\s]+)?[ \t]*)("|')(?:(?!\2)[^\\\r\n]|\\.)*\2(?=[ \t]*(?:$|,|]|}))/m,lookbehind:!0,greedy:!0},number:{pattern:/([:\-,[{]\s*(?:![^\s]+)?[ \t]*)[+\-]?(?:0x[\da-f]+|0o[0-7]+|(?:\d+\.?\d*|\.?\d+)(?:e[+-]?\d+)?|\.inf|\.nan)[ \t]*(?=$|,|]|})/im,lookbehind:!0},tag:/![^\s]+/,important:/[&*][\w]+/,punctuation:/---|[:[\]{}\-,|>?]|\.\.\./};
+
+/***/ }),
+/* 112 */
 /***/ (function(module, exports) {
 
 	Prism.languages.perl = {
@@ -8155,13 +9053,13 @@
 		'string': [
 			// q/.../
 			{
-				pattern: /\b(?:q|qq|qx|qw)\s*([^a-zA-Z0-9\s\{\(\[<])(?:[^\\]|\\[\s\S])*?\1/,
+				pattern: /\b(?:q|qq|qx|qw)\s*([^a-zA-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1/,
 				greedy: true
 			},
 		
 			// q a...a
 			{
-				pattern: /\b(?:q|qq|qx|qw)\s+([a-zA-Z0-9])(?:[^\\]|\\[\s\S])*?\1/,
+				pattern: /\b(?:q|qq|qx|qw)\s+([a-zA-Z0-9])(?:(?!\1)[^\\]|\\[\s\S])*\1/,
 				greedy: true
 			},
 		
@@ -8191,7 +9089,7 @@
 	
 			// "...", `...`
 			{
-				pattern: /("|`)(?:[^\\]|\\[\s\S])*?\1/,
+				pattern: /("|`)(?:(?!\1)[^\\]|\\[\s\S])*\1/,
 				greedy: true
 			},
 	
@@ -8205,13 +9103,13 @@
 		'regex': [
 			// m/.../
 			{
-				pattern: /\b(?:m|qr)\s*([^a-zA-Z0-9\s\{\(\[<])(?:[^\\]|\\[\s\S])*?\1[msixpodualngc]*/,
+				pattern: /\b(?:m|qr)\s*([^a-zA-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1[msixpodualngc]*/,
 				greedy: true
 			},
 		
 			// m a...a
 			{
-				pattern: /\b(?:m|qr)\s+([a-zA-Z0-9])(?:[^\\]|\\.)*?\1[msixpodualngc]*/,
+				pattern: /\b(?:m|qr)\s+([a-zA-Z0-9])(?:(?!\1)[^\\]|\\[\s\S])*\1[msixpodualngc]*/,
 				greedy: true
 			},
 		
@@ -8243,14 +9141,14 @@
 			// FIXME We don't handle change of separator like s(...)[...]
 			// s/.../.../
 			{
-				pattern: /(^|[^-]\b)(?:s|tr|y)\s*([^a-zA-Z0-9\s\{\(\[<])(?:[^\\]|\\[\s\S])*?\2(?:[^\\]|\\[\s\S])*?\2[msixpodualngcer]*/,
+				pattern: /(^|[^-]\b)(?:s|tr|y)\s*([^a-zA-Z0-9\s{(\[<])(?:(?!\2)[^\\]|\\[\s\S])*\2(?:(?!\2)[^\\]|\\[\s\S])*\2[msixpodualngcer]*/,
 				lookbehind: true,
 				greedy: true
 			},
 		
 			// s a...a...a
 			{
-				pattern: /(^|[^-]\b)(?:s|tr|y)\s+([a-zA-Z0-9])(?:[^\\]|\\[\s\S])*?\2(?:[^\\]|\\[\s\S])*?\2[msixpodualngcer]*/,
+				pattern: /(^|[^-]\b)(?:s|tr|y)\s+([a-zA-Z0-9])(?:(?!\2)[^\\]|\\[\s\S])*\2(?:(?!\2)[^\\]|\\[\s\S])*\2[msixpodualngcer]*/,
 				lookbehind: true,
 				greedy: true
 			},
@@ -8302,7 +9200,7 @@
 			// ${...}
 			/[&*$@%]#?(?=\{)/,
 			// $foo
-			/[&*$@%]#?((::)*'?(?!\d)[\w$]+)+(::)*/i,
+			/[&*$@%]#?(?:(?:::)*'?(?!\d)[\w$]+)+(?:::)*/i,
 			// $1
 			/[&*$@%]\d+/,
 			// $_, @_, %!
@@ -8316,7 +9214,7 @@
 		},
 		'vstring': {
 			// v1.2, 1.2.3
-			pattern: /v\d+(\.\d+)*|\d+(\.\d+){2,}/,
+			pattern: /v\d+(?:\.\d+)*|\d+(?:\.\d+){2,}/,
 			alias: 'string'
 		},
 		'function': {
@@ -8325,25 +9223,25 @@
 				keyword: /sub/
 			}
 		},
-		'keyword': /\b(any|break|continue|default|delete|die|do|else|elsif|eval|for|foreach|given|goto|if|last|local|my|next|our|package|print|redo|require|say|state|sub|switch|undef|unless|until|use|when|while)\b/,
-		'number': /\b-?(0x[\dA-Fa-f](_?[\dA-Fa-f])*|0b[01](_?[01])*|(\d(_?\d)*)?\.?\d(_?\d)*([Ee][+-]?\d+)?)\b/,
-		'operator': /-[rwxoRWXOezsfdlpSbctugkTBMAC]\b|\+[+=]?|-[-=>]?|\*\*?=?|\/\/?=?|=[=~>]?|~[~=]?|\|\|?=?|&&?=?|<(?:=>?|<=?)?|>>?=?|![~=]?|[%^]=?|\.(?:=|\.\.?)?|[\\?]|\bx(?:=|\b)|\b(lt|gt|le|ge|eq|ne|cmp|not|and|or|xor)\b/,
+		'keyword': /\b(?:any|break|continue|default|delete|die|do|else|elsif|eval|for|foreach|given|goto|if|last|local|my|next|our|package|print|redo|require|say|state|sub|switch|undef|unless|until|use|when|while)\b/,
+		'number': /\b-?(?:0x[\dA-Fa-f](?:_?[\dA-Fa-f])*|0b[01](?:_?[01])*|(?:\d(?:_?\d)*)?\.?\d(?:_?\d)*(?:[Ee][+-]?\d+)?)\b/,
+		'operator': /-[rwxoRWXOezsfdlpSbctugkTBMAC]\b|\+[+=]?|-[-=>]?|\*\*?=?|\/\/?=?|=[=~>]?|~[~=]?|\|\|?=?|&&?=?|<(?:=>?|<=?)?|>>?=?|![~=]?|[%^]=?|\.(?:=|\.\.?)?|[\\?]|\bx(?:=|\b)|\b(?:lt|gt|le|ge|eq|ne|cmp|not|and|or|xor)\b/,
 		'punctuation': /[{}[\];(),:]/
 	};
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports) {
 
 	Prism.languages.go = Prism.languages.extend('clike', {
-		'keyword': /\b(break|case|chan|const|continue|default|defer|else|fallthrough|for|func|go(to)?|if|import|interface|map|package|range|return|select|struct|switch|type|var)\b/,
-		'builtin': /\b(bool|byte|complex(64|128)|error|float(32|64)|rune|string|u?int(8|16|32|64|)|uintptr|append|cap|close|complex|copy|delete|imag|len|make|new|panic|print(ln)?|real|recover)\b/,
-		'boolean': /\b(_|iota|nil|true|false)\b/,
+		'keyword': /\b(?:break|case|chan|const|continue|default|defer|else|fallthrough|for|func|go(?:to)?|if|import|interface|map|package|range|return|select|struct|switch|type|var)\b/,
+		'builtin': /\b(?:bool|byte|complex(?:64|128)|error|float(?:32|64)|rune|string|u?int(?:8|16|32|64)?|uintptr|append|cap|close|complex|copy|delete|imag|len|make|new|panic|print(?:ln)?|real|recover)\b/,
+		'boolean': /\b(?:_|iota|nil|true|false)\b/,
 		'operator': /[*\/%^!=]=?|\+[=+]?|-[=-]?|\|[=|]?|&(?:=|&|\^=?)?|>(?:>=?|=)?|<(?:<=?|=|-)?|:=|\.\.\./,
 		'number': /\b(-?(0x[a-f\d]+|(\d+\.?\d*|\.\d+)(e[-+]?\d+)?)i?)\b/i,
 		'string': {
-			pattern: /("|'|`)(\\?.|\r|\n)*?\1/,
+			pattern: /(["'`])(\\[\s\S]|(?!\1)[^\\])*\1/,
 			greedy: true
 		}
 	});
@@ -8351,7 +9249,7 @@
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports) {
 
 	(function(Prism) {
@@ -8366,7 +9264,7 @@
 								pattern: /(^\$\(\([\s\S]+)\)\)/,
 								lookbehind: true
 							},
-							/^\$\(\(/,
+							/^\$\(\(/
 						],
 						number: /\b-?(?:0x[\dA-Fa-f]+|\d*\.?\d+(?:[Ee]-?\d+)?)\b/,
 						// Operators according to https://www.gnu.org/software/bash/manual/bashref.html#Shell-Arithmetic
@@ -8382,8 +9280,8 @@
 						variable: /^\$\(|^`|\)$|`$/
 					}
 				},
-				/\$(?:[a-z0-9_#\?\*!@]+|\{[^}]+\})/i
-			],
+				/\$(?:[\w#?*!@]+|\{[^}]+\})/i
+			]
 		};
 	
 		Prism.languages.bash = {
@@ -8398,13 +9296,13 @@
 			'string': [
 				//Support for Here-Documents https://en.wikipedia.org/wiki/Here_document
 				{
-					pattern: /((?:^|[^<])<<\s*)(?:"|')?(\w+?)(?:"|')?\s*\r?\n(?:[\s\S])*?\r?\n\2/g,
+					pattern: /((?:^|[^<])<<\s*)["']?(\w+?)["']?\s*\r?\n(?:[\s\S])*?\r?\n\2/,
 					lookbehind: true,
 					greedy: true,
 					inside: insideString
 				},
 				{
-					pattern: /(["'])(?:\\\\|\\?[^\\])*?\1/g,
+					pattern: /(["'])(?:\\[\s\S]|(?!\1)[^\\])*\1/,
 					greedy: true,
 					inside: insideString
 				}
@@ -8412,15 +9310,15 @@
 			'variable': insideString.variable,
 			// Originally based on http://ss64.com/bash/
 			'function': {
-				pattern: /(^|\s|;|\||&)(?:alias|apropos|apt-get|aptitude|aspell|awk|basename|bash|bc|bg|builtin|bzip2|cal|cat|cd|cfdisk|chgrp|chmod|chown|chroot|chkconfig|cksum|clear|cmp|comm|command|cp|cron|crontab|csplit|cut|date|dc|dd|ddrescue|df|diff|diff3|dig|dir|dircolors|dirname|dirs|dmesg|du|egrep|eject|enable|env|ethtool|eval|exec|expand|expect|export|expr|fdformat|fdisk|fg|fgrep|file|find|fmt|fold|format|free|fsck|ftp|fuser|gawk|getopts|git|grep|groupadd|groupdel|groupmod|groups|gzip|hash|head|help|hg|history|hostname|htop|iconv|id|ifconfig|ifdown|ifup|import|install|jobs|join|kill|killall|less|link|ln|locate|logname|logout|look|lpc|lpr|lprint|lprintd|lprintq|lprm|ls|lsof|make|man|mkdir|mkfifo|mkisofs|mknod|more|most|mount|mtools|mtr|mv|mmv|nano|netstat|nice|nl|nohup|notify-send|npm|nslookup|open|op|passwd|paste|pathchk|ping|pkill|popd|pr|printcap|printenv|printf|ps|pushd|pv|pwd|quota|quotacheck|quotactl|ram|rar|rcp|read|readarray|readonly|reboot|rename|renice|remsync|rev|rm|rmdir|rsync|screen|scp|sdiff|sed|seq|service|sftp|shift|shopt|shutdown|sleep|slocate|sort|source|split|ssh|stat|strace|su|sudo|sum|suspend|sync|tail|tar|tee|test|time|timeout|times|touch|top|traceroute|trap|tr|tsort|tty|type|ulimit|umask|umount|unalias|uname|unexpand|uniq|units|unrar|unshar|uptime|useradd|userdel|usermod|users|uuencode|uudecode|v|vdir|vi|vmstat|wait|watch|wc|wget|whereis|which|who|whoami|write|xargs|xdg-open|yes|zip)(?=$|\s|;|\||&)/,
+				pattern: /(^|[\s;|&])(?:alias|apropos|apt-get|aptitude|aspell|awk|basename|bash|bc|bg|builtin|bzip2|cal|cat|cd|cfdisk|chgrp|chmod|chown|chroot|chkconfig|cksum|clear|cmp|comm|command|cp|cron|crontab|csplit|cut|date|dc|dd|ddrescue|df|diff|diff3|dig|dir|dircolors|dirname|dirs|dmesg|du|egrep|eject|enable|env|ethtool|eval|exec|expand|expect|export|expr|fdformat|fdisk|fg|fgrep|file|find|fmt|fold|format|free|fsck|ftp|fuser|gawk|getopts|git|grep|groupadd|groupdel|groupmod|groups|gzip|hash|head|help|hg|history|hostname|htop|iconv|id|ifconfig|ifdown|ifup|import|install|jobs|join|kill|killall|less|link|ln|locate|logname|logout|look|lpc|lpr|lprint|lprintd|lprintq|lprm|ls|lsof|make|man|mkdir|mkfifo|mkisofs|mknod|more|most|mount|mtools|mtr|mv|mmv|nano|netstat|nice|nl|nohup|notify-send|npm|nslookup|open|op|passwd|paste|pathchk|ping|pkill|popd|pr|printcap|printenv|printf|ps|pushd|pv|pwd|quota|quotacheck|quotactl|ram|rar|rcp|read|readarray|readonly|reboot|rename|renice|remsync|rev|rm|rmdir|rsync|screen|scp|sdiff|sed|seq|service|sftp|shift|shopt|shutdown|sleep|slocate|sort|source|split|ssh|stat|strace|su|sudo|sum|suspend|sync|tail|tar|tee|test|time|timeout|times|touch|top|traceroute|trap|tr|tsort|tty|type|ulimit|umask|umount|unalias|uname|unexpand|uniq|units|unrar|unshar|uptime|useradd|userdel|usermod|users|uuencode|uudecode|v|vdir|vi|vmstat|wait|watch|wc|wget|whereis|which|who|whoami|write|xargs|xdg-open|yes|zip)(?=$|[\s;|&])/,
 				lookbehind: true
 			},
 			'keyword': {
-				pattern: /(^|\s|;|\||&)(?:let|:|\.|if|then|else|elif|fi|for|break|continue|while|in|case|function|select|do|done|until|echo|exit|return|set|declare)(?=$|\s|;|\||&)/,
+				pattern: /(^|[\s;|&])(?:let|:|\.|if|then|else|elif|fi|for|break|continue|while|in|case|function|select|do|done|until|echo|exit|return|set|declare)(?=$|[\s;|&])/,
 				lookbehind: true
 			},
 			'boolean': {
-				pattern: /(^|\s|;|\||&)(?:true|false)(?=$|\s|;|\||&)/,
+				pattern: /(^|[\s;|&])(?:true|false)(?=$|[\s;|&])/,
 				lookbehind: true
 			},
 			'operator': /&&?|\|\|?|==?|!=?|<<<?|>>|<=?|>=?|=~/,
@@ -8437,7 +9335,7 @@
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports) {
 
 	Prism.languages.fsharp = Prism.languages.extend('clike', {
@@ -8453,14 +9351,14 @@
 		],
 		'keyword': /\b(?:let|return|use|yield)(?:!\B|\b)|\b(abstract|and|as|assert|base|begin|class|default|delegate|do|done|downcast|downto|elif|else|end|exception|extern|false|finally|for|fun|function|global|if|in|inherit|inline|interface|internal|lazy|match|member|module|mutable|namespace|new|not|null|of|open|or|override|private|public|rec|select|static|struct|then|to|true|try|type|upcast|val|void|when|while|with|asr|land|lor|lsl|lsr|lxor|mod|sig|atomic|break|checked|component|const|constraint|constructor|continue|eager|event|external|fixed|functor|include|method|mixin|object|parallel|process|protected|pure|sealed|tailcall|trait|virtual|volatile)\b/,
 		'string': {
-			pattern: /(?:"""[\s\S]*?"""|@"(?:""|[^"])*"|("|')(?:\\\1|\\?(?!\1)[\s\S])*\1)B?/,
+			pattern: /(?:"""[\s\S]*?"""|@"(?:""|[^"])*"|("|')(?:\\[\s\S]|(?!\1)[^\\])*\1)B?/,
 			greedy: true
 		},
 		'number': [
-			/\b-?0x[\da-fA-F]+(un|lf|LF)?\b/,
-			/\b-?0b[01]+(y|uy)?\b/,
-			/\b-?(\d*\.?\d+|\d+\.)([fFmM]|[eE][+-]?\d+)?\b/,
-			/\b-?\d+(y|uy|s|us|l|u|ul|L|UL|I)?\b/
+			/\b-?0x[\da-fA-F]+(?:un|lf|LF)?\b/,
+			/\b-?0b[01]+(?:y|uy)?\b/,
+			/\b-?(?:\d*\.?\d+|\d+\.)(?:[fFmM]|[eE][+-]?\d+)?\b/,
+			/\b-?\d+(?:y|uy|s|us|l|u|ul|L|UL|I)?\b/
 		]
 	});
 	Prism.languages.insertBefore('fsharp', 'keyword', {
@@ -8469,7 +9367,7 @@
 			alias: 'property',
 			inside: {
 				'directive': {
-					pattern: /(\s*#)\b(else|endif|if|light|line|nowarn)\b/,
+					pattern: /(\s*#)\b(?:else|endif|if|light|line|nowarn)\b/,
 					lookbehind: true,
 					alias: 'keyword'
 				}
@@ -8479,25 +9377,25 @@
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports) {
 
 	Prism.languages.typescript = Prism.languages.extend('javascript', {
 		// From JavaScript Prism keyword list and TypeScript language spec: https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#221-reserved-words
-		'keyword': /\b(as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield|false|true|module|declare|constructor|string|Function|any|number|boolean|Array|enum|symbol|namespace|abstract|require|type)\b/
+		'keyword': /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield|false|true|module|declare|constructor|string|Function|any|number|boolean|Array|symbol|namespace|abstract|require|type)\b/
 	});
 	
 	Prism.languages.ts = Prism.languages.typescript;
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports) {
 
 	(function (Prism) {
 		var inside = {
 			'url': /url\((["']?).*?\1\)/i,
 			'string': {
-				pattern: /("|')(?:[^\\\r\n]|\\(?:\r\n|[\s\S]))*?\1/,
+				pattern: /("|')(?:(?!\1)[^\\\r\n]|\\(?:\r\n|[\s\S]))*\1/,
 				greedy: true
 			},
 			'interpolation': null, // See below
@@ -8600,7 +9498,7 @@
 	}(Prism));
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports) {
 
 	/* FIXME :
@@ -8666,7 +9564,7 @@
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports) {
 
 	(function(Prism) {
@@ -8691,7 +9589,7 @@
 		delete Prism.languages.sass.atrule;
 	
 	
-		var variable = /((\$[-_\w]+)|(#\{\$[-_\w]+\}))/i;
+		var variable = /\$[-\w]+|#\{\$[-\w]+\}/;
 		var operator = [
 			/[+*\/%]|[=!]=|<=?|>=?|\b(?:and|or|not)\b/,
 			{
@@ -8744,12 +9642,12 @@
 	}(Prism));
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports) {
 
 	(function(Prism) {
 	
-		var handlebars_pattern = /\{\{\{[\s\S]+?\}\}\}|\{\{[\s\S]+?\}\}/g;
+		var handlebars_pattern = /\{\{\{[\s\S]+?\}\}\}|\{\{[\s\S]+?\}\}/;
 	
 		Prism.languages.handlebars = Prism.languages.extend('markup', {
 			'handlebars': {
@@ -8759,9 +9657,9 @@
 						pattern: /^\{\{\{?|\}\}\}?$/i,
 						alias: 'punctuation'
 					},
-					'string': /(["'])(\\?.)*?\1/,
-					'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee][+-]?\d+)?)\b/,
-					'boolean': /\b(true|false)\b/,
+					'string': /(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,
+					'number': /\b-?(?:0x[\dA-Fa-f]+|\d*\.?\d+(?:[Ee][+-]?\d+)?)\b/,
+					'boolean': /\b(?:true|false)\b/,
 					'block': {
 						pattern: /^(\s*~?\s*)[#\/]\S+?(?=\s*~?\s*$|\s)/i,
 						lookbehind: true,
@@ -8842,7 +9740,7 @@
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports) {
 
 	Prism.languages.applescript = {
@@ -8852,7 +9750,7 @@
 			/--.+/,
 			/#.+/
 		],
-		'string': /"(?:\\?.)*?"/,
+		'string': /"(?:\\.|[^"\\\r\n])*"/,
 		'number': /\b-?\d*\.?\d+([Ee]-?\d+)?\b/,
 		'operator': [
 			/[&=≠≤≥*+\-\/÷^]|[<>]=?/,
@@ -8867,7 +9765,7 @@
 	};
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports) {
 
 	Prism.languages.actionscript = Prism.languages.extend('javascript',  {
@@ -8879,7 +9777,7 @@
 	if (Prism.languages.markup) {
 		Prism.languages.insertBefore('actionscript', 'string', {
 			'xml': {
-				pattern: /(^|[^.])<\/?\w+(?:\s+[^\s>\/=]+=("|')(?:\\\1|\\?(?!\1)[\s\S])*\2)*\s*\/?>/,
+				pattern: /(^|[^.])<\/?\w+(?:\s+[^\s>\/=]+=("|')(?:\\[\s\S]|(?!\2)[^\\])*\2)*\s*\/?>/,
 				lookbehind: true,
 				inside: {
 					rest: Prism.languages.markup
@@ -8889,7 +9787,7 @@
 	}
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports) {
 
 	Prism.languages.aspnet = Prism.languages.extend('markup', {
@@ -8909,7 +9807,7 @@
 		}
 	});
 	// Regexp copied from prism-markup, with a negative look-ahead added
-	Prism.languages.aspnet.tag.pattern = /<(?!%)\/?[^\s>\/]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\\1|\\?(?!\1)[\s\S])*\1|[^\s'">=]+))?)*\s*\/?>/i;
+	Prism.languages.aspnet.tag.pattern = /<(?!%)\/?[^\s>\/]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+))?)*\s*\/?>/i;
 	
 	// match directives of attribute value foo="<% Bar %>"
 	Prism.languages.insertBefore('inside', 'punctuation', {
@@ -8930,7 +9828,7 @@
 	});
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports) {
 
 	Prism.languages.basic = {
@@ -8949,12 +9847,12 @@
 	};
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports) {
 
 	Prism.languages.c = Prism.languages.extend('clike', {
-		'keyword': /\b(_Alignas|_Alignof|_Atomic|_Bool|_Complex|_Generic|_Imaginary|_Noreturn|_Static_assert|_Thread_local|asm|typeof|inline|auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|int|long|register|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while)\b/,
-		'operator': /\-[>-]?|\+\+?|!=?|<<?=?|>>?=?|==?|&&?|\|?\||[~^%?*\/]/,
+		'keyword': /\b(?:_Alignas|_Alignof|_Atomic|_Bool|_Complex|_Generic|_Imaginary|_Noreturn|_Static_assert|_Thread_local|asm|typeof|inline|auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|int|long|register|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while)\b/,
+		'operator': /-[>-]?|\+\+?|!=?|<<?=?|>>?=?|==?|&&?|\|\|?|[~^%?*\/]/,
 		'number': /\b-?(?:0x[\da-f]+|\d*\.?\d+(?:e[+-]?\d+)?)[ful]*\b/i
 	});
 	
@@ -8962,25 +9860,25 @@
 		'macro': {
 			// allow for multiline macro definitions
 			// spaces after the # character compile fine with gcc
-			pattern: /(^\s*)#\s*[a-z]+([^\r\n\\]|\\.|\\(?:\r\n?|\n))*/im,
+			pattern: /(^\s*)#\s*[a-z]+(?:[^\r\n\\]|\\(?:\r\n|[\s\S]))*/im,
 			lookbehind: true,
 			alias: 'property',
 			inside: {
 				// highlight the path of the include statement as a string
 				'string': {
-					pattern: /(#\s*include\s*)(<.+?>|("|')(\\?.)+?\3)/,
+					pattern: /(#\s*include\s*)(?:<.+?>|("|')(?:\\?.)+?\2)/,
 					lookbehind: true
 				},
 				// highlight macro directives as keywords
 				'directive': {
-					pattern: /(#\s*)\b(define|defined|elif|else|endif|error|ifdef|ifndef|if|import|include|line|pragma|undef|using)\b/,
+					pattern: /(#\s*)\b(?:define|defined|elif|else|endif|error|ifdef|ifndef|if|import|include|line|pragma|undef|using)\b/,
 					lookbehind: true,
 					alias: 'keyword'
 				}
 			}
 		},
 		// highlight predefined macros as constants
-		'constant': /\b(__FILE__|__LINE__|__DATE__|__TIME__|__TIMESTAMP__|__func__|EOF|NULL|SEEK_CUR|SEEK_END|SEEK_SET|stdin|stdout|stderr)\b/
+		'constant': /\b(?:__FILE__|__LINE__|__DATE__|__TIME__|__TIMESTAMP__|__func__|EOF|NULL|SEEK_CUR|SEEK_END|SEEK_SET|stdin|stdout|stderr)\b/
 	});
 	
 	delete Prism.languages.c['class-name'];
@@ -8988,7 +9886,7 @@
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports) {
 
 	// Based on Free Pascal
@@ -9046,14 +9944,14 @@
 	};
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports) {
 
 	Prism.languages.vim = {
 		'string': /"(?:[^"\\\r\n]|\\.)*"|'(?:[^'\r\n]|'')*'/,
 		'comment': /".*/,
 		'function': /\w+(?=\()/,
-		'keyword': /\b(?:ab|abbreviate|abc|abclear|abo|aboveleft|al|all|arga|argadd|argd|argdelete|argdo|arge|argedit|argg|argglobal|argl|arglocal|ar|args|argu|argument|as|ascii|bad|badd|ba|ball|bd|bdelete|be|bel|belowright|bf|bfirst|bl|blast|bm|bmodified|bn|bnext|bN|bNext|bo|botright|bp|bprevious|brea|break|breaka|breakadd|breakd|breakdel|breakl|breaklist|br|brewind|bro|browse|bufdo|b|buffer|buffers|bun|bunload|bw|bwipeout|ca|cabbrev|cabc|cabclear|caddb|caddbuffer|cad|caddexpr|caddf|caddfile|cal|call|cat|catch|cb|cbuffer|cc|ccl|cclose|cd|ce|center|cex|cexpr|cf|cfile|cfir|cfirst|cgetb|cgetbuffer|cgete|cgetexpr|cg|cgetfile|c|change|changes|chd|chdir|che|checkpath|checkt|checktime|cla|clast|cl|clist|clo|close|cmapc|cmapclear|cnew|cnewer|cn|cnext|cN|cNext|cnf|cnfile|cNfcNfile|cnorea|cnoreabbrev|col|colder|colo|colorscheme|comc|comclear|comp|compiler|conf|confirm|con|continue|cope|copen|co|copy|cpf|cpfile|cp|cprevious|cq|cquit|cr|crewind|cuna|cunabbrev|cu|cunmap|cw|cwindow|debugg|debuggreedy|delc|delcommand|d|delete|delf|delfunction|delm|delmarks|diffg|diffget|diffoff|diffpatch|diffpu|diffput|diffsplit|diffthis|diffu|diffupdate|dig|digraphs|di|display|dj|djump|dl|dlist|dr|drop|ds|dsearch|dsp|dsplit|earlier|echoe|echoerr|echom|echomsg|echon|e|edit|el|else|elsei|elseif|em|emenu|endfo|endfor|endf|endfunction|endfun|en|endif|endt|endtry|endw|endwhile|ene|enew|ex|exi|exit|exu|exusage|f|file|files|filetype|fina|finally|fin|find|fini|finish|fir|first|fix|fixdel|fo|fold|foldc|foldclose|folddoc|folddoclosed|foldd|folddoopen|foldo|foldopen|for|fu|fun|function|go|goto|gr|grep|grepa|grepadd|ha|hardcopy|h|help|helpf|helpfind|helpg|helpgrep|helpt|helptags|hid|hide|his|history|ia|iabbrev|iabc|iabclear|if|ij|ijump|il|ilist|imapc|imapclear|in|inorea|inoreabbrev|isearch|isp|isplit|iuna|iunabbrev|iu|iunmap|j|join|ju|jumps|k|keepalt|keepj|keepjumps|kee|keepmarks|laddb|laddbuffer|lad|laddexpr|laddf|laddfile|lan|language|la|last|later|lb|lbuffer|lc|lcd|lch|lchdir|lcl|lclose|let|left|lefta|leftabove|lex|lexpr|lf|lfile|lfir|lfirst|lgetb|lgetbuffer|lgete|lgetexpr|lg|lgetfile|lgr|lgrep|lgrepa|lgrepadd|lh|lhelpgrep|l|list|ll|lla|llast|lli|llist|lmak|lmake|lm|lmap|lmapc|lmapclear|lnew|lnewer|lne|lnext|lN|lNext|lnf|lnfile|lNf|lNfile|ln|lnoremap|lo|loadview|loc|lockmarks|lockv|lockvar|lol|lolder|lop|lopen|lpf|lpfile|lp|lprevious|lr|lrewind|ls|lt|ltag|lu|lunmap|lv|lvimgrep|lvimgrepa|lvimgrepadd|lw|lwindow|mak|make|ma|mark|marks|mat|match|menut|menutranslate|mk|mkexrc|mks|mksession|mksp|mkspell|mkvie|mkview|mkv|mkvimrc|mod|mode|m|move|mzf|mzfile|mz|mzscheme|nbkey|new|n|next|N|Next|nmapc|nmapclear|noh|nohlsearch|norea|noreabbrev|nu|number|nun|nunmap|omapc|omapclear|on|only|o|open|opt|options|ou|ounmap|pc|pclose|ped|pedit|pe|perl|perld|perldo|po|pop|popu|popu|popup|pp|ppop|pre|preserve|prev|previous|p|print|P|Print|profd|profdel|prof|profile|promptf|promptfind|promptr|promptrepl|ps|psearch|pta|ptag|ptf|ptfirst|ptj|ptjump|ptl|ptlast|ptn|ptnext|ptN|ptNext|ptp|ptprevious|ptr|ptrewind|pts|ptselect|pu|put|pw|pwd|pyf|pyfile|py|python|qa|qall|q|quit|quita|quitall|r|read|rec|recover|redi|redir|red|redo|redr|redraw|redraws|redrawstatus|reg|registers|res|resize|ret|retab|retu|return|rew|rewind|ri|right|rightb|rightbelow|rub|ruby|rubyd|rubydo|rubyf|rubyfile|ru|runtime|rv|rviminfo|sal|sall|san|sandbox|sa|sargument|sav|saveas|sba|sball|sbf|sbfirst|sbl|sblast|sbm|sbmodified|sbn|sbnext|sbN|sbNext|sbp|sbprevious|sbr|sbrewind|sb|sbuffer|scripte|scriptencoding|scrip|scriptnames|se|set|setf|setfiletype|setg|setglobal|setl|setlocal|sf|sfind|sfir|sfirst|sh|shell|sign|sil|silent|sim|simalt|sla|slast|sl|sleep|sm|smagic|sm|smap|smapc|smapclear|sme|smenu|sn|snext|sN|sNext|sni|sniff|sno|snomagic|snor|snoremap|snoreme|snoremenu|sor|sort|so|source|spelld|spelldump|spe|spellgood|spelli|spellinfo|spellr|spellrepall|spellu|spellundo|spellw|spellwrong|sp|split|spr|sprevious|sre|srewind|sta|stag|startg|startgreplace|star|startinsert|startr|startreplace|stj|stjump|st|stop|stopi|stopinsert|sts|stselect|sun|sunhide|sunm|sunmap|sus|suspend|sv|sview|syncbind|t|tab|tabc|tabclose|tabd|tabdo|tabe|tabedit|tabf|tabfind|tabfir|tabfirst|tabl|tablast|tabm|tabmove|tabnew|tabn|tabnext|tabN|tabNext|tabo|tabonly|tabp|tabprevious|tabr|tabrewind|tabs|ta|tag|tags|tc|tcl|tcld|tcldo|tclf|tclfile|te|tearoff|tf|tfirst|th|throw|tj|tjump|tl|tlast|tm|tm|tmenu|tn|tnext|tN|tNext|to|topleft|tp|tprevious|tr|trewind|try|ts|tselect|tu|tu|tunmenu|una|unabbreviate|u|undo|undoj|undojoin|undol|undolist|unh|unhide|unlet|unlo|unlockvar|unm|unmap|up|update|verb|verbose|ve|version|vert|vertical|vie|view|vim|vimgrep|vimgrepa|vimgrepadd|vi|visual|viu|viusage|vmapc|vmapclear|vne|vnew|vs|vsplit|vu|vunmap|wa|wall|wh|while|winc|wincmd|windo|winp|winpos|win|winsize|wn|wnext|wN|wNext|wp|wprevious|wq|wqa|wqall|w|write|ws|wsverb|wv|wviminfo|X|xa|xall|x|xit|xm|xmap|xmapc|xmapclear|xme|xmenu|XMLent|XMLns|xn|xnoremap|xnoreme|xnoremenu|xu|xunmap|y|yank)\b/,
+		'keyword': /\b(?:ab|abbreviate|abc|abclear|abo|aboveleft|al|all|arga|argadd|argd|argdelete|argdo|arge|argedit|argg|argglobal|argl|arglocal|ar|args|argu|argument|as|ascii|bad|badd|ba|ball|bd|bdelete|be|bel|belowright|bf|bfirst|bl|blast|bm|bmodified|bn|bnext|bN|bNext|bo|botright|bp|bprevious|brea|break|breaka|breakadd|breakd|breakdel|breakl|breaklist|br|brewind|bro|browse|bufdo|b|buffer|buffers|bun|bunload|bw|bwipeout|ca|cabbrev|cabc|cabclear|caddb|caddbuffer|cad|caddexpr|caddf|caddfile|cal|call|cat|catch|cb|cbuffer|cc|ccl|cclose|cd|ce|center|cex|cexpr|cf|cfile|cfir|cfirst|cgetb|cgetbuffer|cgete|cgetexpr|cg|cgetfile|c|change|changes|chd|chdir|che|checkpath|checkt|checktime|cla|clast|cl|clist|clo|close|cmapc|cmapclear|cnew|cnewer|cn|cnext|cN|cNext|cnf|cnfile|cNfcNfile|cnorea|cnoreabbrev|col|colder|colo|colorscheme|comc|comclear|comp|compiler|conf|confirm|con|continue|cope|copen|co|copy|cpf|cpfile|cp|cprevious|cq|cquit|cr|crewind|cuna|cunabbrev|cu|cunmap|cw|cwindow|debugg|debuggreedy|delc|delcommand|d|delete|delf|delfunction|delm|delmarks|diffg|diffget|diffoff|diffpatch|diffpu|diffput|diffsplit|diffthis|diffu|diffupdate|dig|digraphs|di|display|dj|djump|dl|dlist|dr|drop|ds|dsearch|dsp|dsplit|earlier|echoe|echoerr|echom|echomsg|echon|e|edit|el|else|elsei|elseif|em|emenu|endfo|endfor|endf|endfunction|endfun|en|endif|endt|endtry|endw|endwhile|ene|enew|ex|exi|exit|exu|exusage|f|file|files|filetype|fina|finally|fin|find|fini|finish|fir|first|fix|fixdel|fo|fold|foldc|foldclose|folddoc|folddoclosed|foldd|folddoopen|foldo|foldopen|for|fu|fun|function|go|goto|gr|grep|grepa|grepadd|ha|hardcopy|h|help|helpf|helpfind|helpg|helpgrep|helpt|helptags|hid|hide|his|history|ia|iabbrev|iabc|iabclear|if|ij|ijump|il|ilist|imapc|imapclear|in|inorea|inoreabbrev|isearch|isp|isplit|iuna|iunabbrev|iu|iunmap|j|join|ju|jumps|k|keepalt|keepj|keepjumps|kee|keepmarks|laddb|laddbuffer|lad|laddexpr|laddf|laddfile|lan|language|la|last|later|lb|lbuffer|lc|lcd|lch|lchdir|lcl|lclose|let|left|lefta|leftabove|lex|lexpr|lf|lfile|lfir|lfirst|lgetb|lgetbuffer|lgete|lgetexpr|lg|lgetfile|lgr|lgrep|lgrepa|lgrepadd|lh|lhelpgrep|l|list|ll|lla|llast|lli|llist|lmak|lmake|lm|lmap|lmapc|lmapclear|lnew|lnewer|lne|lnext|lN|lNext|lnf|lnfile|lNf|lNfile|ln|lnoremap|lo|loadview|loc|lockmarks|lockv|lockvar|lol|lolder|lop|lopen|lpf|lpfile|lp|lprevious|lr|lrewind|ls|lt|ltag|lu|lunmap|lv|lvimgrep|lvimgrepa|lvimgrepadd|lw|lwindow|mak|make|ma|mark|marks|mat|match|menut|menutranslate|mk|mkexrc|mks|mksession|mksp|mkspell|mkvie|mkview|mkv|mkvimrc|mod|mode|m|move|mzf|mzfile|mz|mzscheme|nbkey|new|n|next|N|Next|nmapc|nmapclear|noh|nohlsearch|norea|noreabbrev|nu|number|nun|nunmap|omapc|omapclear|on|only|o|open|opt|options|ou|ounmap|pc|pclose|ped|pedit|pe|perl|perld|perldo|po|pop|popu|popup|pp|ppop|pre|preserve|prev|previous|p|print|P|Print|profd|profdel|prof|profile|promptf|promptfind|promptr|promptrepl|ps|psearch|pta|ptag|ptf|ptfirst|ptj|ptjump|ptl|ptlast|ptn|ptnext|ptN|ptNext|ptp|ptprevious|ptr|ptrewind|pts|ptselect|pu|put|pw|pwd|pyf|pyfile|py|python|qa|qall|q|quit|quita|quitall|r|read|rec|recover|redi|redir|red|redo|redr|redraw|redraws|redrawstatus|reg|registers|res|resize|ret|retab|retu|return|rew|rewind|ri|right|rightb|rightbelow|rub|ruby|rubyd|rubydo|rubyf|rubyfile|ru|runtime|rv|rviminfo|sal|sall|san|sandbox|sa|sargument|sav|saveas|sba|sball|sbf|sbfirst|sbl|sblast|sbm|sbmodified|sbn|sbnext|sbN|sbNext|sbp|sbprevious|sbr|sbrewind|sb|sbuffer|scripte|scriptencoding|scrip|scriptnames|se|set|setf|setfiletype|setg|setglobal|setl|setlocal|sf|sfind|sfir|sfirst|sh|shell|sign|sil|silent|sim|simalt|sla|slast|sl|sleep|sm|smagic|sm|smap|smapc|smapclear|sme|smenu|sn|snext|sN|sNext|sni|sniff|sno|snomagic|snor|snoremap|snoreme|snoremenu|sor|sort|so|source|spelld|spelldump|spe|spellgood|spelli|spellinfo|spellr|spellrepall|spellu|spellundo|spellw|spellwrong|sp|split|spr|sprevious|sre|srewind|sta|stag|startg|startgreplace|star|startinsert|startr|startreplace|stj|stjump|st|stop|stopi|stopinsert|sts|stselect|sun|sunhide|sunm|sunmap|sus|suspend|sv|sview|syncbind|t|tab|tabc|tabclose|tabd|tabdo|tabe|tabedit|tabf|tabfind|tabfir|tabfirst|tabl|tablast|tabm|tabmove|tabnew|tabn|tabnext|tabN|tabNext|tabo|tabonly|tabp|tabprevious|tabr|tabrewind|tabs|ta|tag|tags|tc|tcl|tcld|tcldo|tclf|tclfile|te|tearoff|tf|tfirst|th|throw|tj|tjump|tl|tlast|tm|tm|tmenu|tn|tnext|tN|tNext|to|topleft|tp|tprevious|tr|trewind|try|ts|tselect|tu|tu|tunmenu|una|unabbreviate|u|undo|undoj|undojoin|undol|undolist|unh|unhide|unlet|unlo|unlockvar|unm|unmap|up|update|verb|verbose|ve|version|vert|vertical|vie|view|vim|vimgrep|vimgrepa|vimgrepadd|vi|visual|viu|viusage|vmapc|vmapclear|vne|vnew|vs|vsplit|vu|vunmap|wa|wall|wh|while|winc|wincmd|windo|winp|winpos|win|winsize|wn|wnext|wN|wNext|wp|wprevious|wq|wqa|wqall|w|write|ws|wsverb|wv|wviminfo|X|xa|xall|x|xit|xm|xmap|xmapc|xmapclear|xme|xmenu|XMLent|XMLns|xn|xnoremap|xnoreme|xnoremenu|xu|xunmap|y|yank)\b/,
 		'builtin': /\b(?:autocmd|acd|ai|akm|aleph|allowrevins|altkeymap|ambiwidth|ambw|anti|antialias|arab|arabic|arabicshape|ari|arshape|autochdir|autoindent|autoread|autowrite|autowriteall|aw|awa|background|backspace|backup|backupcopy|backupdir|backupext|backupskip|balloondelay|ballooneval|balloonexpr|bdir|bdlay|beval|bex|bexpr|bg|bh|bin|binary|biosk|bioskey|bk|bkc|bomb|breakat|brk|browsedir|bs|bsdir|bsk|bt|bufhidden|buflisted|buftype|casemap|ccv|cdpath|cedit|cfu|ch|charconvert|ci|cin|cindent|cink|cinkeys|cino|cinoptions|cinw|cinwords|clipboard|cmdheight|cmdwinheight|cmp|cms|columns|com|comments|commentstring|compatible|complete|completefunc|completeopt|consk|conskey|copyindent|cot|cpo|cpoptions|cpt|cscopepathcomp|cscopeprg|cscopequickfix|cscopetag|cscopetagorder|cscopeverbose|cspc|csprg|csqf|cst|csto|csverb|cuc|cul|cursorcolumn|cursorline|cwh|debug|deco|def|define|delcombine|dex|dg|dict|dictionary|diff|diffexpr|diffopt|digraph|dip|dir|directory|dy|ea|ead|eadirection|eb|ed|edcompatible|ef|efm|ei|ek|enc|encoding|endofline|eol|ep|equalalways|equalprg|errorbells|errorfile|errorformat|esckeys|et|eventignore|expandtab|exrc|fcl|fcs|fdc|fde|fdi|fdl|fdls|fdm|fdn|fdo|fdt|fen|fenc|fencs|fex|ff|ffs|fileencoding|fileencodings|fileformat|fileformats|fillchars|fk|fkmap|flp|fml|fmr|foldcolumn|foldenable|foldexpr|foldignore|foldlevel|foldlevelstart|foldmarker|foldmethod|foldminlines|foldnestmax|foldtext|formatexpr|formatlistpat|formatoptions|formatprg|fp|fs|fsync|ft|gcr|gd|gdefault|gfm|gfn|gfs|gfw|ghr|gp|grepformat|grepprg|gtl|gtt|guicursor|guifont|guifontset|guifontwide|guiheadroom|guioptions|guipty|guitablabel|guitabtooltip|helpfile|helpheight|helplang|hf|hh|hi|hidden|highlight|hk|hkmap|hkmapp|hkp|hl|hlg|hls|hlsearch|ic|icon|iconstring|ignorecase|im|imactivatekey|imak|imc|imcmdline|imd|imdisable|imi|iminsert|ims|imsearch|inc|include|includeexpr|incsearch|inde|indentexpr|indentkeys|indk|inex|inf|infercase|insertmode|isf|isfname|isi|isident|isk|iskeyword|isprint|joinspaces|js|key|keymap|keymodel|keywordprg|km|kmp|kp|langmap|langmenu|laststatus|lazyredraw|lbr|lcs|linebreak|lines|linespace|lisp|lispwords|listchars|loadplugins|lpl|lsp|lz|macatsui|magic|makeef|makeprg|matchpairs|matchtime|maxcombine|maxfuncdepth|maxmapdepth|maxmem|maxmempattern|maxmemtot|mco|mef|menuitems|mfd|mh|mis|mkspellmem|ml|mls|mm|mmd|mmp|mmt|modeline|modelines|modifiable|modified|more|mouse|mousef|mousefocus|mousehide|mousem|mousemodel|mouses|mouseshape|mouset|mousetime|mp|mps|msm|mzq|mzquantum|nf|nrformats|numberwidth|nuw|odev|oft|ofu|omnifunc|opendevice|operatorfunc|opfunc|osfiletype|pa|para|paragraphs|paste|pastetoggle|patchexpr|patchmode|path|pdev|penc|pex|pexpr|pfn|ph|pheader|pi|pm|pmbcs|pmbfn|popt|preserveindent|previewheight|previewwindow|printdevice|printencoding|printexpr|printfont|printheader|printmbcharset|printmbfont|printoptions|prompt|pt|pumheight|pvh|pvw|qe|quoteescape|readonly|remap|report|restorescreen|revins|rightleft|rightleftcmd|rl|rlc|ro|rs|rtp|ruf|ruler|rulerformat|runtimepath|sbo|sc|scb|scr|scroll|scrollbind|scrolljump|scrolloff|scrollopt|scs|sect|sections|secure|sel|selection|selectmode|sessionoptions|sft|shcf|shellcmdflag|shellpipe|shellquote|shellredir|shellslash|shelltemp|shelltype|shellxquote|shiftround|shiftwidth|shm|shortmess|shortname|showbreak|showcmd|showfulltag|showmatch|showmode|showtabline|shq|si|sidescroll|sidescrolloff|siso|sj|slm|smartcase|smartindent|smarttab|smc|smd|softtabstop|sol|spc|spell|spellcapcheck|spellfile|spelllang|spellsuggest|spf|spl|splitbelow|splitright|sps|sr|srr|ss|ssl|ssop|stal|startofline|statusline|stl|stmp|su|sua|suffixes|suffixesadd|sw|swapfile|swapsync|swb|swf|switchbuf|sws|sxq|syn|synmaxcol|syntax|tabline|tabpagemax|tabstop|tagbsearch|taglength|tagrelative|tagstack|tal|tb|tbi|tbidi|tbis|tbs|tenc|term|termbidi|termencoding|terse|textauto|textmode|textwidth|tgst|thesaurus|tildeop|timeout|timeoutlen|title|titlelen|titleold|titlestring|toolbar|toolbariconsize|top|tpm|tsl|tsr|ttimeout|ttimeoutlen|ttm|tty|ttybuiltin|ttyfast|ttym|ttymouse|ttyscroll|ttytype|tw|tx|uc|ul|undolevels|updatecount|updatetime|ut|vb|vbs|vdir|verbosefile|vfile|viewdir|viewoptions|viminfo|virtualedit|visualbell|vop|wak|warn|wb|wc|wcm|wd|weirdinvert|wfh|wfw|whichwrap|wi|wig|wildchar|wildcharm|wildignore|wildmenu|wildmode|wildoptions|wim|winaltkeys|window|winfixheight|winfixwidth|winheight|winminheight|winminwidth|winwidth|wiv|wiw|wm|wmh|wmnu|wmw|wop|wrap|wrapmargin|wrapscan|writeany|writebackup|writedelay|ww|noacd|noai|noakm|noallowrevins|noaltkeymap|noanti|noantialias|noar|noarab|noarabic|noarabicshape|noari|noarshape|noautochdir|noautoindent|noautoread|noautowrite|noautowriteall|noaw|noawa|nobackup|noballooneval|nobeval|nobin|nobinary|nobiosk|nobioskey|nobk|nobl|nobomb|nobuflisted|nocf|noci|nocin|nocindent|nocompatible|noconfirm|noconsk|noconskey|nocopyindent|nocp|nocscopetag|nocscopeverbose|nocst|nocsverb|nocuc|nocul|nocursorcolumn|nocursorline|nodeco|nodelcombine|nodg|nodiff|nodigraph|nodisable|noea|noeb|noed|noedcompatible|noek|noendofline|noeol|noequalalways|noerrorbells|noesckeys|noet|noex|noexpandtab|noexrc|nofen|nofk|nofkmap|nofoldenable|nogd|nogdefault|noguipty|nohid|nohidden|nohk|nohkmap|nohkmapp|nohkp|nohls|noic|noicon|noignorecase|noim|noimc|noimcmdline|noimd|noincsearch|noinf|noinfercase|noinsertmode|nois|nojoinspaces|nojs|nolazyredraw|nolbr|nolinebreak|nolisp|nolist|noloadplugins|nolpl|nolz|noma|nomacatsui|nomagic|nomh|noml|nomod|nomodeline|nomodifiable|nomodified|nomore|nomousef|nomousefocus|nomousehide|nonu|nonumber|noodev|noopendevice|nopaste|nopi|nopreserveindent|nopreviewwindow|noprompt|nopvw|noreadonly|noremap|norestorescreen|norevins|nori|norightleft|norightleftcmd|norl|norlc|noro|nors|noru|noruler|nosb|nosc|noscb|noscrollbind|noscs|nosecure|nosft|noshellslash|noshelltemp|noshiftround|noshortname|noshowcmd|noshowfulltag|noshowmatch|noshowmode|nosi|nosm|nosmartcase|nosmartindent|nosmarttab|nosmd|nosn|nosol|nospell|nosplitbelow|nosplitright|nospr|nosr|nossl|nosta|nostartofline|nostmp|noswapfile|noswf|nota|notagbsearch|notagrelative|notagstack|notbi|notbidi|notbs|notermbidi|noterse|notextauto|notextmode|notf|notgst|notildeop|notimeout|notitle|noto|notop|notr|nottimeout|nottybuiltin|nottyfast|notx|novb|novisualbell|nowa|nowarn|nowb|noweirdinvert|nowfh|nowfw|nowildmenu|nowinfixheight|nowinfixwidth|nowiv|nowmnu|nowrap|nowrapscan|nowrite|nowriteany|nowritebackup|nows|invacd|invai|invakm|invallowrevins|invaltkeymap|invanti|invantialias|invar|invarab|invarabic|invarabicshape|invari|invarshape|invautochdir|invautoindent|invautoread|invautowrite|invautowriteall|invaw|invawa|invbackup|invballooneval|invbeval|invbin|invbinary|invbiosk|invbioskey|invbk|invbl|invbomb|invbuflisted|invcf|invci|invcin|invcindent|invcompatible|invconfirm|invconsk|invconskey|invcopyindent|invcp|invcscopetag|invcscopeverbose|invcst|invcsverb|invcuc|invcul|invcursorcolumn|invcursorline|invdeco|invdelcombine|invdg|invdiff|invdigraph|invdisable|invea|inveb|inved|invedcompatible|invek|invendofline|inveol|invequalalways|inverrorbells|invesckeys|invet|invex|invexpandtab|invexrc|invfen|invfk|invfkmap|invfoldenable|invgd|invgdefault|invguipty|invhid|invhidden|invhk|invhkmap|invhkmapp|invhkp|invhls|invhlsearch|invic|invicon|invignorecase|invim|invimc|invimcmdline|invimd|invincsearch|invinf|invinfercase|invinsertmode|invis|invjoinspaces|invjs|invlazyredraw|invlbr|invlinebreak|invlisp|invlist|invloadplugins|invlpl|invlz|invma|invmacatsui|invmagic|invmh|invml|invmod|invmodeline|invmodifiable|invmodified|invmore|invmousef|invmousefocus|invmousehide|invnu|invnumber|invodev|invopendevice|invpaste|invpi|invpreserveindent|invpreviewwindow|invprompt|invpvw|invreadonly|invremap|invrestorescreen|invrevins|invri|invrightleft|invrightleftcmd|invrl|invrlc|invro|invrs|invru|invruler|invsb|invsc|invscb|invscrollbind|invscs|invsecure|invsft|invshellslash|invshelltemp|invshiftround|invshortname|invshowcmd|invshowfulltag|invshowmatch|invshowmode|invsi|invsm|invsmartcase|invsmartindent|invsmarttab|invsmd|invsn|invsol|invspell|invsplitbelow|invsplitright|invspr|invsr|invssl|invsta|invstartofline|invstmp|invswapfile|invswf|invta|invtagbsearch|invtagrelative|invtagstack|invtbi|invtbidi|invtbs|invtermbidi|invterse|invtextauto|invtextmode|invtf|invtgst|invtildeop|invtimeout|invtitle|invto|invtop|invtr|invttimeout|invttybuiltin|invttyfast|invtx|invvb|invvisualbell|invwa|invwarn|invwb|invweirdinvert|invwfh|invwfw|invwildmenu|invwinfixheight|invwinfixwidth|invwiv|invwmnu|invwrap|invwrapscan|invwrite|invwriteany|invwritebackup|invws|t_AB|t_AF|t_al|t_AL|t_bc|t_cd|t_ce|t_Ce|t_cl|t_cm|t_Co|t_cs|t_Cs|t_CS|t_CV|t_da|t_db|t_dl|t_DL|t_EI|t_F1|t_F2|t_F3|t_F4|t_F5|t_F6|t_F7|t_F8|t_F9|t_fs|t_IE|t_IS|t_k1|t_K1|t_k2|t_k3|t_K3|t_k4|t_K4|t_k5|t_K5|t_k6|t_K6|t_k7|t_K7|t_k8|t_K8|t_k9|t_K9|t_KA|t_kb|t_kB|t_KB|t_KC|t_kd|t_kD|t_KD|t_ke|t_KE|t_KF|t_KG|t_kh|t_KH|t_kI|t_KI|t_KJ|t_KK|t_kl|t_KL|t_kN|t_kP|t_kr|t_ks|t_ku|t_le|t_mb|t_md|t_me|t_mr|t_ms|t_nd|t_op|t_RI|t_RV|t_Sb|t_se|t_Sf|t_SI|t_so|t_sr|t_te|t_ti|t_ts|t_ue|t_us|t_ut|t_vb|t_ve|t_vi|t_vs|t_WP|t_WS|t_xs|t_ZH|t_ZR)\b/,
 		'number': /\b(?:0x[\da-f]+|\d+(?:\.\d+)?)\b/i,
 		'operator': /\|\||&&|[-+.]=?|[=!](?:[=~][#?]?)?|[<>]=?[#?]?|[*\/%?]|\b(?:is(?:not)?)\b/,
@@ -9061,7 +9959,7 @@
 	};
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports) {
 
 	// issues: nested multiline comments
@@ -9082,27 +9980,27 @@
 				}
 			}
 		},
-		'keyword': /\b(as|associativity|break|case|catch|class|continue|convenience|default|defer|deinit|didSet|do|dynamic(?:Type)?|else|enum|extension|fallthrough|final|for|func|get|guard|if|import|in|infix|init|inout|internal|is|lazy|left|let|mutating|new|none|nonmutating|operator|optional|override|postfix|precedence|prefix|private|Protocol|public|repeat|required|rethrows|return|right|safe|self|Self|set|static|struct|subscript|super|switch|throws?|try|Type|typealias|unowned|unsafe|var|weak|where|while|willSet|__(?:COLUMN__|FILE__|FUNCTION__|LINE__))\b/,
-		'number': /\b([\d_]+(\.[\de_]+)?|0x[a-f0-9_]+(\.[a-f0-9p_]+)?|0b[01_]+|0o[0-7_]+)\b/i,
-		'constant': /\b(nil|[A-Z_]{2,}|k[A-Z][A-Za-z_]+)\b/,
-		'atrule': /@\b(IB(?:Outlet|Designable|Action|Inspectable)|class_protocol|exported|noreturn|NS(?:Copying|Managed)|objc|UIApplicationMain|auto_closure)\b/,
-		'builtin': /\b([A-Z]\S+|abs|advance|alignof(?:Value)?|assert|contains|count(?:Elements)?|debugPrint(?:ln)?|distance|drop(?:First|Last)|dump|enumerate|equal|filter|find|first|getVaList|indices|isEmpty|join|last|lexicographicalCompare|map|max(?:Element)?|min(?:Element)?|numericCast|overlaps|partition|print(?:ln)?|reduce|reflect|reverse|sizeof(?:Value)?|sort(?:ed)?|split|startsWith|stride(?:of(?:Value)?)?|suffix|swap|toDebugString|toString|transcode|underestimateCount|unsafeBitCast|with(?:ExtendedLifetime|Unsafe(?:MutablePointers?|Pointers?)|VaList))\b/
+		'keyword': /\b(?:as|associativity|break|case|catch|class|continue|convenience|default|defer|deinit|didSet|do|dynamic(?:Type)?|else|enum|extension|fallthrough|final|for|func|get|guard|if|import|in|infix|init|inout|internal|is|lazy|left|let|mutating|new|none|nonmutating|operator|optional|override|postfix|precedence|prefix|private|Protocol|public|repeat|required|rethrows|return|right|safe|self|Self|set|static|struct|subscript|super|switch|throws?|try|Type|typealias|unowned|unsafe|var|weak|where|while|willSet|__(?:COLUMN__|FILE__|FUNCTION__|LINE__))\b/,
+		'number': /\b(?:[\d_]+(?:\.[\de_]+)?|0x[a-f0-9_]+(?:\.[a-f0-9p_]+)?|0b[01_]+|0o[0-7_]+)\b/i,
+		'constant': /\b(?:nil|[A-Z_]{2,}|k[A-Z][A-Za-z_]+)\b/,
+		'atrule': /@\b(?:IB(?:Outlet|Designable|Action|Inspectable)|class_protocol|exported|noreturn|NS(?:Copying|Managed)|objc|UIApplicationMain|auto_closure)\b/,
+		'builtin': /\b(?:[A-Z]\S+|abs|advance|alignof(?:Value)?|assert|contains|count(?:Elements)?|debugPrint(?:ln)?|distance|drop(?:First|Last)|dump|enumerate|equal|filter|find|first|getVaList|indices|isEmpty|join|last|lexicographicalCompare|map|max(?:Element)?|min(?:Element)?|numericCast|overlaps|partition|print(?:ln)?|reduce|reflect|reverse|sizeof(?:Value)?|sort(?:ed)?|split|startsWith|stride(?:of(?:Value)?)?|suffix|swap|toDebugString|toString|transcode|underestimateCount|unsafeBitCast|with(?:ExtendedLifetime|Unsafe(?:MutablePointers?|Pointers?)|VaList))\b/
 	});
 	Prism.languages.swift['string'].inside['interpolation'].inside.rest = Prism.util.clone(Prism.languages.swift);
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports) {
 
 	Prism.languages.objectivec = Prism.languages.extend('c', {
-		'keyword': /\b(asm|typeof|inline|auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|int|long|register|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|in|self|super)\b|(@interface|@end|@implementation|@protocol|@class|@public|@protected|@private|@property|@try|@catch|@finally|@throw|@synthesize|@dynamic|@selector)\b/,
-		'string': /("|')(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1|@"(\\(?:\r\n|[\s\S])|[^"\\\r\n])*"/,
+		'keyword': /\b(?:asm|typeof|inline|auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|int|long|register|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|in|self|super)\b|(?:@interface|@end|@implementation|@protocol|@class|@public|@protected|@private|@property|@try|@catch|@finally|@throw|@synthesize|@dynamic|@selector)\b/,
+		'string': /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1|@"(?:\\(?:\r\n|[\s\S])|[^"\\\r\n])*"/,
 		'operator': /-[->]?|\+\+?|!=?|<<?=?|>>?=?|==?|&&?|\|\|?|[~^%?*\/@]/
 	});
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports) {
 
 	Prism.languages.sql= {
@@ -9111,27 +10009,27 @@
 			lookbehind: true
 		},
 		'string' : {
-			pattern: /(^|[^@\\])("|')(?:\\?[\s\S])*?\2/,
+			pattern: /(^|[^@\\])("|')(?:\\[\s\S]|(?!\2)[^\\])*\2/,
 			greedy: true,
 			lookbehind: true
 		},
-		'variable': /@[\w.$]+|@("|'|`)(?:\\?[\s\S])+?\1/,
+		'variable': /@[\w.$]+|@(["'`])(?:\\[\s\S]|(?!\1)[^\\])+\1/,
 		'function': /\b(?:COUNT|SUM|AVG|MIN|MAX|FIRST|LAST|UCASE|LCASE|MID|LEN|ROUND|NOW|FORMAT)(?=\s*\()/i, // Should we highlight user defined functions too?
 		'keyword': /\b(?:ACTION|ADD|AFTER|ALGORITHM|ALL|ALTER|ANALYZE|ANY|APPLY|AS|ASC|AUTHORIZATION|AUTO_INCREMENT|BACKUP|BDB|BEGIN|BERKELEYDB|BIGINT|BINARY|BIT|BLOB|BOOL|BOOLEAN|BREAK|BROWSE|BTREE|BULK|BY|CALL|CASCADED?|CASE|CHAIN|CHAR VARYING|CHARACTER (?:SET|VARYING)|CHARSET|CHECK|CHECKPOINT|CLOSE|CLUSTERED|COALESCE|COLLATE|COLUMN|COLUMNS|COMMENT|COMMIT|COMMITTED|COMPUTE|CONNECT|CONSISTENT|CONSTRAINT|CONTAINS|CONTAINSTABLE|CONTINUE|CONVERT|CREATE|CROSS|CURRENT(?:_DATE|_TIME|_TIMESTAMP|_USER)?|CURSOR|DATA(?:BASES?)?|DATE(?:TIME)?|DBCC|DEALLOCATE|DEC|DECIMAL|DECLARE|DEFAULT|DEFINER|DELAYED|DELETE|DELIMITER(?:S)?|DENY|DESC|DESCRIBE|DETERMINISTIC|DISABLE|DISCARD|DISK|DISTINCT|DISTINCTROW|DISTRIBUTED|DO|DOUBLE(?: PRECISION)?|DROP|DUMMY|DUMP(?:FILE)?|DUPLICATE KEY|ELSE|ENABLE|ENCLOSED BY|END|ENGINE|ENUM|ERRLVL|ERRORS|ESCAPE(?:D BY)?|EXCEPT|EXEC(?:UTE)?|EXISTS|EXIT|EXPLAIN|EXTENDED|FETCH|FIELDS|FILE|FILLFACTOR|FIRST|FIXED|FLOAT|FOLLOWING|FOR(?: EACH ROW)?|FORCE|FOREIGN|FREETEXT(?:TABLE)?|FROM|FULL|FUNCTION|GEOMETRY(?:COLLECTION)?|GLOBAL|GOTO|GRANT|GROUP|HANDLER|HASH|HAVING|HOLDLOCK|IDENTITY(?:_INSERT|COL)?|IF|IGNORE|IMPORT|INDEX|INFILE|INNER|INNODB|INOUT|INSERT|INT|INTEGER|INTERSECT|INTO|INVOKER|ISOLATION LEVEL|JOIN|KEYS?|KILL|LANGUAGE SQL|LAST|LEFT|LIMIT|LINENO|LINES|LINESTRING|LOAD|LOCAL|LOCK|LONG(?:BLOB|TEXT)|MATCH(?:ED)?|MEDIUM(?:BLOB|INT|TEXT)|MERGE|MIDDLEINT|MODIFIES SQL DATA|MODIFY|MULTI(?:LINESTRING|POINT|POLYGON)|NATIONAL(?: CHAR VARYING| CHARACTER(?: VARYING)?| VARCHAR)?|NATURAL|NCHAR(?: VARCHAR)?|NEXT|NO(?: SQL|CHECK|CYCLE)?|NONCLUSTERED|NULLIF|NUMERIC|OFF?|OFFSETS?|ON|OPEN(?:DATASOURCE|QUERY|ROWSET)?|OPTIMIZE|OPTION(?:ALLY)?|ORDER|OUT(?:ER|FILE)?|OVER|PARTIAL|PARTITION|PERCENT|PIVOT|PLAN|POINT|POLYGON|PRECEDING|PRECISION|PREV|PRIMARY|PRINT|PRIVILEGES|PROC(?:EDURE)?|PUBLIC|PURGE|QUICK|RAISERROR|READ(?:S SQL DATA|TEXT)?|REAL|RECONFIGURE|REFERENCES|RELEASE|RENAME|REPEATABLE|REPLICATION|REQUIRE|RESTORE|RESTRICT|RETURNS?|REVOKE|RIGHT|ROLLBACK|ROUTINE|ROW(?:COUNT|GUIDCOL|S)?|RTREE|RULE|SAVE(?:POINT)?|SCHEMA|SELECT|SERIAL(?:IZABLE)?|SESSION(?:_USER)?|SET(?:USER)?|SHARE MODE|SHOW|SHUTDOWN|SIMPLE|SMALLINT|SNAPSHOT|SOME|SONAME|START(?:ING BY)?|STATISTICS|STATUS|STRIPED|SYSTEM_USER|TABLES?|TABLESPACE|TEMP(?:ORARY|TABLE)?|TERMINATED BY|TEXT(?:SIZE)?|THEN|TIMESTAMP|TINY(?:BLOB|INT|TEXT)|TOP?|TRAN(?:SACTIONS?)?|TRIGGER|TRUNCATE|TSEQUAL|TYPES?|UNBOUNDED|UNCOMMITTED|UNDEFINED|UNION|UNIQUE|UNPIVOT|UPDATE(?:TEXT)?|USAGE|USE|USER|USING|VALUES?|VAR(?:BINARY|CHAR|CHARACTER|YING)|VIEW|WAITFOR|WARNINGS|WHEN|WHERE|WHILE|WITH(?: ROLLUP|IN)?|WORK|WRITE(?:TEXT)?)\b/i,
 		'boolean': /\b(?:TRUE|FALSE|NULL)\b/i,
 		'number': /\b-?(?:0x)?\d*\.?[\da-f]+\b/,
-		'operator': /[-+*\/=%^~]|&&?|\|?\||!=?|<(?:=>?|<|>)?|>[>=]?|\b(?:AND|BETWEEN|IN|LIKE|NOT|OR|IS|DIV|REGEXP|RLIKE|SOUNDS LIKE|XOR)\b/i,
+		'operator': /[-+*\/=%^~]|&&?|\|\|?|!=?|<(?:=>?|<|>)?|>[>=]?|\b(?:AND|BETWEEN|IN|LIKE|NOT|OR|IS|DIV|REGEXP|RLIKE|SOUNDS LIKE|XOR)\b/i,
 		'punctuation': /[;[\]()`,.]/
 	};
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports) {
 
 	Prism.languages.scheme = {
 		'comment' : /;.*/,
 		'string' :  {
-			pattern: /"(?:[^"\\\r\n]|\\.)*?"|'[^('\s]*/,
+			pattern: /"(?:[^"\\\r\n]|\\.)*"|'[^('\s]*/,
 			greedy: true
 		},
 		'keyword' : {
@@ -9159,7 +10057,7 @@
 	};
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports) {
 
 	/**
@@ -9174,7 +10072,7 @@
 				/#(?!\{[^\r\n]*?\}).*/,
 				/^=begin(?:\r?\n|\r)(?:.*(?:\r?\n|\r))*?=end/m
 			],
-			'keyword': /\b(alias|and|BEGIN|begin|break|case|class|def|define_method|defined|do|each|else|elsif|END|end|ensure|false|for|if|in|module|new|next|nil|not|or|raise|redo|require|rescue|retry|return|self|super|then|throw|true|undef|unless|until|when|while|yield)\b/
+			'keyword': /\b(?:alias|and|BEGIN|begin|break|case|class|def|define_method|defined|do|each|else|elsif|END|end|ensure|false|for|if|in|module|new|next|nil|not|or|raise|redo|require|rescue|retry|return|self|super|then|throw|true|undef|unless|until|when|while|yield)\b/
 		});
 	
 		var interpolation = {
@@ -9191,7 +10089,7 @@
 		Prism.languages.insertBefore('ruby', 'keyword', {
 			'regex': [
 				{
-					pattern: /%r([^a-zA-Z0-9\s\{\(\[<])(?:[^\\]|\\[\s\S])*?\1[gim]{0,3}/,
+					pattern: /%r([^a-zA-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1[gim]{0,3}/,
 					greedy: true,
 					inside: {
 						'interpolation': interpolation
@@ -9232,18 +10130,18 @@
 					greedy: true
 				}
 			],
-			'variable': /[@$]+[a-zA-Z_][a-zA-Z_0-9]*(?:[?!]|\b)/,
-			'symbol': /:[a-zA-Z_][a-zA-Z_0-9]*(?:[?!]|\b)/
+			'variable': /[@$]+[a-zA-Z_]\w*(?:[?!]|\b)/,
+			'symbol': /:[a-zA-Z_]\w*(?:[?!]|\b)/
 		});
 	
 		Prism.languages.insertBefore('ruby', 'number', {
-			'builtin': /\b(Array|Bignum|Binding|Class|Continuation|Dir|Exception|FalseClass|File|Stat|File|Fixnum|Float|Hash|Integer|IO|MatchData|Method|Module|NilClass|Numeric|Object|Proc|Range|Regexp|String|Struct|TMS|Symbol|ThreadGroup|Thread|Time|TrueClass)\b/,
-			'constant': /\b[A-Z][a-zA-Z_0-9]*(?:[?!]|\b)/
+			'builtin': /\b(?:Array|Bignum|Binding|Class|Continuation|Dir|Exception|FalseClass|File|Stat|Fixnum|Float|Hash|Integer|IO|MatchData|Method|Module|NilClass|Numeric|Object|Proc|Range|Regexp|String|Struct|TMS|Symbol|ThreadGroup|Thread|Time|TrueClass)\b/,
+			'constant': /\b[A-Z]\w*(?:[?!]|\b)/
 		});
 	
 		Prism.languages.ruby.string = [
 			{
-				pattern: /%[qQiIwWxs]?([^a-zA-Z0-9\s\{\(\[<])(?:[^\\]|\\[\s\S])*?\1/,
+				pattern: /%[qQiIwWxs]?([^a-zA-Z0-9\s{(\[<])(?:(?!\1)[^\\]|\\[\s\S])*\1/,
 				greedy: true,
 				inside: {
 					'interpolation': interpolation
@@ -9279,7 +10177,7 @@
 				}
 			},
 			{
-				pattern: /("|')(#\{[^}]+\}|\\(?:\r?\n|\r)|\\?.)*?\1/,
+				pattern: /("|')(?:#\{[^}]+\}|\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
 				greedy: true,
 				inside: {
 					'interpolation': interpolation
@@ -9289,7 +10187,7 @@
 	}(Prism));
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports) {
 
 	/* TODO
@@ -9312,7 +10210,7 @@
 						pattern: /^\{|\}$/i,
 						alias: 'punctuation'
 					},
-					'string': /(["'])(?:\\?.)*?\1/,
+					'string': /(["'])(?:\\.|(?!\1)[^\\\r\n])*\1/,
 					'number': /\b-?(?:0x[\dA-Fa-f]+|\d*\.?\d+(?:[Ee][-+]?\d+)?)\b/,
 					'variable': [
 						/\$(?!\d)\w+/,
@@ -9346,7 +10244,7 @@
 						}
 					},
 					'punctuation': [
-						/[\[\]().,:`]|\->/
+						/[\[\]().,:`]|->/
 					],
 					'operator': [
 						/[+\-*\/%]|==?=?|[!<>]=?|&&|\|\|?/,
@@ -9431,7 +10329,7 @@
 	}(Prism));
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports) {
 
 	Prism.languages.smalltalk = {
@@ -9439,7 +10337,7 @@
 		'string': /'(?:''|[^'])+'/,
 		'symbol': /#[\da-z]+|#(?:-|([+\/\\*~<>=@%|&?!])\1?)|#(?=\()/i,
 		'block-arguments': {
-			pattern: /(\[\s*):[^\[|]*?\|/,
+			pattern: /(\[\s*):[^\[|]*\|/,
 			lookbehind: true,
 			inside: {
 				'variable': /:[\da-z]+/i,
@@ -9467,7 +10365,7 @@
 	};
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports) {
 
 	/* TODO
@@ -9490,11 +10388,11 @@
 		],
 		'string': [
 			{
-				pattern: /b?r(#*)"(?:\\?.)*?"\1/,
+				pattern: /b?r(#*)"(?:\\.|(?!"\1)[^\\\r\n])*"\1/,
 				greedy: true
 			},
 			{
-				pattern: /b?("|')(?:\\?.)*?\1/,
+				pattern: /b?("|')(?:\\.|(?!\1)[^\\\r\n])*\1/,
 				greedy: true
 			}
 		],
@@ -9507,23 +10405,23 @@
 		},
 	
 		'function': [
-			/[a-z0-9_]+(?=\s*\()/i,
+			/\w+(?=\s*\()/,
 			// Macros can use parens or brackets
-			/[a-z0-9_]+!(?=\s*\(|\[)/i
+			/\w+!(?=\s*\(|\[)/
 		],
 		'macro-rules': {
-			pattern: /[a-z0-9_]+!/i,
+			pattern: /\w+!/,
 			alias: 'function'
 		},
 	
 		// Hex, oct, bin, dec numbers with visual separators and type suffix
-		'number': /\b-?(?:0x[\dA-Fa-f](?:_?[\dA-Fa-f])*|0o[0-7](?:_?[0-7])*|0b[01](?:_?[01])*|(\d(_?\d)*)?\.?\d(_?\d)*([Ee][+-]?\d+)?)(?:_?(?:[iu](?:8|16|32|64)?|f32|f64))?\b/,
+		'number': /\b-?(?:0x[\dA-Fa-f](?:_?[\dA-Fa-f])*|0o[0-7](?:_?[0-7])*|0b[01](?:_?[01])*|(\d(?:_?\d)*)?\.?\d(?:_?\d)*(?:[Ee][+-]?\d+)?)(?:_?(?:[iu](?:8|16|32|64)?|f32|f64))?\b/,
 	
 		// Closure params should not be confused with bitwise OR |
 		'closure-params': {
 			pattern: /\|[^|]*\|(?=\s*[{-])/,
 			inside: {
-				'punctuation': /[\|:,]/,
+				'punctuation': /[|:,]/,
 				'operator': /[&*]/
 			}
 		},
@@ -9532,13 +10430,13 @@
 	};
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports) {
 
 	Prism.languages.r = {
 		'comment': /#.*/,
 		'string': {
-			pattern: /(['"])(?:\\?.)*?\1/,
+			pattern: /(['"])(?:\\.|(?!\1)[^\\\r\n])*\1/,
 			greedy: true
 		},
 		'percent-operator': {
@@ -9559,13 +10457,13 @@
 	};
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports) {
 
 	Prism.languages.d = Prism.languages.extend('clike', {
 		'string': [
 			// r"", x""
-			/\b[rx]"(\\.|[^\\"])*"[cwd]?/,
+			/\b[rx]"(?:\\[\s\S]|[^\\"])*"[cwd]?/,
 			// q"[]", q"()", q"<>", q"{}"
 			/\bq"(?:\[[\s\S]*?\]|\([\s\S]*?\)|<[\s\S]*?>|\{[\s\S]*?\})"/,
 			// q"IDENT
@@ -9577,7 +10475,7 @@
 			// Characters
 			/'(?:\\'|\\?[^']+)'/,
 	
-			/(["`])(\\.|(?!\1)[^\\])*\1[cwd]?/
+			/(["`])(?:\\[\s\S]|(?!\1)[^\\])*\1[cwd]?/
 		],
 	
 		'number': [
@@ -9610,7 +10508,7 @@
 	Prism.languages.insertBefore('d', 'comment', {
 		'token-string': {
 			// Allow one level of nesting
-			pattern: /\bq\{(?:|\{[^}]*\}|[^}])*\}/,
+			pattern: /\bq\{(?:\{[^}]*\}|[^}])*\}/,
 			alias: 'string'
 		}
 	});
@@ -9628,7 +10526,7 @@
 	});
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports) {
 
 	Prism.languages.dart = Prism.languages.extend('clike', {
@@ -9638,7 +10536,7 @@
 				greedy: true
 			},
 			{
-				pattern: /r?("|')(\\?.)*?\1/,
+				pattern: /r?("|')(?:\\.|(?!\1)[^\\\r\n])*\1/,
 				greedy: true
 			}
 		],
@@ -9657,7 +10555,7 @@
 	});
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports) {
 
 	(function(Prism) {
@@ -9675,20 +10573,20 @@
 	
 			// Strings are multiline
 			{
-				pattern: /'(?:\\?[^\\])*?'/,
+				pattern: /'(?:\\[\s\S]|[^\\'])*'/,
 				greedy: true
 			},
 	
 			{
 				// Strings are multiline
-				pattern: /"(?:\\?[^\\])*?"/,
+				pattern: /"(?:\\[\s\S]|[^\\"])*"/,
 				greedy: true,
 				inside: {
 					'interpolation': interpolation
 				}
 			}
 		],
-		'keyword': /\b(and|break|by|catch|class|continue|debugger|delete|do|each|else|extend|extends|false|finally|for|if|in|instanceof|is|isnt|let|loop|namespace|new|no|not|null|of|off|on|or|own|return|super|switch|then|this|throw|true|try|typeof|undefined|unless|until|when|while|window|with|yes|yield)\b/,
+		'keyword': /\b(?:and|break|by|catch|class|continue|debugger|delete|do|each|else|extend|extends|false|finally|for|if|in|instanceof|is|isnt|let|loop|namespace|new|no|not|null|of|off|on|or|own|return|super|switch|then|this|throw|true|try|typeof|undefined|unless|until|when|while|window|with|yes|yield)\b/,
 		'class-member': {
 			pattern: /@(?!\d)\w+/,
 			alias: 'variable'
@@ -9714,7 +10612,7 @@
 	
 	Prism.languages.insertBefore('coffeescript', 'string', {
 		'inline-javascript': {
-			pattern: /`(?:\\?[\s\S])*?`/,
+			pattern: /`(?:\\[\s\S]|[^\\`])*`/,
 			inside: {
 				'delimiter': {
 					pattern: /^`|`$/,
@@ -9753,7 +10651,7 @@
 	}(Prism));
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports) {
 
 	(function (Prism) {
@@ -9857,24 +10755,24 @@
 	}(Prism));
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports) {
 
 	Prism.languages.cpp = Prism.languages.extend('c', {
-		'keyword': /\b(alignas|alignof|asm|auto|bool|break|case|catch|char|char16_t|char32_t|class|compl|const|constexpr|const_cast|continue|decltype|default|delete|do|double|dynamic_cast|else|enum|explicit|export|extern|float|for|friend|goto|if|inline|int|long|mutable|namespace|new|noexcept|nullptr|operator|private|protected|public|register|reinterpret_cast|return|short|signed|sizeof|static|static_assert|static_cast|struct|switch|template|this|thread_local|throw|try|typedef|typeid|typename|union|unsigned|using|virtual|void|volatile|wchar_t|while)\b/,
-		'boolean': /\b(true|false)\b/,
-		'operator': /[-+]{1,2}|!=?|<{1,2}=?|>{1,2}=?|\->|:{1,2}|={1,2}|\^|~|%|&{1,2}|\|?\||\?|\*|\/|\b(and|and_eq|bitand|bitor|not|not_eq|or|or_eq|xor|xor_eq)\b/
+		'keyword': /\b(?:alignas|alignof|asm|auto|bool|break|case|catch|char|char16_t|char32_t|class|compl|const|constexpr|const_cast|continue|decltype|default|delete|do|double|dynamic_cast|else|enum|explicit|export|extern|float|for|friend|goto|if|inline|int|long|mutable|namespace|new|noexcept|nullptr|operator|private|protected|public|register|reinterpret_cast|return|short|signed|sizeof|static|static_assert|static_cast|struct|switch|template|this|thread_local|throw|try|typedef|typeid|typename|union|unsigned|using|virtual|void|volatile|wchar_t|while)\b/,
+		'boolean': /\b(?:true|false)\b/,
+		'operator': /--?|\+\+?|!=?|<{1,2}=?|>{1,2}=?|->|:{1,2}|={1,2}|\^|~|%|&{1,2}|\|\|?|\?|\*|\/|\b(?:and|and_eq|bitand|bitor|not|not_eq|or|or_eq|xor|xor_eq)\b/
 	});
 	
 	Prism.languages.insertBefore('cpp', 'keyword', {
 		'class-name': {
-			pattern: /(class\s+)[a-z0-9_]+/i,
+			pattern: /(class\s+)\w+/i,
 			lookbehind: true
 		}
 	});
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports) {
 
 	Prism.languages.lua = {
@@ -9899,16 +10797,29 @@
 	};
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports) {
 
 	Prism.languages.livescript = {
+		'comment': [
+			{
+				pattern: /(^|[^\\])\/\*[\s\S]*?\*\//,
+				lookbehind: true
+			},
+			{
+				pattern: /(^|[^\\])#.*/,
+				lookbehind: true
+			}
+		],
 		'interpolated-string': {
-			pattern: /("""|")(?:\\[\s\S]|(?!\1)[^\\])*\1/,
+			/* Look-behind and look-ahead prevents wrong behavior of the greedy pattern
+			* forcing it to match """-quoted string when it would otherwise match "-quoted first. */
+			pattern: /(^|[^"])("""|")(?:\\[\s\S]|(?!\2)[^\\])*\2(?!")/,
+			lookbehind: true,
 			greedy: true,
 			inside: {
 				'variable': {
-					pattern: /(^|[^\\])#[a-z_](?:-?[a-z]|\d)*/m,
+					pattern: /(^|[^\\])#[a-z_](?:-?[a-z]|[\d_])*/m,
 					lookbehind: true
 				},
 				'interpolation': {
@@ -9925,18 +10836,6 @@
 				'string': /[\s\S]+/
 			}
 		},
-		'comment': [
-			{
-				pattern: /(^|[^\\])\/\*[\s\S]*?\*\//,
-				lookbehind: true,
-				greedy: true
-			},
-			{
-				pattern: /(^|[^\\])#.*/,
-				lookbehind: true,
-				greedy: true
-			}
-		],
 		'string': [
 			{
 				pattern: /('''|')(?:\\[\s\S]|(?!\1)[^\\])*\1/,
@@ -9984,7 +10883,7 @@
 			alias: 'variable'
 		},
 		'number': /\b(?:\d+~[\da-z]+|\d[\d_]*(?:\.\d[\d_]*)?(?:[a-z]\w*)?)/i,
-		'identifier': /[a-z_](?:-?[a-z]|\d)*/i,
+		'identifier': /[a-z_](?:-?[a-z]|[\d_])*/i,
 		'operator': [
 			// Spaced .
 			{
@@ -10022,11 +10921,11 @@
 	Prism.languages.livescript['interpolated-string'].inside['interpolation'].inside.rest = Prism.languages.livescript;
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports) {
 
 	(function(Prism) {
-		var funcPattern = /\\([^a-z()[\]]|[a-z\*]+)/i,
+		var funcPattern = /\\(?:[^a-z()[\]]|[a-z*]+)/i,
 		    insideEqu = {
 			    'equation-command': {
 				    pattern: funcPattern,
@@ -10038,7 +10937,7 @@
 			'comment': /%.*/m,
 			// the verbatim environment prints whitespace to the document
 			'cdata':  {
-				pattern: /(\\begin\{((?:verbatim|lstlisting)\*?)\})([\s\S]*?)(?=\\end\{\2\})/,
+				pattern: /(\\begin\{((?:verbatim|lstlisting)\*?)\})[\s\S]*?(?=\\end\{\2\})/,
 				lookbehind: true
 			},
 			/*
@@ -10047,12 +10946,12 @@
 			 */
 			'equation': [
 				{
-					pattern: /\$(?:\\?[\s\S])*?\$|\\\((?:\\?[\s\S])*?\\\)|\\\[(?:\\?[\s\S])*?\\\]/,
+					pattern: /\$(?:\\[\s\S]|[^\\$])*\$|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/,
 					inside: insideEqu,
 					alias: 'string'
 				},
 				{
-					pattern: /(\\begin\{((?:equation|math|eqnarray|align|multline|gather)\*?)\})([\s\S]*?)(?=\\end\{\2\})/,
+					pattern: /(\\begin\{((?:equation|math|eqnarray|align|multline|gather)\*?)\})[\s\S]*?(?=\\end\{\2\})/,
 					lookbehind: true,
 					inside: insideEqu,
 					alias: 'string'
@@ -10089,24 +10988,24 @@
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports) {
 
 	Prism.languages.groovy = Prism.languages.extend('clike', {
-		'keyword': /\b(as|def|in|abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|trait|transient|try|void|volatile|while)\b/,
+		'keyword': /\b(?:as|def|in|abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|int|interface|long|native|new|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|trait|transient|try|void|volatile|while)\b/,
 		'string': [
 			{
-				pattern: /("""|''')[\s\S]*?\1|(\$\/)(\$\/\$|[\s\S])*?\/\$/,
+				pattern: /("""|''')[\s\S]*?\1|(?:\$\/)(?:\$\/\$|[\s\S])*?\/\$/,
 				greedy: true
 			},
 			{
-				pattern: /("|'|\/)(?:\\?.)*?\1/,
+				pattern: /(["'\/])(?:\\.|(?!\1)[^\\\r\n])*\1/,
 				greedy: true
 			}
 		],
 		'number': /\b(?:0b[01_]+|0x[\da-f_]+(?:\.[\da-f_p\-]+)?|[\d_]+(?:\.[\d_]+)?(?:e[+-]?[\d]+)?)[glidf]?\b/i,
 		'operator': {
-			pattern: /(^|[^.])(~|==?~?|\?[.:]?|\*(?:[.=]|\*=?)?|\.[@&]|\.\.<|\.{1,2}(?!\.)|-[-=>]?|\+[+=]?|!=?|<(?:<=?|=>?)?|>(?:>>?=?|=)?|&[&=]?|\|[|=]?|\/=?|\^=?|%=?)/,
+			pattern: /(^|[^.])(?:~|==?~?|\?[.:]?|\*(?:[.=]|\*=?)?|\.[@&]|\.\.<|\.{1,2}(?!\.)|-[-=>]?|\+[+=]?|!=?|<(?:<=?|=>?)?|>(?:>>?=?|=)?|&[&=]?|\|[|=]?|\/=?|\^=?|%=?)/,
 			lookbehind: true
 		},
 		'punctuation': /\.+|[{}[\];(),:$]/
@@ -10120,7 +11019,7 @@
 	});
 	
 	Prism.languages.insertBefore('groovy', 'punctuation', {
-		'spock-block': /\b(setup|given|when|then|and|cleanup|expect|where):/
+		'spock-block': /\b(?:setup|given|when|then|and|cleanup|expect|where):/
 	});
 	
 	Prism.languages.insertBefore('groovy', 'function', {
@@ -10137,9 +11036,9 @@
 			var delimiter = env.content[0];
 	
 			if (delimiter != "'") {
-				var pattern = /([^\\])(\$(\{.*?\}|[\w\.]+))/;
+				var pattern = /([^\\])(?:\$(?:\{.*?\}|[\w.]+))/;
 				if (delimiter === '$') {
-					pattern = /([^\$])(\$(\{.*?\}|[\w\.]+))/;
+					pattern = /([^\$])(?:\$(?:\{.*?\}|[\w.]+))/;
 				}
 	
 				// To prevent double HTML-encoding we have to decode env.content first
@@ -10160,13 +11059,13 @@
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports) {
 
 	Prism.languages.graphql = {
 		'comment': /#.*/,
 		'string': {
-			pattern: /"(?:\\.|[^\\"])*"/,
+			pattern: /"(?:\\.|[^\\"\r\n])*"/,
 			greedy: true
 		},
 		'number': /(?:\B-|\b)\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/,
@@ -10179,7 +11078,7 @@
 		'attr-name': /[a-z_]\w*(?=\s*:)/i,
 		'keyword': [
 			{
-				pattern: /(fragment\s+(?!on)[a-z_]\w*\s+|\.\.\.\s*)on\b/,
+				pattern: /(fragment\s+(?!on)[a-z_]\w*\s+|\.{3}\s*)on\b/,
 				lookbehind: true
 			},
 			/\b(?:query|fragment|mutation)\b/
@@ -10189,7 +11088,7 @@
 	};
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports) {
 
 	Prism.languages.nginx = Prism.languages.extend('clike', {
@@ -10197,7 +11096,7 @@
 	                pattern: /(^|[^"{\\])#.*/,
 	                lookbehind: true
 	        },
-	        'keyword': /\b(?:CONTENT_|DOCUMENT_|GATEWAY_|HTTP_|HTTPS|if_not_empty|PATH_|QUERY_|REDIRECT_|REMOTE_|REQUEST_|SCGI|SCRIPT_|SERVER_|http|server|events|location|include|accept_mutex|accept_mutex_delay|access_log|add_after_body|add_before_body|add_header|addition_types|aio|alias|allow|ancient_browser|ancient_browser_value|auth|auth_basic|auth_basic_user_file|auth_http|auth_http_header|auth_http_timeout|autoindex|autoindex_exact_size|autoindex_localtime|break|charset|charset_map|charset_types|chunked_transfer_encoding|client_body_buffer_size|client_body_in_file_only|client_body_in_single_buffer|client_body_temp_path|client_body_timeout|client_header_buffer_size|client_header_timeout|client_max_body_size|connection_pool_size|create_full_put_path|daemon|dav_access|dav_methods|debug_connection|debug_points|default_type|deny|devpoll_changes|devpoll_events|directio|directio_alignment|disable_symlinks|empty_gif|env|epoll_events|error_log|error_page|expires|fastcgi_buffer_size|fastcgi_buffers|fastcgi_busy_buffers_size|fastcgi_cache|fastcgi_cache_bypass|fastcgi_cache_key|fastcgi_cache_lock|fastcgi_cache_lock_timeout|fastcgi_cache_methods|fastcgi_cache_min_uses|fastcgi_cache_path|fastcgi_cache_purge|fastcgi_cache_use_stale|fastcgi_cache_valid|fastcgi_connect_timeout|fastcgi_hide_header|fastcgi_ignore_client_abort|fastcgi_ignore_headers|fastcgi_index|fastcgi_intercept_errors|fastcgi_keep_conn|fastcgi_max_temp_file_size|fastcgi_next_upstream|fastcgi_no_cache|fastcgi_param|fastcgi_pass|fastcgi_pass_header|fastcgi_read_timeout|fastcgi_redirect_errors|fastcgi_send_timeout|fastcgi_split_path_info|fastcgi_store|fastcgi_store_access|fastcgi_temp_file_write_size|fastcgi_temp_path|flv|geo|geoip_city|geoip_country|google_perftools_profiles|gzip|gzip_buffers|gzip_comp_level|gzip_disable|gzip_http_version|gzip_min_length|gzip_proxied|gzip_static|gzip_types|gzip_vary|if|if_modified_since|ignore_invalid_headers|image_filter|image_filter_buffer|image_filter_jpeg_quality|image_filter_sharpen|image_filter_transparency|imap_capabilities|imap_client_buffer|include|index|internal|ip_hash|keepalive|keepalive_disable|keepalive_requests|keepalive_timeout|kqueue_changes|kqueue_events|large_client_header_buffers|limit_conn|limit_conn_log_level|limit_conn_zone|limit_except|limit_rate|limit_rate_after|limit_req|limit_req_log_level|limit_req_zone|limit_zone|lingering_close|lingering_time|lingering_timeout|listen|location|lock_file|log_format|log_format_combined|log_not_found|log_subrequest|map|map_hash_bucket_size|map_hash_max_size|master_process|max_ranges|memcached_buffer_size|memcached_connect_timeout|memcached_next_upstream|memcached_pass|memcached_read_timeout|memcached_send_timeout|merge_slashes|min_delete_depth|modern_browser|modern_browser_value|mp4|mp4_buffer_size|mp4_max_buffer_size|msie_padding|msie_refresh|multi_accept|open_file_cache|open_file_cache_errors|open_file_cache_min_uses|open_file_cache_valid|open_log_file_cache|optimize_server_names|override_charset|pcre_jit|perl|perl_modules|perl_require|perl_set|pid|pop3_auth|pop3_capabilities|port_in_redirect|post_action|postpone_output|protocol|proxy|proxy_buffer|proxy_buffer_size|proxy_buffering|proxy_buffers|proxy_busy_buffers_size|proxy_cache|proxy_cache_bypass|proxy_cache_key|proxy_cache_lock|proxy_cache_lock_timeout|proxy_cache_methods|proxy_cache_min_uses|proxy_cache_path|proxy_cache_use_stale|proxy_cache_valid|proxy_connect_timeout|proxy_cookie_domain|proxy_cookie_path|proxy_headers_hash_bucket_size|proxy_headers_hash_max_size|proxy_hide_header|proxy_http_version|proxy_ignore_client_abort|proxy_ignore_headers|proxy_intercept_errors|proxy_max_temp_file_size|proxy_method|proxy_next_upstream|proxy_no_cache|proxy_pass|proxy_pass_error_message|proxy_pass_header|proxy_pass_request_body|proxy_pass_request_headers|proxy_read_timeout|proxy_redirect|proxy_redirect_errors|proxy_send_lowat|proxy_send_timeout|proxy_set_body|proxy_set_header|proxy_ssl_session_reuse|proxy_store|proxy_store_access|proxy_temp_file_write_size|proxy_temp_path|proxy_timeout|proxy_upstream_fail_timeout|proxy_upstream_max_fails|random_index|read_ahead|real_ip_header|recursive_error_pages|request_pool_size|reset_timedout_connection|resolver|resolver_timeout|return|rewrite|root|rtsig_overflow_events|rtsig_overflow_test|rtsig_overflow_threshold|rtsig_signo|satisfy|satisfy_any|secure_link_secret|send_lowat|send_timeout|sendfile|sendfile_max_chunk|server|server_name|server_name_in_redirect|server_names_hash_bucket_size|server_names_hash_max_size|server_tokens|set|set_real_ip_from|smtp_auth|smtp_capabilities|so_keepalive|source_charset|split_clients|ssi|ssi_silent_errors|ssi_types|ssi_value_length|ssl|ssl_certificate|ssl_certificate_key|ssl_ciphers|ssl_client_certificate|ssl_crl|ssl_dhparam|ssl_engine|ssl_prefer_server_ciphers|ssl_protocols|ssl_session_cache|ssl_session_timeout|ssl_verify_client|ssl_verify_depth|starttls|stub_status|sub_filter|sub_filter_once|sub_filter_types|tcp_nodelay|tcp_nopush|timeout|timer_resolution|try_files|types|types_hash_bucket_size|types_hash_max_size|underscores_in_headers|uninitialized_variable_warn|upstream|use|user|userid|userid_domain|userid_expires|userid_name|userid_p3p|userid_path|userid_service|valid_referers|variables_hash_bucket_size|variables_hash_max_size|worker_connections|worker_cpu_affinity|worker_priority|worker_processes|worker_rlimit_core|worker_rlimit_nofile|worker_rlimit_sigpending|working_directory|xclient|xml_entities|xslt_entities|xslt_stylesheet|xslt_types)\b/i,
+	        'keyword': /\b(?:CONTENT_|DOCUMENT_|GATEWAY_|HTTP_|HTTPS|if_not_empty|PATH_|QUERY_|REDIRECT_|REMOTE_|REQUEST_|SCGI|SCRIPT_|SERVER_|http|events|accept_mutex|accept_mutex_delay|access_log|add_after_body|add_before_body|add_header|addition_types|aio|alias|allow|ancient_browser|ancient_browser_value|auth|auth_basic|auth_basic_user_file|auth_http|auth_http_header|auth_http_timeout|autoindex|autoindex_exact_size|autoindex_localtime|break|charset|charset_map|charset_types|chunked_transfer_encoding|client_body_buffer_size|client_body_in_file_only|client_body_in_single_buffer|client_body_temp_path|client_body_timeout|client_header_buffer_size|client_header_timeout|client_max_body_size|connection_pool_size|create_full_put_path|daemon|dav_access|dav_methods|debug_connection|debug_points|default_type|deny|devpoll_changes|devpoll_events|directio|directio_alignment|disable_symlinks|empty_gif|env|epoll_events|error_log|error_page|expires|fastcgi_buffer_size|fastcgi_buffers|fastcgi_busy_buffers_size|fastcgi_cache|fastcgi_cache_bypass|fastcgi_cache_key|fastcgi_cache_lock|fastcgi_cache_lock_timeout|fastcgi_cache_methods|fastcgi_cache_min_uses|fastcgi_cache_path|fastcgi_cache_purge|fastcgi_cache_use_stale|fastcgi_cache_valid|fastcgi_connect_timeout|fastcgi_hide_header|fastcgi_ignore_client_abort|fastcgi_ignore_headers|fastcgi_index|fastcgi_intercept_errors|fastcgi_keep_conn|fastcgi_max_temp_file_size|fastcgi_next_upstream|fastcgi_no_cache|fastcgi_param|fastcgi_pass|fastcgi_pass_header|fastcgi_read_timeout|fastcgi_redirect_errors|fastcgi_send_timeout|fastcgi_split_path_info|fastcgi_store|fastcgi_store_access|fastcgi_temp_file_write_size|fastcgi_temp_path|flv|geo|geoip_city|geoip_country|google_perftools_profiles|gzip|gzip_buffers|gzip_comp_level|gzip_disable|gzip_http_version|gzip_min_length|gzip_proxied|gzip_static|gzip_types|gzip_vary|if|if_modified_since|ignore_invalid_headers|image_filter|image_filter_buffer|image_filter_jpeg_quality|image_filter_sharpen|image_filter_transparency|imap_capabilities|imap_client_buffer|include|index|internal|ip_hash|keepalive|keepalive_disable|keepalive_requests|keepalive_timeout|kqueue_changes|kqueue_events|large_client_header_buffers|limit_conn|limit_conn_log_level|limit_conn_zone|limit_except|limit_rate|limit_rate_after|limit_req|limit_req_log_level|limit_req_zone|limit_zone|lingering_close|lingering_time|lingering_timeout|listen|location|lock_file|log_format|log_format_combined|log_not_found|log_subrequest|map|map_hash_bucket_size|map_hash_max_size|master_process|max_ranges|memcached_buffer_size|memcached_connect_timeout|memcached_next_upstream|memcached_pass|memcached_read_timeout|memcached_send_timeout|merge_slashes|min_delete_depth|modern_browser|modern_browser_value|mp4|mp4_buffer_size|mp4_max_buffer_size|msie_padding|msie_refresh|multi_accept|open_file_cache|open_file_cache_errors|open_file_cache_min_uses|open_file_cache_valid|open_log_file_cache|optimize_server_names|override_charset|pcre_jit|perl|perl_modules|perl_require|perl_set|pid|pop3_auth|pop3_capabilities|port_in_redirect|post_action|postpone_output|protocol|proxy|proxy_buffer|proxy_buffer_size|proxy_buffering|proxy_buffers|proxy_busy_buffers_size|proxy_cache|proxy_cache_bypass|proxy_cache_key|proxy_cache_lock|proxy_cache_lock_timeout|proxy_cache_methods|proxy_cache_min_uses|proxy_cache_path|proxy_cache_use_stale|proxy_cache_valid|proxy_connect_timeout|proxy_cookie_domain|proxy_cookie_path|proxy_headers_hash_bucket_size|proxy_headers_hash_max_size|proxy_hide_header|proxy_http_version|proxy_ignore_client_abort|proxy_ignore_headers|proxy_intercept_errors|proxy_max_temp_file_size|proxy_method|proxy_next_upstream|proxy_no_cache|proxy_pass|proxy_pass_error_message|proxy_pass_header|proxy_pass_request_body|proxy_pass_request_headers|proxy_read_timeout|proxy_redirect|proxy_redirect_errors|proxy_send_lowat|proxy_send_timeout|proxy_set_body|proxy_set_header|proxy_ssl_session_reuse|proxy_store|proxy_store_access|proxy_temp_file_write_size|proxy_temp_path|proxy_timeout|proxy_upstream_fail_timeout|proxy_upstream_max_fails|random_index|read_ahead|real_ip_header|recursive_error_pages|request_pool_size|reset_timedout_connection|resolver|resolver_timeout|return|rewrite|root|rtsig_overflow_events|rtsig_overflow_test|rtsig_overflow_threshold|rtsig_signo|satisfy|satisfy_any|secure_link_secret|send_lowat|send_timeout|sendfile|sendfile_max_chunk|server|server_name|server_name_in_redirect|server_names_hash_bucket_size|server_names_hash_max_size|server_tokens|set|set_real_ip_from|smtp_auth|smtp_capabilities|so_keepalive|source_charset|split_clients|ssi|ssi_silent_errors|ssi_types|ssi_value_length|ssl|ssl_certificate|ssl_certificate_key|ssl_ciphers|ssl_client_certificate|ssl_crl|ssl_dhparam|ssl_engine|ssl_prefer_server_ciphers|ssl_protocols|ssl_session_cache|ssl_session_timeout|ssl_verify_client|ssl_verify_depth|starttls|stub_status|sub_filter|sub_filter_once|sub_filter_types|tcp_nodelay|tcp_nopush|timeout|timer_resolution|try_files|types|types_hash_bucket_size|types_hash_max_size|underscores_in_headers|uninitialized_variable_warn|upstream|use|user|userid|userid_domain|userid_expires|userid_name|userid_p3p|userid_path|userid_service|valid_referers|variables_hash_bucket_size|variables_hash_max_size|worker_connections|worker_cpu_affinity|worker_priority|worker_processes|worker_rlimit_core|worker_rlimit_nofile|worker_rlimit_sigpending|working_directory|xclient|xml_entities|xslt_entities|xslt_stylesheet|xslt_types)\b/i
 	});
 	
 	Prism.languages.insertBefore('nginx', 'keyword', {
@@ -10205,21 +11104,21 @@
 	});
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports) {
 
 	Prism.languages.erlang = {
 		'comment': /%.+/,
 		'string': {
-			pattern: /"(?:\\?.)*?"/,
+			pattern: /"(?:\\.|[^\\"\r\n])*"/,
 			greedy: true
 		},
 		'quoted-function': {
-			pattern: /'(?:\\.|[^'\\])+'(?=\()/,
+			pattern: /'(?:\\.|[^\\'\r\n])+'(?=\()/,
 			alias: 'function'
 		},
 		'quoted-atom': {
-			pattern: /'(?:\\.|[^'\\])+'/,
+			pattern: /'(?:\\.|[^\\'\r\n])+'/,
 			alias: 'atom'
 		},
 		'boolean': /\b(?:true|false)\b/,
@@ -10254,7 +11153,7 @@
 	};
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports) {
 
 	Prism.languages.powershell = {
@@ -10270,7 +11169,7 @@
 		],
 		'string': [
 			{
-				pattern: /"(`?[\s\S])*?"/,
+				pattern: /"(?:`[\s\S]|[^`"])*"/,
 				greedy: true,
 				inside: {
 					'function': {
@@ -10281,25 +11180,25 @@
 				}
 			},
 			{
-				pattern: /'([^']|'')*'/,
+				pattern: /'(?:[^']|'')*'/,
 				greedy: true
 			}
 		],
 		// Matches name spaces as well as casts, attribute decorators. Force starting with letter to avoid matching array indices
 		'namespace': /\[[a-z][\s\S]*?\]/i,
-		'boolean': /\$(true|false)\b/i,
+		'boolean': /\$(?:true|false)\b/i,
 		'variable': /\$\w+\b/i,
 		// Cmdlets and aliases. Aliases should come last, otherwise "write" gets preferred over "write-host" for example
 		// Get-Command | ?{ $_.ModuleName -match "Microsoft.PowerShell.(Util|Core|Management)" }
 		// Get-Alias | ?{ $_.ReferencedCommand.Module.Name -match "Microsoft.PowerShell.(Util|Core|Management)" }
 		'function': [
-			/\b(Add-(Computer|Content|History|Member|PSSnapin|Type)|Checkpoint-Computer|Clear-(Content|EventLog|History|Item|ItemProperty|Variable)|Compare-Object|Complete-Transaction|Connect-PSSession|ConvertFrom-(Csv|Json|StringData)|Convert-Path|ConvertTo-(Csv|Html|Json|Xml)|Copy-(Item|ItemProperty)|Debug-Process|Disable-(ComputerRestore|PSBreakpoint|PSRemoting|PSSessionConfiguration)|Disconnect-PSSession|Enable-(ComputerRestore|PSBreakpoint|PSRemoting|PSSessionConfiguration)|Enter-PSSession|Exit-PSSession|Export-(Alias|Clixml|Console|Csv|FormatData|ModuleMember|PSSession)|ForEach-Object|Format-(Custom|List|Table|Wide)|Get-(Alias|ChildItem|Command|ComputerRestorePoint|Content|ControlPanelItem|Culture|Date|Event|EventLog|EventSubscriber|FormatData|Help|History|Host|HotFix|Item|ItemProperty|Job|Location|Member|Module|Process|PSBreakpoint|PSCallStack|PSDrive|PSProvider|PSSession|PSSessionConfiguration|PSSnapin|Random|Service|TraceSource|Transaction|TypeData|UICulture|Unique|Variable|WmiObject)|Group-Object|Import-(Alias|Clixml|Csv|LocalizedData|Module|PSSession)|Invoke-(Command|Expression|History|Item|RestMethod|WebRequest|WmiMethod)|Join-Path|Limit-EventLog|Measure-(Command|Object)|Move-(Item|ItemProperty)|New-(Alias|Event|EventLog|Item|ItemProperty|Module|ModuleManifest|Object|PSDrive|PSSession|PSSessionConfigurationFile|PSSessionOption|PSTransportOption|Service|TimeSpan|Variable|WebServiceProxy)|Out-(Default|File|GridView|Host|Null|Printer|String)|Pop-Location|Push-Location|Read-Host|Receive-(Job|PSSession)|Register-(EngineEvent|ObjectEvent|PSSessionConfiguration|WmiEvent)|Remove-(Computer|Event|EventLog|Item|ItemProperty|Job|Module|PSBreakpoint|PSDrive|PSSession|PSSnapin|TypeData|Variable|WmiObject)|Rename-(Computer|Item|ItemProperty)|Reset-ComputerMachinePassword|Resolve-Path|Restart-(Computer|Service)|Restore-Computer|Resume-(Job|Service)|Save-Help|Select-(Object|String|Xml)|Send-MailMessage|Set-(Alias|Content|Date|Item|ItemProperty|Location|PSBreakpoint|PSDebug|PSSessionConfiguration|Service|StrictMode|TraceSource|Variable|WmiInstance)|Show-(Command|ControlPanelItem|EventLog)|Sort-Object|Split-Path|Start-(Job|Process|Service|Sleep|Transaction)|Stop-(Computer|Job|Process|Service)|Suspend-(Job|Service)|Tee-Object|Test-(ComputerSecureChannel|Connection|ModuleManifest|Path|PSSessionConfigurationFile)|Trace-Command|Unblock-File|Undo-Transaction|Unregister-(Event|PSSessionConfiguration)|Update-(FormatData|Help|List|TypeData)|Use-Transaction|Wait-(Event|Job|Process)|Where-Object|Write-(Debug|Error|EventLog|Host|Output|Progress|Verbose|Warning))\b/i,
-			/\b(ac|cat|chdir|clc|cli|clp|clv|compare|copy|cp|cpi|cpp|cvpa|dbp|del|diff|dir|ebp|echo|epal|epcsv|epsn|erase|fc|fl|ft|fw|gal|gbp|gc|gci|gcs|gdr|gi|gl|gm|gp|gps|group|gsv|gu|gv|gwmi|iex|ii|ipal|ipcsv|ipsn|irm|iwmi|iwr|kill|lp|ls|measure|mi|mount|move|mp|mv|nal|ndr|ni|nv|ogv|popd|ps|pushd|pwd|rbp|rd|rdr|ren|ri|rm|rmdir|rni|rnp|rp|rv|rvpa|rwmi|sal|saps|sasv|sbp|sc|select|set|shcm|si|sl|sleep|sls|sort|sp|spps|spsv|start|sv|swmi|tee|trcm|type|write)\b/i
+			/\b(?:Add-(?:Computer|Content|History|Member|PSSnapin|Type)|Checkpoint-Computer|Clear-(?:Content|EventLog|History|Item|ItemProperty|Variable)|Compare-Object|Complete-Transaction|Connect-PSSession|ConvertFrom-(?:Csv|Json|StringData)|Convert-Path|ConvertTo-(?:Csv|Html|Json|Xml)|Copy-(?:Item|ItemProperty)|Debug-Process|Disable-(?:ComputerRestore|PSBreakpoint|PSRemoting|PSSessionConfiguration)|Disconnect-PSSession|Enable-(?:ComputerRestore|PSBreakpoint|PSRemoting|PSSessionConfiguration)|Enter-PSSession|Exit-PSSession|Export-(?:Alias|Clixml|Console|Csv|FormatData|ModuleMember|PSSession)|ForEach-Object|Format-(?:Custom|List|Table|Wide)|Get-(?:Alias|ChildItem|Command|ComputerRestorePoint|Content|ControlPanelItem|Culture|Date|Event|EventLog|EventSubscriber|FormatData|Help|History|Host|HotFix|Item|ItemProperty|Job|Location|Member|Module|Process|PSBreakpoint|PSCallStack|PSDrive|PSProvider|PSSession|PSSessionConfiguration|PSSnapin|Random|Service|TraceSource|Transaction|TypeData|UICulture|Unique|Variable|WmiObject)|Group-Object|Import-(?:Alias|Clixml|Csv|LocalizedData|Module|PSSession)|Invoke-(?:Command|Expression|History|Item|RestMethod|WebRequest|WmiMethod)|Join-Path|Limit-EventLog|Measure-(?:Command|Object)|Move-(?:Item|ItemProperty)|New-(?:Alias|Event|EventLog|Item|ItemProperty|Module|ModuleManifest|Object|PSDrive|PSSession|PSSessionConfigurationFile|PSSessionOption|PSTransportOption|Service|TimeSpan|Variable|WebServiceProxy)|Out-(?:Default|File|GridView|Host|Null|Printer|String)|Pop-Location|Push-Location|Read-Host|Receive-(?:Job|PSSession)|Register-(?:EngineEvent|ObjectEvent|PSSessionConfiguration|WmiEvent)|Remove-(?:Computer|Event|EventLog|Item|ItemProperty|Job|Module|PSBreakpoint|PSDrive|PSSession|PSSnapin|TypeData|Variable|WmiObject)|Rename-(?:Computer|Item|ItemProperty)|Reset-ComputerMachinePassword|Resolve-Path|Restart-(?:Computer|Service)|Restore-Computer|Resume-(?:Job|Service)|Save-Help|Select-(?:Object|String|Xml)|Send-MailMessage|Set-(?:Alias|Content|Date|Item|ItemProperty|Location|PSBreakpoint|PSDebug|PSSessionConfiguration|Service|StrictMode|TraceSource|Variable|WmiInstance)|Show-(?:Command|ControlPanelItem|EventLog)|Sort-Object|Split-Path|Start-(?:Job|Process|Service|Sleep|Transaction)|Stop-(?:Computer|Job|Process|Service)|Suspend-(?:Job|Service)|Tee-Object|Test-(?:ComputerSecureChannel|Connection|ModuleManifest|Path|PSSessionConfigurationFile)|Trace-Command|Unblock-File|Undo-Transaction|Unregister-(?:Event|PSSessionConfiguration)|Update-(?:FormatData|Help|List|TypeData)|Use-Transaction|Wait-(?:Event|Job|Process)|Where-Object|Write-(?:Debug|Error|EventLog|Host|Output|Progress|Verbose|Warning))\b/i,
+			/\b(?:ac|cat|chdir|clc|cli|clp|clv|compare|copy|cp|cpi|cpp|cvpa|dbp|del|diff|dir|ebp|echo|epal|epcsv|epsn|erase|fc|fl|ft|fw|gal|gbp|gc|gci|gcs|gdr|gi|gl|gm|gp|gps|group|gsv|gu|gv|gwmi|iex|ii|ipal|ipcsv|ipsn|irm|iwmi|iwr|kill|lp|ls|measure|mi|mount|move|mp|mv|nal|ndr|ni|nv|ogv|popd|ps|pushd|pwd|rbp|rd|rdr|ren|ri|rm|rmdir|rni|rnp|rp|rv|rvpa|rwmi|sal|saps|sasv|sbp|sc|select|set|shcm|si|sl|sleep|sls|sort|sp|spps|spsv|start|sv|swmi|tee|trcm|type|write)\b/i
 		],
 		// per http://technet.microsoft.com/en-us/library/hh847744.aspx
-		'keyword': /\b(Begin|Break|Catch|Class|Continue|Data|Define|Do|DynamicParam|Else|ElseIf|End|Exit|Filter|Finally|For|ForEach|From|Function|If|InlineScript|Parallel|Param|Process|Return|Sequence|Switch|Throw|Trap|Try|Until|Using|Var|While|Workflow)\b/i,
+		'keyword': /\b(?:Begin|Break|Catch|Class|Continue|Data|Define|Do|DynamicParam|Else|ElseIf|End|Exit|Filter|Finally|For|ForEach|From|Function|If|InlineScript|Parallel|Param|Process|Return|Sequence|Switch|Throw|Trap|Try|Until|Using|Var|While|Workflow)\b/i,
 		'operator': {
-			pattern: /(\W?)(!|-(eq|ne|gt|ge|lt|le|sh[lr]|not|b?(and|x?or)|(Not)?(Like|Match|Contains|In)|Replace|Join|is(Not)?|as)\b|-[-=]?|\+[+=]?|[*\/%]=?)/i,
+			pattern: /(\W?)(?:!|-(eq|ne|gt|ge|lt|le|sh[lr]|not|b?(?:and|x?or)|(?:Not)?(?:Like|Match|Contains|In)|Replace|Join|is(?:Not)?|as)\b|-[-=]?|\+[+=]?|[*\/%]=?)/i,
 			lookbehind: true
 		},
 		'punctuation': /[|{}[\];(),.]/
@@ -10312,12 +11211,12 @@
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports) {
 
 	Prism.languages.makefile = {
 		'comment': {
-			pattern: /(^|[^\\])#(?:\\(?:\r\n|[\s\S])|.)*/,
+			pattern: /(^|[^\\])#(?:\\(?:\r\n|[\s\S])|[^\\\r\n])*/,
 			lookbehind: true
 		},
 		'string': {
@@ -10351,7 +11250,7 @@
 	};
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports) {
 
 	Prism.languages.markdown = Prism.languages.extend('markup', {});
@@ -10403,7 +11302,7 @@
 			// ---
 			// * * *
 			// -----------
-			pattern: /(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,
+			pattern: /(^\s*)([*-])(?:[\t ]*\2){2,}(?=\s*$)/m,
 			lookbehind: true,
 			alias: 'punctuation'
 		},
@@ -10476,24 +11375,18 @@
 	Prism.languages.markdown['italic'].inside['bold'] = Prism.util.clone(Prism.languages.markdown['bold']);
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 152 */,
 /* 153 */,
 /* 154 */,
 /* 155 */,
 /* 156 */,
 /* 157 */,
-/* 158 */
-/***/ (function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ }),
+/* 158 */,
 /* 159 */
 /***/ (function(module, exports) {
 
@@ -10506,11 +11399,17 @@
 	// removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 161 */,
-/* 162 */
+/* 161 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\n  </div>\n  <div class=\"body\">\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\" m:on:paste=\"onPaste\"></m:editor>\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\n  </div>\n</div>"
+	// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 162 */,
+/* 163 */
+/***/ (function(module, exports) {
+
+	module.exports = "<div tabindex=\"1\" class=\"mditor {{split?'split':''}} {{preview?'preview':''}} {{fullscreen?'fullscreen':''}}\" style=\"width:{{width}};height:{{height}}\">\r\n  <div class=\"head\" m:on:dblclick=\"onHeadDblClick\">\r\n    <m:toolbar m:id=\"toolbar\" m:prop:mditor=\"self\"></m:toolbar>\r\n  </div>\r\n  <div class=\"body\">\r\n    <m:editor m:id=\"editor\" m:prop:mditor=\"self\" m:model:value=\"value\" m:on:scroll=\"syncScroll\" m:on:changed=\"onChanged\" m:on:input=\"onInput\" m:on:paste=\"onPaste\"></m:editor>\r\n    <m:viewer m:id=\"viewer\" m:prop:mditor=\"self\" m:model:value=\"value\"></m:viewer>\r\n    <m:finder m:id=\"finder\" m:prop:mditor=\"self\"></m:viewer>\r\n  </div>\r\n</div>"
 
 /***/ })
 /******/ ]);
