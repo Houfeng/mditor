@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=yes" />
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="UTF-8">
+  <title>slide</title>
+  <link href="http://mditor.com/slide/css/bundle.css" rel="stylesheet">
+  <script 
+    bgcolor="" 
+    align="" 
+    style="" 
+    effect=""
+    type="text/slide">
+    <h1 id="-">如何编写演示文稿</h1>
+<p>通常 Mditor 仅适用于编写「技术分享」类的「演示文稿」，普通的 Markdown 可能需要简单修改才适合导出为「演示文稿」，按「回车」全屏，按「空格或右箭头」阅读下一页</p>
+
+    </script>
+<script 
+    bgcolor="" 
+    align="" 
+    style="" 
+    effect=""
+    type="text/slide">
+    <h1 id="-">两种语法</h1>
+<ul>
+<li>通过 <strong>&#39;slide&#39;</strong> 开始一页文稿</li>
+<li>通过 <strong>&#39;&#39;&#39;slide \r\n&#39;&#39;&#39;</strong> 开始一页文稿</li>
+</ul>
+<blockquote>
+<p>编写时请将 <strong>&#39;</strong> 写为 <strong>`</strong>，第一种方式背景和转场动盏将随机产生，第二种方式可指定一些参数，请阅读后边的示例</p>
+</blockquote>
+
+    </script>
+<script 
+    bgcolor="" 
+    align="" 
+    style="" 
+    effect=""
+    type="text/slide">
+    <h1 id="-">示例一</h1>
+<p>编写时请将 <strong>&#39;</strong> 写为 <strong>`</strong></p>
+<pre><code class="lang-md">'slide'
+
+<span class="token title important"><span class="token punctuation">#</span> 文稿一</span>
+<span class="token list punctuation">1.</span> 项目一
+<span class="token list punctuation">2.</span> 项目二
+
+'slide'
+
+<span class="token title important"><span class="token punctuation">#</span> 文稿二</span>
+<span class="token list punctuation">1.</span> 项目一
+<span class="token list punctuation">2.</span> 项目二
+</code></pre>
+
+    </script>
+<script 
+    bgcolor="" 
+    align="" 
+    style="" 
+    effect=""
+    type="text/slide">
+    <h1 id="-">示例二</h1>
+<p>编写时请将 <strong>&#39;</strong> 写为 <strong>`</strong></p>
+<pre><code class="lang-md">'''slide
+bgcolor: '#000'     # 可指定背景色
+align: center       # 可指定对齐方式
+effect: 17          # 可指定转场效果 (1~68)
+style: 'color: red' # 可指定样式
+'''
+
+<span class="token title important"><span class="token punctuation">#</span> 文稿一</span>
+<span class="token list punctuation">1.</span> 项目一
+<span class="token list punctuation">2.</span> 项目二
+</code></pre>
+
+    </script>
+<script 
+    bgcolor="" 
+    align="center" 
+    style="" 
+    effect=""
+    type="text/slide">
+    <h1 id="-">谢 谢</h1>
+
+    </script>
+</head>
+
+<body>
+  <script src="http://mditor.com/slide/js/bundle.js"></script>
+</body>
+
+</html>

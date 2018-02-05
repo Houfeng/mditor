@@ -1,0 +1,9 @@
+appId: net.xhou.mditor
+electronVersion: "1.6.1"
+icon: ./design/icon.icns
+mac: 
+  category: net.xhou..mditor.editor
+  target: dmg
+  icon: ./design/icon.icns
+dmg:
+  icon: ./design/icon.icns

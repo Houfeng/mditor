@@ -1,0 +1,11 @@
+{
+  "spec_dir": "test",
+  "spec_files": [
+    "e2e/*.js"
+  ],
+  "helpers": [
+    "driver.js"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": false
+}

@@ -1,0 +1,13 @@
+filters:
+    ^/: 'nokit-filter-proxy'
+public: 
+      ^/: './build/dist'
+cache: 
+    enabled: false
+log:
+    enabled: false
+session:
+    enabled: false
+proxy:
+    rules: 
+      ^/api: '...'
