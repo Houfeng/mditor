@@ -1,149 +1,48 @@
-## 只求极致
+![alt](http://mditor.com/assets/screen-shot.png)
+ 
 
-[ **M** ] arkdown + E [ **ditor** ] = **Mditor**    
-
-[![version](https://badge.fury.io/js/mditor.svg)](http://badge.fury.io/js/mditor)  
-
-Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已...  
-
-支持浏览器: chrome/safari/firefox/ie9+
-
-![image](http://embed.mditor.com/images/mditor.png)
-
-## 在线体验
-[在线 demo](http://embed.mditor.com/demo/index.html)  
-
-## 使用桌面版
-下载桌面版本 [http://mditor.com/](http://mditor.com/)
+# 简单说明
+Mditor 最早只有「组件版」，随着「桌面版」的发布，Mditor 目前有两个版本：
+- 可嵌入到任意 Web 应用的 Embed 版本，这是一桌面版的基础，Repo: [https://github.com/houfeng/mditor](https://github.com/Houfeng/mditor) 
+- 独立的桌面版本，目前仅有 Mac 版本，主页：[http://mditor.com](http://mditor.com)，Repo: [https://github.com/houfeng/mditor-desktop](https://github.com/houfeng/mditor-desktop)
+ 
   
-## 在浏览器集成 Mditor
+# 相关特性
+除常规的编辑功能，Mditor 桌面版还有如下特性
+- 多文件编辑，Mditor 桌面版是一个「多窗口」应用，可以通过「菜单、Dock、右键菜单」打开多个窗口实例进行多件编辑
+- 支持 GFM，如表格等（GFM 是 Github 拓展的基于 Markdown 的一种纯文本的书写格式）
+- 自动完成，Mditor 支持「无序列表、有序列表、引用」的自动完成，以辅助输入。
+- 多种编辑语言的的「代码高亮」支持（通过 ``` 语法）
+- 分屏实时预览，全屏预览
+- 导出 「HTML、PDF、Image」等功能。
+  
+# 如何参与
+- 如果有任何问题或建议，可以直接发起 [Issue](https://github.com/Houfeng/mditor-desktop/issues)
+- 当然，你也可以直接向 Mditor 发起 [Pull Request](https://github.com/Houfeng/mditor-desktop/pulls)
+- 非常欢迎，直接给 Mditor [加个 Star](https://github.com/houfeng/mditor-desktop)，这将是对 Midior 不错的鼓励，它会变成动力。
 
-##### 第一步:
+  
+## 开发指南
 
-引入 Mditor 样式文件  
-```html
-<link rel="stylesheet" href="your-path/dist/css/mditor.min.css" />
-```
-
-引用 Mditor 脚本文件
-```html
-<script src="your-path/dist/js/mditor.min.js"></script>
-```
-
-当然，也可以使用 CDN 资源
-```html
-...
-<link rel="stylesheet" href="https://unpkg.com/mditor@1.0.5/dist/css/mditor.min.css" />
-...
-<script src="https://unpkg.com/mditor@1.0.5/dist/js/mditor.min.js"></script>
-...
-```
-
-##### 第二步:
-
-添加 textarea 元素
-```html
-<textarea name="editor" id="editor"></textarea>
-```
-
-创建 Mditor 实例
-```js
-var mditor =  Mditor.fromTextarea(document.getElementById('editor'));
-
-//获取或设置编辑器的值
-mditor.on('ready',function(){
-  console.log(mditor.value);
-  mditor.value = '** hello **';	
-});
-```
-
-所有 API 都应在 ready 事件中进行调用
-
-##### 模式控制 API:
-
-```js
-//是否打开分屏			
-mditor.split = true;	//打开
-mditor.split = false;	//关闭
-
-//是否打开预览			
-mditor.preivew = true;	//打开
-mditor.preivew = false;	//关闭
-
-//是否全屏			
-mditor.fullscreen = true;		//打开	
-mditor.fullscreen = false;	//关闭	
-```
-
-##### 工具条配置 API
-
-```js
-//mditor.toolbar.items 是一个数组，包括所有按钮的信息
-//可以直接操作 items 以控制工具条
-
-//只保留第一个按钮
-mditor.toolbar.items = mditor.toolbar.items.slice(0,1);
-//添加一个按钮
-mditor.toolbar.addItem({...});
-//移除一个按钮
-mditor.toolbar.removeItem(name);
-//替换一个按钮
-mditor.toolbar.replaceItem(name, {...});
-//获取一个按钮
-mditor.toolbar.getItem(name);
-
-//更改按钮行为
-//示例，更改「图片」按钮配置，其它按钮是同样的方法
-let btn = mditor.toolbar.getItem('image');
-//替换按钮动作
-btn.handler = function(){
-  //自定义处理逻辑
-  //this 指向当前 mditor 实例
-}; 
-
-//还可以替换其它信息
-btn.icon = '...';   //设置按钮图标
-btn.title = '...';  //投置按钮标题
-btn.control = true; //作为控制按钮显示在右侧
-btn.key = 'ctrl+d'; //设置按钮快捷建
-```
-
-##### 文本编辑 API
-
-```js
-//编辑器相关 API 在 mditor.editor 对象上
-
-//在光标前插入文本
-mditor.editor.insertBeforeText('文本');
-//在光标后插入文本
-mditor.editor.insertAfterText('文本');
-//其它，说明待补充
-...
-```
-
-## 在服务器渲染 Markdown
-
-通过 npm 安装
+##### Clone 源码
 ```sh
-npm install mditor -save
+$ git clone git@github.com:Houfeng/mditor-desktop.git your_path
 ```
 
-在服务端解析
-```javascript
-var mditor = require("mditor");
-var parser = new mditor.Parser();
-var html = parser.parse("** Hello mditor! **");
+##### 安装依赖
+前提是需要安装好 Nodejs 和 npm（建议用 cnpm 可以通过国内镜象加速）
+```sh
+$ npm install
 ```
 
-在页面中展示解析后的内容 
-```html
-...
-<!--引用样式-->
-<link rel="stylesheet" href="your-path/dist/css/mditor.min.css" />
-...
-<div class="markdown-body">
-<!--这里是解析后的内容-->
-</div>
+##### 自动构建
+将会自动进行基于 Webpack 的构建（部分资源需要 Webpack 打包），并将 Watch 文件的改动然后自动进行构建
+```sh
+$ npm run dev
 ```
 
--end-
+##### 启动程序 
+将会启动开发中的 Mditor 
+```sh
+$ npm start
+```
