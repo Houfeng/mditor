@@ -1,0 +1,6 @@
+*.DS_Store
+*.log
+logs/
+node_modules/
+.vscode/
+server.local.yml
